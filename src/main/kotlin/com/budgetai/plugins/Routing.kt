@@ -1,5 +1,6 @@
 package com.budgetai.plugins
 
+import com.budgetai.templates.pages.createDashboardPage
 import io.ktor.http.*
 import io.ktor.resources.*
 import io.ktor.server.application.*
@@ -16,7 +17,7 @@ fun Application.configureRouting() {
     install(Resources)
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-            call.respondText(text = "500: $cause" , status = HttpStatusCode.InternalServerError)
+            call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
         }
     }
     install(Webjars) {
@@ -24,7 +25,10 @@ fun Application.configureRouting() {
     }
     routing {
         get("/") {
-            call.respondText("Hello World!")
+            call.respondText(
+                text = createDashboardPage(),
+                contentType = ContentType.Text.Html
+            )
         }
         get<Articles> { article ->
             // Get all articles ...
