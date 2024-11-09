@@ -1,5 +1,7 @@
 package com.budgetai.plugins
 
+import com.budgetai.ExposedUser
+import com.budgetai.UserService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
