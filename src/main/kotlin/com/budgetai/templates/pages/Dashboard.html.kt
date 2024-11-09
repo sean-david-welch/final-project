@@ -12,8 +12,9 @@ fun DashboardTemplate(
     contentFn: DIV.() -> Unit
 ): String {
     return BaseTemplate {
-        attributes["x-data"] = "{darkMode: false, mobileMenuOpen: false}"
-        attributes["x-bind"] = "{'class': darkMode ? 'dark' : ''}"
+        // Use data-* attributes for Alpine.js
+        attributes["data-x-data"] = "{darkMode: false, mobileMenuOpen: false}"
+        attributes["data-x-bind:class"] = "darkMode ? 'dark' : ''"
 
         // Navbar
         Navbar(
@@ -65,7 +66,7 @@ fun DashboardTemplate(
             }
         }
 
-        // Footer
+        // Footer with fixed attributes
         Footer(
             companyName = "BudgetAI",
             links = listOf(
@@ -77,10 +78,10 @@ fun DashboardTemplate(
     }
 }
 
-// Example usage - create a dashboard page
+// Example usage remains the same
 fun createDashboardPage(): String {
     return DashboardTemplate("Dashboard Overview") {
-        // Simple dashboard grid
+        // Stats grid
         div {
             classes = setOf("grid", "gap-6", "md:grid-cols-2", "lg:grid-cols-3")
 
@@ -95,7 +96,6 @@ fun createDashboardPage(): String {
                         "shadow-sm"
                     )
 
-                    // Stat label
                     div {
                         classes = setOf(
                             "text-sm",
@@ -110,7 +110,6 @@ fun createDashboardPage(): String {
                         }
                     }
 
-                    // Stat value
                     div {
                         classes = setOf(
                             "mt-2",
@@ -129,7 +128,7 @@ fun createDashboardPage(): String {
             }
         }
 
-        // Recent activity section
+        // Recent activity
         div {
             classes = setOf("mt-6")
 
@@ -153,7 +152,6 @@ fun createDashboardPage(): String {
                     "dark:divide-gray-700"
                 )
 
-                // Activity items
                 repeat(3) {
                     div {
                         classes = setOf("p-4")
