@@ -18,17 +18,14 @@ fun FlowContent.Footer(
         div {
             classes = setOf("mx-auto", "max-w-7xl", "px-4", "py-6", "flex", "items-center", "justify-between")
 
-            // Left side - copyright
             div {
                 classes = setOf("text-sm", "text-gray-600", "dark:text-gray-400")
                 +"© ${java.time.Year.now().value} $companyName"
             }
 
-            // Right side - links and theme toggle
             div {
                 classes = setOf("flex", "items-center", "space-x-6")
 
-                // Footer links
                 links.forEach { link ->
                     a(href = link.href) {
                         classes = setOf("text-sm", "text-gray-600", "hover:text-gray-900", "dark:text-gray-400", "dark:hover:text-white")
@@ -36,15 +33,13 @@ fun FlowContent.Footer(
                     }
                 }
 
-                // Optional theme toggle
                 if (showThemeToggle) {
                     button {
-                        attributes["@click"] = "darkMode = !darkMode"
+                        attributes["data-x-on:click"] = "darkMode = !darkMode"
                         classes = setOf("text-gray-600", "hover:text-gray-900", "dark:text-gray-400", "dark:hover:text-white")
 
-                        // Sun icon (shown in dark mode)
                         span {
-                            attributes["x-show"] = "darkMode"
+                            attributes["data-x-show"] = "darkMode"
                             unsafe {
                                 +"""
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,9 +49,8 @@ fun FlowContent.Footer(
                             }
                         }
 
-                        // Moon icon (shown in light mode)
                         span {
-                            attributes["x-show"] = "!darkMode"
+                            attributes["data-x-show"] = "!darkMode"
                             unsafe {
                                 +"""
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

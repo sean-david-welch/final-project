@@ -2,14 +2,12 @@ package com.budgetai.templates.components
 
 import kotlinx.html.*
 
-// Data class for navigation items
 data class NavItem(
     val text: String,
     val href: String,
     val isActive: Boolean = false
 )
 
-// Function to generate navigation items HTML
 private fun UL.renderNavItems(items: List<NavItem>) {
     items.forEach { item ->
         li {
@@ -25,7 +23,6 @@ private fun UL.renderNavItems(items: List<NavItem>) {
     }
 }
 
-// Main Navbar component
 fun FlowContent.Navbar(
     brandName: String = "Your Brand",
     navItems: List<NavItem> = listOf(),
@@ -69,7 +66,7 @@ fun FlowContent.Navbar(
                     classes = setOf("md:hidden")
                     button {
                         attributes["type"] = "button"
-                        attributes["@click"] = "mobileMenuOpen = !mobileMenuOpen"
+                        attributes["data-x-on:click"] = "mobileMenuOpen = !mobileMenuOpen"
                         classes = setOf(
                             "inline-flex",
                             "items-center",
@@ -103,7 +100,7 @@ fun FlowContent.Navbar(
         // Mobile menu
         div {
             classes = setOf("md:hidden")
-            attributes["x-show"] = "mobileMenuOpen"
+            attributes["data-x-show"] = "mobileMenuOpen"
             attributes["style"] = "display: none;"
 
             div {
