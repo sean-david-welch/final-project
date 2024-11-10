@@ -1,0 +1,71 @@
+/* Navbar container styles */
+.navbar {
+  @apply bg-gray-800;
+}
+
+.navbar-container {
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.navbar-content {
+  @apply flex h-16 items-center justify-between;
+}
+
+.navbar-brand-container {
+  @apply flex items-center;
+}
+
+.navbar-brand-logo {
+  @apply flex-shrink-0;
+}
+
+.navbar-brand-text {
+  @apply text-white text-xl font-bold;
+}
+
+/* Navigation menu styles */
+.navbar-desktop-menu {
+  @apply hidden md:block ml-10;
+}
+
+.navbar-menu-container {
+  @apply flex items-baseline space-x-4;
+}
+
+.navbar-menu-list {
+  @apply flex space-x-4;
+}
+
+/* Navigation items */
+.nav-item-active {
+  @apply px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md;
+}
+
+.nav-item-inactive {
+  @apply px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md;
+}
+
+/* Mobile menu styles */
+.navbar-mobile-toggle {
+  @apply md:hidden;
+}
+
+.mobile-menu-button {
+  @apply inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white;
+}
+
+.mobile-menu-icon {
+  @apply h-6 w-6;
+}
+
+.mobile-menu-container {
+  @apply md:hidden;
+}
+
+.mobile-menu-content {
+  @apply space-y-1 px-2 pb-3 pt-2;
+}
+
+.sr-only {
+  @apply sr-only;
+}
