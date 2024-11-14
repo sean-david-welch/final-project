@@ -1,4 +1,3 @@
-val h2_version: String by project
 val kotlin_version: String by project
 val kotlinx_html_version: String by project
 val logback_version: String by project
@@ -42,11 +41,11 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
     implementation("org.jetbrains.exposed:exposed-core:0.53.0")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.53.0")
-    implementation("com.h2database:h2:$h2_version")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("org.webjars.npm:alpinejs:3.13.3")
     implementation("org.webjars.npm:htmx.org:1.9.10")
+    implementation("org.xerial:sqlite-jdbc:3.44.1.0")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
