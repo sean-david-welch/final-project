@@ -1,4 +1,4 @@
-package com.budgetai
+package com.budgetai.services
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.Serializable
