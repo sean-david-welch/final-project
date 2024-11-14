@@ -1,0 +1,64 @@
+/* Base Layout */
+.dashboard-layout {
+  @apply min-h-screen bg-gray-50 dark:bg-gray-800 py-6;
+}
+
+.dashboard-container {
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+/* Page Header */
+.page-header {
+  @apply mb-6;
+}
+
+.page-title {
+  @apply text-2xl font-semibold text-gray-900 dark:text-white;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+  @apply bg-white dark:bg-gray-900 rounded-lg shadow p-6;
+}
+
+/* Stats Grid */
+.stats-grid {
+  @apply grid gap-6 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.stat-card {
+  @apply bg-gray-50 dark:bg-gray-800 rounded-lg p-6 shadow-sm;
+}
+
+.stat-label {
+  @apply text-sm font-medium text-gray-600 dark:text-gray-400;
+}
+
+.stat-value {
+  @apply mt-2 text-3xl font-semibold text-gray-900 dark:text-white;
+}
+
+/* Recent Activity */
+.activity-section {
+  @apply mt-6;
+}
+
+.activity-title {
+  @apply text-lg font-medium text-gray-900 dark:text-white mb-4;
+}
+
+.activity-list {
+  @apply border dark:border-gray-700 rounded-lg divide-y dark:divide-gray-700;
+}
+
+.activity-item {
+  @apply p-4;
+}
+
+.activity-text {
+  @apply text-sm text-gray-900 dark:text-white;
+}
+
+.activity-time {
+  @apply text-sm text-gray-500 dark:text-gray-400 mt-1;
+}
