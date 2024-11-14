@@ -53,7 +53,7 @@ fun FlowContent.Navbar(brandName: String = "Your Brand", navItems: List<NavItem>
                         attributes["data-x-on:click"] = "mobileMenuOpen = !mobileMenuOpen"
                         classes = setOf("mobile-menu-button")
                         span {
-                            classes = setOf("sr-only")
+                            classes = setOf("sr-now")
                             +"Toggle menu"
                         }
                         div {

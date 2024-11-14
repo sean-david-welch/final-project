@@ -1,5 +1,6 @@
 @import "footer.css";
 @import "navbar.css";
+@import "dashboard.css";
 
 @tailwind base;
 @tailwind components;

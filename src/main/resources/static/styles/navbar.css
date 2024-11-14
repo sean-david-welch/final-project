@@ -66,6 +66,6 @@
   @apply space-y-1 px-2 pb-3 pt-2;
 }
 
-.sr-only {
+.sr-now {
   @apply sr-only;
 }
