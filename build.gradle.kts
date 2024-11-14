@@ -47,5 +47,7 @@ dependencies {
     implementation("org.webjars.npm:htmx.org:1.9.10")
     implementation("org.xerial:sqlite-jdbc:3.44.1.0")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
+    implementation("org.flywaydb:flyway-core:9.22.3")
+    implementation("org.flywaydb:flyway-sqlite:9.22.3")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
