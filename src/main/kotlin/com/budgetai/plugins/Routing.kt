@@ -21,7 +21,7 @@ fun Application.configureRouting() {
         }
     }
     install(Webjars) {
-        path = "/webjars" //defaults to /webjars
+        path = "/webjars"
     }
     routing {
         get("/") {
@@ -30,11 +30,7 @@ fun Application.configureRouting() {
                 contentType = ContentType.Text.Html
             )
         }
-        get<Articles> { article ->
-            // Get all articles ...
-            call.respond("List of articles sorted starting from ${article.sort}")
-        }
-        // Static plugin. Try to access `/static/index.html`
+        dashboardRoutes()
         staticResources("/static", "static")
         get("/webjars") {
             call.respondText("<script src='/webjars/jquery/jquery.js'></script>", ContentType.Text.Html)
@@ -42,6 +38,13 @@ fun Application.configureRouting() {
     }
 }
 
-@Serializable
-@Resource("/articles")
-class Articles(val sort: String? = "new")
+fun Route.dashboardRoutes() {
+    route("/dashboard") {
+        get {
+            call.respondText(
+                text = createDashboardPage(),
+                contentType = ContentType.Text.Html
+            )
+        }
+    }
+}
