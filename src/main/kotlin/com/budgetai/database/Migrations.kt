@@ -6,7 +6,7 @@ object FlywayMigrations {
     fun migrate(jdbcUrl: String) {
         Flyway.configure()
             .dataSource(jdbcUrl, "", "")
-            .locations("db/migration")
+            .locations("database/migration")
             .load()
             .migrate()
     }
