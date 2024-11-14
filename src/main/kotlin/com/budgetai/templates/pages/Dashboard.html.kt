@@ -61,7 +61,7 @@ fun createDashboardPage(): String {
                         classes = setOf("stat-label")
                         +when(index) {
                             0 -> "Total Revenue"
-                            1 -> "Active Users"
+                            1 -> "Active com.budgetai.models.Users"
                             else -> "Growth Rate"
                         }
                     }
