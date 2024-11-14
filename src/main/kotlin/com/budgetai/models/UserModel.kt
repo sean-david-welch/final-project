@@ -1,5 +1,6 @@
 package com.budgetai.models
 
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
 
 object Users : Table() {
@@ -9,3 +10,10 @@ object Users : Table() {
 
     override val primaryKey = PrimaryKey(id)
 }
+
+@Serializable
+data class User(
+    val id: Int? = null,
+    val name: String,
+    val age: Int
+)
