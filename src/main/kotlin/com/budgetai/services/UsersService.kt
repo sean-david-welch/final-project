@@ -1,5 +1,6 @@
 package com.budgetai.services
 
+import com.budgetai.models.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.*
@@ -11,14 +12,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 data class ExposedUser(val name: String, val age: Int)
 
 class UserService(database: Database) {
-    object Users : Table() {
-        val id = integer("id").autoIncrement()
-        val name = varchar("name", length = 50)
-        val age = integer("age")
-
-        override val primaryKey = PrimaryKey(id)
-    }
-
     init {
         transaction(database) {
             SchemaUtils.create(Users)
