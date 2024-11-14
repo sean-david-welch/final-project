@@ -22,18 +22,18 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit): String {
         )
 
         main {
-            classes = setOf("min-h-screen", "bg-gray-50", "dark:bg-gray-800", "py-6")
+            classes = setOf("dashboard-layout")
             div {
-                classes = setOf("mx-auto", "max-w-7xl", "px-4", "sm:px-6", "lg:px-8")
+                classes = setOf("dashboard-container")
                 div {
-                    classes = setOf("mb-6")
+                    classes = setOf("page-header")
                     h1 {
-                        classes = setOf("text-2xl", "font-semibold", "text-gray-900", "dark:text-white")
+                        classes = setOf("page-title")
                         +title
                     }
                 }
                 div {
-                    classes = setOf("bg-white", "dark:bg-gray-900", "rounded-lg", "shadow", "p-6")
+                    classes = setOf("content-wrapper")
                     contentFn()
                 }
             }
@@ -53,12 +53,12 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit): String {
 fun createDashboardPage(): String {
     return DashboardTemplate("Dashboard Overview") {
         div {
-            classes = setOf("grid", "gap-6", "md:grid-cols-2", "lg:grid-cols-3")
+            classes = setOf("stats-grid")
             repeat(3) { index ->
                 div {
-                    classes = setOf("bg-gray-50", "dark:bg-gray-800", "rounded-lg", "p-6", "shadow-sm")
+                    classes = setOf("stat-card")
                     div {
-                        classes = setOf("text-sm", "font-medium", "text-gray-600", "dark:text-gray-400")
+                        classes = setOf("stat-label")
                         +when(index) {
                             0 -> "Total Revenue"
                             1 -> "Active Users"
@@ -66,7 +66,7 @@ fun createDashboardPage(): String {
                         }
                     }
                     div {
-                        classes = setOf("mt-2", "text-3xl", "font-semibold", "text-gray-900", "dark:text-white")
+                        classes = setOf("stat-value")
                         +when(index) {
                             0 -> "$24,500"
                             1 -> "2,345"
@@ -77,22 +77,22 @@ fun createDashboardPage(): String {
             }
         }
         div {
-            classes = setOf("mt-6")
+            classes = setOf("activity-section")
             h2 {
-                classes = setOf("text-lg", "font-medium", "text-gray-900", "dark:text-white", "mb-4")
+                classes = setOf("activity-title")
                 +"Recent Activity"
             }
             div {
-                classes = setOf("border", "dark:border-gray-700", "rounded-lg", "divide-y", "dark:divide-gray-700")
+                classes = setOf("activity-list")
                 repeat(3) {
                     div {
-                        classes = setOf("p-4")
+                        classes = setOf("activity-item")
                         div {
-                            classes = setOf("text-sm", "text-gray-900", "dark:text-white")
+                            classes = setOf("activity-text")
                             +"User completed action ${it + 1}"
                         }
                         div {
-                            classes = setOf("text-sm", "text-gray-500", "dark:text-gray-400", "mt-1")
+                            classes = setOf("activity-time")
                             +"2 minutes ago"
                         }
                     }
