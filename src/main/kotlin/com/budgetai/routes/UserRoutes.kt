@@ -5,6 +5,7 @@ import com.budgetai.services.UserService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
+import io.ktor.server.response.*
 
 fun Route.userRoutes(userService: UserService) {
     route("/users") {
