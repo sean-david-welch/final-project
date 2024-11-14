@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 fun configureDatabases(): Database {
-    val projectDir = File("src/main/kotlin/com/budgetai")
+    val projectDir = File("src/main/kotlin/com/budgetai/database")
     val dbFile = projectDir.resolve("database.db")
     val jdbcUrl = "jdbc:sqlite:${dbFile.absolutePath}"
     FlywayMigrations.migrate(jdbcUrl)
