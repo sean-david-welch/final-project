@@ -1,5 +1,6 @@
 package com.budgetai.plugins
 
+import com.budgetai.routes.configureRoutes
 import com.budgetai.templates.pages.createDashboardPage
 import io.ktor.http.*
 import io.ktor.resources.*
@@ -23,28 +24,5 @@ fun Application.configureRouting() {
     install(Webjars) {
         path = "/webjars"
     }
-    routing {
-        get("/") {
-            call.respondText(
-                text = createDashboardPage(),
-                contentType = ContentType.Text.Html
-            )
-        }
-        dashboardRoutes()
-        staticResources("/static", "static")
-        get("/webjars") {
-            call.respondText("<script src='/webjars/jquery/jquery.js'></script>", ContentType.Text.Html)
-        }
-    }
-}
-
-fun Route.dashboardRoutes() {
-    route("/dashboard") {
-        get {
-            call.respondText(
-                text = createDashboardPage(),
-                contentType = ContentType.Text.Html
-            )
-        }
-    }
+    configureRoutes()
 }
