@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
-class UserRepository(private val database: Database) {
+class UserRepository(database: Database) {
     init {
         transaction(database) {
             SchemaUtils.create(Users)
