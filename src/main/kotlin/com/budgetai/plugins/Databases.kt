@@ -11,10 +11,8 @@ import org.jetbrains.exposed.sql.*
 
 fun Application.configureDatabases() {
     val database = Database.connect(
-        url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-        user = "root",
-        driver = "org.h2.Driver",
-        password = "",
+        url = "jdbc:sqlite:database.db?journal_mode=WAL&foreign_keys=ON",
+        driver = "org.sqlite.JDBC"
     )
     val userService = UserService(database)
     routing {
@@ -24,7 +22,7 @@ fun Application.configureDatabases() {
             val id = userService.create(user)
             call.respond(HttpStatusCode.Created, id)
         }
-        
+
         // Read user
         get("/users/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
@@ -35,7 +33,7 @@ fun Application.configureDatabases() {
                 call.respond(HttpStatusCode.NotFound)
             }
         }
-        
+
         // Update user
         put("/users/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
@@ -43,7 +41,7 @@ fun Application.configureDatabases() {
             userService.update(id, user)
             call.respond(HttpStatusCode.OK)
         }
-        
+
         // Delete user
         delete("/users/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
