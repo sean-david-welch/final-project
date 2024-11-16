@@ -1,4 +1,8 @@
--- V1__create_users.sql
+-- Initialize database settings
+PRAGMA foreign_keys = ON;
+PRAGMA journal_mode = WAL;
+
+-- Create base tables
 CREATE TABLE users
 (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -8,7 +12,6 @@ CREATE TABLE users
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- V2__create_categories.sql
 CREATE TABLE categories
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,7 +21,6 @@ CREATE TABLE categories
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- V3__create_budgets.sql
 CREATE TABLE budgets
 (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,7 +35,6 @@ CREATE TABLE budgets
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
--- V4__create_budget_items.sql
 CREATE TABLE budget_items
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,7 +47,6 @@ CREATE TABLE budget_items
     FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT
 );
 
--- V5__create_savings_goals.sql
 CREATE TABLE savings_goals
 (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,7 +60,6 @@ CREATE TABLE savings_goals
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
--- V6__create_ai_insights.sql
 CREATE TABLE ai_insights
 (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -79,7 +78,7 @@ CREATE TABLE ai_insights
     FOREIGN KEY (budget_item_id) REFERENCES budget_items (id) ON DELETE CASCADE
 );
 
--- V7__create_indexes.sql
+-- Create indexes
 CREATE INDEX idx_budgets_user ON budgets (user_id);
 CREATE INDEX idx_budget_items_budget ON budget_items (budget_id);
 CREATE INDEX idx_budget_items_category ON budget_items (category_id);
@@ -90,11 +89,7 @@ CREATE INDEX idx_ai_insights_item ON ai_insights (budget_item_id);
 CREATE INDEX idx_ai_insights_type ON ai_insights (type);
 CREATE INDEX idx_ai_insights_date ON ai_insights (created_at);
 
--- V8__enable_foreign_keys_and_wal.sql
-PRAGMA foreign_keys = ON;
-PRAGMA journal_mode = WAL;
-
--- V9__insert_default_categories.sql
+-- Insert default data
 INSERT INTO categories (name, type, description)
 VALUES ('Salary', 'INCOME', 'Regular employment income'),
        ('Freelance', 'INCOME', 'Freelance or contract work income'),
