@@ -29,7 +29,6 @@ CREATE TABLE budgets (
     total_expenses DECIMAL(10,2) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ai_insights TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -61,41 +60,39 @@ CREATE TABLE savings_goals (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- V6__create_indexes.sql
-CREATE INDEX idx_budgets_user ON budgets(user_id);
-CREATE INDEX idx_budget_items_budget ON budget_items(budget_id);
-CREATE INDEX idx_budget_items_category ON budget_items(category_id);
-CREATE INDEX idx_savings_goals_user ON savings_goals(user_id);
-
--- V7__enable_foreign_keys_and_wal.sql
-PRAGMA foreign_keys = ON;
-PRAGMA journal_mode = WAL;
-
--- V8__create_ai_insights.sql
+-- V6__create_ai_insights.sql
 CREATE TABLE ai_insights (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     budget_id INTEGER NOT NULL,
-    budget_item_id INTEGER,  -- Optional reference to specific budget item
-    prompt TEXT NOT NULL,    -- What the user asked
-    response TEXT NOT NULL,  -- ChatGPT's response
+    budget_item_id INTEGER,
+    prompt TEXT NOT NULL,
+    response TEXT NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('BUDGET_ANALYSIS', 'ITEM_ANALYSIS', 'SAVING_SUGGESTION', 'GENERAL_ADVICE')),
-    sentiment VARCHAR(20) CHECK (sentiment IN ('POSITIVE', 'NEGATIVE', 'NEUTRAL')),  -- Optional analysis of the insight
+    sentiment VARCHAR(20) CHECK (sentiment IN ('POSITIVE', 'NEGATIVE', 'NEUTRAL')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    metadata JSON,  -- Store additional ChatGPT response data (temperature, model used, etc.)
+    metadata JSON,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (budget_id) REFERENCES budgets(id) ON DELETE CASCADE,
     FOREIGN KEY (budget_item_id) REFERENCES budget_items(id) ON DELETE CASCADE
 );
 
--- Create indexes for AI insights
+-- V7__create_indexes.sql
+CREATE INDEX idx_budgets_user ON budgets(user_id);
+CREATE INDEX idx_budget_items_budget ON budget_items(budget_id);
+CREATE INDEX idx_budget_items_category ON budget_items(category_id);
+CREATE INDEX idx_savings_goals_user ON savings_goals(user_id);
 CREATE INDEX idx_ai_insights_user ON ai_insights(user_id);
 CREATE INDEX idx_ai_insights_budget ON ai_insights(budget_id);
 CREATE INDEX idx_ai_insights_item ON ai_insights(budget_item_id);
 CREATE INDEX idx_ai_insights_type ON ai_insights(type);
 CREATE INDEX idx_ai_insights_date ON ai_insights(created_at);
 
--- V8__insert_default_categories.sql
+-- V8__enable_foreign_keys_and_wal.sql
+PRAGMA foreign_keys = ON;
+PRAGMA journal_mode = WAL;
+
+-- V9__insert_default_categories.sql
 INSERT INTO categories (name, type, description) VALUES
     ('Salary', 'INCOME', 'Regular employment income'),
     ('Freelance', 'INCOME', 'Freelance or contract work income'),
