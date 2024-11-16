@@ -36,3 +36,4 @@ out/
 .vscode/
 /src/main/kotlin/com/budgetai/database/database.db
 /data/database.db
+/src/main/resources/static/styles/output.css
