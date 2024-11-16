@@ -1,6 +1,6 @@
 package com.budgetai.routes
 
-import com.budgetai.plugins.configureDatabases
+import com.budgetai.plugins.DatabaseConfig
 import com.budgetai.repositories.UserRepository
 import com.budgetai.services.UserService
 import com.budgetai.templates.pages.createDashboardPage
@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureRoutes() {
-    val database = configureDatabases()
+    val database = DatabaseConfig.getDatabase()
     val userRepository = UserRepository(database)
     val userService = UserService(userRepository)
     routing {
