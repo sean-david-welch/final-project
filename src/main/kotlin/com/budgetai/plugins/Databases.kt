@@ -6,6 +6,7 @@ import java.io.File
 
 object DatabaseConfig {
     private const val MIGRATIONS_LOCATION = "migrations"
+    private var database: Database? = null
 
     data class DatabaseSettings(
         val journalMode: String = "WAL",
@@ -14,12 +15,17 @@ object DatabaseConfig {
     )
 
     fun initialize(settings: DatabaseSettings = DatabaseSettings()): Database {
-        val dbFile = resolveDbFile()
-        val baseJdbcUrl = "jdbc:sqlite:${dbFile.absolutePath}"
+        if (database == null) {
+            val dbFile = resolveDbFile()
+            val baseJdbcUrl = "jdbc:sqlite:${dbFile.absolutePath}"
 
-        migrateDatabase(baseJdbcUrl, settings.migrationLocation)
-        return connectToDatabase(dbFile, settings)
+            migrateDatabase(baseJdbcUrl, settings.migrationLocation)
+            database = connectToDatabase(dbFile, settings)
+        }
+        return database!!
     }
+
+    fun getDatabase(): Database = database ?: throw IllegalStateException("Database has not been initialized")
 
     private fun resolveDbFile(): File {
         val projectDir = File("src/main/kotlin/com/budgetai/database")
