@@ -16,6 +16,7 @@ object Users : IntIdTable("users") {
     val passwordHash = varchar("password_hash", 255)
     val name = varchar("name", 100)
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
+
 }
 
 object Categories : IntIdTable("categories") {
