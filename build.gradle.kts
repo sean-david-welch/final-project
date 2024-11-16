@@ -2,14 +2,16 @@ val kotlin_version: String by project
 val kotlinx_html_version: String by project
 val logback_version: String by project
 val ktor_version = "3.0.1"
-val exposed_version = "0.53.0"
+val exposed_version = "0.47.0"
 val kotlinx_datetime_version = "0.5.0"
+val kotlin_serialization_version = "1.6.2"
 
 
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "1.9.22"
     id("io.ktor.plugin") version "3.0.1"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+    id("com.github.ben-manes.versions") version "0.51.0"
 }
 
 group = "com.budgetai"
@@ -27,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    // Ktor Server Core Dependencies
+   // Ktor Server Core Dependencies
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-host-common-jvm:$ktor_version")
@@ -43,6 +45,7 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-jackson-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_version")
 
     // Ktor Templates & Frontend
     implementation("io.ktor:ktor-server-html-builder-jvm:$ktor_version")
