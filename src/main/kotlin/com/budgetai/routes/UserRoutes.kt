@@ -1,13 +1,19 @@
 package com.budgetai.routes
 
 import com.budgetai.models.User
+import com.budgetai.repositories.UserRepository
 import com.budgetai.services.UserService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
+import org.jetbrains.exposed.sql.Database
 
-fun Route.userRoutes(userService: UserService) {
+fun Route.userRoutes(database: Database) {
+
+    val userRepository = UserRepository(database)
+    val userService = UserService(userRepository)
+
     route("/users") {
         get("/{id}") {
             val id = call.parameters["id"]?.toIntOrNull()
