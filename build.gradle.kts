@@ -1,9 +1,9 @@
 val kotlin_version: String by project
-val kotlinx_html_version: String by project
-val logback_version: String by project
 val ktor_version = "3.0.1"
-val exposed_version = "0.47.0"
-val kotlinx_datetime_version = "0.5.0"
+val exposed_version = "0.56.0"
+val kotlinx_datetime_version = "0.6.1"
+val logback_version = "1.5.12"
+val kotlinx_html_version = "0.11.0"
 val kotlin_serialization_version = "1.6.2"
 
 
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-   // Ktor Server Core Dependencies
+    // Ktor Server Core Dependencies
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-host-common-jvm:$ktor_version")
@@ -53,8 +53,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version")
 
     // Frontend Libraries (WebJars)
-    implementation("org.webjars.npm:alpinejs:3.13.5")
-    implementation("org.webjars.npm:htmx.org:1.9.12")
+    implementation("org.webjars.npm:alpinejs:3.14.3")
+    implementation("org.webjars.npm:htmx.org:2.0.3")
 
     // Database
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
@@ -63,8 +63,8 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-json:$exposed_version")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinx_datetime_version")
-    implementation("org.xerial:sqlite-jdbc:3.44.1.0")
-    implementation("org.flywaydb:flyway-core:10.3.0")
+    implementation("org.xerial:sqlite-jdbc:3.47.0.0")
+    implementation("org.flywaydb:flyway-core:10.21.0")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
