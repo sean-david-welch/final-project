@@ -48,8 +48,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version")
 
     // Frontend Libraries (WebJars)
-    implementation("org.webjars.npm:alpinejs:3.13.3")
-    implementation("org.webjars.npm:htmx.org:1.9.10")
+    implementation("org.webjars.npm:alpinejs:3.13.5")
+    implementation("org.webjars.npm:htmx.org:2.0.3")
 
     // Database
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
