@@ -54,6 +54,12 @@ class UserRepository(private val database: Database) {
         Users.deleteWhere { Users.id eq id }
     }
 
+    suspend fun findPasswordHash(id: Int): String? = dbQuery {
+        Users.select(Users.passwordHash).where { Users.id eq id }
+        .map { it[Users.passwordHash] }
+        .singleOrNull()
+}
+
     private fun toUser(row: ResultRow) = UserDTO(
         id = row[Users.id].value,
         email = row[Users.email],
