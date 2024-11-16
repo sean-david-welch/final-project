@@ -3,6 +3,8 @@ val kotlinx_html_version: String by project
 val logback_version: String by project
 val ktor_version = "3.0.1"
 val exposed_version = "0.53.0"
+val kotlinx_datetime_version = "0.5.0"
+
 
 plugins {
     kotlin("jvm") version "2.0.21"
@@ -55,6 +57,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-json:$exposed_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinx_datetime_version")
     implementation("org.xerial:sqlite-jdbc:3.44.1.0")
     implementation("org.flywaydb:flyway-core:10.3.0")
 
