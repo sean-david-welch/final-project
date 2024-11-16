@@ -1,6 +1,8 @@
 val kotlin_version: String by project
 val kotlinx_html_version: String by project
 val logback_version: String by project
+val ktor_version = "3.0.1"  // Define Ktor version
+val exposed_version = "0.53.0"  // Define Exposed version
 
 plugins {
     kotlin("jvm") version "2.0.21"
@@ -13,7 +15,6 @@ version = "0.0.1"
 
 application {
     mainClass.set("com.budgetai.ApplicationKt")
-
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
@@ -24,31 +25,44 @@ repositories {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-server-core-jvm")
-    implementation("io.ktor:ktor-server-auth-jvm")
-    implementation("io.ktor:ktor-server-auth-jwt-jvm")
-    implementation("io.ktor:ktor-server-resources-jvm")
-    implementation("io.ktor:ktor-server-host-common-jvm")
-    implementation("io.ktor:ktor-server-status-pages-jvm")
-    implementation("io.ktor:ktor-server-webjars-jvm")
-    implementation("org.webjars:jquery:3.2.1")
-    implementation("io.ktor:ktor-server-cors-jvm")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm")
-    implementation("io.ktor:ktor-serialization-jackson-jvm")
-    implementation("io.ktor:ktor-server-html-builder-jvm")
+    // Ktor Server Core Dependencies
+    implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-host-common-jvm:$ktor_version")
+
+    // Ktor Server Features
+    implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-resources-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-status-pages-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-cors-jvm:$ktor_version")
+
+    // Ktor Content Negotiation & Serialization
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
+    implementation("io.ktor:ktor-serialization-jackson-jvm:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
+
+    // Ktor Templates & Frontend
+    implementation("io.ktor:ktor-server-html-builder-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-webjars-jvm:$ktor_version")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version")
     implementation("org.jetbrains:kotlin-css-jvm:1.0.0-pre.129-kotlin-1.4.20")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm")
-    implementation("org.jetbrains.exposed:exposed-core:0.53.0")
-    implementation("org.jetbrains.exposed:exposed-jdbc:0.53.0")
-    implementation("io.ktor:ktor-server-netty-jvm")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
+
+    // Frontend Libraries (WebJars)
     implementation("org.webjars.npm:alpinejs:3.13.3")
     implementation("org.webjars.npm:htmx.org:1.9.10")
+
+    // Database
+    implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.xerial:sqlite-jdbc:3.44.1.0")
-    testImplementation("io.ktor:ktor-server-test-host-jvm")
     implementation("org.flywaydb:flyway-core:10.3.0")
-    implementation("org.flywaydb:flyway-database-sqlite:10.3.0")
-    implementation("org.jetbrains.exposed:exposed-dao:0.53.0")
+
+    // Logging
+    implementation("ch.qos.logback:logback-classic:$logback_version")
+
+    // Testing
+    testImplementation("io.ktor:ktor-server-test-host-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
