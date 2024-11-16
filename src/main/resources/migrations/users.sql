@@ -1,6 +1,0 @@
--- V1__create_users.sql
-CREATE TABLE Users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(50) NOT NULL,
-    age INTEGER NOT NULL
-);
