@@ -1,10 +1,8 @@
 package com.budgetai.models
 
-import com.budgetai.models.CategoryType
-import com.budgetai.models.InsightType
-import com.budgetai.models.Sentiment
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 import java.math.BigDecimal
@@ -34,8 +32,8 @@ data class BudgetDTO(
     val description: String? = null,
     val startDate: LocalDate? = null,
     val endDate: LocalDate? = null,
-    val totalIncome: BigDecimal = BigDecimal.ZERO,
-    val totalExpenses: BigDecimal = BigDecimal.ZERO,
+    @Contextual val totalIncome: BigDecimal = BigDecimal.ZERO,
+    @Contextual val totalExpenses: BigDecimal = BigDecimal.ZERO,
     val createdAt: LocalDateTime? = null
 )
 
@@ -45,7 +43,7 @@ data class BudgetItemDTO(
     val budgetId: Int,
     val categoryId: Int,
     val name: String,
-    val amount: BigDecimal,
+    @Contextual val amount: BigDecimal,
     val createdAt: LocalDateTime? = null
 )
 
@@ -55,8 +53,8 @@ data class SavingsGoalDTO(
     val userId: Int,
     val name: String,
     val description: String? = null,
-    val targetAmount: BigDecimal,
-    val currentAmount: BigDecimal = BigDecimal.ZERO,
+    @Contextual val targetAmount: BigDecimal,
+    @Contextual val currentAmount: BigDecimal = BigDecimal.ZERO,
     val targetDate: LocalDate? = null,
     val createdAt: LocalDateTime? = null
 )
