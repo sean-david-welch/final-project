@@ -11,7 +11,6 @@ fun main() {
 
 fun Application.module() {
     DatabaseConfig.initialize()
-
     configureSecurity()
     configureHTTP()
     configureSerialization()
