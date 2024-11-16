@@ -1,8 +1,6 @@
 package com.budgetai.routes
 
 import com.budgetai.plugins.DatabaseConfig
-import com.budgetai.repositories.UserRepository
-import com.budgetai.services.UserService
 import com.budgetai.templates.pages.createDashboardPage
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -12,8 +10,6 @@ import io.ktor.server.routing.*
 
 fun Application.configureRoutes() {
     val database = DatabaseConfig.getDatabase()
-    val userRepository = UserRepository(database)
-    val userService = UserService(userRepository)
     routing {
         get("/") {
             call.respondText(
@@ -22,7 +18,7 @@ fun Application.configureRoutes() {
             )
         }
         dashboardRoutes()
-        userRoutes(userService)
+        userRoutes(database = database)
         staticResources("/static", "static")
     }
 }
