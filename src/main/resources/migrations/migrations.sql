@@ -5,7 +5,6 @@ CREATE TABLE users (
     password_hash VARCHAR(255) NOT NULL,
     name VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- V2__create_categories.sql
@@ -23,12 +22,11 @@ CREATE TABLE budgets (
     user_id INTEGER NOT NULL,
     name VARCHAR(100) NOT NULL,
     description TEXT,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
+    start_date DATE,
+    end_date DATE,
     total_income DECIMAL(10,2) DEFAULT 0,
     total_expenses DECIMAL(10,2) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -39,9 +37,7 @@ CREATE TABLE budget_items (
     category_id INTEGER NOT NULL,
     name VARCHAR(100) NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
-    description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (budget_id) REFERENCES budgets(id) ON DELETE CASCADE,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT
 );
@@ -56,7 +52,6 @@ CREATE TABLE savings_goals (
     current_amount DECIMAL(10,2) DEFAULT 0,
     target_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
