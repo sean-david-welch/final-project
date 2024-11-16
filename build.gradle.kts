@@ -49,7 +49,7 @@ dependencies {
 
     // Frontend Libraries (WebJars)
     implementation("org.webjars.npm:alpinejs:3.13.5")
-    implementation("org.webjars.npm:htmx.org:2.0.3")
+    implementation("org.webjars.npm:htmx.org:1.9.12")
 
     // Database
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
