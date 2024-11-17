@@ -33,31 +33,22 @@ class CategoryRepository(private val database: Database) {
     // Read Methods
     // Retrieves a category by its ID
     suspend fun findById(id: Int): CategoryDTO? = dbQuery {
-        Categories.selectAll()
-            .where { Categories.id eq id }
-            .map(::toCategory)
-            .singleOrNull()
+        Categories.selectAll().where { Categories.id eq id }.map(::toCategory).singleOrNull()
     }
 
     // Retrieves a category by its name
     suspend fun findByName(name: String): CategoryDTO? = dbQuery {
-        Categories.selectAll()
-            .where { Categories.name eq name }
-            .map(::toCategory)
-            .singleOrNull()
+        Categories.selectAll().where { Categories.name eq name }.map(::toCategory).singleOrNull()
     }
 
     // Retrieves all categories
     suspend fun findAll(): List<CategoryDTO> = dbQuery {
-        Categories.selectAll()
-            .map(::toCategory)
+        Categories.selectAll().map(::toCategory)
     }
 
     // Retrieves all categories of a specific type
     suspend fun findByType(type: CategoryType): List<CategoryDTO> = dbQuery {
-        Categories.selectAll()
-            .where { Categories.type eq type }
-            .map(::toCategory)
+        Categories.selectAll().where { Categories.type eq type }.map(::toCategory)
     }
 
     // Write Methods
