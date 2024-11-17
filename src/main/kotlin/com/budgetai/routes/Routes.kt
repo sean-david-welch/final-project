@@ -17,7 +17,6 @@ fun Application.configureRoutes() {
                 contentType = ContentType.Text.Html
             )
         }
-        dashboardRoutes()
         userRoutes(database = database)
         budgetRoutes(database = database)
         categoryRoutes(database = database)
