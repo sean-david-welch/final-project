@@ -9,8 +9,8 @@ fun BaseTemplate(bodyFn: BODY.() -> Unit): String {
         head {
             meta { charset = "UTF-8" }
             meta { name = "viewport"; content = "width=device-width, initial-scale=1.0" }
-            script { src = "/webjars/alpinejs/3.13.3/dist/cdn.min.js"; defer = true }
-            script { src = "/webjars/htmx.org/1.9.10/dist/htmx.min.js"; defer = true }
+            script { src = "/webjars/alpinejs/3.14.3/dist/cdn.js"; defer = true }
+            script { src = "/webjars/htmx.org/2.0.3/dist/htmx.min.js"; defer = true }
             link { href = "/static/styles/output.css"; rel = "stylesheet" }
             style { unsafe { +""" @layer base { html { font-family: system-ui, sans-serif; } } """ } }
         }
