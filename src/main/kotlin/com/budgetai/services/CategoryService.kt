@@ -9,9 +9,7 @@ class CategoryService(private val repository: CategoryRepository) {
     // Data Models
     // Request model for creating a new category
     data class CategoryCreationRequest(
-        val name: String,
-        val type: CategoryType,
-        val description: String? = null
+        val name: String, val type: CategoryType, val description: String? = null
     )
 
     // Helper Methods
@@ -56,9 +54,7 @@ class CategoryService(private val repository: CategoryRepository) {
         validateNameUnique(request.name)
 
         val categoryDTO = CategoryDTO(
-            name = request.name,
-            type = request.type,
-            description = request.description
+            name = request.name, type = request.type, description = request.description
         )
 
         return repository.create(categoryDTO)
