@@ -20,14 +20,12 @@ fun Route.userRoutes(database: Database) {
     // Data classes for requests
     @Serializable
     data class UpdateUserRequest(
-        val email: String,
-        val name: String
+        val email: String, val name: String
     )
 
     @Serializable
     data class UpdatePasswordRequest(
-        val currentPassword: String,
-        val newPassword: String
+        val currentPassword: String, val newPassword: String
     )
 
     route("/users") {
@@ -65,8 +63,7 @@ fun Route.userRoutes(database: Database) {
         // Get user by ID
         get("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val user = userService.getUser(id)
                 if (user != null) {
@@ -84,8 +81,7 @@ fun Route.userRoutes(database: Database) {
         // Get user by email
         get("/email/{email}") {
             try {
-                val email = call.parameters["email"]
-                    ?: throw IllegalArgumentException("Email is required")
+                val email = call.parameters["email"] ?: throw IllegalArgumentException("Email is required")
 
                 val user = userService.getUserByEmail(email)
                 if (user != null) {
@@ -103,14 +99,11 @@ fun Route.userRoutes(database: Database) {
         // Update user information
         put("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val request = call.receive<UpdateUserRequest>()
                 val userDTO = UserDTO(
-                    id = id,
-                    email = request.email,
-                    name = request.name
+                    id = id, email = request.email, name = request.name
                 )
 
                 userService.updateUser(id, userDTO)
@@ -125,8 +118,7 @@ fun Route.userRoutes(database: Database) {
         // Update password
         put("/{id}/password") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val request = call.receive<UpdatePasswordRequest>()
                 userService.updatePassword(id, request.currentPassword, request.newPassword)
@@ -141,8 +133,7 @@ fun Route.userRoutes(database: Database) {
         // Delete user
         delete("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 userService.deleteUser(id)
                 call.respond(HttpStatusCode.OK, "User deleted successfully")
