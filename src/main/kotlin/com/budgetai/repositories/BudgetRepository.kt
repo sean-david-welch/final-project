@@ -5,16 +5,12 @@ import com.budgetai.models.Budgets
 import com.budgetai.models.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaLocalDate
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.math.BigDecimal
-import java.time.ZoneOffset
 
 class BudgetRepository(private val database: Database) {
     init {
@@ -58,34 +54,41 @@ class BudgetRepository(private val database: Database) {
 
     suspend fun findByUserIdAndDateRange(
         userId: Int,
-        startDate: LocalDate,
-        endDate: LocalDate
+        startDate: String,
+        endDate: String
     ): List<BudgetDTO> = dbQuery {
-        Budgets.selectAll()
-            .where {
-                (Budgets.userId eq userId) and
-                (Budgets.startDate lessEq java.sql.Date.valueOf(endDate)) and
-                (Budgets.endDate greaterEq java.sql.Date.valueOf(startDate))
-            }
-            .map(::toBudget)
+        val start = startDate.toLocalDate()
+        val end = endDate.toLocalDate()
+
+        if (start == null || end == null) {
+            emptyList()
+        } else {
+            Budgets.selectAll()
+                .where {
+                    (Budgets.userId eq userId) and
+                    (Budgets.startDate lessEq end) and
+                    (Budgets.endDate greaterEq start)
+                }
+                .map(::toBudget)
+        }
     }
 
     suspend fun update(id: Int, budget: BudgetDTO) = dbQuery {
         Budgets.update({ Budgets.id eq id }) { stmt ->
-            stmt[userId] = budget.userId
+            stmt[userId] = EntityID(budget.userId, Users)
             stmt[name] = budget.name
             stmt[description] = budget.description
-            stmt[startDate] = budget.startDate?.let { date -> java.sql.Date.valueOf(date) }
-            stmt[endDate] = budget.endDate?.let { date -> java.sql.Date.valueOf(date) }
-            stmt[totalIncome] = budget.totalIncome
-            stmt[totalExpenses] = budget.totalExpenses
+            stmt[startDate] = budget.startDate?.toLocalDate()
+            stmt[endDate] = budget.endDate?.toLocalDate()
+            stmt[totalIncome] = BigDecimal(budget.totalIncome)
+            stmt[totalExpenses] = BigDecimal(budget.totalExpenses)
         }
     }
 
-    suspend fun updateTotals(id: Int, totalIncome: BigDecimal, totalExpenses: BigDecimal) = dbQuery {
+    suspend fun updateTotals(id: Int, totalIncome: Double, totalExpenses: Double) = dbQuery {
         Budgets.update({ Budgets.id eq id }) { stmt ->
-            stmt[Budgets.totalIncome] = totalIncome
-            stmt[Budgets.totalExpenses] = totalExpenses
+            stmt[Budgets.totalIncome] = BigDecimal(totalIncome)
+            stmt[Budgets.totalExpenses] = BigDecimal(totalExpenses)
         }
     }
 
@@ -102,11 +105,11 @@ class BudgetRepository(private val database: Database) {
         userId = row[Budgets.userId].value,
         name = row[Budgets.name],
         description = row[Budgets.description],
-        startDate = row[Budgets.startDate]?.toLocalDate(),
-        endDate = row[Budgets.endDate]?.toLocalDate(),
-        totalIncome = row[Budgets.totalIncome],
-        totalExpenses = row[Budgets.totalExpenses],
-        createdAt = row[Budgets.createdAt].toLocalDateTime(TimeZone.UTC)
+        startDate = row[Budgets.startDate]?.toString(),
+        endDate = row[Budgets.endDate]?.toString(),
+        totalIncome = row[Budgets.totalIncome].toDouble(),
+        totalExpenses = row[Budgets.totalExpenses].toDouble(),
+        createdAt = row[Budgets.createdAt].toString()
     )
 
     private suspend fun <T> dbQuery(block: suspend () -> T): T =
