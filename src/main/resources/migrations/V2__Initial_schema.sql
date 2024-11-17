@@ -1,7 +1,3 @@
--- Initialize database settings
-PRAGMA foreign_keys = ON;
-PRAGMA journal_mode = WAL;
-
 -- Create base tables
 CREATE TABLE users
 (
