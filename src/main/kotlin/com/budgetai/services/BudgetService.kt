@@ -43,9 +43,7 @@ class BudgetService(private val repository: BudgetRepository) {
 
     // Retrieves budgets for a user within a date range
     suspend fun getUserBudgetsInDateRange(
-        userId: Int,
-        startDate: LocalDate,
-        endDate: LocalDate
+        userId: Int, startDate: LocalDate, endDate: LocalDate
     ): List<BudgetDTO> {
         validateDateRange(startDate, endDate)
         return repository.findByUserIdAndDateRange(userId, startDate.toString(), endDate.toString())
@@ -86,9 +84,7 @@ class BudgetService(private val repository: BudgetRepository) {
 
     // Updates only the total income and expenses of a budget
     suspend fun updateBudgetTotals(
-        id: Int,
-        totalIncome: BigDecimal,
-        totalExpenses: BigDecimal
+        id: Int, totalIncome: BigDecimal, totalExpenses: BigDecimal
     ) {
         validateBudgetExists(id)
 
