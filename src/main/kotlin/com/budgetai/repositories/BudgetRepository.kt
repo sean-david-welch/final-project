@@ -50,24 +50,17 @@ class BudgetRepository(private val database: Database) {
     // Read Methods
     // Retrieves a budget by its ID
     suspend fun findById(id: Int): BudgetDTO? = dbQuery {
-        Budgets.selectAll()
-            .where { Budgets.id eq id }
-            .map(::toBudget)
-            .singleOrNull()
+        Budgets.selectAll().where { Budgets.id eq id }.map(::toBudget).singleOrNull()
     }
 
     // Retrieves all budgets for a given user ID
     suspend fun findByUserId(userId: Int): List<BudgetDTO> = dbQuery {
-        Budgets.selectAll()
-            .where { Budgets.userId eq userId }
-            .map(::toBudget)
+        Budgets.selectAll().where { Budgets.userId eq userId }.map(::toBudget)
     }
 
     // Retrieves budgets for a user within a specified date range
     suspend fun findByUserIdAndDateRange(
-        userId: Int,
-        startDate: String,
-        endDate: String
+        userId: Int, startDate: String, endDate: String
     ): List<BudgetDTO> = dbQuery {
         val start = startDate.toLocalDate()
         val end = endDate.toLocalDate()
@@ -75,13 +68,9 @@ class BudgetRepository(private val database: Database) {
         if (start == null || end == null) {
             emptyList()
         } else {
-            Budgets.selectAll()
-                .where {
-                    (Budgets.userId eq userId) and
-                    (Budgets.startDate lessEq end) and
-                    (Budgets.endDate greaterEq start)
-                }
-                .map(::toBudget)
+            Budgets.selectAll().where {
+                (Budgets.userId eq userId) and (Budgets.startDate lessEq end) and (Budgets.endDate greaterEq start)
+            }.map(::toBudget)
         }
     }
 
