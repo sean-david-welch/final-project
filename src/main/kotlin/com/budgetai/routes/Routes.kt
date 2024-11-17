@@ -11,15 +11,14 @@ import io.ktor.server.routing.*
 fun Application.configureRoutes() {
     val database = DatabaseConfig.getDatabase()
     routing {
+        staticResources("/static", "static")
         get("/") {
             call.respondText(
-                text = createDashboardPage(),
-                contentType = ContentType.Text.Html
+                text = createDashboardPage(), contentType = ContentType.Text.Html
             )
         }
         userRoutes(database = database)
         budgetRoutes(database = database)
         categoryRoutes(database = database)
-        staticResources("/static", "static")
     }
 }
