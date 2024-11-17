@@ -30,11 +30,11 @@ data class BudgetDTO(
     val userId: Int,
     val name: String,
     val description: String? = null,
-    val startDate: LocalDate? = null,
-    val endDate: LocalDate? = null,
-    @Contextual val totalIncome: BigDecimal = BigDecimal.ZERO,
-    @Contextual val totalExpenses: BigDecimal = BigDecimal.ZERO,
-    val createdAt: LocalDateTime? = null
+    val startDate: String? = null,
+    val endDate: String? = null,
+    val totalIncome: Double = 0.0,
+    val totalExpenses: Double = 0.0,
+    val createdAt: String? = null
 )
 
 @Serializable
@@ -43,7 +43,7 @@ data class BudgetItemDTO(
     val budgetId: Int,
     val categoryId: Int,
     val name: String,
-    @Contextual val amount: BigDecimal,
+    val amount: Double,
     val createdAt: LocalDateTime? = null
 )
 
@@ -53,8 +53,8 @@ data class SavingsGoalDTO(
     val userId: Int,
     val name: String,
     val description: String? = null,
-    @Contextual val targetAmount: BigDecimal,
-    @Contextual val currentAmount: BigDecimal = BigDecimal.ZERO,
+    val targetAmount: Double = 0.0,
+    val currentAmount: Double = 0.0,
     val targetDate: LocalDate? = null,
     val createdAt: LocalDateTime? = null
 )
