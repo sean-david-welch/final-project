@@ -35,11 +35,15 @@ object DatabaseConfig {
     }
 
     private fun migrateDatabase(jdbcUrl: String, migrationLocation: String) {
-        Flyway.configure()
+        val flyway = Flyway.configure()
             .dataSource(jdbcUrl, "", "")
             .locations(migrationLocation)
             .load()
-            .migrate()
+
+        println("Migration location: $migrationLocation")
+        println("Found migrations: ${flyway.info().all().joinToString { it.script }}")
+
+        flyway.migrate()
     }
 
     private fun connectToDatabase(dbFile: File, settings: DatabaseSettings): Database {
