@@ -27,8 +27,8 @@ class BudgetService(private val repository: BudgetRepository) {
             userId = request.userId,
             name = request.name,
             description = request.description,
-            startDate = request.startDate,
-            endDate = request.endDate
+            startDate = request.startDate.toString(),
+            endDate = request.endDate.toString()
         )
 
         return repository.create(budgetDTO)
@@ -48,7 +48,7 @@ class BudgetService(private val repository: BudgetRepository) {
         endDate: LocalDate
     ): List<BudgetDTO> {
         require(startDate <= endDate) { "Start date must be before or equal to end date" }
-        return repository.findByUserIdAndDateRange(userId, startDate, endDate)
+        return repository.findByUserIdAndDateRange(userId, startDate.toString(), endDate.toString())
     }
 
     suspend fun updateBudget(id: Int, budget: BudgetDTO) {
@@ -82,7 +82,7 @@ class BudgetService(private val repository: BudgetRepository) {
         require(totalIncome >= BigDecimal.ZERO) { "Total income cannot be negative" }
         require(totalExpenses >= BigDecimal.ZERO) { "Total expenses cannot be negative" }
 
-        repository.updateTotals(id, totalIncome, totalExpenses)
+        repository.updateTotals(id, totalIncome.toDouble(), totalExpenses.toDouble())
     }
 
     suspend fun deleteBudget(id: Int) {
