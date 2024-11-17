@@ -13,12 +13,16 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.math.BigDecimal
 
 class BudgetRepository(private val database: Database) {
+    // Initialize database schema
     init {
         transaction(database) {
             SchemaUtils.create(Budgets)
         }
     }
 
+    // Helper Methods
+
+    // Converts string to LocalDate, returns null if invalid
     private fun String.toLocalDate(): LocalDate? {
         return try {
             LocalDate.parse(this)
@@ -27,18 +31,26 @@ class BudgetRepository(private val database: Database) {
         }
     }
 
-    suspend fun create(budget: BudgetDTO): Int = dbQuery {
-        Budgets.insertAndGetId { row ->
-            row[userId] = EntityID(budget.userId, Users)
-            row[name] = budget.name
-            row[description] = budget.description
-            row[startDate] = budget.startDate?.toLocalDate()
-            row[endDate] = budget.endDate?.toLocalDate()
-            row[totalIncome] = BigDecimal(budget.totalIncome)
-            row[totalExpenses] = BigDecimal(budget.totalExpenses)
-        }.value
-    }
+    // Executes a database query within a coroutine context
+    private suspend fun <T> dbQuery(block: suspend () -> T): T =
+        newSuspendedTransaction(Dispatchers.IO, database) { block() }
 
+    // Maps database row to BudgetDTO
+    private fun toBudget(row: ResultRow) = BudgetDTO(
+        id = row[Budgets.id].value,
+        userId = row[Budgets.userId].value,
+        name = row[Budgets.name],
+        description = row[Budgets.description],
+        startDate = row[Budgets.startDate]?.toString(),
+        endDate = row[Budgets.endDate]?.toString(),
+        totalIncome = row[Budgets.totalIncome].toDouble(),
+        totalExpenses = row[Budgets.totalExpenses].toDouble(),
+        createdAt = row[Budgets.createdAt].toString()
+    )
+
+    // Read Methods
+
+    // Retrieves a budget by its ID
     suspend fun findById(id: Int): BudgetDTO? = dbQuery {
         Budgets.selectAll()
             .where { Budgets.id eq id }
@@ -46,12 +58,14 @@ class BudgetRepository(private val database: Database) {
             .singleOrNull()
     }
 
+    // Retrieves all budgets for a given user ID
     suspend fun findByUserId(userId: Int): List<BudgetDTO> = dbQuery {
         Budgets.selectAll()
             .where { Budgets.userId eq userId }
             .map(::toBudget)
     }
 
+    // Retrieves budgets for a user within a specified date range
     suspend fun findByUserIdAndDateRange(
         userId: Int,
         startDate: String,
@@ -73,6 +87,22 @@ class BudgetRepository(private val database: Database) {
         }
     }
 
+    // Mutation Methods
+
+    // Creates a new budget and returns its ID
+    suspend fun create(budget: BudgetDTO): Int = dbQuery {
+        Budgets.insertAndGetId { row ->
+            row[userId] = EntityID(budget.userId, Users)
+            row[name] = budget.name
+            row[description] = budget.description
+            row[startDate] = budget.startDate?.toLocalDate()
+            row[endDate] = budget.endDate?.toLocalDate()
+            row[totalIncome] = BigDecimal(budget.totalIncome)
+            row[totalExpenses] = BigDecimal(budget.totalExpenses)
+        }.value
+    }
+
+    // Updates all fields of an existing budget
     suspend fun update(id: Int, budget: BudgetDTO) = dbQuery {
         Budgets.update({ Budgets.id eq id }) { stmt ->
             stmt[userId] = EntityID(budget.userId, Users)
@@ -85,6 +115,7 @@ class BudgetRepository(private val database: Database) {
         }
     }
 
+    // Updates only the total income and expenses of a budget
     suspend fun updateTotals(id: Int, totalIncome: Double, totalExpenses: Double) = dbQuery {
         Budgets.update({ Budgets.id eq id }) { stmt ->
             stmt[Budgets.totalIncome] = BigDecimal(totalIncome)
@@ -92,26 +123,13 @@ class BudgetRepository(private val database: Database) {
         }
     }
 
+    // Deletes a budget by its ID
     suspend fun delete(id: Int) = dbQuery {
         Budgets.deleteWhere { Budgets.id eq id }
     }
 
+    // Deletes all budgets for a given user ID
     suspend fun deleteByUserId(userId: Int) = dbQuery {
         Budgets.deleteWhere { Budgets.userId eq userId }
     }
-
-    private fun toBudget(row: ResultRow) = BudgetDTO(
-        id = row[Budgets.id].value,
-        userId = row[Budgets.userId].value,
-        name = row[Budgets.name],
-        description = row[Budgets.description],
-        startDate = row[Budgets.startDate]?.toString(),
-        endDate = row[Budgets.endDate]?.toString(),
-        totalIncome = row[Budgets.totalIncome].toDouble(),
-        totalExpenses = row[Budgets.totalExpenses].toDouble(),
-        createdAt = row[Budgets.createdAt].toString()
-    )
-
-    private suspend fun <T> dbQuery(block: suspend () -> T): T =
-        newSuspendedTransaction(Dispatchers.IO, database) { block() }
 }
