@@ -19,6 +19,8 @@ fun Application.configureRoutes() {
         }
         dashboardRoutes()
         userRoutes(database = database)
+        budgetRoutes(database = database)
+        categoryRoutes(database = database)
         staticResources("/static", "static")
     }
 }
