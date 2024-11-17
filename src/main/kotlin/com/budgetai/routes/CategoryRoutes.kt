@@ -1,12 +1,10 @@
 package com.budgetai.routes
 
-import com.budgetai.models.CategoryDTO
 import com.budgetai.models.CategoryType
 import com.budgetai.repositories.CategoryRepository
 import com.budgetai.services.CategoryService
 import com.budgetai.services.CategoryService.CategoryCreationRequest
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
