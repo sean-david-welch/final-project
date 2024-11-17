@@ -8,21 +8,37 @@ import io.ktor.server.netty.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
-    embeddedServer(Netty, port = 8080, host = "127.0.0.1", module = Application::module).start(wait = true)
+    embeddedServer(Netty, port = 8080, host = "127.0.0.1", module = Application::module)
+        .start(wait = true)
 }
 
 fun Application.module() {
+    // Initialize database
     DatabaseConfig.initialize()
 
-    val shouldSeedData = environment.config.propertyOrNull("ktor.database.seed")?.getString()?.toBoolean() ?: false
-    if (shouldSeedData) {
-        log.info("Seeding database...")
-        transaction {
-            DataSeeder().seed(this)
+    // Run data seeder in development mode
+    try {
+        val isDevelopment = environment.config.property("ktor.development").getString().toBoolean()
+        if (isDevelopment) {
+            log.info("Running in development mode - seeding database...")
+            try {
+                transaction {
+                    DataSeeder().seed(this)
+                }
+                log.info("Database seeding completed successfully")
+            } catch (e: Exception) {
+                log.error("Failed to seed database: ${e.message}", e)
+                // Depending on your requirements, you might want to:
+                // throw e  // This will stop the application from starting
+            }
+        } else {
+            log.info("Running in production mode - skipping database seeding")
         }
-        log.info("Database seeding completed")
+    } catch (e: Exception) {
+        log.warn("Could not determine development mode, assuming production: ${e.message}")
     }
 
+    // Configure other plugins
     configureSecurity()
     configureHTTP()
     configureSerialization()
