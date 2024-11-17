@@ -3,9 +3,9 @@ package com.budgetai.services
 import com.budgetai.models.UserDTO
 import com.budgetai.repositories.UserRepository
 import java.security.SecureRandom
+import java.util.*
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
-import java.util.Base64
 
 class UserService(private val repository: UserRepository) {
 
