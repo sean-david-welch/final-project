@@ -9,36 +9,93 @@ import java.util.Base64
 
 class UserService(private val repository: UserRepository) {
 
+    // Data Models
+    // Request model for creating a new user
     data class UserCreationRequest(
         val email: String,
         val name: String,
         val password: String
     )
 
+    // Request model for user authentication
     data class UserAuthenticationRequest(
         val email: String,
         val password: String
     )
 
-    suspend fun createUser(request: UserCreationRequest): Int {
-        // Validate email format
-        require(isValidEmail(request.email)) { "Invalid email format" }
+    // Helper Methods
+    // Generates a random salt for password hashing
+    private fun generateSalt(): ByteArray {
+        val random = SecureRandom()
+        val salt = ByteArray(16)
+        random.nextBytes(salt)
+        return salt
+    }
 
-        // Check if email already exists
-        repository.findByEmail(request.email)?.let {
-            throw IllegalArgumentException("Email already registered")
+    // Hashes a password with the provided salt
+    private fun hashPassword(password: String, salt: ByteArray): String {
+        val spec = PBEKeySpec(password.toCharArray(), salt, 65536, 128)
+        val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
+        val hash = factory.generateSecret(spec).encoded
+        return Base64.getEncoder().encodeToString(hash)
+    }
+
+    // Validates email format
+    private fun isValidEmail(email: String): Boolean {
+        val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
+        return email.matches(emailRegex)
+    }
+
+    // Validates password strength
+    private fun isValidPassword(password: String): Boolean {
+        val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$")
+        return password.matches(passwordRegex)
+    }
+
+    // Validates that an email is unique
+    private suspend fun validateEmailUnique(email: String, excludeId: Int? = null) {
+        repository.findByEmail(email)?.let { existing ->
+            if (excludeId == null || existing.id != excludeId) {
+                throw IllegalArgumentException("Email already in use")
+            }
         }
+    }
 
-        // Validate password strength
+    // Read Methods
+    // Retrieves a user by their ID
+    suspend fun getUser(id: Int): UserDTO? {
+        return repository.findById(id)
+    }
+
+    // Retrieves a user by their email
+    suspend fun getUserByEmail(email: String): UserDTO? {
+        return repository.findByEmail(email)
+    }
+
+    // Authenticates a user with email and password
+    suspend fun authenticateUser(request: UserAuthenticationRequest): UserDTO? {
+        val user = repository.findByEmail(request.email) ?: return null
+
+        val storedHash = repository.findPasswordHash(user.id) ?: return null
+        val (salt, hash) = storedHash.split(":")
+        val saltBytes = Base64.getDecoder().decode(salt)
+        val calculatedHash = hashPassword(request.password, saltBytes)
+
+        return if (hash == calculatedHash) user else null
+    }
+
+    // Write Methods
+    // Creates a new user and returns their ID
+    suspend fun createUser(request: UserCreationRequest): Int {
+        require(isValidEmail(request.email)) { "Invalid email format" }
         require(isValidPassword(request.password)) { "Password doesn't meet security requirements" }
+        validateEmailUnique(request.email)
 
-        // Generate salt and hash password
         val salt = generateSalt()
         val hashedPassword = hashPassword(request.password, salt)
         val encodedSalt = Base64.getEncoder().encodeToString(salt)
         val finalHash = "$encodedSalt:$hashedPassword"
 
-        // Create user
         val userDTO = UserDTO(
             email = request.email,
             name = request.name
@@ -50,44 +107,23 @@ class UserService(private val repository: UserRepository) {
         return userId
     }
 
-    suspend fun authenticateUser(request: UserAuthenticationRequest): UserDTO? {
-        val user = repository.findByEmail(request.email) ?: return null
-
-        // Verify password
-        val storedHash = repository.findPasswordHash(user.id) ?: return null
-        val (salt, hash) = storedHash.split(":")
-        val saltBytes = Base64.getDecoder().decode(salt)
-        val calculatedHash = hashPassword(request.password, saltBytes)
-
-        return if (hash == calculatedHash) user else null
-    }
-
-    suspend fun getUser(id: Int): UserDTO? {
-        return repository.findById(id)
-    }
-
-    suspend fun getUserByEmail(email: String): UserDTO? {
-        return repository.findByEmail(email)
-    }
-
+    // Updates user's basic information
     suspend fun updateUser(id: Int, user: UserDTO) {
-        // Validate email if it's being changed
-        val existingUser = repository.findById(id) ?: throw IllegalArgumentException("User not found")
+        val existingUser = repository.findById(id)
+            ?: throw IllegalArgumentException("User not found")
 
         if (user.email != existingUser.email) {
             require(isValidEmail(user.email)) { "Invalid email format" }
-            repository.findByEmail(user.email)?.let {
-                throw IllegalArgumentException("Email already in use")
-            }
+            validateEmailUnique(user.email, id)
         }
 
         repository.update(id, user)
     }
 
+    // Updates user's password
     suspend fun updatePassword(id: Int, currentPassword: String, newPassword: String) {
-        // Verify current password
-        val user = repository.findById(id) ?: throw IllegalArgumentException("User not found")
-        val storedHash = repository.findPasswordHash(id) ?: throw IllegalStateException("Password hash not found")
+        val storedHash = repository.findPasswordHash(id)
+            ?: throw IllegalStateException("Password hash not found")
 
         val (salt, hash) = storedHash.split(":")
         val saltBytes = Base64.getDecoder().decode(salt)
@@ -96,7 +132,6 @@ class UserService(private val repository: UserRepository) {
         require(hash == calculatedHash) { "Current password is incorrect" }
         require(isValidPassword(newPassword)) { "New password doesn't meet security requirements" }
 
-        // Generate new salt and hash for the new password
         val newSalt = generateSalt()
         val newHashedPassword = hashPassword(newPassword, newSalt)
         val newEncodedSalt = Base64.getEncoder().encodeToString(newSalt)
@@ -105,32 +140,8 @@ class UserService(private val repository: UserRepository) {
         repository.updatePassword(id, finalHash)
     }
 
+    // Deletes a user and all their data
     suspend fun deleteUser(id: Int) {
         repository.delete(id)
-    }
-
-    private fun generateSalt(): ByteArray {
-        val random = SecureRandom()
-        val salt = ByteArray(16)
-        random.nextBytes(salt)
-        return salt
-    }
-
-    private fun hashPassword(password: String, salt: ByteArray): String {
-        val spec = PBEKeySpec(password.toCharArray(), salt, 65536, 128)
-        val factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-        val hash = factory.generateSecret(spec).encoded
-        return Base64.getEncoder().encodeToString(hash)
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
-        return email.matches(emailRegex)
-    }
-
-    private fun isValidPassword(password: String): Boolean {
-        // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
-        val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$")
-        return password.matches(passwordRegex)
     }
 }
