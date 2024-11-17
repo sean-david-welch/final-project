@@ -90,7 +90,7 @@ class DataSeeder {
     }
 
     private fun createBudgetItem(transaction: Transaction, budgetId: Int, categoryId: Int) {
-        BudgetItems.insert {
+        BudgetItems.insertAndGetId {
             it[BudgetItems.budgetId] = budgetId
             it[BudgetItems.categoryId] = categoryId
             it[name] = "Budget Item for Category $categoryId"
@@ -106,7 +106,7 @@ class DataSeeder {
         )
 
         goals.forEach { (goalName, targetAmount) ->
-            SavingsGoals.insert {
+            SavingsGoals.insertAndGetId {
                 it[SavingsGoals.userId] = userId
                 it[name] = goalName
                 it[description] = "Saving up for $goalName"
@@ -118,8 +118,8 @@ class DataSeeder {
     }
 
     private fun createAiInsights(transaction: Transaction, userId: Int, budgetId: Int) {
-        val insightTypes = InsightType.entries.toTypedArray()
-        val sentiments = Sentiment.entries.toTypedArray()
+        val insightTypes = InsightType.values()
+        val sentiments = Sentiment.values()
 
         repeat(3) { index ->
             val metadata = buildJsonObject {
@@ -127,7 +127,7 @@ class DataSeeder {
                 put("category", "Analysis $index")
             }
 
-            AiInsights.insert {
+            AiInsights.insertAndGetId {
                 it[AiInsights.userId] = userId
                 it[AiInsights.budgetId] = budgetId
                 it[prompt] = "Analysis request ${index + 1}"
@@ -139,3 +139,4 @@ class DataSeeder {
         }
     }
 }
+
