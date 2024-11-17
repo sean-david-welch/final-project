@@ -7,6 +7,8 @@ import java.math.BigDecimal
 
 class BudgetService(private val repository: BudgetRepository) {
 
+    // Data Models
+    // Request model for creating a new budget
     data class BudgetCreationRequest(
         val userId: Int,
         val name: String,
@@ -15,69 +17,80 @@ class BudgetService(private val repository: BudgetRepository) {
         val endDate: LocalDate? = null
     )
 
-    suspend fun createBudget(request: BudgetCreationRequest): Int {
-        // Validate dates if provided
-        if (request.startDate != null && request.endDate != null) {
-            require(request.startDate <= request.endDate) {
-                "Start date must be before or equal to end date"
-            }
+    // Helper Methods
+    // Validates that start date is before or equal to end date
+    private fun validateDateRange(startDate: LocalDate?, endDate: LocalDate?) {
+        if (startDate != null && endDate != null) {
+            require(startDate <= endDate) { "Start date must be before or equal to end date" }
         }
-
-        val budgetDTO = BudgetDTO(
-            userId = request.userId,
-            name = request.name,
-            description = request.description,
-            startDate = request.startDate.toString(),
-            endDate = request.endDate.toString()
-        )
-
-        return repository.create(budgetDTO)
     }
 
+    // Validates that a budget exists and returns it or throws exception
+    private suspend fun validateBudgetExists(id: Int): BudgetDTO {
+        return repository.findById(id) ?: throw IllegalArgumentException("Budget not found")
+    }
+
+    // Read Methods
+    // Retrieves a single budget by ID
     suspend fun getBudget(id: Int): BudgetDTO? {
         return repository.findById(id)
     }
 
+    // Retrieves all budgets for a user
     suspend fun getUserBudgets(userId: Int): List<BudgetDTO> {
         return repository.findByUserId(userId)
     }
 
+    // Retrieves budgets for a user within a date range
     suspend fun getUserBudgetsInDateRange(
         userId: Int,
         startDate: LocalDate,
         endDate: LocalDate
     ): List<BudgetDTO> {
-        require(startDate <= endDate) { "Start date must be before or equal to end date" }
+        validateDateRange(startDate, endDate)
         return repository.findByUserIdAndDateRange(userId, startDate.toString(), endDate.toString())
     }
 
+    // Write Methods
+    // Creates a new budget and returns its ID
+    suspend fun createBudget(request: BudgetCreationRequest): Int {
+        validateDateRange(request.startDate, request.endDate)
+
+        val budgetDTO = BudgetDTO(
+            userId = request.userId,
+            name = request.name,
+            description = request.description,
+            startDate = request.startDate?.toString(),
+            endDate = request.endDate?.toString()
+        )
+
+        return repository.create(budgetDTO)
+    }
+
+    // Updates an existing budget's details
     suspend fun updateBudget(id: Int, budget: BudgetDTO) {
-        // Validate if budget exists
-        val existingBudget = repository.findById(id)
-            ?: throw IllegalArgumentException("Budget not found")
+        val existingBudget = validateBudgetExists(id)
 
-        // Validate dates if provided
-        if (budget.startDate != null && budget.endDate != null) {
-            require(budget.startDate <= budget.endDate) {
-                "Start date must be before or equal to end date"
-            }
-        }
-
-        // Ensure we're not changing the user ID
         require(budget.userId == existingBudget.userId) {
             "Cannot change budget ownership"
+        }
+
+        budget.startDate?.let { start ->
+            budget.endDate?.let { end ->
+                require(start <= end) { "Start date must be before or equal to end date" }
+            }
         }
 
         repository.update(id, budget)
     }
 
+    // Updates only the total income and expenses of a budget
     suspend fun updateBudgetTotals(
         id: Int,
         totalIncome: BigDecimal,
         totalExpenses: BigDecimal
     ) {
-        // Validate if budget exists
-        repository.findById(id) ?: throw IllegalArgumentException("Budget not found")
+        validateBudgetExists(id)
 
         require(totalIncome >= BigDecimal.ZERO) { "Total income cannot be negative" }
         require(totalExpenses >= BigDecimal.ZERO) { "Total expenses cannot be negative" }
@@ -85,11 +98,13 @@ class BudgetService(private val repository: BudgetRepository) {
         repository.updateTotals(id, totalIncome.toDouble(), totalExpenses.toDouble())
     }
 
+    // Deletes a single budget
     suspend fun deleteBudget(id: Int) {
-        repository.findById(id) ?: throw IllegalArgumentException("Budget not found")
+        validateBudgetExists(id)
         repository.delete(id)
     }
 
+    // Deletes all budgets for a user
     suspend fun deleteUserBudgets(userId: Int) {
         repository.deleteByUserId(userId)
     }
