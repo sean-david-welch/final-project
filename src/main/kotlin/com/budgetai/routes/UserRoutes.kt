@@ -3,8 +3,8 @@ package com.budgetai.routes
 import com.budgetai.models.UserDTO
 import com.budgetai.repositories.UserRepository
 import com.budgetai.services.UserService
-import com.budgetai.services.UserService.UserCreationRequest
 import com.budgetai.services.UserService.UserAuthenticationRequest
+import com.budgetai.services.UserService.UserCreationRequest
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
