@@ -31,7 +31,6 @@ fun Application.module() {
         log.info("Running in production mode - skipping database seeding")
     }
 
-    // Configure other plugins
     configureSecurity()
     configureHTTP()
     configureSerialization()
@@ -39,16 +38,10 @@ fun Application.module() {
 }
 
 private fun checkDevelopmentMode(application: Application): Boolean {
-    // Check multiple sources for development mode flag
     return try {
-        // Check system property first
         System.getProperty("io.ktor.development")?.toBoolean()
-        // Then check environment variable
             ?: System.getenv("KTOR_DEVELOPMENT")?.toBoolean()
-            // Then check application config
             ?: application.environment.config.property("ktor.development").getString().toBoolean()
-            // Default to false if none are set
-            ?: false
     } catch (e: Exception) {
         application.log.warn("Could not determine development mode from config, assuming false: ${e.message}")
         false
