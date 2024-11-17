@@ -53,10 +53,10 @@ class CategoryRepository(private val database: Database) {
     }
 
     suspend fun update(id: Int, category: CategoryDTO) = dbQuery {
-        Categories.update({ Categories.id eq id }) {
-            Entities.it[name] = category.name
-            it[type] = category.type
-            it[description] = category.description
+        Categories.update({ Categories.id eq id }) { stmt ->
+            stmt[name] = category.name
+            stmt[type] = category.type
+            stmt[description] = category.description
         }
     }
 
