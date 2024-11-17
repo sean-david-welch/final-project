@@ -118,8 +118,8 @@ class DataSeeder {
     }
 
     private fun createAiInsights(transaction: Transaction, userId: Int, budgetId: Int) {
-        val insightTypes = InsightType.values()
-        val sentiments = Sentiment.values()
+        val insightTypes = InsightType.entries.toTypedArray()
+        val sentiments = Sentiment.entries.toTypedArray()
 
         repeat(3) { index ->
             val metadata = buildJsonObject {
