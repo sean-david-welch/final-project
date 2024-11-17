@@ -55,8 +55,7 @@ class UserRepository(private val database: Database) {
             .singleOrNull()
     }
 
-    // Mutation Methods
-
+    // Write Methods
     // Creates a new user and returns their ID
     suspend fun create(user: UserDTO): Int = dbQuery {
         Users.insert {
