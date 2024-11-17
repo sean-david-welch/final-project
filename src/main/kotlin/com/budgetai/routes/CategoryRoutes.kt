@@ -19,9 +19,7 @@ fun Route.categoryRoutes(database: Database) {
     // Data classes for requests
     @Serializable
     data class UpdateCategoryRequest(
-        val name: String,
-        val type: CategoryType,
-        val description: String?
+        val name: String, val type: CategoryType, val description: String?
     )
 
     route("/categories") {
@@ -45,8 +43,7 @@ fun Route.categoryRoutes(database: Database) {
                 call.respond(categories)
             } catch (e: Exception) {
                 call.respond(
-                    HttpStatusCode.InternalServerError,
-                    "Error retrieving categories"
+                    HttpStatusCode.InternalServerError, "Error retrieving categories"
                 )
             }
         }
@@ -54,8 +51,7 @@ fun Route.categoryRoutes(database: Database) {
         // Get category by ID
         get("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid category ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
                 val category = categoryService.getCategory(id)
                 if (category != null) {
@@ -67,8 +63,7 @@ fun Route.categoryRoutes(database: Database) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             } catch (e: Exception) {
                 call.respond(
-                    HttpStatusCode.InternalServerError,
-                    "Error retrieving category"
+                    HttpStatusCode.InternalServerError, "Error retrieving category"
                 )
             }
         }
@@ -76,8 +71,7 @@ fun Route.categoryRoutes(database: Database) {
         // Get category by name
         get("/name/{name}") {
             try {
-                val name = call.parameters["name"]
-                    ?: throw IllegalArgumentException("Name is required")
+                val name = call.parameters["name"] ?: throw IllegalArgumentException("Name is required")
 
                 val category = categoryService.getCategoryByName(name)
                 if (category != null) {
@@ -89,8 +83,7 @@ fun Route.categoryRoutes(database: Database) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             } catch (e: Exception) {
                 call.respond(
-                    HttpStatusCode.InternalServerError,
-                    "Error retrieving category"
+                    HttpStatusCode.InternalServerError, "Error retrieving category"
                 )
             }
         }
@@ -98,8 +91,7 @@ fun Route.categoryRoutes(database: Database) {
         // Get categories by type
         get("/type/{type}") {
             try {
-                val typeStr = call.parameters["type"]
-                    ?: throw IllegalArgumentException("Type is required")
+                val typeStr = call.parameters["type"] ?: throw IllegalArgumentException("Type is required")
 
                 val type = try {
                     CategoryType.valueOf(typeStr.uppercase())
@@ -113,8 +105,7 @@ fun Route.categoryRoutes(database: Database) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             } catch (e: Exception) {
                 call.respond(
-                    HttpStatusCode.InternalServerError,
-                    "Error retrieving categories"
+                    HttpStatusCode.InternalServerError, "Error retrieving categories"
                 )
             }
         }
@@ -122,17 +113,14 @@ fun Route.categoryRoutes(database: Database) {
         // Update category
         put("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid category ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
                 val request = call.receive<UpdateCategoryRequest>()
-                val existingCategory = categoryService.getCategory(id)
-                    ?: throw IllegalArgumentException("Category not found")
+                val existingCategory =
+                    categoryService.getCategory(id) ?: throw IllegalArgumentException("Category not found")
 
                 val updatedCategory = existingCategory.copy(
-                    name = request.name,
-                    type = request.type,
-                    description = request.description
+                    name = request.name, type = request.type, description = request.description
                 )
 
                 categoryService.updateCategory(id, updatedCategory)
@@ -141,8 +129,7 @@ fun Route.categoryRoutes(database: Database) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             } catch (e: Exception) {
                 call.respond(
-                    HttpStatusCode.InternalServerError,
-                    "Error updating category"
+                    HttpStatusCode.InternalServerError, "Error updating category"
                 )
             }
         }
@@ -150,8 +137,7 @@ fun Route.categoryRoutes(database: Database) {
         // Delete category
         delete("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid category ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
                 categoryService.deleteCategory(id)
                 call.respond(HttpStatusCode.OK, "Category deleted successfully")
@@ -159,8 +145,7 @@ fun Route.categoryRoutes(database: Database) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             } catch (e: Exception) {
                 call.respond(
-                    HttpStatusCode.InternalServerError,
-                    "Error deleting category"
+                    HttpStatusCode.InternalServerError, "Error deleting category"
                 )
             }
         }
