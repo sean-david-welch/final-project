@@ -1,4 +1,4 @@
-val kotlin_version: String by project
+val kotlin_version = "2.0.21"
 val ktor_version = "3.0.1"
 val exposed_version = "0.56.0"
 val kotlinx_datetime_version = "0.6.1"
@@ -8,9 +8,9 @@ val kotlin_serialization_version = "1.6.2"
 
 
 plugins {
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.0.21"
     id("io.ktor.plugin") version "3.0.1"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
     id("com.github.ben-manes.versions") version "0.51.0"
 }
 
