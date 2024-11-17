@@ -21,7 +21,6 @@ class BudgetRepository(private val database: Database) {
     }
 
     // Helper Methods
-
     // Converts string to LocalDate, returns null if invalid
     private fun String.toLocalDate(): LocalDate? {
         return try {
@@ -49,7 +48,6 @@ class BudgetRepository(private val database: Database) {
     )
 
     // Read Methods
-
     // Retrieves a budget by its ID
     suspend fun findById(id: Int): BudgetDTO? = dbQuery {
         Budgets.selectAll()
@@ -87,8 +85,7 @@ class BudgetRepository(private val database: Database) {
         }
     }
 
-    // Mutation Methods
-
+    // Write Methods
     // Creates a new budget and returns its ID
     suspend fun create(budget: BudgetDTO): Int = dbQuery {
         Budgets.insertAndGetId { row ->
