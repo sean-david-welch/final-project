@@ -27,8 +27,7 @@ class DataSeeder(database: Database) {
         val userIds = (1..5).map { index ->
             userRepository.create(
                 UserDTO(
-                    email = "user$index@example.com",
-                    name = "Test User $index"
+                    email = "user$index@example.com", name = "Test User $index"
                 )
             ).also { userId ->
                 userRepository.updatePassword(userId, "hashed_password_$index")
@@ -52,9 +51,7 @@ class DataSeeder(database: Database) {
         val categoryIds = categoryMap.map { (name, type) ->
             categoryRepository.create(
                 CategoryDTO(
-                    name = name,
-                    type = type,
-                    description = "Description for $name category"
+                    name = name, type = type, description = "Description for $name category"
                 )
             )
         }
@@ -101,9 +98,7 @@ class DataSeeder(database: Database) {
 
     private suspend fun createSavingsGoals(userId: Int) {
         val goals = listOf(
-            "Emergency Fund" to 10000.0,
-            "Vacation" to 5000.0,
-            "New Car" to 25000.0
+            "Emergency Fund" to 10000.0, "Vacation" to 5000.0, "New Car" to 25000.0
         )
 
         goals.forEach { (goalName, targetAmount) ->
