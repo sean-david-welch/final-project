@@ -5,8 +5,8 @@ import org.jetbrains.exposed.sql.Database
 import java.io.File
 
 object DatabaseConfig {
-    private const val MIGRATIONS_LOCATION = "migrations"
     private var database: Database? = null
+    private const val MIGRATIONS_LOCATION = "classpath:migrations"
 
     data class DatabaseSettings(
         val journalMode: String = "WAL",
