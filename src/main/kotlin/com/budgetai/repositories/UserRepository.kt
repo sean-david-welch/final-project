@@ -33,26 +33,17 @@ class UserRepository(private val database: Database) {
     // Read Methods
     // Retrieves a user by their ID
     suspend fun findById(id: Int): UserDTO? = dbQuery {
-        Users.selectAll()
-            .where { Users.id eq id }
-            .map(::toUser)
-            .singleOrNull()
+        Users.selectAll().where { Users.id eq id }.map(::toUser).singleOrNull()
     }
 
     // Retrieves a user by their email
     suspend fun findByEmail(email: String): UserDTO? = dbQuery {
-        Users.selectAll()
-            .where { Users.email eq email }
-            .map(::toUser)
-            .singleOrNull()
+        Users.selectAll().where { Users.email eq email }.map(::toUser).singleOrNull()
     }
 
     // Retrieves password hash for a user by ID
     suspend fun findPasswordHash(id: Int): String? = dbQuery {
-        Users.select(Users.passwordHash)
-            .where { Users.id eq id }
-            .map { it[Users.passwordHash] }
-            .singleOrNull()
+        Users.select(Users.passwordHash).where { Users.id eq id }.map { it[Users.passwordHash] }.singleOrNull()
     }
 
     // Write Methods
