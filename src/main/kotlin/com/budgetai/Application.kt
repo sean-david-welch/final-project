@@ -8,10 +8,9 @@ import io.ktor.server.netty.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main() {
-        System.setProperty("io.ktor.development", "true")
+    System.setProperty("io.ktor.development", "true")
     System.setProperty("config.resource", "application-development.conf")
-    embeddedServer(Netty, port = 8080, host = "127.0.0.1", module = Application::module)
-        .start(wait = true)
+    embeddedServer(Netty, port = 8080, host = "127.0.0.1", module = Application::module).start(wait = true)
 }
 
 fun Application.module() {
@@ -44,7 +43,7 @@ private fun checkDevelopmentMode(application: Application): Boolean {
     return try {
         // Check system property first
         System.getProperty("io.ktor.development")?.toBoolean()
-            // Then check environment variable
+        // Then check environment variable
             ?: System.getenv("KTOR_DEVELOPMENT")?.toBoolean()
             // Then check application config
             ?: application.environment.config.property("ktor.development").getString().toBoolean()
