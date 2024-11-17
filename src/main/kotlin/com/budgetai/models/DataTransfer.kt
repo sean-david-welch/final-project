@@ -1,16 +1,11 @@
 package com.budgetai.models
 
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
 @Serializable
 data class UserDTO(
-    val id: Int = 0,
-    val email: String,
-    val name: String,
-    val createdAt: String? = null
+    val id: Int = 0, val email: String, val name: String, val createdAt: String? = null
 )
 
 @Serializable
