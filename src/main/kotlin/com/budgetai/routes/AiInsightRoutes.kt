@@ -29,8 +29,7 @@ fun Route.aiInsightRoutes(database: Database) {
 
     @Serializable
     data class DateRangeRequest(
-        val startDate: String,
-        val endDate: String
+        val startDate: String, val endDate: String
     )
 
     route("/ai-insights") {
@@ -50,8 +49,7 @@ fun Route.aiInsightRoutes(database: Database) {
         // Get insight by ID
         get("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid insight ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
 
                 val insight = aiInsightService.getInsight(id)
                 if (insight != null) {
@@ -69,8 +67,8 @@ fun Route.aiInsightRoutes(database: Database) {
         // Get user's insights
         get("/user/{userId}") {
             try {
-                val userId = call.parameters["userId"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val userId =
+                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val insights = aiInsightService.getUserInsights(userId)
                 call.respond(insights)
@@ -84,8 +82,8 @@ fun Route.aiInsightRoutes(database: Database) {
         // Get insights for a budget
         get("/budget/{budgetId}") {
             try {
-                val budgetId = call.parameters["budgetId"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid budget ID")
+                val budgetId =
+                    call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
                 val insights = aiInsightService.getBudgetInsights(budgetId)
                 call.respond(insights)
@@ -146,8 +144,8 @@ fun Route.aiInsightRoutes(database: Database) {
         // Get insights in date range
         get("/user/{userId}/date-range") {
             try {
-                val userId = call.parameters["userId"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val userId =
+                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
                 val startDate = LocalDateTime.parse(
                     call.parameters["startDate"] ?: throw IllegalArgumentException("Start date required")
                 )
@@ -167,8 +165,8 @@ fun Route.aiInsightRoutes(database: Database) {
         // Get user insight analytics
         get("/user/{userId}/analytics") {
             try {
-                val userId = call.parameters["userId"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val userId =
+                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val analytics = aiInsightService.getUserInsightAnalytics(userId)
                 call.respond(analytics)
@@ -182,8 +180,8 @@ fun Route.aiInsightRoutes(database: Database) {
         // Get paginated recent insights
         get("/user/{userId}/recent") {
             try {
-                val userId = call.parameters["userId"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val userId =
+                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
                 val page = call.parameters["page"]?.toIntOrNull() ?: 0
                 val pageSize = call.parameters["pageSize"]?.toIntOrNull() ?: 10
 
@@ -199,8 +197,7 @@ fun Route.aiInsightRoutes(database: Database) {
         // Update insight
         put("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid insight ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
                 val request = call.receive<AiInsightService.InsightUpdateRequest>()
 
                 aiInsightService.updateInsight(id, request)
@@ -215,8 +212,7 @@ fun Route.aiInsightRoutes(database: Database) {
         // Update insight sentiment
         put("/{id}/sentiment") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid insight ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
                 val request = call.receive<UpdateSentimentRequest>()
 
                 aiInsightService.updateInsightSentiment(id, request.sentiment)
@@ -231,8 +227,7 @@ fun Route.aiInsightRoutes(database: Database) {
         // Update insight metadata
         put("/{id}/metadata") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid insight ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
                 val request = call.receive<UpdateMetadataRequest>()
 
                 aiInsightService.updateInsightMetadata(id, request.metadata)
@@ -247,8 +242,7 @@ fun Route.aiInsightRoutes(database: Database) {
         // Delete insight
         delete("/{id}") {
             try {
-                val id = call.parameters["id"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid insight ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
 
                 aiInsightService.deleteInsight(id)
                 call.respond(HttpStatusCode.OK, "Insight deleted successfully")
@@ -262,8 +256,8 @@ fun Route.aiInsightRoutes(database: Database) {
         // Delete all insights for a user
         delete("/user/{userId}") {
             try {
-                val userId = call.parameters["userId"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid user ID")
+                val userId =
+                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 aiInsightService.deleteUserInsights(userId)
                 call.respond(HttpStatusCode.OK, "User insights deleted successfully")
@@ -277,8 +271,8 @@ fun Route.aiInsightRoutes(database: Database) {
         // Delete all insights for a budget
         delete("/budget/{budgetId}") {
             try {
-                val budgetId = call.parameters["budgetId"]?.toIntOrNull()
-                    ?: throw IllegalArgumentException("Invalid budget ID")
+                val budgetId =
+                    call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
                 aiInsightService.deleteBudgetInsights(budgetId)
                 call.respond(HttpStatusCode.OK, "Budget insights deleted successfully")
