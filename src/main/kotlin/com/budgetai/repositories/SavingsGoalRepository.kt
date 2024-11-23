@@ -5,6 +5,7 @@ import com.budgetai.models.SavingsGoals
 import com.budgetai.models.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -93,8 +94,8 @@ class SavingsGoalRepository(private val database: Database) {
 
     // Calculate progress percentage for a goal
     suspend fun calculateProgress(id: Int): Double = dbQuery {
-        SavingsGoals.slice(SavingsGoals.currentAmount, SavingsGoals.targetAmount)
-            .select { SavingsGoals.id eq id }
+        SavingsGoals.select(SavingsGoals.currentAmount, SavingsGoals.targetAmount)
+            .where { SavingsGoals.id eq id }
             .map {
                 val current = it[SavingsGoals.currentAmount].toDouble()
                 val target = it[SavingsGoals.targetAmount].toDouble()
@@ -105,8 +106,8 @@ class SavingsGoalRepository(private val database: Database) {
 
     // Get total savings across all goals for a user
     suspend fun getTotalSavings(userId: Int): Double = dbQuery {
-        SavingsGoals.slice(SavingsGoals.currentAmount.sum())
-            .select { SavingsGoals.userId eq userId }
+        SavingsGoals.select(SavingsGoals.currentAmount.sum())
+            .where { SavingsGoals.userId eq userId }
             .map { it[SavingsGoals.currentAmount.sum()]?.toDouble() ?: 0.0 }
             .single()
     }
@@ -187,8 +188,8 @@ class SavingsGoalRepository(private val database: Database) {
 
     // Get remaining amount needed to reach goal
     suspend fun getRemainingAmount(id: Int): Double = dbQuery {
-        SavingsGoals.slice(SavingsGoals.targetAmount, SavingsGoals.currentAmount)
-            .select { SavingsGoals.id eq id }
+        SavingsGoals.select(SavingsGoals.targetAmount, SavingsGoals.currentAmount)
+            .where { SavingsGoals.id eq id }
             .map {
                 val target = it[SavingsGoals.targetAmount].toDouble()
                 val current = it[SavingsGoals.currentAmount].toDouble()
