@@ -159,7 +159,7 @@ class AiInsightRepository(private val database: Database) {
     }
 
     // Analysis Methods
-// Gets the distribution of insight types for a user
+    // Gets the distribution of insight types for a user
     suspend fun getInsightTypeDistribution(userId: Int): Map<InsightType, Int> = dbQuery {
         AiInsights
             .selectAll()
