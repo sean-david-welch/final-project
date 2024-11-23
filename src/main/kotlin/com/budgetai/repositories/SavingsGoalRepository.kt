@@ -4,8 +4,7 @@ import com.budgetai.models.SavingsGoalDTO
 import com.budgetai.models.SavingsGoals
 import com.budgetai.models.Users
 import kotlinx.coroutines.Dispatchers
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.daysUntil
+import kotlinx.datetime.*
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -85,7 +84,7 @@ class SavingsGoalRepository(private val database: Database) {
 
     // Retrieves upcoming goals (target date in the future)
     suspend fun findUpcomingByUserId(userId: Int): List<SavingsGoalDTO> = dbQuery {
-        val today = LocalDate.parse(LocalDate.now().toString())
+        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         SavingsGoals.selectAll()
             .where {
                 (SavingsGoals.userId eq userId) and
@@ -176,7 +175,7 @@ class SavingsGoalRepository(private val database: Database) {
         val goal = findById(id) ?: return@dbQuery false
 
         val targetDate = goal.targetDate?.toLocalDate() ?: return@dbQuery false
-        val today = LocalDate.parse(LocalDate.now().toString())
+        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
         val totalDays = today.daysUntil(targetDate)
         if (totalDays <= 0) return@dbQuery false
@@ -204,7 +203,7 @@ class SavingsGoalRepository(private val database: Database) {
     suspend fun getRequiredDailySavings(id: Int): Double = dbQuery {
         val goal = findById(id) ?: return@dbQuery 0.0
         val targetDate = goal.targetDate?.toLocalDate() ?: return@dbQuery 0.0
-        val today = LocalDate.parse(LocalDate.now().toString())
+        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
 
         val remainingDays = today.daysUntil(targetDate)
         if (remainingDays <= 0) return@dbQuery 0.0
