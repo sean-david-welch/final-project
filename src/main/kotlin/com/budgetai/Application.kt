@@ -5,7 +5,7 @@ import com.budgetai.plugins.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import kotlinx.coroutines.runBlocking
 
 fun main() {
     System.setProperty("io.ktor.development", "true")
@@ -14,14 +14,14 @@ fun main() {
 }
 
 fun Application.module() {
-    DatabaseConfig.initialize()
+    val database = DatabaseConfig.initialize()
 
     val isDevelopment = checkDevelopmentMode(this)
     if (isDevelopment) {
         log.info("Running in development mode - seeding database...")
         try {
-            transaction {
-                DataSeeder().seed(this)
+            runBlocking {
+                DataSeeder(database).seed()
             }
             log.info("Database seeding completed successfully")
         } catch (e: Exception) {
@@ -36,6 +36,7 @@ fun Application.module() {
     configureSerialization()
     configureRouting()
 }
+
 
 private fun checkDevelopmentMode(application: Application): Boolean {
     return try {
