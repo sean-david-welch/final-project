@@ -38,60 +38,41 @@ class AiInsightRepository(private val database: Database) {
     // Read Methods
     // Retrieves an insight by its ID
     suspend fun findById(id: Int): AiInsightDTO? = dbQuery {
-        AiInsights.selectAll()
-            .where { AiInsights.id eq id }
-            .map(::toAiInsight)
-            .singleOrNull()
+        AiInsights.selectAll().where { AiInsights.id eq id }.map(::toAiInsight).singleOrNull()
     }
 
     // Retrieves all insights for a given user ID
     suspend fun findByUserId(userId: Int): List<AiInsightDTO> = dbQuery {
-        AiInsights.selectAll()
-            .where { AiInsights.userId eq userId }
-            .map(::toAiInsight)
+        AiInsights.selectAll().where { AiInsights.userId eq userId }.map(::toAiInsight)
     }
 
     // Retrieves all insights for a specific budget
     suspend fun findByBudgetId(budgetId: Int): List<AiInsightDTO> = dbQuery {
-        AiInsights.selectAll()
-            .where { AiInsights.budgetId eq budgetId }
-            .map(::toAiInsight)
+        AiInsights.selectAll().where { AiInsights.budgetId eq budgetId }.map(::toAiInsight)
     }
 
     // Retrieves all insights for a specific budget item
     suspend fun findByBudgetItemId(budgetItemId: Int): List<AiInsightDTO> = dbQuery {
-        AiInsights.selectAll()
-            .where { AiInsights.budgetItemId eq budgetItemId }
-            .map(::toAiInsight)
+        AiInsights.selectAll().where { AiInsights.budgetItemId eq budgetItemId }.map(::toAiInsight)
     }
 
     // Retrieves insights by type
     suspend fun findByType(type: InsightType): List<AiInsightDTO> = dbQuery {
-        AiInsights.selectAll()
-            .where { AiInsights.type eq type }
-            .map(::toAiInsight)
+        AiInsights.selectAll().where { AiInsights.type eq type }.map(::toAiInsight)
     }
 
     // Retrieves insights by sentiment
     suspend fun findBySentiment(sentiment: Sentiment): List<AiInsightDTO> = dbQuery {
-        AiInsights.selectAll()
-            .where { AiInsights.sentiment eq sentiment }
-            .map(::toAiInsight)
+        AiInsights.selectAll().where { AiInsights.sentiment eq sentiment }.map(::toAiInsight)
     }
 
     // Retrieves insights for a user within a date range
     suspend fun findByUserIdAndDateRange(
-        userId: Int,
-        startDate: kotlinx.datetime.LocalDateTime,
-        endDate: kotlinx.datetime.LocalDateTime
+        userId: Int, startDate: kotlinx.datetime.LocalDateTime, endDate: kotlinx.datetime.LocalDateTime
     ): List<AiInsightDTO> = dbQuery {
-        AiInsights.selectAll()
-            .where {
-                (AiInsights.userId eq userId) and
-                        (AiInsights.createdAt greaterEq startDate.toString()) and
-                        (AiInsights.createdAt lessEq endDate.toString())
-            }
-            .map(::toAiInsight)
+        AiInsights.selectAll().where {
+                (AiInsights.userId eq userId) and (AiInsights.createdAt greaterEq startDate.toString()) and (AiInsights.createdAt lessEq endDate.toString())
+            }.map(::toAiInsight)
     }
 
     // Write Methods
@@ -161,33 +142,21 @@ class AiInsightRepository(private val database: Database) {
     // Analysis Methods
     // Gets the distribution of insight types for a user
     suspend fun getInsightTypeDistribution(userId: Int): Map<InsightType, Int> = dbQuery {
-        AiInsights
-            .selectAll()
-            .where { AiInsights.userId eq userId }
-            .groupBy { it[AiInsights.type] }
+        AiInsights.selectAll().where { AiInsights.userId eq userId }.groupBy { it[AiInsights.type] }
             .mapValues { (_, rows) -> rows.size }
     }
 
     // Gets the sentiment distribution for a user
     suspend fun getSentimentDistribution(userId: Int): Map<Sentiment, Int> = dbQuery {
-        AiInsights
-            .selectAll()
-            .where { AiInsights.userId eq userId and AiInsights.sentiment.isNotNull() }
-            .groupBy { it[AiInsights.sentiment]!! }
-            .mapValues { (_, rows) -> rows.size }
+        AiInsights.selectAll().where { AiInsights.userId eq userId and AiInsights.sentiment.isNotNull() }
+            .groupBy { it[AiInsights.sentiment]!! }.mapValues { (_, rows) -> rows.size }
     }
 
     // Gets recent insights with pagination
     suspend fun getRecentInsights(
-        userId: Int,
-        limit: Int = 10,
-        offset: Int = 0
+        userId: Int, limit: Int = 10, offset: Int = 0
     ): List<AiInsightDTO> = dbQuery {
-        AiInsights
-            .selectAll()
-            .where { AiInsights.userId eq userId }
-            .orderBy(AiInsights.createdAt to SortOrder.DESC)
-            .limit(limit).offset(offset.toLong())
-            .map(::toAiInsight)
+        AiInsights.selectAll().where { AiInsights.userId eq userId }.orderBy(AiInsights.createdAt to SortOrder.DESC)
+            .limit(limit).offset(offset.toLong()).map(::toAiInsight)
     }
 }
