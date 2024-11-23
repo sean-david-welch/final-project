@@ -88,8 +88,8 @@ class AiInsightRepository(private val database: Database) {
         AiInsights.selectAll()
             .where {
                 (AiInsights.userId eq userId) and
-                (AiInsights.createdAt greaterEq startDate.toString()) and
-                (AiInsights.createdAt lessEq endDate.toString())
+                        (AiInsights.createdAt greaterEq startDate.toString()) and
+                        (AiInsights.createdAt lessEq endDate.toString())
             }
             .map(::toAiInsight)
     }
@@ -159,26 +159,22 @@ class AiInsightRepository(private val database: Database) {
     }
 
     // Analysis Methods
-    // Gets the distribution of insight types for a user
+// Gets the distribution of insight types for a user
     suspend fun getInsightTypeDistribution(userId: Int): Map<InsightType, Int> = dbQuery {
         AiInsights
-            .slice(AiInsights.type, AiInsights.id.count())
-            .select { AiInsights.userId eq userId }
-            .groupBy(AiInsights.type)
-            .associate {
-                it[AiInsights.type] to (it[AiInsights.id.count()] ?: 0)
-            }
+            .selectAll()
+            .where { AiInsights.userId eq userId }
+            .groupBy { it[AiInsights.type] }
+            .mapValues { (_, rows) -> rows.size }
     }
 
     // Gets the sentiment distribution for a user
     suspend fun getSentimentDistribution(userId: Int): Map<Sentiment, Int> = dbQuery {
         AiInsights
-            .slice(AiInsights.sentiment, AiInsights.id.count())
-            .select { AiInsights.userId eq userId and AiInsights.sentiment.isNotNull() }
-            .groupBy(AiInsights.sentiment)
-            .associate {
-                it[AiInsights.sentiment]!! to (it[AiInsights.id.count()] ?: 0)
-            }
+            .selectAll()
+            .where { AiInsights.userId eq userId and AiInsights.sentiment.isNotNull() }
+            .groupBy { it[AiInsights.sentiment]!! }
+            .mapValues { (_, rows) -> rows.size }
     }
 
     // Gets recent insights with pagination
