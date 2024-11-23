@@ -2,10 +2,13 @@ package com.budgetai.repositories
 
 import com.budgetai.models.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.datetime.toInstant
 import kotlinx.serialization.json.JsonElement
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -66,14 +69,19 @@ class AiInsightRepository(private val database: Database) {
         AiInsights.selectAll().where { AiInsights.sentiment eq sentiment }.map(::toAiInsight)
     }
 
-    // Retrieves insights for a user within a date range
     suspend fun findByUserIdAndDateRange(
         userId: Int, startDate: kotlinx.datetime.LocalDateTime, endDate: kotlinx.datetime.LocalDateTime
     ): List<AiInsightDTO> = dbQuery {
+        val startInstant = startDate.toInstant(kotlinx.datetime.TimeZone.UTC)
+        val endInstant = endDate.toInstant(kotlinx.datetime.TimeZone.UTC)
+
         AiInsights.selectAll().where {
-                (AiInsights.userId eq userId) and (AiInsights.createdAt greaterEq startDate.toString()) and (AiInsights.createdAt lessEq endDate.toString())
-            }.map(::toAiInsight)
+            (AiInsights.userId eq userId) and
+                    (AiInsights.createdAt greaterEq startInstant) and
+                    (AiInsights.createdAt lessEq endInstant)
+        }.map(::toAiInsight)
     }
+
 
     // Write Methods
     // Creates a new insight and returns its ID
