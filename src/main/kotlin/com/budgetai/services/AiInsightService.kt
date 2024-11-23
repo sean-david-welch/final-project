@@ -4,7 +4,7 @@ import com.budgetai.models.AiInsightDTO
 import com.budgetai.models.InsightType
 import com.budgetai.models.Sentiment
 import com.budgetai.repositories.AiInsightRepository
-import kotlinx.datetime.*
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.JsonElement
 
 class AiInsightService(private val repository: AiInsightRepository) {
