@@ -191,7 +191,7 @@ class AiInsightRepository(private val database: Database) {
             .selectAll()
             .where { AiInsights.userId eq userId }
             .orderBy(AiInsights.createdAt to SortOrder.DESC)
-            .limit(limit, offset.toLong())
+            .limit(limit).offset(offset.toLong())
             .map(::toAiInsight)
     }
 }
