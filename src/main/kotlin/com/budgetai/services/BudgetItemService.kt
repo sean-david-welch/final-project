@@ -6,16 +6,11 @@ import com.budgetai.repositories.BudgetItemRepository
 class BudgetItemService(private val repository: BudgetItemRepository) {
     // Data Models
     data class BudgetItemCreationRequest(
-        val budgetId: Int,
-        val categoryId: Int,
-        val name: String,
-        val amount: Double
+        val budgetId: Int, val categoryId: Int, val name: String, val amount: Double
     )
 
     data class BudgetItemUpdateRequest(
-        val name: String? = null,
-        val categoryId: Int? = null,
-        val amount: Double? = null
+        val name: String? = null, val categoryId: Int? = null, val amount: Double? = null
     )
 
     // Helper Methods
