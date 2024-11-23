@@ -24,11 +24,7 @@ class DataSeeder(database: Database) {
 
     suspend fun seed() {
         // Create users
-        val existingUser = userRepository.findByEmail("user1@example.com")
-        if (existingUser != null) {
-            println("Database already seeded, skipping...")
-            return
-        }
+        userRepository.findByEmail("user1@example.com")?.let { return }
 
         // Continue with your existing seeding logic
         val userIds = (1..5).map { index ->
