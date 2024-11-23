@@ -80,9 +80,7 @@ class AiInsightService(private val repository: AiInsightRepository) {
     }
 
     suspend fun getInsightsInDateRange(
-        userId: Int,
-        startDate: LocalDateTime,
-        endDate: LocalDateTime
+        userId: Int, startDate: LocalDateTime, endDate: LocalDateTime
     ): List<AiInsightDTO> {
         validateDateRange(startDate, endDate)
         return repository.findByUserIdAndDateRange(userId, startDate, endDate)
@@ -103,17 +101,13 @@ class AiInsightService(private val repository: AiInsightRepository) {
     }
 
     suspend fun getRecentInsightsPaginated(
-        userId: Int,
-        page: Int,
-        pageSize: Int = 10
+        userId: Int, page: Int, pageSize: Int = 10
     ): List<AiInsightDTO> {
         require(page >= 0) { "Page number must be non-negative" }
         require(pageSize in 1..50) { "Page size must be between 1 and 50" }
 
         return repository.getRecentInsights(
-            userId = userId,
-            limit = pageSize,
-            offset = page * pageSize
+            userId = userId, limit = pageSize, offset = page * pageSize
         )
     }
 
