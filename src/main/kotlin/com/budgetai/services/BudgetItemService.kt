@@ -2,7 +2,6 @@ package com.budgetai.services
 
 import com.budgetai.models.BudgetItemDTO
 import com.budgetai.repositories.BudgetItemRepository
-import java.math.BigDecimal
 
 class BudgetItemService(private val repository: BudgetItemRepository) {
     // Data Models
