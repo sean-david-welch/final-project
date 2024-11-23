@@ -37,40 +37,30 @@ class BudgetItemRepository(private val database: Database) {
     // Read Methods
     // Retrieves a budget item by its ID
     suspend fun findById(id: Int): BudgetItemDTO? = dbQuery {
-        BudgetItems.selectAll()
-            .where { BudgetItems.id eq id }
-            .map(::toBudgetItem)
-            .singleOrNull()
+        BudgetItems.selectAll().where { BudgetItems.id eq id }.map(::toBudgetItem).singleOrNull()
     }
 
     // Retrieves all budget items for a given budget ID
     suspend fun findByBudgetId(budgetId: Int): List<BudgetItemDTO> = dbQuery {
-        BudgetItems.selectAll()
-            .where { BudgetItems.budgetId eq budgetId }
-            .map(::toBudgetItem)
+        BudgetItems.selectAll().where { BudgetItems.budgetId eq budgetId }.map(::toBudgetItem)
     }
 
     // Retrieves all budget items for a given category ID
     suspend fun findByCategoryId(categoryId: Int): List<BudgetItemDTO> = dbQuery {
-        BudgetItems.selectAll()
-            .where { BudgetItems.categoryId eq categoryId }
-            .map(::toBudgetItem)
+        BudgetItems.selectAll().where { BudgetItems.categoryId eq categoryId }.map(::toBudgetItem)
     }
 
     // Get total amount of budget items for a budget
     suspend fun getTotalAmountByBudgetId(budgetId: Int): Double = dbQuery {
-        BudgetItems.select(BudgetItems.amount.sum())
-            .where { BudgetItems.budgetId eq budgetId }
-            .map { it[BudgetItems.amount.sum()]?.toDouble() ?: 0.0 }
-            .single()
+        BudgetItems.select(BudgetItems.amount.sum()).where { BudgetItems.budgetId eq budgetId }
+            .map { it[BudgetItems.amount.sum()]?.toDouble() ?: 0.0 }.single()
     }
 
     // Get total amount of budget items by category within a budget
     suspend fun getTotalAmountByCategory(budgetId: Int, categoryId: Int): Double = dbQuery {
         BudgetItems.select(BudgetItems.amount.sum())
             .where { (BudgetItems.budgetId eq budgetId) and (BudgetItems.categoryId eq categoryId) }
-            .map { it[BudgetItems.amount.sum()]?.toDouble() ?: 0.0 }
-            .single()
+            .map { it[BudgetItems.amount.sum()]?.toDouble() ?: 0.0 }.single()
     }
 
     // Write Methods
