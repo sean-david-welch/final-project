@@ -59,16 +59,16 @@ class BudgetItemRepository(private val database: Database) {
 
     // Get total amount of budget items for a budget
     suspend fun getTotalAmountByBudgetId(budgetId: Int): Double = dbQuery {
-        BudgetItems.slice(BudgetItems.amount.sum())
-            .select { BudgetItems.budgetId eq budgetId }
+        BudgetItems.select(BudgetItems.amount.sum())
+            .where { BudgetItems.budgetId eq budgetId }
             .map { it[BudgetItems.amount.sum()]?.toDouble() ?: 0.0 }
             .single()
     }
 
     // Get total amount of budget items by category within a budget
     suspend fun getTotalAmountByCategory(budgetId: Int, categoryId: Int): Double = dbQuery {
-        BudgetItems.slice(BudgetItems.amount.sum())
-            .select { (BudgetItems.budgetId eq budgetId) and (BudgetItems.categoryId eq categoryId) }
+        BudgetItems.select(BudgetItems.amount.sum())
+            .where { (BudgetItems.budgetId eq budgetId) and (BudgetItems.categoryId eq categoryId) }
             .map { it[BudgetItems.amount.sum()]?.toDouble() ?: 0.0 }
             .single()
     }
