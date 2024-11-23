@@ -20,5 +20,8 @@ fun Application.configureRoutes() {
         userRoutes(database = database)
         budgetRoutes(database = database)
         categoryRoutes(database = database)
+        budgetItemRoutes(database = database)
+        savingsGoalRoutes(database = database)
+        aiInsightRoutes(database = database)
     }
 }
