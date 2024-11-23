@@ -76,12 +76,9 @@ class AiInsightRepository(private val database: Database) {
         val endInstant = endDate.toInstant(kotlinx.datetime.TimeZone.UTC)
 
         AiInsights.selectAll().where {
-            (AiInsights.userId eq userId) and
-                    (AiInsights.createdAt greaterEq startInstant) and
-                    (AiInsights.createdAt lessEq endInstant)
+            (AiInsights.userId eq userId) and (AiInsights.createdAt greaterEq startInstant) and (AiInsights.createdAt lessEq endInstant)
         }.map(::toAiInsight)
     }
-
 
     // Write Methods
     // Creates a new insight and returns its ID
