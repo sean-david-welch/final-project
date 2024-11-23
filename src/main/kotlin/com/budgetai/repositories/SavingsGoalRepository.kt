@@ -174,7 +174,7 @@ class SavingsGoalRepository(private val database: Database) {
         val goal = findById(id) ?: return@dbQuery false
 
         val targetDate = goal.targetDate?.toLocalDate() ?: return@dbQuery false
-        val today = LocalDate.parse(LocalDate.now().toString())
+        val today = LocalDate.parse(LocalDate.toString())
 
         val totalDays = today.daysUntil(targetDate)
         if (totalDays <= 0) return@dbQuery false
@@ -202,7 +202,7 @@ class SavingsGoalRepository(private val database: Database) {
     suspend fun getRequiredDailySavings(id: Int): Double = dbQuery {
         val goal = findById(id) ?: return@dbQuery 0.0
         val targetDate = goal.targetDate?.toLocalDate() ?: return@dbQuery 0.0
-        val today = LocalDate.parse(LocalDate.now().toString())
+        val today = LocalDate.parse(LocalDate.toString())
 
         val remainingDays = today.daysUntil(targetDate)
         if (remainingDays <= 0) return@dbQuery 0.0
