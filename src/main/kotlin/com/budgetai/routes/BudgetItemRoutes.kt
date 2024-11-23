@@ -9,7 +9,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 
-fun Route.budgetItemServiceRoutes(database: Database) {
+fun Route.budgetItemRoutes(database: Database) {
     val budgetItemRepository = BudgetItemRepository(database)
     val budgetItemService = BudgetItemService(budgetItemRepository)
 
