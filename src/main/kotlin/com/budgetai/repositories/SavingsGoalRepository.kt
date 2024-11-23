@@ -129,14 +129,14 @@ class SavingsGoalRepository(private val database: Database) {
     // Add to current amount
     suspend fun addToCurrentAmount(id: Int, amount: Double) = dbQuery {
         SavingsGoals.update({ SavingsGoals.id eq id }) {
-            it[currentAmount] = SavingsGoals.currentAmount + BigDecimal(amount)
+            it[currentAmount] = currentAmount + BigDecimal(amount)
         }
     }
 
     // Subtract from current amount
     suspend fun subtractFromCurrentAmount(id: Int, amount: Double) = dbQuery {
         SavingsGoals.update({ SavingsGoals.id eq id }) {
-            it[currentAmount] = SavingsGoals.currentAmount - BigDecimal(amount)
+            it[currentAmount] = currentAmount - BigDecimal(amount)
         }
     }
 

@@ -27,11 +27,6 @@ fun Route.aiInsightRoutes(database: Database) {
         val metadata: JsonElement?
     )
 
-    @Serializable
-    data class DateRangeRequest(
-        val startDate: String, val endDate: String
-    )
-
     route("/ai-insights") {
         // Create new insight
         post {
