@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
+import kotlin.Exception
 
 class UserRepository(private val database: Database) {
     // Initialize database schema
@@ -47,6 +48,12 @@ class UserRepository(private val database: Database) {
     // Write Methods
     // Creates a new user and returns their ID
     suspend fun create(user: UserDTO): Int = dbQuery {
+        // First check if email exists
+        val existingUser = Users.selectAll().where { Users.email eq user.email }.firstOrNull()
+        if (existingUser != null) {
+            throw Exception("A user with email ${user.email} already exists")
+        }
+
         Users.insert {
             it[email] = user.email
             it[name] = user.name
@@ -56,6 +63,13 @@ class UserRepository(private val database: Database) {
 
     // Updates user's basic information
     suspend fun update(id: Int, user: UserDTO) = dbQuery {
+        // Check if new email already exists for a DIFFERENT user
+        val existingUser = Users.selectAll().where { (Users.email eq user.email) and (Users.id neq id) }.firstOrNull()
+
+        if (existingUser != null) {
+            throw Exception("Cannot update: email ${user.email} is already in use by another user")
+        }
+
         Users.update({ Users.id eq id }) {
             it[email] = user.email
             it[name] = user.name

@@ -24,10 +24,18 @@ class DataSeeder(database: Database) {
 
     suspend fun seed() {
         // Create users
+        val existingUser = userRepository.findByEmail("user1@example.com")
+        if (existingUser != null) {
+            println("Database already seeded, skipping...")
+            return
+        }
+
+        // Continue with your existing seeding logic
         val userIds = (1..5).map { index ->
             userRepository.create(
                 UserDTO(
-                    email = "user$index@example.com", name = "Test User $index"
+                    email = "user$index@example.com",
+                    name = "Test User $index"
                 )
             ).also { userId ->
                 userRepository.updatePassword(userId, "hashed_password_$index")
