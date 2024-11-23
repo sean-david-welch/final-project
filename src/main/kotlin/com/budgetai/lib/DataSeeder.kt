@@ -2,7 +2,6 @@ package com.budgetai.lib
 
 import com.budgetai.models.*
 import com.budgetai.repositories.*
-import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -23,10 +22,8 @@ class DataSeeder(database: Database) {
     private val random = Random(System.currentTimeMillis())
 
     suspend fun seed() {
-        // Create users
+        // create users
         userRepository.findByEmail("user1@example.com")?.let { return }
-
-        // Continue with your existing seeding logic
         val userIds = (1..5).map { index ->
             userRepository.create(
                 UserDTO(
