@@ -8,32 +8,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.JsonElement
 
 class AiInsightService(private val repository: AiInsightRepository) {
-    // Data Models
-    data class InsightCreationRequest(
-        val userId: Int,
-        val budgetId: Int,
-        val budgetItemId: Int? = null,
-        val prompt: String,
-        val response: String,
-        val type: InsightType,
-        val sentiment: Sentiment? = null,
-        val metadata: JsonElement? = null
-    )
 
-    data class InsightUpdateRequest(
-        val prompt: String? = null,
-        val response: String? = null,
-        val type: InsightType? = null,
-        val sentiment: Sentiment? = null,
-        val metadata: JsonElement? = null
-    )
-
-    data class InsightAnalytics(
-        val typeDistribution: Map<InsightType, Int>,
-        val sentimentDistribution: Map<Sentiment, Int>,
-        val totalInsights: Int,
-        val recentInsights: List<AiInsightDTO>
-    )
 
     // Helper Methods
     private fun validatePrompt(prompt: String) {
