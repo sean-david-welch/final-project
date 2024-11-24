@@ -10,7 +10,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.File
-import kotlin.test.*
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class UserRepositoryTest {
     private lateinit var database: Database
