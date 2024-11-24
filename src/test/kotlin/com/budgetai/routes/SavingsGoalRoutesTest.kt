@@ -139,11 +139,7 @@ class SavingsGoalRoutesTest {
                 setBody(
                     Json.encodeToString(
                         SavingsGoalCreationRequest(
-                            userId = 1,
-                            name = "Goal $it",
-                            targetAmount = 1000.0,
-                            targetDate = "2024-12-31",
-                            description = "Test goal $it"
+                            userId = 1, name = "Goal $it", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal $it"
                         )
                     )
                 )
@@ -170,11 +166,7 @@ class SavingsGoalRoutesTest {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Active Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
-                        description = "Active goal"
+                        userId = 1, name = "Active Goal", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Active goal"
                     )
                 )
             )
@@ -213,10 +205,7 @@ class SavingsGoalRoutesTest {
             setBody(
                 Json.encodeToString(
                     SavingsGoalUpdateRequest(
-                        name = "Updated Goal",
-                        targetAmount = 2000.0,
-                        targetDate = "2025-12-31",
-                        description = "Updated description"
+                        name = "Updated Goal", targetAmount = 2000.0, targetDate = "2025-12-31", description = "Updated description"
                     )
                 )
             )
@@ -238,11 +227,7 @@ class SavingsGoalRoutesTest {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Test Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
-                        description = "Test goal"
+                        userId = 1, name = "Test Goal", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal"
                     )
                 )
             )
@@ -303,11 +288,7 @@ class SavingsGoalRoutesTest {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Test Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
-                        description = "Test goal"
+                        userId = 1, name = "Test Goal", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal"
                     )
                 )
             )
@@ -335,11 +316,7 @@ class SavingsGoalRoutesTest {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Test Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
-                        description = "Test goal"
+                        userId = 1, name = "Test Goal", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal"
                     )
                 )
             )
