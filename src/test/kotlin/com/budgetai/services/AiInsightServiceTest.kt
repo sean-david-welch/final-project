@@ -68,7 +68,7 @@ class AiInsightServiceTest {
             budgetItemId = testBudgetItemId,
             prompt = testPrompt,
             response = testResponse,
-            type = InsightType.SPENDING_PATTERN,
+            type = InsightType.ITEM_ANALYSIS,
             sentiment = Sentiment.NEUTRAL,
             metadata = testMetadata
         )
@@ -93,7 +93,7 @@ class AiInsightServiceTest {
             budgetId = testBudgetId,
             prompt = "",
             response = testResponse,
-            type = InsightType.SPENDING_PATTERN
+            type = InsightType.ITEM_ANALYSIS
         )
 
         // When/Then
@@ -110,7 +110,7 @@ class AiInsightServiceTest {
             budgetId = testBudgetId,
             prompt = testPrompt,
             response = "a".repeat(5001),
-            type = InsightType.SPENDING_PATTERN
+            type = InsightType.ITEM_ANALYSIS
         )
 
         // When/Then
@@ -127,7 +127,7 @@ class AiInsightServiceTest {
             budgetId = testBudgetId,
             prompt = testPrompt,
             response = testResponse,
-            type = InsightType.SPENDING_PATTERN
+            type = InsightType.ITEM_ANALYSIS
         )
         val insightId = service.createInsight(createRequest)
 
@@ -153,7 +153,7 @@ class AiInsightServiceTest {
             budgetId = testBudgetId,
             prompt = testPrompt,
             response = testResponse,
-            type = InsightType.SPENDING_PATTERN
+            type = InsightType.ITEM_ANALYSIS
         )
         val insightId = service.createInsight(createRequest)
 
@@ -174,7 +174,7 @@ class AiInsightServiceTest {
                 budgetId = testBudgetId,
                 prompt = testPrompt,
                 response = testResponse,
-                type = InsightType.SPENDING_PATTERN,
+                type = InsightType.ITEM_ANALYSIS,
                 sentiment = Sentiment.POSITIVE
             ), AiInsightService.InsightCreationRequest(
                 userId = testUserId,
@@ -192,7 +192,7 @@ class AiInsightServiceTest {
 
         // Then
         assertEquals(2, analytics.totalInsights)
-        assertEquals(1, analytics.typeDistribution[InsightType.SPENDING_PATTERN])
+        assertEquals(1, analytics.typeDistribution[InsightType.ITEM_ANALYSIS])
         assertEquals(1, analytics.typeDistribution[InsightType.BUDGET_RECOMMENDATION])
         assertEquals(1, analytics.sentimentDistribution[Sentiment.POSITIVE])
         assertEquals(1, analytics.sentimentDistribution[Sentiment.NEUTRAL])
@@ -207,7 +207,7 @@ class AiInsightServiceTest {
                 budgetId = testBudgetId,
                 prompt = testPrompt,
                 response = testResponse,
-                type = InsightType.SPENDING_PATTERN
+                type = InsightType.ITEM_ANALYSIS
             )
         }
         requests.forEach { service.createInsight(it) }
@@ -233,7 +233,7 @@ class AiInsightServiceTest {
             budgetId = testBudgetId,
             prompt = testPrompt,
             response = testResponse,
-            type = InsightType.SPENDING_PATTERN
+            type = InsightType.ITEM_ANALYSIS
         )
         service.createInsight(request)
 
@@ -253,7 +253,7 @@ class AiInsightServiceTest {
                 budgetId = testBudgetId,
                 prompt = testPrompt,
                 response = testResponse,
-                type = InsightType.SPENDING_PATTERN
+                type = InsightType.ITEM_ANALYSIS
             )
         }
         requests.forEach { service.createInsight(it) }
@@ -275,7 +275,7 @@ class AiInsightServiceTest {
                 budgetId = testBudgetId,
                 prompt = testPrompt,
                 response = testResponse,
-                type = InsightType.SPENDING_PATTERN
+                type = InsightType.ITEM_ANALYSIS
             ), AiInsightService.InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
@@ -287,7 +287,7 @@ class AiInsightServiceTest {
         requests.forEach { service.createInsight(it) }
 
         // When
-        val spendingPatternInsights = service.getInsightsByType(InsightType.SPENDING_PATTERN)
+        val spendingPatternInsights = service.getInsightsByType(InsightType.ITEM_ANALYSIS)
         val budgetRecommendationInsights = service.getInsightsByType(InsightType.BUDGET_RECOMMENDATION)
 
         // Then
