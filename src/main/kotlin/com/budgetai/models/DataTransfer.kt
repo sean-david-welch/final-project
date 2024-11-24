@@ -8,16 +8,6 @@ data class UserDTO(
 )
 
 @Serializable
-data class BudgetItemDTO(
-    val id: Int = 0,
-    val budgetId: Int,
-    val categoryId: Int,
-    val name: String,
-    val amount: Double,
-    val createdAt: String? = null
-)
-
-@Serializable
 data class SavingsGoalDTO(
     val id: Int = 0,
     val userId: Int,
