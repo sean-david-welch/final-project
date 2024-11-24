@@ -25,8 +25,7 @@ class AiInsightRepositoryTest {
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         transaction(database) {
@@ -98,8 +97,9 @@ class AiInsightRepositoryTest {
 
         // Then
         assertEquals(2, userInsights.size)
-        assertEquals(setOf(InsightType.SPENDING_PATTERN, InsightType.BUDGET_SUGGESTION),
-                    userInsights.map { it.type }.toSet())
+        assertEquals(
+            setOf(InsightType.SPENDING_PATTERN, InsightType.BUDGET_SUGGESTION), userInsights.map { it.type }.toSet()
+        )
     }
 
     @Test
@@ -142,9 +142,7 @@ class AiInsightRepositoryTest {
         // When
         val createdId = repository.create(initialInsight)
         val updatedInsight = initialInsight.copy(
-            id = createdId,
-            prompt = "Updated prompt",
-            sentiment = Sentiment.POSITIVE
+            id = createdId, prompt = "Updated prompt", sentiment = Sentiment.POSITIVE
         )
         repository.update(createdId, updatedInsight)
         val retrievedInsight = repository.findById(createdId)
@@ -198,9 +196,21 @@ class AiInsightRepositoryTest {
     fun `test analysis methods`() = runBlocking {
         // Given
         val userId = 1
-        repository.create(createSampleInsight(userId = userId, type = InsightType.SPENDING_PATTERN, sentiment = Sentiment.POSITIVE))
-        repository.create(createSampleInsight(userId = userId, type = InsightType.BUDGET_SUGGESTION, sentiment = Sentiment.NEUTRAL))
-        repository.create(createSampleInsight(userId = userId, type = InsightType.SPENDING_PATTERN, sentiment = Sentiment.NEGATIVE))
+        repository.create(
+            createSampleInsight(
+                userId = userId, type = InsightType.SPENDING_PATTERN, sentiment = Sentiment.POSITIVE
+            )
+        )
+        repository.create(
+            createSampleInsight(
+                userId = userId, type = InsightType.BUDGET_SUGGESTION, sentiment = Sentiment.NEUTRAL
+            )
+        )
+        repository.create(
+            createSampleInsight(
+                userId = userId, type = InsightType.SPENDING_PATTERN, sentiment = Sentiment.NEGATIVE
+            )
+        )
 
         // When - Test type distribution
         val typeDistribution = repository.getInsightTypeDistribution(userId)
