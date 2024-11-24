@@ -73,10 +73,7 @@ class BudgetServiceTest {
     fun `createBudget should throw exception when end date is before start date`(): Unit = runBlocking {
         // Given
         val request = BudgetCreationRequest(
-            userId = 1,
-            name = "Test Budget",
-            startDate = LocalDate.parse("2024-12-31"),
-            endDate = LocalDate.parse("2024-01-01")
+            userId = 1, name = "Test Budget", startDate = LocalDate.parse("2024-12-31"), endDate = LocalDate.parse("2024-01-01")
         )
 
         // When/Then
@@ -135,10 +132,7 @@ class BudgetServiceTest {
         )
         service.createBudget(
             BudgetCreationRequest(
-                userId = userId,
-                name = "Out of Range",
-                startDate = LocalDate.parse("2025-01-01"),
-                endDate = LocalDate.parse("2025-12-31")
+                userId = userId, name = "Out of Range", startDate = LocalDate.parse("2025-01-01"), endDate = LocalDate.parse("2025-12-31")
             )
         )
 
