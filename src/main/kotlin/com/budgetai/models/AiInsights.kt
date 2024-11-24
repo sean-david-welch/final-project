@@ -64,3 +64,13 @@ data class InsightAnalytics(
     val totalInsights: Int,
     val recentInsights: List<AiInsightDTO>
 )
+
+@Serializable
+data class UpdateSentimentRequest(
+    val sentiment: Sentiment?
+)
+
+@Serializable
+data class UpdateMetadataRequest(
+    val metadata: JsonElement?
+)

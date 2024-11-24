@@ -1,7 +1,6 @@
 package com.budgetai.routes
 
-import com.budgetai.models.InsightType
-import com.budgetai.models.Sentiment
+import com.budgetai.models.*
 import com.budgetai.repositories.AiInsightRepository
 import com.budgetai.services.AiInsightService
 import io.ktor.http.*
@@ -9,29 +8,17 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonElement
 import org.jetbrains.exposed.sql.Database
 
 fun Route.aiInsightRoutes(database: Database) {
     val aiInsightRepository = AiInsightRepository(database)
     val aiInsightService = AiInsightService(aiInsightRepository)
 
-    @Serializable
-    data class UpdateSentimentRequest(
-        val sentiment: Sentiment?
-    )
-
-    @Serializable
-    data class UpdateMetadataRequest(
-        val metadata: JsonElement?
-    )
-
     route("/ai-insights") {
         // Create new insight
         post {
             try {
-                val request = call.receive<AiInsightService.InsightCreationRequest>()
+                val request = call.receive<InsightCreationRequest>()
                 val insightId = aiInsightService.createInsight(request)
                 call.respond(HttpStatusCode.Created, mapOf("id" to insightId))
             } catch (e: IllegalArgumentException) {
@@ -193,7 +180,7 @@ fun Route.aiInsightRoutes(database: Database) {
         put("/{id}") {
             try {
                 val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
-                val request = call.receive<AiInsightService.InsightUpdateRequest>()
+                val request = call.receive<InsightUpdateRequest>()
 
                 aiInsightService.updateInsight(id, request)
                 call.respond(HttpStatusCode.OK, "Insight updated successfully")
