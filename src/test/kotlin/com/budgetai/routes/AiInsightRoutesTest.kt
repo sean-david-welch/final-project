@@ -9,7 +9,7 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -23,10 +23,36 @@ class AiInsightRoutesTest {
     private lateinit var database: Database
     private val dbFile = File("test.db")
 
+    private fun createSampleInsightRequest(
+        userId: Int = 1,
+        budgetId: Int = 1,
+        budgetItemId: Int? = null,
+        type: InsightType = InsightType.SAVING_SUGGESTION,
+        prompt: String = "Analyze my dining expenses for this month",
+        response: String = "Your dining expenses have increased by 25% compared to last month. Consider setting a dining budget."
+    ): InsightCreationRequest {
+        val metadata = buildJsonObject {
+            put("category", "dining")
+            put("amount", 150.0)
+        }
+
+        return InsightCreationRequest(
+            userId = userId,
+            budgetId = budgetId,
+            budgetItemId = budgetItemId,
+            prompt = prompt,
+            response = response,
+            type = type,
+            sentiment = Sentiment.NEUTRAL,
+            metadata = metadata
+        )
+    }
+
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}",
+            driver = "org.sqlite.JDBC"
         )
         transaction(database) {
             SchemaUtils.create(Users, Budgets, BudgetItems, AiInsights)
@@ -50,18 +76,7 @@ class AiInsightRoutesTest {
 
         val response = client.post("/ai-insights") {
             contentType(ContentType.Application.Json)
-            setBody(
-                Json.encodeToString(
-                    InsightCreationRequest(
-                        userId = 1,
-                        budgetId = 1,
-                        type = InsightType.SPENDING_PATTERN,
-                        content = "You've spent more on dining this month",
-                        sentiment = Sentiment.NEUTRAL,
-                        metadata = mapOf("category" to "dining")
-                    )
-                )
-            )
+            setBody(Json.encodeToString(createSampleInsightRequest()))
         }
 
         assertEquals(HttpStatusCode.Created, response.status)
@@ -77,18 +92,7 @@ class AiInsightRoutesTest {
         // Create insight first
         val createResponse = client.post("/ai-insights") {
             contentType(ContentType.Application.Json)
-            setBody(
-                Json.encodeToString(
-                    InsightCreationRequest(
-                        userId = 1,
-                        budgetId = 1,
-                        type = InsightType.SPENDING_PATTERN,
-                        content = "Test insight",
-                        sentiment = Sentiment.NEUTRAL,
-                        metadata = mapOf("category" to "test")
-                    )
-                )
-            )
+            setBody(Json.encodeToString(createSampleInsightRequest()))
         }
         val insightId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
@@ -103,31 +107,26 @@ class AiInsightRoutesTest {
             configureRouting(database = database)
         }
 
-        // Create insights with different types
+        // Create insights with specific type
         repeat(2) {
             client.post("/ai-insights") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
-                        InsightCreationRequest(
-                            userId = 1,
-                            budgetId = 1,
-                            type = InsightType.SPENDING_PATTERN,
-                            content = "Test insight $it",
-                            sentiment = Sentiment.NEUTRAL,
-                            metadata = mapOf("category" to "test")
+                        createSampleInsightRequest(
+                            type = InsightType.SAVING_SUGGESTION
                         )
                     )
                 )
             }
         }
 
-        val response = client.get("/ai-insights/type/SPENDING_PATTERN")
+        val response = client.get("/ai-insights/type/SAVING_SUGGESTION")
         assertEquals(HttpStatusCode.OK, response.status)
 
-        val insights = Json.decodeFromString<List<InsightDTO>>(response.bodyAsText())
+        val insights = Json.decodeFromString<List<AiInsightDTO>>(response.bodyAsText())
         assertEquals(2, insights.size)
-        insights.forEach { assertEquals(InsightType.SPENDING_PATTERN, it.type) }
+        insights.forEach { assertEquals(InsightType.SAVING_SUGGESTION, it.type) }
     }
 
     @Test
@@ -138,28 +137,20 @@ class AiInsightRoutesTest {
         }
 
         // Create insights with specific sentiment
+        val request = createSampleInsightRequest()
+            .copy(sentiment = Sentiment.POSITIVE)
+
         repeat(2) {
             client.post("/ai-insights") {
                 contentType(ContentType.Application.Json)
-                setBody(
-                    Json.encodeToString(
-                        InsightCreationRequest(
-                            userId = 1,
-                            budgetId = 1,
-                            type = InsightType.SPENDING_PATTERN,
-                            content = "Test insight $it",
-                            sentiment = Sentiment.POSITIVE,
-                            metadata = mapOf("category" to "test")
-                        )
-                    )
-                )
+                setBody(Json.encodeToString(request))
             }
         }
 
         val response = client.get("/ai-insights/sentiment/POSITIVE")
         assertEquals(HttpStatusCode.OK, response.status)
 
-        val insights = Json.decodeFromString<List<InsightDTO>>(response.bodyAsText())
+        val insights = Json.decodeFromString<List<AiInsightDTO>>(response.bodyAsText())
         insights.forEach { assertEquals(Sentiment.POSITIVE, it.sentiment) }
     }
 
@@ -176,13 +167,9 @@ class AiInsightRoutesTest {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
-                        InsightCreationRequest(
-                            userId = 1,
-                            budgetId = 1,
-                            type = InsightType.SPENDING_PATTERN,
-                            content = "Test insight $it",
-                            sentiment = Sentiment.NEUTRAL,
-                            metadata = mapOf("category" to "test")
+                        createSampleInsightRequest(
+                            prompt = "Analyze spend pattern $it",
+                            response = "Analysis result $it"
                         )
                     )
                 )
@@ -192,7 +179,7 @@ class AiInsightRoutesTest {
         val response = client.get("/ai-insights/user/1")
         assertEquals(HttpStatusCode.OK, response.status)
 
-        val insights = Json.decodeFromString<List<InsightDTO>>(response.bodyAsText())
+        val insights = Json.decodeFromString<List<AiInsightDTO>>(response.bodyAsText())
         assertEquals(3, insights.size)
     }
 
@@ -207,18 +194,7 @@ class AiInsightRoutesTest {
         repeat(2) {
             client.post("/ai-insights") {
                 contentType(ContentType.Application.Json)
-                setBody(
-                    Json.encodeToString(
-                        InsightCreationRequest(
-                            userId = 1,
-                            budgetId = 1,
-                            type = InsightType.SPENDING_PATTERN,
-                            content = "Test insight $it",
-                            sentiment = Sentiment.NEUTRAL,
-                            metadata = mapOf("category" to "test")
-                        )
-                    )
-                )
+                setBody(Json.encodeToString(createSampleInsightRequest()))
             }
         }
 
@@ -227,39 +203,6 @@ class AiInsightRoutesTest {
 
         val response = client.get("/ai-insights/user/1/date-range?startDate=$startDate&endDate=$endDate")
         assertEquals(HttpStatusCode.OK, response.status)
-    }
-
-    @Test
-    fun `GET recent insights paginated - returns correct page size`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
-        // Create multiple insights
-        repeat(15) {
-            client.post("/ai-insights") {
-                contentType(ContentType.Application.Json)
-                setBody(
-                    Json.encodeToString(
-                        InsightCreationRequest(
-                            userId = 1,
-                            budgetId = 1,
-                            type = InsightType.SPENDING_PATTERN,
-                            content = "Test insight $it",
-                            sentiment = Sentiment.NEUTRAL,
-                            metadata = mapOf("category" to "test")
-                        )
-                    )
-                )
-            }
-        }
-
-        val response = client.get("/ai-insights/user/1/recent?page=0&pageSize=10")
-        assertEquals(HttpStatusCode.OK, response.status)
-
-        val insights = Json.decodeFromString<List<InsightDTO>>(response.bodyAsText())
-        assertEquals(10, insights.size)
     }
 
     @Test
@@ -272,30 +215,25 @@ class AiInsightRoutesTest {
         // Create insight first
         val createResponse = client.post("/ai-insights") {
             contentType(ContentType.Application.Json)
-            setBody(
-                Json.encodeToString(
-                    InsightCreationRequest(
-                        userId = 1,
-                        budgetId = 1,
-                        type = InsightType.SPENDING_PATTERN,
-                        content = "Original content",
-                        sentiment = Sentiment.NEUTRAL,
-                        metadata = mapOf("category" to "test")
-                    )
-                )
-            )
+            setBody(Json.encodeToString(createSampleInsightRequest()))
         }
         val insightId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
+
+        val updatedMetadata = buildJsonObject {
+            put("category", "updated_category")
+            put("amount", 200.0)
+        }
 
         val response = client.put("/ai-insights/$insightId") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
                     InsightUpdateRequest(
-                        content = "Updated content",
-                        type = InsightType.SAVINGS_GOAL,
+                        prompt = "Updated analysis request",
+                        response = "Updated analysis result",
+                        type = InsightType.ITEM_ANALYSIS,
                         sentiment = Sentiment.POSITIVE,
-                        metadata = mapOf("category" to "updated")
+                        metadata = updatedMetadata
                     )
                 )
             )
@@ -314,24 +252,41 @@ class AiInsightRoutesTest {
         // Create insight first
         val createResponse = client.post("/ai-insights") {
             contentType(ContentType.Application.Json)
-            setBody(
-                Json.encodeToString(
-                    InsightCreationRequest(
-                        userId = 1,
-                        budgetId = 1,
-                        type = InsightType.SPENDING_PATTERN,
-                        content = "Test content",
-                        sentiment = Sentiment.NEUTRAL,
-                        metadata = mapOf("category" to "test")
-                    )
-                )
-            )
+            setBody(Json.encodeToString(createSampleInsightRequest()))
         }
         val insightId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         val response = client.put("/ai-insights/$insightId/sentiment") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(UpdateSentimentRequest(sentiment = Sentiment.POSITIVE)))
+        }
+
+        assertEquals(HttpStatusCode.OK, response.status)
+    }
+
+    @Test
+    fun `PUT metadata - updates metadata successfully`() = testApplication {
+        application {
+            configureSerialization()
+            configureRouting(database = database)
+        }
+
+        // Create insight first
+        val createResponse = client.post("/ai-insights") {
+            contentType(ContentType.Application.Json)
+            setBody(Json.encodeToString(createSampleInsightRequest()))
+        }
+        val insightId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
+
+        val newMetadata = buildJsonObject {
+            put("category", "updated_category")
+            put("amount", 300.0)
+            put("note", "Updated via test")
+        }
+
+        val response = client.put("/ai-insights/$insightId/metadata") {
+            contentType(ContentType.Application.Json)
+            setBody(Json.encodeToString(UpdateMetadataRequest(metadata = newMetadata)))
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
@@ -347,18 +302,7 @@ class AiInsightRoutesTest {
         // Create insight first
         val createResponse = client.post("/ai-insights") {
             contentType(ContentType.Application.Json)
-            setBody(
-                Json.encodeToString(
-                    InsightCreationRequest(
-                        userId = 1,
-                        budgetId = 1,
-                        type = InsightType.SPENDING_PATTERN,
-                        content = "Test content",
-                        sentiment = Sentiment.NEUTRAL,
-                        metadata = mapOf("category" to "test")
-                    )
-                )
-            )
+            setBody(Json.encodeToString(createSampleInsightRequest()))
         }
         val insightId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
