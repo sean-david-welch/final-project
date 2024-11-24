@@ -1,15 +1,11 @@
 package com.budgetai.services
 
+import com.budgetai.models.CategoryCreationRequest
 import com.budgetai.models.CategoryDTO
 import com.budgetai.models.CategoryType
 import com.budgetai.repositories.CategoryRepository
 
 class CategoryService(private val repository: CategoryRepository) {
-
-    // Data Models
-    // Request model for creating a new category
-
-
     // Helper Methods
     // Verifies a category exists and returns it or throws exception
     private suspend fun validateCategoryExists(id: Int): CategoryDTO {
