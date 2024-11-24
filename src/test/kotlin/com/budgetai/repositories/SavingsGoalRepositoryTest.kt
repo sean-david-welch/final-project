@@ -28,8 +28,7 @@ class SavingsGoalRepositoryTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -49,10 +48,7 @@ class SavingsGoalRepositoryTest {
     }
 
     private fun createSampleGoal(
-        name: String = "Test Goal",
-        targetAmount: Double = 1000.0,
-        currentAmount: Double = 0.0,
-        userId: Int = 1
+        name: String = "Test Goal", targetAmount: Double = 1000.0, currentAmount: Double = 0.0, userId: Int = 1
     ): SavingsGoalDTO {
         val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         val targetDate = today.plus(kotlinx.datetime.DatePeriod(months = 6))
@@ -217,9 +213,7 @@ class SavingsGoalRepositoryTest {
         // When
         val createdId = repository.create(initialGoal)
         val updatedGoal = initialGoal.copy(
-            id = createdId,
-            name = "Updated Name",
-            targetAmount = 2000.0
+            id = createdId, name = "Updated Name", targetAmount = 2000.0
         )
         repository.update(createdId, updatedGoal)
         val retrievedGoal = repository.findById(createdId)
