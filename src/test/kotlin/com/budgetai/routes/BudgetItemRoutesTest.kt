@@ -57,7 +57,6 @@ class BudgetItemRoutesTest {
                         categoryId = 1,
                         name = "Test Item",
                         amount = 100.0,
-                        description = "Test Description"
                     )
                 )
             )
@@ -79,14 +78,12 @@ class BudgetItemRoutesTest {
                 categoryId = 1,
                 name = "Item 1",
                 amount = 100.0,
-                description = "Description 1"
             ),
             BudgetItemCreationRequest(
                 budgetId = 1,
                 categoryId = 1,
                 name = "Item 2",
                 amount = 200.0,
-                description = "Description 2"
             )
         )
 
@@ -115,7 +112,6 @@ class BudgetItemRoutesTest {
                         categoryId = 1,
                         name = "Test Item",
                         amount = 100.0,
-                        description = "Test Description"
                     )
                 )
             )
@@ -144,7 +140,6 @@ class BudgetItemRoutesTest {
                             categoryId = 1,
                             name = "Test Item $it",
                             amount = 100.0,
-                            description = "Description $it"
                         )
                     )
                 )
@@ -176,7 +171,6 @@ class BudgetItemRoutesTest {
                             categoryId = 1,
                             name = "Test Item $it",
                             amount = 100.0,
-                            description = "Description $it"
                         )
                     )
                 )
@@ -207,7 +201,6 @@ class BudgetItemRoutesTest {
                         categoryId = 1,
                         name = "Test Item",
                         amount = 100.0,
-                        description = "Test Description"
                     )
                 )
             )
@@ -221,7 +214,6 @@ class BudgetItemRoutesTest {
                     BudgetItemUpdateRequest(
                         name = "Updated Item",
                         amount = 150.0,
-                        description = "Updated Description",
                         categoryId = 1
                     )
                 )
@@ -248,7 +240,6 @@ class BudgetItemRoutesTest {
                         categoryId = 1,
                         name = "Test Item",
                         amount = 100.0,
-                        description = "Test Description"
                     )
                 )
             )
@@ -280,7 +271,6 @@ class BudgetItemRoutesTest {
                         categoryId = 1,
                         name = "Test Item",
                         amount = 100.0,
-                        description = "Test Description"
                     )
                 )
             )
@@ -312,7 +302,6 @@ class BudgetItemRoutesTest {
                             categoryId = 1,
                             name = "Test Item $it",
                             amount = 100.0,
-                            description = "Description $it"
                         )
                     )
                 )
