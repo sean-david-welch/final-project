@@ -1,6 +1,9 @@
 package com.budgetai.services
 
+import com.budgetai.models.GoalProgress
+import com.budgetai.models.SavingsGoalCreationRequest
 import com.budgetai.models.SavingsGoalDTO
+import com.budgetai.models.SavingsGoalUpdateRequest
 import com.budgetai.repositories.SavingsGoalRepository
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
