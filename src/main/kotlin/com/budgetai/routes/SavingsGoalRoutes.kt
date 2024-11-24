@@ -1,12 +1,12 @@
 package com.budgetai.routes
 
+import com.budgetai.models.*
 import com.budgetai.repositories.SavingsGoalRepository
 import com.budgetai.services.SavingsGoalService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 
 fun Route.savingsGoalRoutes(database: Database) {
@@ -19,7 +19,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Create new savings goal
         post {
             try {
-                val request = call.receive<SavingsGoalService.SavingsGoalCreationRequest>()
+                val request = call.receive<SavingsGoalCreationRequest>()
                 val goalId = savingsGoalService.createSavingsGoal(request)
                 call.respond(HttpStatusCode.Created, mapOf("id" to goalId))
             } catch (e: IllegalArgumentException) {
@@ -142,7 +142,7 @@ fun Route.savingsGoalRoutes(database: Database) {
             try {
                 val id =
                     call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
-                val request = call.receive<SavingsGoalService.SavingsGoalUpdateRequest>()
+                val request = call.receive<SavingsGoalUpdateRequest>()
                 savingsGoalService.updateSavingsGoal(id, request)
                 call.respond(HttpStatusCode.OK, "Savings goal updated successfully")
             } catch (e: IllegalArgumentException) {
