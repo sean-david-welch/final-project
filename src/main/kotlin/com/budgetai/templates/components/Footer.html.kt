@@ -3,14 +3,11 @@ package com.budgetai.templates.components
 import kotlinx.html.*
 
 data class SimpleFooterLink(
-    val text: String,
-    val href: String
+    val text: String, val href: String
 )
 
 fun FlowContent.Footer(
-    companyName: String = "Your Company",
-    links: List<SimpleFooterLink> = listOf(),
-    showThemeToggle: Boolean = false
+    companyName: String = "Your Company", links: List<SimpleFooterLink> = listOf(), showThemeToggle: Boolean = false
 ) {
     footer {
         classes = setOf("footer")
