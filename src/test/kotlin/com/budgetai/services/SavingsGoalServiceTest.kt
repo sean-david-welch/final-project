@@ -27,8 +27,8 @@ class SavingsGoalServiceTest {
     private lateinit var service: SavingsGoalService
     private val dbFile = File("test.db")
     private val userId = 1
-    private val tomorrow = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault()).date.plus(kotlinx.datetime.DatePeriod(days = 1)).toString()
+    private val tomorrow =
+        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.plus(kotlinx.datetime.DatePeriod(days = 1)).toString()
 
     @Before
     fun setUp() {
