@@ -110,8 +110,7 @@ fun Route.categoryRoutes(database: Database) {
                 val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
                 val request = call.receive<UpdateCategoryRequest>()
-                val existingCategory =
-                    categoryService.getCategory(id) ?: throw IllegalArgumentException("Category not found")
+                val existingCategory = categoryService.getCategory(id) ?: throw IllegalArgumentException("Category not found")
 
                 val updatedCategory = existingCategory.copy(
                     name = request.name, type = request.type, description = request.description
