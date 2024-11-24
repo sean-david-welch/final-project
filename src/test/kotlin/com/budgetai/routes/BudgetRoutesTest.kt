@@ -43,7 +43,7 @@ class BudgetRoutesTest {
     fun `POST budget - creates budget successfully`() = testApplication {
         // Set up
         application {
-            configureRouting()  // Your main routing configuration
+            configureRouting(database = database)  // Your main routing configuration
         }
 
         // Test
@@ -71,7 +71,7 @@ class BudgetRoutesTest {
     fun `GET budget - returns budget when exists`() = testApplication {
         // Set up
         application {
-            configureRouting()
+            configureRouting(database = database)
         }
 
         // Create a budget first
@@ -102,7 +102,7 @@ class BudgetRoutesTest {
     @Test
     fun `GET budget - returns 404 when budget doesn't exist`() = testApplication {
         application {
-            configureRouting()
+            configureRouting(database = database)
         }
 
         val response = client.get("/budgets/999")
@@ -112,7 +112,7 @@ class BudgetRoutesTest {
     @Test
     fun `PUT budget totals - updates successfully`() = testApplication {
         application {
-            configureRouting()
+            configureRouting(database = database)
         }
 
         // Create a budget first
@@ -150,7 +150,7 @@ class BudgetRoutesTest {
     @Test
     fun `GET budgets by user - returns all user budgets`() = testApplication {
         application {
-            configureRouting()
+            configureRouting(database = database)
         }
 
         // Create two budgets for the same user
@@ -183,7 +183,7 @@ class BudgetRoutesTest {
     @Test
     fun `DELETE budget - deletes successfully`() = testApplication {
         application {
-            configureRouting()
+            configureRouting(database = database)
         }
 
         // Create a budget first
