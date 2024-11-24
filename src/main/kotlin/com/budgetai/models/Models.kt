@@ -25,17 +25,6 @@ object Categories : IntIdTable("categories") {
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }
 
-object Budgets : IntIdTable("budgets") {
-    val userId = reference("user_id", Users, onDelete = ReferenceOption.CASCADE)
-    val name = varchar("name", 100)
-    val description = text("description").nullable()
-    val startDate = date("start_date").nullable()
-    val endDate = date("end_date").nullable()
-    val totalIncome = decimal("total_income", 10, 2).default(BigDecimal.ZERO)
-    val totalExpenses = decimal("total_expenses", 10, 2).default(BigDecimal.ZERO)
-    val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
-}
-
 object BudgetItems : IntIdTable("budget_items") {
     val budgetId = reference("budget_id", Budgets, onDelete = ReferenceOption.CASCADE)
     val categoryId = reference("category_id", Categories, onDelete = ReferenceOption.RESTRICT)
