@@ -9,9 +9,7 @@ object DatabaseConfig {
     private const val MIGRATIONS_LOCATION = "classpath:migrations"
 
     data class DatabaseSettings(
-        val journalMode: String = "WAL",
-        val foreignKeys: Boolean = true,
-        val migrationLocation: String = MIGRATIONS_LOCATION
+        val journalMode: String = "WAL", val foreignKeys: Boolean = true, val migrationLocation: String = MIGRATIONS_LOCATION
     )
 
     fun initialize(settings: DatabaseSettings = DatabaseSettings()): Database {
@@ -35,8 +33,7 @@ object DatabaseConfig {
     }
 
     private fun migrateDatabase(jdbcUrl: String, migrationLocation: String) {
-        Flyway.configure().dataSource(jdbcUrl, "", "").locations(migrationLocation).mixed(true).baselineOnMigrate(true)
-            .load().migrate()
+        Flyway.configure().dataSource(jdbcUrl, "", "").locations(migrationLocation).mixed(true).baselineOnMigrate(true).load().migrate()
     }
 
     private fun connectToDatabase(dbFile: File, settings: DatabaseSettings): Database {
