@@ -1,17 +1,11 @@
 package com.budgetai.services
 
+import com.budgetai.models.BudgetItemCreationRequest
 import com.budgetai.models.BudgetItemDTO
+import com.budgetai.models.BudgetItemUpdateRequest
 import com.budgetai.repositories.BudgetItemRepository
 
 class BudgetItemService(private val repository: BudgetItemRepository) {
-    // Data Models
-    data class BudgetItemCreationRequest(
-        val budgetId: Int, val categoryId: Int, val name: String, val amount: Double
-    )
-
-    data class BudgetItemUpdateRequest(
-        val name: String? = null, val categoryId: Int? = null, val amount: Double? = null
-    )
 
     // Helper Methods
     private fun validateAmount(amount: Double) {
