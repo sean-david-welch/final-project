@@ -29,8 +29,7 @@ class UserServiceTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -54,9 +53,7 @@ class UserServiceTest {
     fun `createUser should create user with valid data`() = runBlocking {
         // Given
         val request = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
 
         // When
@@ -73,9 +70,7 @@ class UserServiceTest {
     fun `createUser should throw exception for invalid email format`() = runBlocking {
         // Given
         val request = UserService.UserCreationRequest(
-            email = "invalid-email",
-            name = validName,
-            password = validPassword
+            email = "invalid-email", name = validName, password = validPassword
         )
 
         // When/Then
@@ -88,9 +83,7 @@ class UserServiceTest {
     fun `createUser should throw exception for weak password`() = runBlocking {
         // Given
         val request = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = "weak"
+            email = validEmail, name = validName, password = "weak"
         )
 
         // When/Then
@@ -103,9 +96,7 @@ class UserServiceTest {
     fun `createUser should throw exception for duplicate email`() = runBlocking {
         // Given
         val request = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         service.createUser(request)
 
@@ -119,15 +110,12 @@ class UserServiceTest {
     fun `authenticateUser should succeed with correct credentials`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         service.createUser(createRequest)
 
         val authRequest = UserService.UserAuthenticationRequest(
-            email = validEmail,
-            password = validPassword
+            email = validEmail, password = validPassword
         )
 
         // When
@@ -142,15 +130,12 @@ class UserServiceTest {
     fun `authenticateUser should return null for incorrect password`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         service.createUser(createRequest)
 
         val authRequest = UserService.UserAuthenticationRequest(
-            email = validEmail,
-            password = "wrongpassword123!"
+            email = validEmail, password = "wrongpassword123!"
         )
 
         // When
@@ -164,16 +149,12 @@ class UserServiceTest {
     fun `updateUser should update user information`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
 
         val updatedUser = UserDTO(
-            id = userId,
-            email = "new@example.com",
-            name = "Updated Name"
+            id = userId, email = "new@example.com", name = "Updated Name"
         )
 
         // When
@@ -189,16 +170,12 @@ class UserServiceTest {
     fun `updateUser should throw exception for invalid email format`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
 
         val updatedUser = UserDTO(
-            id = userId,
-            email = "invalid-email",
-            name = "Updated Name"
+            id = userId, email = "invalid-email", name = "Updated Name"
         )
 
         // When/Then
@@ -211,9 +188,7 @@ class UserServiceTest {
     fun `updatePassword should succeed with correct current password`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
         val newPassword = "NewPassword123!"
@@ -223,8 +198,7 @@ class UserServiceTest {
 
         // Then
         val authRequest = UserService.UserAuthenticationRequest(
-            email = validEmail,
-            password = newPassword
+            email = validEmail, password = newPassword
         )
         val authenticatedUser = service.authenticateUser(authRequest)
         assertNotNull(authenticatedUser)
@@ -234,9 +208,7 @@ class UserServiceTest {
     fun `updatePassword should throw exception for incorrect current password`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
 
@@ -250,9 +222,7 @@ class UserServiceTest {
     fun `updatePassword should throw exception for weak new password`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
 
@@ -266,9 +236,7 @@ class UserServiceTest {
     fun `deleteUser should remove user`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
 
@@ -284,9 +252,7 @@ class UserServiceTest {
     fun `getUserByEmail should return correct user`() = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
-            email = validEmail,
-            name = validName,
-            password = validPassword
+            email = validEmail, name = validName, password = validPassword
         )
         service.createUser(createRequest)
 
