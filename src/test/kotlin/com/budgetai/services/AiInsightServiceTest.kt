@@ -1,8 +1,6 @@
 package com.budgetai.services
 
-import com.budgetai.models.AiInsights
-import com.budgetai.models.InsightType
-import com.budgetai.models.Sentiment
+import com.budgetai.models.*
 import com.budgetai.repositories.AiInsightRepository
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.*
@@ -61,7 +59,7 @@ class AiInsightServiceTest {
     @Test
     fun `createInsight should create insight with valid request`() = runBlocking {
         // Given
-        val request = AiInsightService.InsightCreationRequest(
+        val request = InsightCreationRequest(
             userId = testUserId,
             budgetId = testBudgetId,
             budgetItemId = testBudgetItemId,
@@ -87,7 +85,7 @@ class AiInsightServiceTest {
     @Test
     fun `createInsight should throw exception for empty prompt`(): Unit = runBlocking {
         // Given
-        val request = AiInsightService.InsightCreationRequest(
+        val request = InsightCreationRequest(
             userId = testUserId,
             budgetId = testBudgetId,
             prompt = "",
@@ -104,7 +102,7 @@ class AiInsightServiceTest {
     @Test
     fun `createInsight should throw exception for long response`(): Unit = runBlocking {
         // Given
-        val request = AiInsightService.InsightCreationRequest(
+        val request = InsightCreationRequest(
             userId = testUserId,
             budgetId = testBudgetId,
             prompt = testPrompt,
@@ -121,7 +119,7 @@ class AiInsightServiceTest {
     @Test
     fun `updateInsight should update insight details correctly`() = runBlocking {
         // Given
-        val createRequest = AiInsightService.InsightCreationRequest(
+        val createRequest = InsightCreationRequest(
             userId = testUserId,
             budgetId = testBudgetId,
             prompt = testPrompt,
@@ -130,7 +128,7 @@ class AiInsightServiceTest {
         )
         val insightId = service.createInsight(createRequest)
 
-        val updateRequest = AiInsightService.InsightUpdateRequest(
+        val updateRequest = InsightUpdateRequest(
             prompt = "Updated prompt", response = "Updated response", type = InsightType.SAVING_SUGGESTION
         )
 
@@ -147,7 +145,7 @@ class AiInsightServiceTest {
     @Test
     fun `updateInsightSentiment should update sentiment correctly`() = runBlocking {
         // Given
-        val createRequest = AiInsightService.InsightCreationRequest(
+        val createRequest = InsightCreationRequest(
             userId = testUserId,
             budgetId = testBudgetId,
             prompt = testPrompt,
@@ -168,14 +166,14 @@ class AiInsightServiceTest {
     fun `getUserInsightAnalytics should return correct analytics`() = runBlocking {
         // Given
         val requests = listOf(
-            AiInsightService.InsightCreationRequest(
+            InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
                 prompt = testPrompt,
                 response = testResponse,
                 type = InsightType.ITEM_ANALYSIS,
                 sentiment = Sentiment.POSITIVE
-            ), AiInsightService.InsightCreationRequest(
+            ), InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
                 prompt = testPrompt,
@@ -201,7 +199,7 @@ class AiInsightServiceTest {
     fun `getRecentInsightsPaginated should return correct page size`() = runBlocking {
         // Given
         val requests = List(15) {
-            AiInsightService.InsightCreationRequest(
+            InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
                 prompt = testPrompt,
@@ -231,7 +229,7 @@ class AiInsightServiceTest {
             now.year, now.month, now.dayOfMonth + 1, now.hour, now.minute, now.second, now.nanosecond
         )
 
-        val request = AiInsightService.InsightCreationRequest(
+        val request = InsightCreationRequest(
             userId = testUserId,
             budgetId = testBudgetId,
             prompt = testPrompt,
@@ -251,7 +249,7 @@ class AiInsightServiceTest {
     fun `deleteUserInsights should remove all user insights`() = runBlocking {
         // Given
         val requests = List(3) {
-            AiInsightService.InsightCreationRequest(
+            InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
                 prompt = testPrompt,
@@ -273,13 +271,13 @@ class AiInsightServiceTest {
     fun `getInsightsByType should return correct insights`() = runBlocking {
         // Given
         val requests = listOf(
-            AiInsightService.InsightCreationRequest(
+            InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
                 prompt = testPrompt,
                 response = testResponse,
                 type = InsightType.ITEM_ANALYSIS
-            ), AiInsightService.InsightCreationRequest(
+            ), InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
                 prompt = testPrompt,
