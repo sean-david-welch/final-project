@@ -175,7 +175,7 @@ class SavingsGoalRepositoryTest {
         val createdId = repository.create(goal)
 
         // When
-        val isOnTrack = repository.isGoalOnTrack(createdId)
+        repository.isGoalOnTrack(createdId)
         val remainingAmount = repository.getRemainingAmount(createdId)
         val dailySavings = repository.getRequiredDailySavings(createdId)
 

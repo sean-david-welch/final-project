@@ -124,7 +124,7 @@ class UserRepositoryTest {
         val user2 = createSampleUser(email = "user2@example.com")
 
         // When
-        val id1 = repository.create(user1)
+        repository.create(user1)
         val id2 = repository.create(user2)
 
         // Then
