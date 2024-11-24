@@ -26,8 +26,7 @@ class UserRoutesTest {
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
         transaction(database) {
             SchemaUtils.create(Users)
@@ -54,9 +53,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -80,9 +77,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -94,9 +89,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password456",
-                        name = "Another User"
+                        email = "test@example.com", password = "password456", name = "Another User"
                     )
                 )
             )
@@ -118,9 +111,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -132,8 +123,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserAuthenticationRequest(
-                        email = "test@example.com",
-                        password = "password123"
+                        email = "test@example.com", password = "password123"
                     )
                 )
             )
@@ -155,9 +145,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -169,8 +157,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserAuthenticationRequest(
-                        email = "test@example.com",
-                        password = "wrongpassword"
+                        email = "test@example.com", password = "wrongpassword"
                     )
                 )
             )
@@ -192,9 +179,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -218,9 +203,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -243,9 +226,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -257,8 +238,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UpdateUserRequest(
-                        email = "updated@example.com",
-                        name = "Updated User"
+                        email = "updated@example.com", name = "Updated User"
                     )
                 )
             )
@@ -280,9 +260,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -294,8 +272,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UpdatePasswordRequest(
-                        currentPassword = "password123",
-                        newPassword = "newpassword123"
+                        currentPassword = "password123", newPassword = "newpassword123"
                     )
                 )
             )
@@ -317,9 +294,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
@@ -331,8 +306,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UpdatePasswordRequest(
-                        currentPassword = "wrongpassword",
-                        newPassword = "newpassword123"
+                        currentPassword = "wrongpassword", newPassword = "newpassword123"
                     )
                 )
             )
@@ -354,9 +328,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "password123",
-                        name = "Test User"
+                        email = "test@example.com", password = "password123", name = "Test User"
                     )
                 )
             )
