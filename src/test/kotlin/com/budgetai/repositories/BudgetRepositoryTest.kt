@@ -1,5 +1,9 @@
 package com.budgetai.repositories
 
+import com.budgetai.models.BudgetDTO
+import com.budgetai.models.Budgets
+import com.budgetai.models.Users
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -9,10 +13,6 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
-import kotlinx.coroutines.runBlocking
-import com.budgetai.models.BudgetDTO
-import com.budgetai.models.Budgets
-import com.budgetai.models.Users
 
 class BudgetRepositoryTest {
     private lateinit var database: Database
