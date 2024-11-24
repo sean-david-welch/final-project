@@ -76,7 +76,7 @@ class SavingsGoalServiceTest {
     }
 
     @Test
-    fun `createSavingsGoal should throw exception for negative target amount`() = runBlocking {
+    fun `createSavingsGoal should throw exception for negative target amount`(): Unit = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
             userId = userId, name = "Invalid Goal", targetAmount = -1000.0
@@ -89,7 +89,7 @@ class SavingsGoalServiceTest {
     }
 
     @Test
-    fun `createSavingsGoal should throw exception for past target date`() = runBlocking {
+    fun `createSavingsGoal should throw exception for past target date`(): Unit = runBlocking {
         // Given
         val pastDate = "2020-01-01"
         val request = SavingsGoalService.SavingsGoalCreationRequest(
@@ -119,7 +119,7 @@ class SavingsGoalServiceTest {
     }
 
     @Test
-    fun `addContribution should throw exception when exceeding target amount`() = runBlocking {
+    fun `addContribution should throw exception when exceeding target amount`(): Unit = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
             userId = userId, name = "Vacation", targetAmount = 5000.0, initialAmount = 4500.0
@@ -149,7 +149,7 @@ class SavingsGoalServiceTest {
     }
 
     @Test
-    fun `withdrawAmount should throw exception when amount exceeds current balance`() = runBlocking {
+    fun `withdrawAmount should throw exception when amount exceeds current balance`(): Unit = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
             userId = userId, name = "Vacation", targetAmount = 5000.0, initialAmount = 1000.0
