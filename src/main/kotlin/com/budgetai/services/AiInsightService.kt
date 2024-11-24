@@ -1,15 +1,11 @@
 package com.budgetai.services
 
-import com.budgetai.models.AiInsightDTO
-import com.budgetai.models.InsightType
-import com.budgetai.models.Sentiment
+import com.budgetai.models.*
 import com.budgetai.repositories.AiInsightRepository
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.JsonElement
 
 class AiInsightService(private val repository: AiInsightRepository) {
-
-
     // Helper Methods
     private fun validatePrompt(prompt: String) {
         require(prompt.isNotBlank()) { "Prompt cannot be empty" }
