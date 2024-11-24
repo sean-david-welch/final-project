@@ -1,7 +1,6 @@
 package com.budgetai
 
 import com.budgetai.plugins.configureHTTP
-import com.budgetai.plugins.configureRouting
 import com.budgetai.plugins.configureSecurity
 import com.budgetai.plugins.configureSerialization
 import io.ktor.server.testing.*
@@ -14,7 +13,6 @@ class ApplicationTest {
             configureSecurity()
             configureHTTP()
             configureSerialization()
-            configureRouting()
         }
     }
 }
