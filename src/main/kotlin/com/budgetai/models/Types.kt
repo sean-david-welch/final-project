@@ -1,13 +1,9 @@
 package com.budgetai.models
 
-enum class CategoryType {
-    EXPENSE, INCOME
-}
+import kotlinx.serialization.Serializable
 
-enum class InsightType {
-    BUDGET_ANALYSIS, ITEM_ANALYSIS, SAVING_SUGGESTION, GENERAL_ADVICE
-}
-
-enum class Sentiment {
-    POSITIVE, NEGATIVE, NEUTRAL
-}
+@Serializable
+data class ErrorResponse(
+    val message: String,
+    val details: Map<String, String>? = null
+)
