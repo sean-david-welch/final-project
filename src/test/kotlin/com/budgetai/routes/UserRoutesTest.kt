@@ -49,9 +49,7 @@ class UserRoutesTest {
         }
 
         val userRequest = UserCreationRequest(
-            email = "test@example.com",
-            password = "StrongPassword999",
-            name = "Test User"
+            email = "test@example.com", password = "StrongPassword999", name = "Test User"
         )
 
         val response = client.post("/users/register") {
