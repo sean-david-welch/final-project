@@ -6,34 +6,83 @@ import com.budgetai.plugins.configureSerialization
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.server.html.*
 import io.ktor.server.testing.*
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.File
+import java.math.BigDecimal
 import kotlin.test.assertEquals
+import kotlin.text.insert
 
 class AiInsightRoutesTest {
     private lateinit var database: Database
     private val dbFile = File("test.db")
 
+    // Sample test data for users, budgets, and budget items
+    private fun setupTestData() = transaction(database) {
+        // Create test user
+        Users.insert {
+            it[id] = 1
+            it[email] = "test@example.com"
+            it[passwordHash] = "hashedPassword123"
+            it[name] = "Test User"
+        }
+
+        // Create test budget
+        Budgets.insert {
+            it[id] = 1
+            it[userId] = 1
+            it[name] = "Monthly Budget"
+            it[description] = "Test budget for insights"
+            it[startDate] = LocalDate(2024, 1, 1)
+            it[endDate] = LocalDate(2024, 12, 31)
+            it[totalIncome] = BigDecimal("5000.00")
+            it[totalExpenses] = BigDecimal("3000.00")
+        }
+
+        // Create test category
+        Categories.insert {
+            it[id] = 1
+            it[name] = "Dining"
+            it[description] = "Food and dining expenses"
+        }
+
+        // Create test budget item
+        BudgetItems.insert {
+            it[id] = 1
+            it[budgetId] = 1
+            it[categoryId] = 1
+            it[name] = "Restaurant Budget"
+            it[amount] = BigDecimal("300.00")
+        }
+    }
+
     private fun createSampleInsightRequest(
         userId: Int = 1,
         budgetId: Int = 1,
-        budgetItemId: Int? = null,
+        budgetItemId: Int? = 1,
         type: InsightType = InsightType.SAVING_SUGGESTION,
         prompt: String = "Analyze my dining expenses for this month",
         response: String = "Your dining expenses have increased by 25% compared to last month. Consider setting a dining budget."
     ): InsightCreationRequest {
         val metadata = buildJsonObject {
-            put("category", "dining")
-            put("amount", 150.0)
+            put("categoryId", 1)
+            put("categoryName", "Dining")
+            put("budgetedAmount", 300.00)
+            put("currentSpend", 250.00)
+            put("previousMonthSpend", 200.00)
+            put("percentageChange", 25.00)
+            put("remainingBudget", 50.00)
         }
 
         return InsightCreationRequest(
@@ -54,14 +103,16 @@ class AiInsightRoutesTest {
             url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
         transaction(database) {
-            SchemaUtils.create(Users, Budgets, BudgetItems, AiInsights)
+            SchemaUtils.create(Users, Categories, Budgets, BudgetItems, AiInsights)
+            setupTestData() // Initialize required test data
         }
     }
 
     @After
     fun tearDown() {
         transaction(database) {
-            SchemaUtils.drop(AiInsights, BudgetItems, Budgets, Users)
+            // Drop tables in correct order to respect foreign key constraints
+            SchemaUtils.drop(AiInsights, BudgetItems, Budgets, Categories, Users)
         }
         dbFile.delete()
     }
