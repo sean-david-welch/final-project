@@ -3,6 +3,7 @@ package com.budgetai.models
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.json.json
@@ -47,8 +48,8 @@ data class InsightCreationRequest(
     val prompt: String,
     val response: String,
     val type: InsightType,
-    val sentiment: Sentiment? = null,
-    val metadata: JsonElement? = null
+    val sentiment: Sentiment = Sentiment.NEUTRAL,
+    val metadata: JsonObject? = null
 )
 
 @Serializable
