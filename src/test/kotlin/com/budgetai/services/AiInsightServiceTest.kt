@@ -1,15 +1,12 @@
 package com.budgetai.services
 
-import com.budgetai.models.AiInsightDTO
 import com.budgetai.models.InsightType
 import com.budgetai.models.Sentiment
 import com.budgetai.repositories.AiInsightRepository
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.jetbrains.exposed.sql.Database
@@ -41,8 +38,7 @@ class AiInsightServiceTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -135,9 +131,7 @@ class AiInsightServiceTest {
         val insightId = service.createInsight(createRequest)
 
         val updateRequest = AiInsightService.InsightUpdateRequest(
-            prompt = "Updated prompt",
-            response = "Updated response",
-            type = InsightType.BUDGET_RECOMMENDATION
+            prompt = "Updated prompt", response = "Updated response", type = InsightType.BUDGET_RECOMMENDATION
         )
 
         // When
@@ -181,8 +175,7 @@ class AiInsightServiceTest {
                 response = testResponse,
                 type = InsightType.SPENDING_PATTERN,
                 sentiment = Sentiment.POSITIVE
-            ),
-            AiInsightService.InsightCreationRequest(
+            ), AiInsightService.InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
                 prompt = testPrompt,
@@ -282,8 +275,7 @@ class AiInsightServiceTest {
                 prompt = testPrompt,
                 response = testResponse,
                 type = InsightType.SPENDING_PATTERN
-            ),
-            AiInsightService.InsightCreationRequest(
+            ), AiInsightService.InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
                 prompt = testPrompt,
