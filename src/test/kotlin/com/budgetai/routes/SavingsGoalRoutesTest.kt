@@ -55,7 +55,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "New Car",
                         targetAmount = 20000.0,
-                        currentAmount = 0.0,
                         targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
@@ -82,7 +81,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "New Car",
                         targetAmount = 20000.0,
-                        currentAmount = 0.0,
                         targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
@@ -111,7 +109,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "New Car",
                         targetAmount = 20000.0,
-                        currentAmount = 5000.0,
                         targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
@@ -144,7 +141,6 @@ class SavingsGoalRoutesTest {
                             userId = 1,
                             name = "Goal $it",
                             targetAmount = 1000.0,
-                            currentAmount = 0.0,
                             targetDate = "2024-12-31",
                             description = "Test goal $it"
                         )
@@ -176,7 +172,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "Active Goal",
                         targetAmount = 1000.0,
-                        currentAmount = 500.0,
                         targetDate = "2024-12-31",
                         description = "Active goal"
                     )
@@ -204,7 +199,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "Original Goal",
                         targetAmount = 1000.0,
-                        currentAmount = 0.0,
                         targetDate = "2024-12-31",
                         description = "Original description"
                     )
@@ -246,7 +240,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "Test Goal",
                         targetAmount = 1000.0,
-                        currentAmount = 0.0,
                         targetDate = "2024-12-31",
                         description = "Test goal"
                     )
@@ -279,7 +272,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "Test Goal",
                         targetAmount = 1000.0,
-                        currentAmount = 500.0,
                         targetDate = "2024-12-31",
                         description = "Test goal"
                     )
@@ -312,7 +304,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "Test Goal",
                         targetAmount = 1000.0,
-                        currentAmount = 0.0,
                         targetDate = "2024-12-31",
                         description = "Test goal"
                     )
@@ -345,7 +336,6 @@ class SavingsGoalRoutesTest {
                         userId = 1,
                         name = "Test Goal",
                         targetAmount = 1000.0,
-                        currentAmount = 0.0,
                         targetDate = "2024-12-31",
                         description = "Test goal"
                     )
