@@ -1,5 +1,6 @@
 package com.budgetai.services
 
+import com.budgetai.models.AiInsights
 import com.budgetai.models.InsightType
 import com.budgetai.models.Sentiment
 import com.budgetai.repositories.AiInsightRepository
