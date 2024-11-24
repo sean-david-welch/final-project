@@ -1,8 +1,8 @@
 package com.budgetai.repositories
 
 import com.budgetai.models.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.*
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.jetbrains.exposed.sql.Database
@@ -16,7 +16,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlinx.coroutines.runBlocking
 
 class AiInsightRepositoryTest {
     private lateinit var database: Database
