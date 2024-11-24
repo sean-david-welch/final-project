@@ -6,12 +6,13 @@ import com.budgetai.plugins.configureSerialization
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.server.html.*
 import io.ktor.server.testing.*
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
@@ -22,7 +23,6 @@ import org.junit.Test
 import java.io.File
 import java.math.BigDecimal
 import kotlin.test.assertEquals
-import kotlin.text.insert
 
 class AiInsightRoutesTest {
     private lateinit var database: Database
