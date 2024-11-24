@@ -23,8 +23,7 @@ class SavingsGoalRepository(private val database: Database) {
     }
 
     // Helper Methods
-    private suspend fun <T> dbQuery(block: suspend () -> T): T =
-        newSuspendedTransaction(Dispatchers.IO, database) { block() }
+    private suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction(Dispatchers.IO, database) { block() }
 
     private fun String.toLocalDate(): LocalDate? {
         return try {
@@ -60,32 +59,32 @@ class SavingsGoalRepository(private val database: Database) {
     // Retrieves active savings goals (not yet reached target amount)
     suspend fun findActiveByUserId(userId: Int): List<SavingsGoalDTO> = dbQuery {
         SavingsGoals.selectAll().where {
-                (SavingsGoals.userId eq userId) and (SavingsGoals.currentAmount less SavingsGoals.targetAmount)
-            }.map(::toSavingsGoal)
+            (SavingsGoals.userId eq userId) and (SavingsGoals.currentAmount less SavingsGoals.targetAmount)
+        }.map(::toSavingsGoal)
     }
 
     // Retrieves completed savings goals
     suspend fun findCompletedByUserId(userId: Int): List<SavingsGoalDTO> = dbQuery {
         SavingsGoals.selectAll().where {
-                (SavingsGoals.userId eq userId) and (SavingsGoals.currentAmount greaterEq SavingsGoals.targetAmount)
-            }.map(::toSavingsGoal)
+            (SavingsGoals.userId eq userId) and (SavingsGoals.currentAmount greaterEq SavingsGoals.targetAmount)
+        }.map(::toSavingsGoal)
     }
 
     // Retrieves upcoming goals (target date in the future)
     suspend fun findUpcomingByUserId(userId: Int): List<SavingsGoalDTO> = dbQuery {
         val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         SavingsGoals.selectAll().where {
-                (SavingsGoals.userId eq userId) and (SavingsGoals.targetDate greater today)
-            }.map(::toSavingsGoal)
+            (SavingsGoals.userId eq userId) and (SavingsGoals.targetDate greater today)
+        }.map(::toSavingsGoal)
     }
 
     // Calculate progress percentage for a goal
     suspend fun calculateProgress(id: Int): Double = dbQuery {
         SavingsGoals.select(SavingsGoals.currentAmount, SavingsGoals.targetAmount).where { SavingsGoals.id eq id }.map {
-                val current = it[SavingsGoals.currentAmount].toDouble()
-                val target = it[SavingsGoals.targetAmount].toDouble()
-                if (target > 0) (current / target) * 100 else 0.0
-            }.singleOrNull() ?: 0.0
+            val current = it[SavingsGoals.currentAmount].toDouble()
+            val target = it[SavingsGoals.targetAmount].toDouble()
+            if (target > 0) (current / target) * 100 else 0.0
+        }.singleOrNull() ?: 0.0
     }
 
     // Get total savings across all goals for a user
@@ -170,10 +169,10 @@ class SavingsGoalRepository(private val database: Database) {
     // Get remaining amount needed to reach goal
     suspend fun getRemainingAmount(id: Int): Double = dbQuery {
         SavingsGoals.select(SavingsGoals.targetAmount, SavingsGoals.currentAmount).where { SavingsGoals.id eq id }.map {
-                val target = it[SavingsGoals.targetAmount].toDouble()
-                val current = it[SavingsGoals.currentAmount].toDouble()
-                maxOf(0.0, target - current)
-            }.singleOrNull() ?: 0.0
+            val target = it[SavingsGoals.targetAmount].toDouble()
+            val current = it[SavingsGoals.currentAmount].toDouble()
+            maxOf(0.0, target - current)
+        }.singleOrNull() ?: 0.0
     }
 
     // Calculate required daily savings to reach goal by target date
