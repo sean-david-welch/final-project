@@ -1,21 +1,12 @@
 package com.budgetai.services
 
+import com.budgetai.models.BudgetCreationRequest
 import com.budgetai.models.BudgetDTO
 import com.budgetai.repositories.BudgetRepository
 import kotlinx.datetime.LocalDate
 import java.math.BigDecimal
 
 class BudgetService(private val repository: BudgetRepository) {
-
-    // Data Models
-    // Request model for creating a new budget
-    data class BudgetCreationRequest(
-        val userId: Int,
-        val name: String,
-        val description: String? = null,
-        val startDate: LocalDate? = null,
-        val endDate: LocalDate? = null
-    )
 
     // Helper Methods
     // Validates that start date is before or equal to end date

@@ -1,5 +1,6 @@
 package com.budgetai.models
 
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
@@ -32,6 +33,15 @@ data class BudgetDTO(
     val totalIncome: Double = 0.0,
     val totalExpenses: Double = 0.0,
     val createdAt: String? = null
+)
+
+// data classes
+data class BudgetCreationRequest(
+    val userId: Int,
+    val name: String,
+    val description: String? = null,
+    val startDate: LocalDate? = null,
+    val endDate: LocalDate? = null
 )
 
 // serializers
