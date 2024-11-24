@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.CurrentTimestamp
 import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
 
 
-// model
+// Model
 object BudgetItems : IntIdTable("budget_items") {
     val budgetId = reference("budget_id", Budgets, onDelete = ReferenceOption.CASCADE)
     val categoryId = reference("category_id", Categories, onDelete = ReferenceOption.RESTRICT)
@@ -16,7 +16,7 @@ object BudgetItems : IntIdTable("budget_items") {
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }
 
-// dto
+// DTO
 @Serializable
 data class BudgetItemDTO(
     val id: Int = 0,
@@ -25,4 +25,20 @@ data class BudgetItemDTO(
     val name: String,
     val amount: Double,
     val createdAt: String? = null
+)
+
+// Serializers
+@Serializable
+data class BudgetItemCreationRequest(
+    val budgetId: Int, val categoryId: Int, val name: String, val amount: Double
+)
+
+@Serializable
+data class BudgetItemUpdateRequest(
+    val name: String? = null, val categoryId: Int? = null, val amount: Double? = null
+)
+
+@Serializable
+data class UpdateAmountRequest(
+    val amount: Double
 )
