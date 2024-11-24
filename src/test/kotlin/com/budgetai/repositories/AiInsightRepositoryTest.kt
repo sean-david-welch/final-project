@@ -47,7 +47,7 @@ class AiInsightRepositoryTest {
         userId: Int = 1,
         budgetId: Int = 1,
         budgetItemId: Int? = null,
-        type: InsightType = InsightType.SPENDING_PATTERN,
+        type: InsightType = InsightType.ITEM_ANALYSIS,
         sentiment: Sentiment = Sentiment.NEUTRAL
     ): AiInsightDTO {
         val metadata = JsonObject(mapOf("key" to JsonPrimitive("value")))
@@ -87,8 +87,8 @@ class AiInsightRepositoryTest {
     fun `test find insights by user id`() = runBlocking {
         // Given
         val userId = 1
-        val insight1 = createSampleInsight(userId = userId, type = InsightType.SPENDING_PATTERN)
-        val insight2 = createSampleInsight(userId = userId, type = InsightType.BUDGET_SUGGESTION)
+        val insight1 = createSampleInsight(userId = userId, type = InsightType.ITEM_ANALYSIS)
+        val insight2 = createSampleInsight(userId = userId, type = InsightType.SAVING_SUGGESTION)
 
         // When
         repository.create(insight1)
@@ -98,7 +98,7 @@ class AiInsightRepositoryTest {
         // Then
         assertEquals(2, userInsights.size)
         assertEquals(
-            setOf(InsightType.SPENDING_PATTERN, InsightType.BUDGET_SUGGESTION), userInsights.map { it.type }.toSet()
+            setOf(InsightType.ITEM_ANALYSIS, InsightType.SAVING_SUGGESTION), userInsights.map { it.type }.toSet()
         )
     }
 
@@ -120,13 +120,13 @@ class AiInsightRepositoryTest {
     @Test
     fun `test find insights by type and sentiment`() = runBlocking {
         // Given
-        val insight1 = createSampleInsight(type = InsightType.SPENDING_PATTERN, sentiment = Sentiment.POSITIVE)
-        val insight2 = createSampleInsight(type = InsightType.SPENDING_PATTERN, sentiment = Sentiment.NEGATIVE)
+        val insight1 = createSampleInsight(type = InsightType.ITEM_ANALYSIS, sentiment = Sentiment.POSITIVE)
+        val insight2 = createSampleInsight(type = InsightType.ITEM_ANALYSIS, sentiment = Sentiment.NEGATIVE)
 
         // When
         repository.create(insight1)
         repository.create(insight2)
-        val typeInsights = repository.findByType(InsightType.SPENDING_PATTERN)
+        val typeInsights = repository.findByType(InsightType.ITEM_ANALYSIS)
         val sentimentInsights = repository.findBySentiment(Sentiment.POSITIVE)
 
         // Then
@@ -198,24 +198,24 @@ class AiInsightRepositoryTest {
         val userId = 1
         repository.create(
             createSampleInsight(
-                userId = userId, type = InsightType.SPENDING_PATTERN, sentiment = Sentiment.POSITIVE
+                userId = userId, type = InsightType.ITEM_ANALYSIS, sentiment = Sentiment.POSITIVE
             )
         )
         repository.create(
             createSampleInsight(
-                userId = userId, type = InsightType.BUDGET_SUGGESTION, sentiment = Sentiment.NEUTRAL
+                userId = userId, type = InsightType.SAVING_SUGGESTION, sentiment = Sentiment.NEUTRAL
             )
         )
         repository.create(
             createSampleInsight(
-                userId = userId, type = InsightType.SPENDING_PATTERN, sentiment = Sentiment.NEGATIVE
+                userId = userId, type = InsightType.ITEM_ANALYSIS, sentiment = Sentiment.NEGATIVE
             )
         )
 
         // When - Test type distribution
         val typeDistribution = repository.getInsightTypeDistribution(userId)
-        assertEquals(2, typeDistribution[InsightType.SPENDING_PATTERN])
-        assertEquals(1, typeDistribution[InsightType.BUDGET_SUGGESTION])
+        assertEquals(2, typeDistribution[InsightType.ITEM_ANALYSIS])
+        assertEquals(1, typeDistribution[InsightType.SAVING_SUGGESTION])
 
         // When - Test sentiment distribution
         val sentimentDistribution = repository.getSentimentDistribution(userId)
