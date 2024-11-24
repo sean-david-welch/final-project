@@ -18,19 +18,6 @@ data class CategoryDTO(
 )
 
 @Serializable
-data class BudgetDTO(
-    val id: Int = 0,
-    val userId: Int,
-    val name: String,
-    val description: String? = null,
-    val startDate: String? = null,
-    val endDate: String? = null,
-    val totalIncome: Double = 0.0,
-    val totalExpenses: Double = 0.0,
-    val createdAt: String? = null
-)
-
-@Serializable
 data class BudgetItemDTO(
     val id: Int = 0,
     val budgetId: Int,
