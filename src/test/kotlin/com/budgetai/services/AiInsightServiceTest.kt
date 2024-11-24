@@ -86,7 +86,7 @@ class AiInsightServiceTest {
     }
 
     @Test
-    fun `createInsight should throw exception for empty prompt`() = runBlocking {
+    fun `createInsight should throw exception for empty prompt`(): Unit = runBlocking {
         // Given
         val request = AiInsightService.InsightCreationRequest(
             userId = testUserId,
@@ -103,7 +103,7 @@ class AiInsightServiceTest {
     }
 
     @Test
-    fun `createInsight should throw exception for long response`() = runBlocking {
+    fun `createInsight should throw exception for long response`(): Unit = runBlocking {
         // Given
         val request = AiInsightService.InsightCreationRequest(
             userId = testUserId,
