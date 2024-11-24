@@ -9,16 +9,7 @@ import javax.crypto.spec.PBEKeySpec
 
 class UserService(private val repository: UserRepository) {
 
-    // Data Models
-    // Request model for creating a new user
-    data class UserCreationRequest(
-        val email: String, val name: String, val password: String
-    )
 
-    // Request model for user authentication
-    data class UserAuthenticationRequest(
-        val email: String, val password: String
-    )
 
     // Helper Methods
     // Generates a random salt for password hashing

@@ -19,3 +19,12 @@ data class UserDTO(
     val id: Int = 0, val email: String, val name: String, val createdAt: String? = null
 )
 
+@Serializable
+data class UserCreationRequest(
+    val email: String, val name: String, val password: String
+)
+
+@Serializable
+data class UserAuthenticationRequest(
+    val email: String, val password: String
+)
