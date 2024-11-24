@@ -4,12 +4,12 @@ import com.budgetai.models.BudgetDTO
 import com.budgetai.models.Budgets
 import com.budgetai.models.Users
 import com.budgetai.plugins.configureRouting
-import com.budgetai.repositories.BudgetRepository
 import com.budgetai.services.BudgetService
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -19,7 +19,6 @@ import org.junit.Before
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
-import kotlinx.serialization.encodeToString
 
 class BudgetRoutesTest {
     private lateinit var database: Database
