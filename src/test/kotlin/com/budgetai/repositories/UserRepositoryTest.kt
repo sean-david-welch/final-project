@@ -84,7 +84,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    fun `test create user with duplicate email throws exception`() = runBlocking {
+    fun `test create user with duplicate email throws exception`(): Unit = runBlocking {
         // Given
         val user1 = createSampleUser()
         val user2 = createSampleUser(name = "Another User") // Same email
@@ -118,7 +118,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    fun `test update user with existing email throws exception`() = runBlocking {
+    fun `test update user with existing email throws exception`(): Unit = runBlocking {
         // Given
         val user1 = createSampleUser(email = "user1@example.com")
         val user2 = createSampleUser(email = "user2@example.com")
