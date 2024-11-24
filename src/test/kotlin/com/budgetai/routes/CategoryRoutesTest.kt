@@ -53,7 +53,7 @@ class CategoryRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    CategoryService.CategoryCreationRequest(
+                    CategoryCreationRequest(
                         name = "Groceries", type = CategoryType.EXPENSE, description = "Food and household items"
                     )
                 )
@@ -78,7 +78,7 @@ class CategoryRoutesTest {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
-                        CategoryService.CategoryCreationRequest(
+                        CategoryCreationRequest(
                             name = "Category $index", type = CategoryType.EXPENSE, description = "Test Description"
                         )
                     )
@@ -104,7 +104,7 @@ class CategoryRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    CategoryService.CategoryCreationRequest(
+                    CategoryCreationRequest(
                         name = "Test Category", type = CategoryType.INCOME, description = "Test Description"
                     )
                 )
@@ -140,7 +140,7 @@ class CategoryRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    CategoryService.CategoryCreationRequest(
+                    CategoryCreationRequest(
                         name = categoryName, type = CategoryType.EXPENSE, description = "Test Description"
                     )
                 )
@@ -163,7 +163,7 @@ class CategoryRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    CategoryService.CategoryCreationRequest(
+                    CategoryCreationRequest(
                         name = "Salary", type = CategoryType.INCOME, description = "Monthly salary"
                     )
                 )
@@ -174,7 +174,7 @@ class CategoryRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    CategoryService.CategoryCreationRequest(
+                    CategoryCreationRequest(
                         name = "Groceries", type = CategoryType.EXPENSE, description = "Food expenses"
                     )
                 )
@@ -199,7 +199,7 @@ class CategoryRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    CategoryService.CategoryCreationRequest(
+                    CategoryCreationRequest(
                         name = "Original Name", type = CategoryType.EXPENSE, description = "Original Description"
                     )
                 )
@@ -241,7 +241,7 @@ class CategoryRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    CategoryService.CategoryCreationRequest(
+                    CategoryCreationRequest(
                         name = "Test Category", type = CategoryType.EXPENSE, description = "Test Description"
                     )
                 )
