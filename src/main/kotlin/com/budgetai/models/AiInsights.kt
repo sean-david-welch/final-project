@@ -39,6 +39,7 @@ data class AiInsightDTO(
 
 // serializers
 // Data Models
+@Serializable
 data class InsightCreationRequest(
     val userId: Int,
     val budgetId: Int,
@@ -50,6 +51,7 @@ data class InsightCreationRequest(
     val metadata: JsonElement? = null
 )
 
+@Serializable
 data class InsightUpdateRequest(
     val prompt: String? = null,
     val response: String? = null,
@@ -58,6 +60,7 @@ data class InsightUpdateRequest(
     val metadata: JsonElement? = null
 )
 
+@Serializable
 data class InsightAnalytics(
     val typeDistribution: Map<InsightType, Int>,
     val sentimentDistribution: Map<Sentiment, Int>,
