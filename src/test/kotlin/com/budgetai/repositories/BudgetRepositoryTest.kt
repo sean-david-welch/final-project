@@ -24,8 +24,7 @@ class BudgetRepositoryTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -128,9 +127,7 @@ class BudgetRepositoryTest {
         // When
         val createdId = repository.create(initialBudget)
         val updatedBudget = initialBudget.copy(
-            id = createdId,
-            name = "Updated Budget",
-            totalIncome = 2000.0
+            id = createdId, name = "Updated Budget", totalIncome = 2000.0
         )
         repository.update(createdId, updatedBudget)
         val retrievedBudget = repository.findById(createdId)
@@ -196,9 +193,7 @@ class BudgetRepositoryTest {
         repository.create(budget1)
         repository.create(budget2)
         val budgets = repository.findByUserIdAndDateRange(
-            userId,
-            "2024-01-01",
-            "2024-03-31"
+            userId, "2024-01-01", "2024-03-31"
         )
 
         // Then
