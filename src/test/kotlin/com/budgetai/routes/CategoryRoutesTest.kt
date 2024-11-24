@@ -3,6 +3,7 @@ package com.budgetai.routes
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
 import com.budgetai.plugins.configureSerialization
+import com.budgetai.services.CategoryService
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -26,8 +27,7 @@ class CategoryRoutesTest {
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
         transaction(database) {
             SchemaUtils.create(Categories)
@@ -54,9 +54,7 @@ class CategoryRoutesTest {
             setBody(
                 Json.encodeToString(
                     CategoryService.CategoryCreationRequest(
-                        name = "Groceries",
-                        type = CategoryType.EXPENSE,
-                        description = "Food and household items"
+                        name = "Groceries", type = CategoryType.EXPENSE, description = "Food and household items"
                     )
                 )
             )
@@ -81,9 +79,7 @@ class CategoryRoutesTest {
                 setBody(
                     Json.encodeToString(
                         CategoryService.CategoryCreationRequest(
-                            name = "Category $index",
-                            type = CategoryType.EXPENSE,
-                            description = "Test Description"
+                            name = "Category $index", type = CategoryType.EXPENSE, description = "Test Description"
                         )
                     )
                 )
@@ -109,9 +105,7 @@ class CategoryRoutesTest {
             setBody(
                 Json.encodeToString(
                     CategoryService.CategoryCreationRequest(
-                        name = "Test Category",
-                        type = CategoryType.INCOME,
-                        description = "Test Description"
+                        name = "Test Category", type = CategoryType.INCOME, description = "Test Description"
                     )
                 )
             )
@@ -147,9 +141,7 @@ class CategoryRoutesTest {
             setBody(
                 Json.encodeToString(
                     CategoryService.CategoryCreationRequest(
-                        name = categoryName,
-                        type = CategoryType.EXPENSE,
-                        description = "Test Description"
+                        name = categoryName, type = CategoryType.EXPENSE, description = "Test Description"
                     )
                 )
             )
@@ -172,9 +164,7 @@ class CategoryRoutesTest {
             setBody(
                 Json.encodeToString(
                     CategoryService.CategoryCreationRequest(
-                        name = "Salary",
-                        type = CategoryType.INCOME,
-                        description = "Monthly salary"
+                        name = "Salary", type = CategoryType.INCOME, description = "Monthly salary"
                     )
                 )
             )
@@ -185,9 +175,7 @@ class CategoryRoutesTest {
             setBody(
                 Json.encodeToString(
                     CategoryService.CategoryCreationRequest(
-                        name = "Groceries",
-                        type = CategoryType.EXPENSE,
-                        description = "Food expenses"
+                        name = "Groceries", type = CategoryType.EXPENSE, description = "Food expenses"
                     )
                 )
             )
@@ -212,9 +200,7 @@ class CategoryRoutesTest {
             setBody(
                 Json.encodeToString(
                     CategoryService.CategoryCreationRequest(
-                        name = "Original Name",
-                        type = CategoryType.EXPENSE,
-                        description = "Original Description"
+                        name = "Original Name", type = CategoryType.EXPENSE, description = "Original Description"
                     )
                 )
             )
@@ -227,9 +213,7 @@ class CategoryRoutesTest {
             setBody(
                 Json.encodeToString(
                     UpdateCategoryRequest(
-                        name = "Updated Name",
-                        type = CategoryType.INCOME,
-                        description = "Updated Description"
+                        name = "Updated Name", type = CategoryType.INCOME, description = "Updated Description"
                     )
                 )
             )
@@ -258,9 +242,7 @@ class CategoryRoutesTest {
             setBody(
                 Json.encodeToString(
                     CategoryService.CategoryCreationRequest(
-                        name = "Test Category",
-                        type = CategoryType.EXPENSE,
-                        description = "Test Description"
+                        name = "Test Category", type = CategoryType.EXPENSE, description = "Test Description"
                     )
                 )
             )
