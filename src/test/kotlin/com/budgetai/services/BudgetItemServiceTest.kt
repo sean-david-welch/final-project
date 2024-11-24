@@ -1,6 +1,5 @@
 package com.budgetai.services
 
-import com.budgetai.models.BudgetItemDTO
 import com.budgetai.repositories.BudgetItemRepository
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
