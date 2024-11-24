@@ -8,32 +8,6 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 class SavingsGoalService(private val repository: SavingsGoalRepository) {
-    // Data Models
-    data class SavingsGoalCreationRequest(
-        val userId: Int,
-        val name: String,
-        val description: String? = null,
-        val targetAmount: Double,
-        val initialAmount: Double = 0.0,
-        val targetDate: String? = null
-    )
-
-    data class SavingsGoalUpdateRequest(
-        val name: String? = null,
-        val description: String? = null,
-        val targetAmount: Double? = null,
-        val targetDate: String? = null
-    )
-
-    data class GoalProgress(
-        val currentAmount: Double,
-        val targetAmount: Double,
-        val percentageComplete: Double,
-        val remainingAmount: Double,
-        val isOnTrack: Boolean,
-        val requiredDailySavings: Double
-    )
-
     // Helper Methods
     private fun validateAmounts(targetAmount: Double, currentAmount: Double = 0.0) {
         require(targetAmount > 0) { "Target amount must be positive" }

@@ -1,5 +1,6 @@
 package com.budgetai.models
 
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentTimestamp
@@ -20,6 +21,7 @@ object SavingsGoals : IntIdTable("savings_goals") {
 
 
 // Serializers
+@Serializable
 data class SavingsGoalCreationRequest(
     val userId: Int,
     val name: String,
@@ -29,6 +31,7 @@ data class SavingsGoalCreationRequest(
     val targetDate: String? = null
 )
 
+@Serializable
 data class SavingsGoalUpdateRequest(
     val name: String? = null,
     val description: String? = null,
@@ -36,6 +39,7 @@ data class SavingsGoalUpdateRequest(
     val targetDate: String? = null
 )
 
+@Serializable
 data class GoalProgress(
     val currentAmount: Double,
     val targetAmount: Double,
