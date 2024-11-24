@@ -19,8 +19,7 @@ class AiInsightRepository(private val database: Database) {
     }
 
     // Helper Methods
-    private suspend fun <T> dbQuery(block: suspend () -> T): T =
-        newSuspendedTransaction(Dispatchers.IO, database) { block() }
+    private suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction(Dispatchers.IO, database) { block() }
 
     // Maps database row to AiInsightDTO
     private fun toAiInsight(row: ResultRow) = AiInsightDTO(
@@ -145,8 +144,7 @@ class AiInsightRepository(private val database: Database) {
     // Analysis Methods
     // Gets the distribution of insight types for a user
     suspend fun getInsightTypeDistribution(userId: Int): Map<InsightType, Int> = dbQuery {
-        AiInsights.selectAll().where { AiInsights.userId eq userId }.groupBy { it[AiInsights.type] }
-            .mapValues { (_, rows) -> rows.size }
+        AiInsights.selectAll().where { AiInsights.userId eq userId }.groupBy { it[AiInsights.type] }.mapValues { (_, rows) -> rows.size }
     }
 
     // Gets the sentiment distribution for a user
@@ -159,7 +157,7 @@ class AiInsightRepository(private val database: Database) {
     suspend fun getRecentInsights(
         userId: Int, limit: Int = 10, offset: Int = 0
     ): List<AiInsightDTO> = dbQuery {
-        AiInsights.selectAll().where { AiInsights.userId eq userId }.orderBy(AiInsights.createdAt to SortOrder.DESC)
-            .limit(limit).offset(offset.toLong()).map(::toAiInsight)
+        AiInsights.selectAll().where { AiInsights.userId eq userId }.orderBy(AiInsights.createdAt to SortOrder.DESC).limit(limit)
+            .offset(offset.toLong()).map(::toAiInsight)
     }
 }
