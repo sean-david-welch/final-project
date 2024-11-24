@@ -35,7 +35,8 @@ data class BudgetDTO(
     val createdAt: String? = null
 )
 
-// data classes
+// serializers
+@Serializable
 data class BudgetCreationRequest(
     val userId: Int,
     val name: String,
@@ -44,7 +45,6 @@ data class BudgetCreationRequest(
     val endDate: LocalDate? = null
 )
 
-// serializers
 @Serializable
 data class UpdateBudgetRequest(
     val name: String, val description: String?, val startDate: String?, val endDate: String?
