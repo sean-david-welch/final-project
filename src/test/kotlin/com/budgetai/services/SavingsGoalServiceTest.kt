@@ -1,10 +1,8 @@
 package com.budgetai.services
 
-import com.budgetai.models.SavingsGoalDTO
 import com.budgetai.repositories.SavingsGoalRepository
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.exposed.sql.Database
