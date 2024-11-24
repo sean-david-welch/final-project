@@ -68,7 +68,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `createUser should throw exception for invalid email format`() = runBlocking {
+    fun `createUser should throw exception for invalid email format`(): Unit = runBlocking {
         // Given
         val request = UserService.UserCreationRequest(
             email = "invalid-email", name = validName, password = validPassword
@@ -81,7 +81,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `createUser should throw exception for weak password`() = runBlocking {
+    fun `createUser should throw exception for weak password`(): Unit = runBlocking {
         // Given
         val request = UserService.UserCreationRequest(
             email = validEmail, name = validName, password = "weak"
@@ -94,7 +94,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `createUser should throw exception for duplicate email`() = runBlocking {
+    fun `createUser should throw exception for duplicate email`(): Unit = runBlocking {
         // Given
         val request = UserService.UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
@@ -168,7 +168,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `updateUser should throw exception for invalid email format`() = runBlocking {
+    fun `updateUser should throw exception for invalid email format`(): Unit = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
@@ -186,7 +186,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `updatePassword should succeed with correct current password`() = runBlocking {
+    fun `updatePassword should succeed with correct current password`(): Unit = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
@@ -206,7 +206,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `updatePassword should throw exception for incorrect current password`() = runBlocking {
+    fun `updatePassword should throw exception for incorrect current password`(): Unit = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
@@ -220,7 +220,7 @@ class UserServiceTest {
     }
 
     @Test
-    fun `updatePassword should throw exception for weak new password`() = runBlocking {
+    fun `updatePassword should throw exception for weak new password`(): Unit = runBlocking {
         // Given
         val createRequest = UserService.UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
