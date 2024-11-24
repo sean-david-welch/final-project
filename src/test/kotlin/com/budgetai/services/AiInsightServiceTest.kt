@@ -225,12 +225,10 @@ class AiInsightServiceTest {
         // Given
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         val startDate = LocalDateTime(
-            now.year, now.month, now.dayOfMonth - 1,
-            now.hour, now.minute, now.second, now.nanosecond
+            now.year, now.month, now.dayOfMonth - 1, now.hour, now.minute, now.second, now.nanosecond
         )
         val endDate = LocalDateTime(
-            now.year, now.month, now.dayOfMonth + 1,
-            now.hour, now.minute, now.second, now.nanosecond
+            now.year, now.month, now.dayOfMonth + 1, now.hour, now.minute, now.second, now.nanosecond
         )
 
         val request = AiInsightService.InsightCreationRequest(
