@@ -26,8 +26,7 @@ class CategoryServiceTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -51,9 +50,7 @@ class CategoryServiceTest {
     fun `createCategory should create category with valid request`() = runBlocking {
         // Given
         val request = CategoryService.CategoryCreationRequest(
-            name = "Groceries",
-            type = CategoryType.EXPENSE,
-            description = "Food and household items"
+            name = "Groceries", type = CategoryType.EXPENSE, description = "Food and household items"
         )
 
         // When
@@ -70,8 +67,7 @@ class CategoryServiceTest {
     fun `createCategory should throw exception when name already exists`() = runBlocking {
         // Given
         val request = CategoryService.CategoryCreationRequest(
-            name = "Groceries",
-            type = CategoryType.EXPENSE
+            name = "Groceries", type = CategoryType.EXPENSE
         )
         service.createCategory(request)
 
@@ -85,15 +81,11 @@ class CategoryServiceTest {
     fun `updateCategory should update when values are valid`() = runBlocking {
         // Given
         val request = CategoryService.CategoryCreationRequest(
-            name = "Groceries",
-            type = CategoryType.EXPENSE
+            name = "Groceries", type = CategoryType.EXPENSE
         )
         val categoryId = service.createCategory(request)
         val updatedCategory = CategoryDTO(
-            id = categoryId,
-            name = "Food",
-            type = CategoryType.EXPENSE,
-            description = "Updated description"
+            id = categoryId, name = "Food", type = CategoryType.EXPENSE, description = "Updated description"
         )
 
         // When
@@ -109,12 +101,10 @@ class CategoryServiceTest {
     fun `updateCategory should throw exception when updating to existing name`() = runBlocking {
         // Given
         val firstCategory = CategoryService.CategoryCreationRequest(
-            name = "Groceries",
-            type = CategoryType.EXPENSE
+            name = "Groceries", type = CategoryType.EXPENSE
         )
         val secondCategory = CategoryService.CategoryCreationRequest(
-            name = "Entertainment",
-            type = CategoryType.EXPENSE
+            name = "Entertainment", type = CategoryType.EXPENSE
         )
         service.createCategory(firstCategory)
         val secondId = service.createCategory(secondCategory)
@@ -122,8 +112,7 @@ class CategoryServiceTest {
         // When/Then
         assertFailsWith<IllegalArgumentException> {
             service.updateCategory(
-                secondId,
-                CategoryDTO(id = secondId, name = "Groceries", type = CategoryType.EXPENSE)
+                secondId, CategoryDTO(id = secondId, name = "Groceries", type = CategoryType.EXPENSE)
             )
         }
     }
@@ -132,8 +121,7 @@ class CategoryServiceTest {
     fun `deleteCategory should remove existing category`() = runBlocking {
         // Given
         val request = CategoryService.CategoryCreationRequest(
-            name = "Groceries",
-            type = CategoryType.EXPENSE
+            name = "Groceries", type = CategoryType.EXPENSE
         )
         val categoryId = service.createCategory(request)
 
@@ -150,14 +138,12 @@ class CategoryServiceTest {
         // Given
         service.createCategory(
             CategoryService.CategoryCreationRequest(
-                name = "Salary",
-                type = CategoryType.INCOME
+                name = "Salary", type = CategoryType.INCOME
             )
         )
         service.createCategory(
             CategoryService.CategoryCreationRequest(
-                name = "Groceries",
-                type = CategoryType.EXPENSE
+                name = "Groceries", type = CategoryType.EXPENSE
             )
         )
 
@@ -177,14 +163,12 @@ class CategoryServiceTest {
         // Given
         service.createCategory(
             CategoryService.CategoryCreationRequest(
-                name = "Salary",
-                type = CategoryType.INCOME
+                name = "Salary", type = CategoryType.INCOME
             )
         )
         service.createCategory(
             CategoryService.CategoryCreationRequest(
-                name = "Groceries",
-                type = CategoryType.EXPENSE
+                name = "Groceries", type = CategoryType.EXPENSE
             )
         )
 
@@ -199,8 +183,7 @@ class CategoryServiceTest {
     fun `getCategoryByName should return correct category`() = runBlocking {
         // Given
         val request = CategoryService.CategoryCreationRequest(
-            name = "Groceries",
-            type = CategoryType.EXPENSE
+            name = "Groceries", type = CategoryType.EXPENSE
         )
         service.createCategory(request)
 
