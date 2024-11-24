@@ -27,8 +27,7 @@ class BudgetItemServiceTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -52,10 +51,7 @@ class BudgetItemServiceTest {
     fun `createBudgetItem should create item with valid request`() = runBlocking {
         // Given
         val request = BudgetItemService.BudgetItemCreationRequest(
-            budgetId = testBudgetId,
-            categoryId = testCategoryId,
-            name = "Groceries",
-            amount = 500.0
+            budgetId = testBudgetId, categoryId = testCategoryId, name = "Groceries", amount = 500.0
         )
 
         // When
@@ -73,10 +69,7 @@ class BudgetItemServiceTest {
     fun `createBudgetItem should throw exception for negative amount`() = runBlocking {
         // Given
         val request = BudgetItemService.BudgetItemCreationRequest(
-            budgetId = testBudgetId,
-            categoryId = testCategoryId,
-            name = "Groceries",
-            amount = -100.0
+            budgetId = testBudgetId, categoryId = testCategoryId, name = "Groceries", amount = -100.0
         )
 
         // When/Then
@@ -90,16 +83,9 @@ class BudgetItemServiceTest {
         // Given
         val requests = listOf(
             BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Groceries",
-                amount = 500.0
-            ),
-            BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Utilities",
-                amount = 300.0
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Groceries", amount = 500.0
+            ), BudgetItemService.BudgetItemCreationRequest(
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Utilities", amount = 300.0
             )
         )
 
@@ -117,16 +103,12 @@ class BudgetItemServiceTest {
     fun `updateBudgetItem should update item details correctly`() = runBlocking {
         // Given
         val createRequest = BudgetItemService.BudgetItemCreationRequest(
-            budgetId = testBudgetId,
-            categoryId = testCategoryId,
-            name = "Original Name",
-            amount = 500.0
+            budgetId = testBudgetId, categoryId = testCategoryId, name = "Original Name", amount = 500.0
         )
         val itemId = service.createBudgetItem(createRequest)
 
         val updateRequest = BudgetItemService.BudgetItemUpdateRequest(
-            name = "Updated Name",
-            amount = 600.0
+            name = "Updated Name", amount = 600.0
         )
 
         // When
@@ -142,10 +124,7 @@ class BudgetItemServiceTest {
     fun `updateBudgetItemAmount should update amount correctly`() = runBlocking {
         // Given
         val createRequest = BudgetItemService.BudgetItemCreationRequest(
-            budgetId = testBudgetId,
-            categoryId = testCategoryId,
-            name = "Test Item",
-            amount = 500.0
+            budgetId = testBudgetId, categoryId = testCategoryId, name = "Test Item", amount = 500.0
         )
         val itemId = service.createBudgetItem(createRequest)
 
@@ -162,16 +141,9 @@ class BudgetItemServiceTest {
         // Given
         val requests = listOf(
             BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Item 1",
-                amount = 100.0
-            ),
-            BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Item 2",
-                amount = 200.0
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Item 1", amount = 100.0
+            ), BudgetItemService.BudgetItemCreationRequest(
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Item 2", amount = 200.0
             )
         )
         service.createBulkBudgetItems(requests)
@@ -189,16 +161,9 @@ class BudgetItemServiceTest {
         // Given
         val requests = listOf(
             BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Item 1",
-                amount = 100.0
-            ),
-            BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId + 1,
-                name = "Item 2",
-                amount = 200.0
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Item 1", amount = 100.0
+            ), BudgetItemService.BudgetItemCreationRequest(
+                budgetId = testBudgetId, categoryId = testCategoryId + 1, name = "Item 2", amount = 200.0
             )
         )
         service.createBulkBudgetItems(requests)
@@ -215,10 +180,7 @@ class BudgetItemServiceTest {
     fun `deleteBudgetItem should remove item`() = runBlocking {
         // Given
         val request = BudgetItemService.BudgetItemCreationRequest(
-            budgetId = testBudgetId,
-            categoryId = testCategoryId,
-            name = "Test Item",
-            amount = 500.0
+            budgetId = testBudgetId, categoryId = testCategoryId, name = "Test Item", amount = 500.0
         )
         val itemId = service.createBudgetItem(request)
 
@@ -235,16 +197,9 @@ class BudgetItemServiceTest {
         // Given
         val requests = listOf(
             BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Item 1",
-                amount = 100.0
-            ),
-            BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Item 2",
-                amount = 200.0
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Item 1", amount = 100.0
+            ), BudgetItemService.BudgetItemCreationRequest(
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Item 2", amount = 200.0
             )
         )
         service.createBulkBudgetItems(requests)
@@ -262,16 +217,9 @@ class BudgetItemServiceTest {
         // Given
         val requests = listOf(
             BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Item 1",
-                amount = 100.0
-            ),
-            BudgetItemService.BudgetItemCreationRequest(
-                budgetId = testBudgetId,
-                categoryId = testCategoryId,
-                name = "Item 2",
-                amount = 200.0
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Item 1", amount = 100.0
+            ), BudgetItemService.BudgetItemCreationRequest(
+                budgetId = testBudgetId, categoryId = testCategoryId, name = "Item 2", amount = 200.0
             )
         )
         service.createBulkBudgetItems(requests)
