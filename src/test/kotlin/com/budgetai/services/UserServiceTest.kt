@@ -1,5 +1,7 @@
 package com.budgetai.services
 
+import com.budgetai.models.UserAuthenticationRequest
+import com.budgetai.models.UserCreationRequest
 import com.budgetai.models.UserDTO
 import com.budgetai.models.Users
 import com.budgetai.repositories.UserRepository
@@ -53,7 +55,7 @@ class UserServiceTest {
     @Test
     fun `createUser should create user with valid data`() = runBlocking {
         // Given
-        val request = UserService.UserCreationRequest(
+        val request = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
 
@@ -70,7 +72,7 @@ class UserServiceTest {
     @Test
     fun `createUser should throw exception for invalid email format`(): Unit = runBlocking {
         // Given
-        val request = UserService.UserCreationRequest(
+        val request = UserCreationRequest(
             email = "invalid-email", name = validName, password = validPassword
         )
 
@@ -83,7 +85,7 @@ class UserServiceTest {
     @Test
     fun `createUser should throw exception for weak password`(): Unit = runBlocking {
         // Given
-        val request = UserService.UserCreationRequest(
+        val request = UserCreationRequest(
             email = validEmail, name = validName, password = "weak"
         )
 
@@ -96,7 +98,7 @@ class UserServiceTest {
     @Test
     fun `createUser should throw exception for duplicate email`(): Unit = runBlocking {
         // Given
-        val request = UserService.UserCreationRequest(
+        val request = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         service.createUser(request)
@@ -110,12 +112,12 @@ class UserServiceTest {
     @Test
     fun `authenticateUser should succeed with correct credentials`() = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         service.createUser(createRequest)
 
-        val authRequest = UserService.UserAuthenticationRequest(
+        val authRequest = UserAuthenticationRequest(
             email = validEmail, password = validPassword
         )
 
@@ -130,12 +132,12 @@ class UserServiceTest {
     @Test
     fun `authenticateUser should return null for incorrect password`() = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         service.createUser(createRequest)
 
-        val authRequest = UserService.UserAuthenticationRequest(
+        val authRequest = UserAuthenticationRequest(
             email = validEmail, password = "wrongpassword123!"
         )
 
@@ -149,7 +151,7 @@ class UserServiceTest {
     @Test
     fun `updateUser should update user information`() = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
@@ -170,7 +172,7 @@ class UserServiceTest {
     @Test
     fun `updateUser should throw exception for invalid email format`(): Unit = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
@@ -188,7 +190,7 @@ class UserServiceTest {
     @Test
     fun `updatePassword should succeed with correct current password`(): Unit = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
@@ -198,7 +200,7 @@ class UserServiceTest {
         service.updatePassword(userId, validPassword, newPassword)
 
         // Then
-        val authRequest = UserService.UserAuthenticationRequest(
+        val authRequest = UserAuthenticationRequest(
             email = validEmail, password = newPassword
         )
         val authenticatedUser = service.authenticateUser(authRequest)
@@ -208,7 +210,7 @@ class UserServiceTest {
     @Test
     fun `updatePassword should throw exception for incorrect current password`(): Unit = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
@@ -222,7 +224,7 @@ class UserServiceTest {
     @Test
     fun `updatePassword should throw exception for weak new password`(): Unit = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
@@ -236,7 +238,7 @@ class UserServiceTest {
     @Test
     fun `deleteUser should remove user`() = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         val userId = service.createUser(createRequest)
@@ -252,7 +254,7 @@ class UserServiceTest {
     @Test
     fun `getUserByEmail should return correct user`() = runBlocking {
         // Given
-        val createRequest = UserService.UserCreationRequest(
+        val createRequest = UserCreationRequest(
             email = validEmail, name = validName, password = validPassword
         )
         service.createUser(createRequest)
