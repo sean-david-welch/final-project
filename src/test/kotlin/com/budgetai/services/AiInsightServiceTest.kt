@@ -86,11 +86,7 @@ class AiInsightServiceTest {
     fun `createInsight should throw exception for empty prompt`(): Unit = runBlocking {
         // Given
         val request = InsightCreationRequest(
-            userId = testUserId,
-            budgetId = testBudgetId,
-            prompt = "",
-            response = testResponse,
-            type = InsightType.ITEM_ANALYSIS
+            userId = testUserId, budgetId = testBudgetId, prompt = "", response = testResponse, type = InsightType.ITEM_ANALYSIS
         )
 
         // When/Then
@@ -103,11 +99,7 @@ class AiInsightServiceTest {
     fun `createInsight should throw exception for long response`(): Unit = runBlocking {
         // Given
         val request = InsightCreationRequest(
-            userId = testUserId,
-            budgetId = testBudgetId,
-            prompt = testPrompt,
-            response = "a".repeat(5001),
-            type = InsightType.ITEM_ANALYSIS
+            userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = "a".repeat(5001), type = InsightType.ITEM_ANALYSIS
         )
 
         // When/Then
@@ -120,11 +112,7 @@ class AiInsightServiceTest {
     fun `updateInsight should update insight details correctly`() = runBlocking {
         // Given
         val createRequest = InsightCreationRequest(
-            userId = testUserId,
-            budgetId = testBudgetId,
-            prompt = testPrompt,
-            response = testResponse,
-            type = InsightType.ITEM_ANALYSIS
+            userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse, type = InsightType.ITEM_ANALYSIS
         )
         val insightId = service.createInsight(createRequest)
 
@@ -146,11 +134,7 @@ class AiInsightServiceTest {
     fun `updateInsightSentiment should update sentiment correctly`() = runBlocking {
         // Given
         val createRequest = InsightCreationRequest(
-            userId = testUserId,
-            budgetId = testBudgetId,
-            prompt = testPrompt,
-            response = testResponse,
-            type = InsightType.ITEM_ANALYSIS
+            userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse, type = InsightType.ITEM_ANALYSIS
         )
         val insightId = service.createInsight(createRequest)
 
@@ -200,11 +184,7 @@ class AiInsightServiceTest {
         // Given
         val requests = List(15) {
             InsightCreationRequest(
-                userId = testUserId,
-                budgetId = testBudgetId,
-                prompt = testPrompt,
-                response = testResponse,
-                type = InsightType.ITEM_ANALYSIS
+                userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse, type = InsightType.ITEM_ANALYSIS
             )
         }
         requests.forEach { service.createInsight(it) }
@@ -230,11 +210,7 @@ class AiInsightServiceTest {
         )
 
         val request = InsightCreationRequest(
-            userId = testUserId,
-            budgetId = testBudgetId,
-            prompt = testPrompt,
-            response = testResponse,
-            type = InsightType.ITEM_ANALYSIS
+            userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse, type = InsightType.ITEM_ANALYSIS
         )
         service.createInsight(request)
 
@@ -250,11 +226,7 @@ class AiInsightServiceTest {
         // Given
         val requests = List(3) {
             InsightCreationRequest(
-                userId = testUserId,
-                budgetId = testBudgetId,
-                prompt = testPrompt,
-                response = testResponse,
-                type = InsightType.ITEM_ANALYSIS
+                userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse, type = InsightType.ITEM_ANALYSIS
             )
         }
         requests.forEach { service.createInsight(it) }
@@ -272,11 +244,7 @@ class AiInsightServiceTest {
         // Given
         val requests = listOf(
             InsightCreationRequest(
-                userId = testUserId,
-                budgetId = testBudgetId,
-                prompt = testPrompt,
-                response = testResponse,
-                type = InsightType.ITEM_ANALYSIS
+                userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse, type = InsightType.ITEM_ANALYSIS
             ), InsightCreationRequest(
                 userId = testUserId,
                 budgetId = testBudgetId,
