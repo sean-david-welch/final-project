@@ -1,5 +1,6 @@
 package com.budgetai.services
 
+import com.budgetai.models.Categories
 import com.budgetai.models.CategoryDTO
 import com.budgetai.models.CategoryType
 import com.budgetai.repositories.CategoryRepository
@@ -12,8 +13,8 @@ import org.junit.Before
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 
 class CategoryServiceTest {
     private lateinit var database: Database
