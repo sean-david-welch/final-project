@@ -18,7 +18,7 @@ class CategoryRepository(private val database: Database) {
     }
 
     // Helper Methods
-    // Maps database row to CategoryDTO
+    // Maps database row to com.budgetai.models.CategoryDTO
     private fun toCategory(row: ResultRow) = CategoryDTO(
         id = row[Categories.id].value,
         name = row[Categories.name],

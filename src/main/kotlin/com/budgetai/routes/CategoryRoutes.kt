@@ -17,10 +17,7 @@ fun Route.categoryRoutes(database: Database) {
     val categoryService = CategoryService(categoryRepository)
 
     // Data classes for requests
-    @Serializable
-    data class UpdateCategoryRequest(
-        val name: String, val type: CategoryType, val description: String?
-    )
+
 
     route("/categories") {
         // Create new category
