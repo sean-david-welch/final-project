@@ -51,8 +51,7 @@ class AiInsightRoutesTest {
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
         transaction(database) {
             SchemaUtils.create(Users, Budgets, BudgetItems, AiInsights)
@@ -137,8 +136,7 @@ class AiInsightRoutesTest {
         }
 
         // Create insights with specific sentiment
-        val request = createSampleInsightRequest()
-            .copy(sentiment = Sentiment.POSITIVE)
+        val request = createSampleInsightRequest().copy(sentiment = Sentiment.POSITIVE)
 
         repeat(2) {
             client.post("/ai-insights") {
@@ -168,8 +166,7 @@ class AiInsightRoutesTest {
                 setBody(
                     Json.encodeToString(
                         createSampleInsightRequest(
-                            prompt = "Analyze spend pattern $it",
-                            response = "Analysis result $it"
+                            prompt = "Analyze spend pattern $it", response = "Analysis result $it"
                         )
                     )
                 )
