@@ -3,6 +3,7 @@ package com.budgetai.routes
 import com.budgetai.models.BudgetDTO
 import com.budgetai.models.Budgets
 import com.budgetai.models.Users
+import com.budgetai.plugins.configureRouting
 import com.budgetai.repositories.BudgetRepository
 import com.budgetai.services.BudgetService
 import io.ktor.client.request.*
@@ -47,7 +48,7 @@ class BudgetRoutesTest {
     fun `POST budget - creates budget successfully`() = testApplication {
         // Set up
         application {
-            configureRouting(database)  // Your main routing configuration
+            configureRouting()  // Your main routing configuration
         }
 
         // Test
@@ -71,7 +72,7 @@ class BudgetRoutesTest {
     fun `GET budget - returns budget when exists`() = testApplication {
         // Set up
         application {
-            configureRouting(database)
+            configureRouting()
         }
 
         // Create a budget first
@@ -98,7 +99,7 @@ class BudgetRoutesTest {
     @Test
     fun `GET budget - returns 404 when budget doesn't exist`() = testApplication {
         application {
-            configureRouting(database)
+            configureRouting()
         }
 
         val response = client.get("/budgets/999")
@@ -108,7 +109,7 @@ class BudgetRoutesTest {
     @Test
     fun `PUT budget totals - updates successfully`() = testApplication {
         application {
-            configureRouting(database)
+            configureRouting()
         }
 
         // Create a budget first
@@ -139,7 +140,7 @@ class BudgetRoutesTest {
     @Test
     fun `GET budgets by user - returns all user budgets`() = testApplication {
         application {
-            configureRouting(database)
+            configureRouting()
         }
 
         // Create two budgets for the same user
@@ -168,7 +169,7 @@ class BudgetRoutesTest {
     @Test
     fun `DELETE budget - deletes successfully`() = testApplication {
         application {
-            configureRouting(database)
+            configureRouting()
         }
 
         // Create a budget first
