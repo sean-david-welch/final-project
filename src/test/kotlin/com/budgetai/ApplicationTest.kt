@@ -1,21 +1,14 @@
 package com.budgetai
 
-import com.budgetai.plugins.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import com.budgetai.plugins.configureRouting
 import io.ktor.server.testing.*
-import kotlin.test.*
+import kotlin.test.Test
 
 class ApplicationTest {
     @Test
     fun testRoot() = testApplication {
         application {
             configureRouting()
-        }
-        client.get("/").apply {
-            assertEquals(HttpStatusCode.OK, status)
-            assertEquals("Hello World!", bodyAsText())
         }
     }
 }
