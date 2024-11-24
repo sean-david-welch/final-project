@@ -19,6 +19,18 @@ object SavingsGoals : IntIdTable("savings_goals") {
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }
 
+@Serializable
+data class SavingsGoalDTO(
+    val id: Int = 0,
+    val userId: Int,
+    val name: String,
+    val description: String? = null,
+    val targetAmount: Double = 0.0,
+    val currentAmount: Double = 0.0,
+    val targetDate: String? = null,
+    val createdAt: String? = null
+)
+
 
 // Serializers
 @Serializable
