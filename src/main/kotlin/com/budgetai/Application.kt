@@ -30,13 +30,11 @@ fun Application.module() {
     } else {
         log.info("Running in production mode - skipping database seeding")
     }
-
     configureSecurity()
     configureHTTP()
     configureSerialization()
-    configureRouting()
+    configureRouting(database = database)
 }
-
 
 private fun checkDevelopmentMode(application: Application): Boolean {
     return try {

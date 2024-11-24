@@ -7,8 +7,9 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.webjars.*
+import org.jetbrains.exposed.sql.Database
 
-fun Application.configureRouting() {
+fun Application.configureRouting(database: Database) {
     install(Resources)
     install(StatusPages) {
         exception<Throwable> { call, cause ->
@@ -18,5 +19,5 @@ fun Application.configureRouting() {
     install(Webjars) {
         path = "/webjars"
     }
-    configureRoutes()
+    configureRoutes(database = database)
 }
