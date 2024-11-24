@@ -18,12 +18,6 @@ object Users : IntIdTable("users") {
 
 }
 
-object Categories : IntIdTable("categories") {
-    val name = varchar("name", 50).uniqueIndex()
-    val type = enumerationByName("type", 20, CategoryType::class)
-    val description = text("description").nullable()
-    val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
-}
 
 object BudgetItems : IntIdTable("budget_items") {
     val budgetId = reference("budget_id", Budgets, onDelete = ReferenceOption.CASCADE)
