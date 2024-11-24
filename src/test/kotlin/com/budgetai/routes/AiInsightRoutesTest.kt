@@ -11,6 +11,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.jetbrains.exposed.sql.Database
@@ -54,6 +55,7 @@ class AiInsightRoutesTest {
         Categories.insert {
             it[id] = 1
             it[name] = "Dining"
+            it[type] = CategoryType.EXPENSE
             it[description] = "Food and dining expenses"
         }
 
@@ -73,29 +75,24 @@ class AiInsightRoutesTest {
         budgetItemId: Int? = 1,
         type: InsightType = InsightType.SAVING_SUGGESTION,
         prompt: String = "Analyze my dining expenses for this month",
-        response: String = "Your dining expenses have increased by 25% compared to last month. Consider setting a dining budget."
-    ): InsightCreationRequest {
-        val metadata = buildJsonObject {
-            put("categoryId", 1)
-            put("categoryName", "Dining")
-            put("budgetedAmount", 300.00)
-            put("currentSpend", 250.00)
-            put("previousMonthSpend", 200.00)
-            put("percentageChange", 25.00)
-            put("remainingBudget", 50.00)
+        response: String = "Your dining expenses have increased by 25% compared to last month."
+    ) = InsightCreationRequest(
+        userId = userId,
+        budgetId = budgetId,
+        budgetItemId = budgetItemId,
+        prompt = prompt,
+        response = response,
+        type = type,
+        metadata = buildJsonObject {
+            put("categoryId", JsonPrimitive(1))
+            put("categoryName", JsonPrimitive("Dining"))
+            put("budgetedAmount", JsonPrimitive(300.00))
+            put("currentSpend", JsonPrimitive(250.00))
+            put("previousMonthSpend", JsonPrimitive(200.00))
+            put("percentageChange", JsonPrimitive(25.00))
+            put("remainingBudget", JsonPrimitive(50.00))
         }
-
-        return InsightCreationRequest(
-            userId = userId,
-            budgetId = budgetId,
-            budgetItemId = budgetItemId,
-            prompt = prompt,
-            response = response,
-            type = type,
-            sentiment = Sentiment.NEUTRAL,
-            metadata = metadata
-        )
-    }
+    )
 
     @Before
     fun setUp() {
