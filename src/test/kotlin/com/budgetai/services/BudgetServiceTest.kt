@@ -26,8 +26,7 @@ class BudgetServiceTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -89,8 +88,7 @@ class BudgetServiceTest {
     fun `updateBudgetTotals should update when values are valid`() = runBlocking {
         // Given
         val request = BudgetService.BudgetCreationRequest(
-            userId = 1,
-            name = "Test Budget"
+            userId = 1, name = "Test Budget"
         )
         val budgetId = service.createBudget(request)
         val totalIncome = BigDecimal("1000.00")
@@ -109,8 +107,7 @@ class BudgetServiceTest {
     fun `updateBudgetTotals should throw exception for negative income`(): Unit = runBlocking {
         // Given
         val request = BudgetService.BudgetCreationRequest(
-            userId = 1,
-            name = "Test Budget"
+            userId = 1, name = "Test Budget"
         )
         val budgetId = service.createBudget(request)
         val totalIncome = BigDecimal("-1000.00")
@@ -132,10 +129,7 @@ class BudgetServiceTest {
         // Create two budgets, one in range and one out of range
         service.createBudget(
             BudgetService.BudgetCreationRequest(
-                userId = userId,
-                name = "In Range",
-                startDate = startDate,
-                endDate = endDate
+                userId = userId, name = "In Range", startDate = startDate, endDate = endDate
             )
         )
         service.createBudget(
