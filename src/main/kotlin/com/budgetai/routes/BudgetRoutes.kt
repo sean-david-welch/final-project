@@ -53,8 +53,7 @@ fun Route.budgetRoutes(database: Database) {
         // Get all budgets for a user
         get("/user/{userId}") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val budgets = budgetService.getUserBudgets(userId)
                 call.respond(budgets)
@@ -68,10 +67,9 @@ fun Route.budgetRoutes(database: Database) {
         // Get budgets for a user within a date range
         get("/user/{userId}/date-range") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
-                val startDate = call.parameters["startDate"]?.let { LocalDate.parse(it) }
-                    ?: throw IllegalArgumentException("Start date is required")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val startDate =
+                    call.parameters["startDate"]?.let { LocalDate.parse(it) } ?: throw IllegalArgumentException("Start date is required")
                 val endDate = call.parameters["endDate"]?.let { LocalDate.parse(it) } ?: throw IllegalArgumentException(
                     "End date is required"
                 )
@@ -94,10 +92,7 @@ fun Route.budgetRoutes(database: Database) {
                 val existingBudget = budgetService.getBudget(id) ?: throw IllegalArgumentException("Budget not found")
 
                 val updatedBudget = existingBudget.copy(
-                    name = request.name,
-                    description = request.description,
-                    startDate = request.startDate,
-                    endDate = request.endDate
+                    name = request.name, description = request.description, startDate = request.startDate, endDate = request.endDate
                 )
 
                 budgetService.updateBudget(id, updatedBudget)
@@ -143,8 +138,7 @@ fun Route.budgetRoutes(database: Database) {
         // Delete all budgets for a user
         delete("/user/{userId}") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 budgetService.deleteUserBudgets(userId)
                 call.respond(HttpStatusCode.OK, "User budgets deleted successfully")
