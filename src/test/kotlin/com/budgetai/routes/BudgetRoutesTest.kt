@@ -2,6 +2,7 @@ package com.budgetai.routes
 
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
+import com.budgetai.plugins.configureSerialization
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -43,6 +44,7 @@ class BudgetRoutesTest {
     fun `POST budget - creates budget successfully`() = testApplication {
         // Set up
         application {
+            configureSerialization()
             configureRouting(database = database)  // Your main routing configuration
         }
 
@@ -71,6 +73,7 @@ class BudgetRoutesTest {
     fun `GET budget - returns budget when exists`() = testApplication {
         // Set up
         application {
+            configureSerialization()
             configureRouting(database = database)
         }
 
@@ -102,6 +105,7 @@ class BudgetRoutesTest {
     @Test
     fun `GET budget - returns 404 when budget doesn't exist`() = testApplication {
         application {
+            configureSerialization()
             configureRouting(database = database)
         }
 
@@ -112,6 +116,7 @@ class BudgetRoutesTest {
     @Test
     fun `PUT budget totals - updates successfully`() = testApplication {
         application {
+            configureSerialization()
             configureRouting(database = database)
         }
 
@@ -150,6 +155,7 @@ class BudgetRoutesTest {
     @Test
     fun `GET budgets by user - returns all user budgets`() = testApplication {
         application {
+            configureSerialization()
             configureRouting(database = database)
         }
 
@@ -183,6 +189,7 @@ class BudgetRoutesTest {
     @Test
     fun `DELETE budget - deletes successfully`() = testApplication {
         application {
+            configureSerialization()
             configureRouting(database = database)
         }
 
