@@ -24,8 +24,7 @@ class CategoryRepositoryTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -51,9 +50,7 @@ class CategoryRepositoryTest {
         // Given
         val categoryDTO = CategoryDTO(
             id = 0, // ID will be assigned by database
-            name = "Groceries",
-            type = CategoryType.EXPENSE,
-            description = "Food and household items"
+            name = "Groceries", type = CategoryType.EXPENSE, description = "Food and household items"
         )
 
         // When
@@ -71,10 +68,7 @@ class CategoryRepositoryTest {
     fun `test find category by name`() = runBlocking {
         // Given
         val categoryDTO = CategoryDTO(
-            id = 0,
-            name = "Salary",
-            type = CategoryType.INCOME,
-            description = "Monthly salary"
+            id = 0, name = "Salary", type = CategoryType.INCOME, description = "Monthly salary"
         )
 
         // When
@@ -91,16 +85,10 @@ class CategoryRepositoryTest {
     fun `test find all categories`() = runBlocking {
         // Given
         val category1 = CategoryDTO(
-            id = 0,
-            name = "Rent",
-            type = CategoryType.EXPENSE,
-            description = "Monthly rent"
+            id = 0, name = "Rent", type = CategoryType.EXPENSE, description = "Monthly rent"
         )
         val category2 = CategoryDTO(
-            id = 0,
-            name = "Bonus",
-            type = CategoryType.INCOME,
-            description = "Annual bonus"
+            id = 0, name = "Bonus", type = CategoryType.INCOME, description = "Annual bonus"
         )
 
         // When
@@ -117,16 +105,10 @@ class CategoryRepositoryTest {
     fun `test find categories by type`() = runBlocking {
         // Given
         val expenseCategory = CategoryDTO(
-            id = 0,
-            name = "Utilities",
-            type = CategoryType.EXPENSE,
-            description = "Monthly utilities"
+            id = 0, name = "Utilities", type = CategoryType.EXPENSE, description = "Monthly utilities"
         )
         val incomeCategory = CategoryDTO(
-            id = 0,
-            name = "Investments",
-            type = CategoryType.INCOME,
-            description = "Investment returns"
+            id = 0, name = "Investments", type = CategoryType.INCOME, description = "Investment returns"
         )
 
         // When
@@ -143,18 +125,13 @@ class CategoryRepositoryTest {
     fun `test update category`() = runBlocking {
         // Given
         val initialCategory = CategoryDTO(
-            id = 0,
-            name = "Old Name",
-            type = CategoryType.EXPENSE,
-            description = "Old description"
+            id = 0, name = "Old Name", type = CategoryType.EXPENSE, description = "Old description"
         )
 
         // When
         val createdId = repository.create(initialCategory)
         val updatedCategory = initialCategory.copy(
-            id = createdId,
-            name = "New Name",
-            description = "Updated description"
+            id = createdId, name = "New Name", description = "Updated description"
         )
         repository.update(createdId, updatedCategory)
         val retrievedCategory = repository.findById(createdId)
@@ -169,10 +146,7 @@ class CategoryRepositoryTest {
     fun `test delete category`() = runBlocking {
         // Given
         val category = CategoryDTO(
-            id = 0,
-            name = "To Delete",
-            type = CategoryType.EXPENSE,
-            description = "Will be deleted"
+            id = 0, name = "To Delete", type = CategoryType.EXPENSE, description = "Will be deleted"
         )
 
         // When
