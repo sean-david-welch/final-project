@@ -120,7 +120,7 @@ class SavingsGoalRoutesTest {
         val response = client.get("/savings-goals/$goalId/progress")
         assertEquals(HttpStatusCode.OK, response.status)
 
-        val progress = Json.decodeFromString<SavingsGoalProgress>(response.bodyAsText())
+        val progress = Json.decodeFromString<GoalProgress>(response.bodyAsText())
         assertEquals(25.0, progress.percentageComplete) // 5000/20000 = 25%
     }
 

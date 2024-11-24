@@ -13,8 +13,6 @@ fun Route.savingsGoalRoutes(database: Database) {
     val savingsGoalRepository = SavingsGoalRepository(database)
     val savingsGoalService = SavingsGoalService(savingsGoalRepository)
 
-
-
     route("/savings-goals") {
         // Create new savings goal
         post {
