@@ -17,3 +17,31 @@ object SavingsGoals : IntIdTable("savings_goals") {
     val targetDate = date("target_date").nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }
+
+
+// Serializers
+data class SavingsGoalCreationRequest(
+    val userId: Int,
+    val name: String,
+    val description: String? = null,
+    val targetAmount: Double,
+    val initialAmount: Double = 0.0,
+    val targetDate: String? = null
+)
+
+data class SavingsGoalUpdateRequest(
+    val name: String? = null,
+    val description: String? = null,
+    val targetAmount: Double? = null,
+    val targetDate: String? = null
+)
+
+data class GoalProgress(
+    val currentAmount: Double,
+    val targetAmount: Double,
+    val percentageComplete: Double,
+    val remainingAmount: Double,
+    val isOnTrack: Boolean,
+    val requiredDailySavings: Double
+)
+
