@@ -64,7 +64,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    fun `createCategory should throw exception when name already exists`() = runBlocking {
+    fun `createCategory should throw exception when name already exists`(): Unit = runBlocking {
         // Given
         val request = CategoryService.CategoryCreationRequest(
             name = "Groceries", type = CategoryType.EXPENSE
@@ -98,7 +98,7 @@ class CategoryServiceTest {
     }
 
     @Test
-    fun `updateCategory should throw exception when updating to existing name`() = runBlocking {
+    fun `updateCategory should throw exception when updating to existing name`(): Unit = runBlocking {
         // Given
         val firstCategory = CategoryService.CategoryCreationRequest(
             name = "Groceries", type = CategoryType.EXPENSE
