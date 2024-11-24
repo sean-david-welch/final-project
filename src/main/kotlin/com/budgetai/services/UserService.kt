@@ -1,5 +1,7 @@
 package com.budgetai.services
 
+import com.budgetai.models.UserAuthenticationRequest
+import com.budgetai.models.UserCreationRequest
 import com.budgetai.models.UserDTO
 import com.budgetai.repositories.UserRepository
 import java.security.SecureRandom
@@ -8,8 +10,6 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
 class UserService(private val repository: UserRepository) {
-
-
 
     // Helper Methods
     // Generates a random salt for password hashing
