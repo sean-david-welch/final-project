@@ -1,6 +1,7 @@
 package com.budgetai.services
 
 import com.budgetai.models.Categories
+import com.budgetai.models.CategoryCreationRequest
 import com.budgetai.models.CategoryDTO
 import com.budgetai.models.CategoryType
 import com.budgetai.repositories.CategoryRepository
@@ -49,7 +50,7 @@ class CategoryServiceTest {
     @Test
     fun `createCategory should create category with valid request`() = runBlocking {
         // Given
-        val request = CategoryService.CategoryCreationRequest(
+        val request = CategoryCreationRequest(
             name = "Groceries", type = CategoryType.EXPENSE, description = "Food and household items"
         )
 
@@ -66,7 +67,7 @@ class CategoryServiceTest {
     @Test
     fun `createCategory should throw exception when name already exists`(): Unit = runBlocking {
         // Given
-        val request = CategoryService.CategoryCreationRequest(
+        val request = CategoryCreationRequest(
             name = "Groceries", type = CategoryType.EXPENSE
         )
         service.createCategory(request)
@@ -80,7 +81,7 @@ class CategoryServiceTest {
     @Test
     fun `updateCategory should update when values are valid`() = runBlocking {
         // Given
-        val request = CategoryService.CategoryCreationRequest(
+        val request = CategoryCreationRequest(
             name = "Groceries", type = CategoryType.EXPENSE
         )
         val categoryId = service.createCategory(request)
@@ -100,10 +101,10 @@ class CategoryServiceTest {
     @Test
     fun `updateCategory should throw exception when updating to existing name`(): Unit = runBlocking {
         // Given
-        val firstCategory = CategoryService.CategoryCreationRequest(
+        val firstCategory = CategoryCreationRequest(
             name = "Groceries", type = CategoryType.EXPENSE
         )
-        val secondCategory = CategoryService.CategoryCreationRequest(
+        val secondCategory = CategoryCreationRequest(
             name = "Entertainment", type = CategoryType.EXPENSE
         )
         service.createCategory(firstCategory)
@@ -120,7 +121,7 @@ class CategoryServiceTest {
     @Test
     fun `deleteCategory should remove existing category`() = runBlocking {
         // Given
-        val request = CategoryService.CategoryCreationRequest(
+        val request = CategoryCreationRequest(
             name = "Groceries", type = CategoryType.EXPENSE
         )
         val categoryId = service.createCategory(request)
@@ -137,12 +138,12 @@ class CategoryServiceTest {
     fun `getCategoriesByType should return filtered categories`() = runBlocking {
         // Given
         service.createCategory(
-            CategoryService.CategoryCreationRequest(
+            CategoryCreationRequest(
                 name = "Salary", type = CategoryType.INCOME
             )
         )
         service.createCategory(
-            CategoryService.CategoryCreationRequest(
+            CategoryCreationRequest(
                 name = "Groceries", type = CategoryType.EXPENSE
             )
         )
@@ -162,12 +163,12 @@ class CategoryServiceTest {
     fun `getAllCategories should return all categories`() = runBlocking {
         // Given
         service.createCategory(
-            CategoryService.CategoryCreationRequest(
+            CategoryCreationRequest(
                 name = "Salary", type = CategoryType.INCOME
             )
         )
         service.createCategory(
-            CategoryService.CategoryCreationRequest(
+            CategoryCreationRequest(
                 name = "Groceries", type = CategoryType.EXPENSE
             )
         )
@@ -182,7 +183,7 @@ class CategoryServiceTest {
     @Test
     fun `getCategoryByName should return correct category`() = runBlocking {
         // Given
-        val request = CategoryService.CategoryCreationRequest(
+        val request = CategoryCreationRequest(
             name = "Groceries", type = CategoryType.EXPENSE
         )
         service.createCategory(request)
