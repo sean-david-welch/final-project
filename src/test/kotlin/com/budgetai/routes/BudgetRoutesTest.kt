@@ -27,8 +27,7 @@ class BudgetRoutesTest {
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
         transaction(database) {
             SchemaUtils.create(Users, Budgets)
@@ -53,13 +52,17 @@ class BudgetRoutesTest {
         // Test
         val response = client.post("/budgets") {
             contentType(ContentType.Application.Json)
-            setBody(Json.encodeToString(BudgetService.BudgetCreationRequest(
-                userId = 1,
-                name = "Test Budget",
-                description = "Test Description",
-                startDate = null,
-                endDate = null
-            )))
+            setBody(
+                Json.encodeToString(
+                    BudgetService.BudgetCreationRequest(
+                        userId = 1,
+                        name = "Test Budget",
+                        description = "Test Description",
+                        startDate = null,
+                        endDate = null
+                    )
+                )
+            )
         }
 
         // Verify
@@ -77,13 +80,17 @@ class BudgetRoutesTest {
         // Create a budget first
         val createResponse = client.post("/budgets") {
             contentType(ContentType.Application.Json)
-            setBody(Json.encodeToString(BudgetService.BudgetCreationRequest(
-                userId = 1,
-                name = "Test Budget",
-                description = "Test Description",
-                startDate = null,
-                endDate = null
-            )))
+            setBody(
+                Json.encodeToString(
+                    BudgetService.BudgetCreationRequest(
+                        userId = 1,
+                        name = "Test Budget",
+                        description = "Test Description",
+                        startDate = null,
+                        endDate = null
+                    )
+                )
+            )
         }
         val budgetId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
@@ -114,23 +121,30 @@ class BudgetRoutesTest {
         // Create a budget first
         val createResponse = client.post("/budgets") {
             contentType(ContentType.Application.Json)
-            setBody(Json.encodeToString(BudgetService.BudgetCreationRequest(
-                userId = 1,
-                name = "Test Budget",
-                description = "Test Description",
-                startDate = null,
-                endDate = null
-            )))
+            setBody(
+                Json.encodeToString(
+                    BudgetService.BudgetCreationRequest(
+                        userId = 1,
+                        name = "Test Budget",
+                        description = "Test Description",
+                        startDate = null,
+                        endDate = null
+                    )
+                )
+            )
         }
         val budgetId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Update the totals
         val response = client.put("/budgets/$budgetId/totals") {
             contentType(ContentType.Application.Json)
-            setBody(Json.encodeToString(UpdateBudgetTotalsRequest(
-                totalIncome = 1000.0,
-                totalExpenses = 500.0
-            )))
+            setBody(
+                Json.encodeToString(
+                    UpdateBudgetTotalsRequest(
+                        totalIncome = 1000.0, totalExpenses = 500.0
+                    )
+                )
+            )
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
@@ -146,13 +160,17 @@ class BudgetRoutesTest {
         repeat(2) {
             client.post("/budgets") {
                 contentType(ContentType.Application.Json)
-                setBody(Json.encodeToString(BudgetService.BudgetCreationRequest(
-                    userId = 1,
-                    name = "Test Budget $it",
-                    description = "Test Description",
-                    startDate = null,
-                    endDate = null
-                )))
+                setBody(
+                    Json.encodeToString(
+                        BudgetService.BudgetCreationRequest(
+                            userId = 1,
+                            name = "Test Budget $it",
+                            description = "Test Description",
+                            startDate = null,
+                            endDate = null
+                        )
+                    )
+                )
             }
         }
 
@@ -174,13 +192,17 @@ class BudgetRoutesTest {
         // Create a budget first
         val createResponse = client.post("/budgets") {
             contentType(ContentType.Application.Json)
-            setBody(Json.encodeToString(BudgetService.BudgetCreationRequest(
-                userId = 1,
-                name = "Test Budget",
-                description = "Test Description",
-                startDate = null,
-                endDate = null
-            )))
+            setBody(
+                Json.encodeToString(
+                    BudgetService.BudgetCreationRequest(
+                        userId = 1,
+                        name = "Test Budget",
+                        description = "Test Description",
+                        startDate = null,
+                        endDate = null
+                    )
+                )
+            )
         }
         val budgetId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
