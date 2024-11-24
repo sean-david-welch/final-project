@@ -17,13 +17,14 @@ import kotlin.test.assertNull
 class BudgetRepositoryTest {
     private lateinit var database: Database
     private lateinit var repository: BudgetRepository
+    private val dbFile = File("test.db")
 
     @Before
     fun setUp() {
-        // Setup in-memory database for testing
+        // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-            driver = "org.h2.Driver"
+            url = "jdbc:sqlite:${dbFile.absolutePath}",
+            driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -40,6 +41,8 @@ class BudgetRepositoryTest {
         transaction(database) {
             SchemaUtils.drop(Budgets, Users)
         }
+        // Delete the test database file
+        dbFile.delete()
     }
 
     @Test
