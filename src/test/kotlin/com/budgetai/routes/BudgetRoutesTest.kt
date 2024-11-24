@@ -2,6 +2,7 @@ package com.budgetai.routes
 
 import com.budgetai.models.BudgetDTO
 import com.budgetai.models.Budgets
+import com.budgetai.models.UpdateBudgetTotalsRequest
 import com.budgetai.models.Users
 import com.budgetai.plugins.configureRouting
 import com.budgetai.services.BudgetService
