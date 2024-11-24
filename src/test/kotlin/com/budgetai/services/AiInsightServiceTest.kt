@@ -5,9 +5,8 @@ import com.budgetai.models.InsightType
 import com.budgetai.models.Sentiment
 import com.budgetai.repositories.AiInsightRepository
 import kotlinx.coroutines.runBlocking
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.*
+
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.jetbrains.exposed.sql.Database
@@ -225,8 +224,14 @@ class AiInsightServiceTest {
     fun `getInsightsInDateRange should return insights in correct range`() = runBlocking {
         // Given
         val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val startDate = now.minus(kotlinx.datetime.DatePeriod(days = 1))
-        val endDate = now.plus(kotlinx.datetime.DatePeriod(days = 1))
+        val startDate = LocalDateTime(
+            now.year, now.month, now.dayOfMonth - 1,
+            now.hour, now.minute, now.second, now.nanosecond
+        )
+        val endDate = LocalDateTime(
+            now.year, now.month, now.dayOfMonth + 1,
+            now.hour, now.minute, now.second, now.nanosecond
+        )
 
         val request = AiInsightService.InsightCreationRequest(
             userId = testUserId,
