@@ -59,9 +59,6 @@ class UserRoutesTest {
             setBody(Json.encodeToString(userRequest))
         }
 
-        println("Response status: ${response.status}")
-        println("Response body: ${response.bodyAsText()}")  // Add this line for debugging
-
         assertEquals(HttpStatusCode.Created, response.status)
         val responseBody = Json.decodeFromString<Map<String, Int>>(response.bodyAsText())
         assertNotNull(responseBody["id"])
