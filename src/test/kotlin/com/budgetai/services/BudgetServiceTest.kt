@@ -1,5 +1,6 @@
 package com.budgetai.services
 
+import com.budgetai.models.BudgetCreationRequest
 import com.budgetai.models.Budgets
 import com.budgetai.models.Users
 import com.budgetai.repositories.BudgetRepository
@@ -49,7 +50,7 @@ class BudgetServiceTest {
     @Test
     fun `createBudget should create budget with valid request`() = runBlocking {
         // Given
-        val request = BudgetService.BudgetCreationRequest(
+        val request = BudgetCreationRequest(
             userId = 1,
             name = "Test Budget",
             description = "Test Description",
@@ -71,7 +72,7 @@ class BudgetServiceTest {
     @Test
     fun `createBudget should throw exception when end date is before start date`(): Unit = runBlocking {
         // Given
-        val request = BudgetService.BudgetCreationRequest(
+        val request = BudgetCreationRequest(
             userId = 1,
             name = "Test Budget",
             startDate = LocalDate.parse("2024-12-31"),
@@ -87,7 +88,7 @@ class BudgetServiceTest {
     @Test
     fun `updateBudgetTotals should update when values are valid`() = runBlocking {
         // Given
-        val request = BudgetService.BudgetCreationRequest(
+        val request = BudgetCreationRequest(
             userId = 1, name = "Test Budget"
         )
         val budgetId = service.createBudget(request)
@@ -106,7 +107,7 @@ class BudgetServiceTest {
     @Test
     fun `updateBudgetTotals should throw exception for negative income`(): Unit = runBlocking {
         // Given
-        val request = BudgetService.BudgetCreationRequest(
+        val request = BudgetCreationRequest(
             userId = 1, name = "Test Budget"
         )
         val budgetId = service.createBudget(request)
@@ -128,12 +129,12 @@ class BudgetServiceTest {
 
         // Create two budgets, one in range and one out of range
         service.createBudget(
-            BudgetService.BudgetCreationRequest(
+            BudgetCreationRequest(
                 userId = userId, name = "In Range", startDate = startDate, endDate = endDate
             )
         )
         service.createBudget(
-            BudgetService.BudgetCreationRequest(
+            BudgetCreationRequest(
                 userId = userId,
                 name = "Out of Range",
                 startDate = LocalDate.parse("2025-01-01"),
