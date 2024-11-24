@@ -1,8 +1,6 @@
 package com.budgetai.routes
 
-import com.budgetai.models.UserAuthenticationRequest
-import com.budgetai.models.UserCreationRequest
-import com.budgetai.models.UserDTO
+import com.budgetai.models.*
 import com.budgetai.repositories.UserRepository
 import com.budgetai.services.UserService
 import io.ktor.http.*
@@ -16,17 +14,6 @@ fun Route.userRoutes(database: Database) {
     // Initialize repositories and services
     val userRepository = UserRepository(database)
     val userService = UserService(userRepository)
-
-    // Data classes for requests
-    @Serializable
-    data class UpdateUserRequest(
-        val email: String, val name: String
-    )
-
-    @Serializable
-    data class UpdatePasswordRequest(
-        val currentPassword: String, val newPassword: String
-    )
 
     route("/users") {
         // Authentication Routes

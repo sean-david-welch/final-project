@@ -28,3 +28,14 @@ data class UserCreationRequest(
 data class UserAuthenticationRequest(
     val email: String, val password: String
 )
+
+// Data classes for requests
+@Serializable
+data class UpdateUserRequest(
+    val email: String, val name: String
+)
+
+@Serializable
+data class UpdatePasswordRequest(
+    val currentPassword: String, val newPassword: String
+)
