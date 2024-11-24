@@ -1,28 +1,27 @@
 package com.budgetai.routes
 
+import com.budgetai.models.BudgetItemCreationRequest
+import com.budgetai.models.BudgetItemUpdateRequest
+import com.budgetai.models.UpdateAmountRequest
 import com.budgetai.repositories.BudgetItemRepository
 import com.budgetai.services.BudgetItemService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 
 fun Route.budgetItemRoutes(database: Database) {
     val budgetItemRepository = BudgetItemRepository(database)
     val budgetItemService = BudgetItemService(budgetItemRepository)
 
-    @Serializable
-    data class UpdateAmountRequest(
-        val amount: Double
-    )
+
 
     route("/budget-items") {
         // Create new budget item
         post {
             try {
-                val request = call.receive<BudgetItemService.BudgetItemCreationRequest>()
+                val request = call.receive<BudgetItemCreationRequest>()
                 val itemId = budgetItemService.createBudgetItem(request)
                 call.respond(HttpStatusCode.Created, mapOf("id" to itemId))
             } catch (e: IllegalArgumentException) {
@@ -35,7 +34,7 @@ fun Route.budgetItemRoutes(database: Database) {
         // Bulk create budget items
         post("/bulk") {
             try {
-                val requests = call.receive<List<BudgetItemService.BudgetItemCreationRequest>>()
+                val requests = call.receive<List<BudgetItemCreationRequest>>()
                 val itemIds = budgetItemService.createBulkBudgetItems(requests)
                 call.respond(HttpStatusCode.Created, mapOf("ids" to itemIds))
             } catch (e: IllegalArgumentException) {
@@ -131,7 +130,7 @@ fun Route.budgetItemRoutes(database: Database) {
             try {
                 val id =
                     call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
-                val request = call.receive<BudgetItemService.BudgetItemUpdateRequest>()
+                val request = call.receive<BudgetItemUpdateRequest>()
 
                 budgetItemService.updateBudgetItem(id, request)
                 call.respond(HttpStatusCode.OK, "Budget item updated successfully")
