@@ -27,8 +27,7 @@ class CategoryRepository(private val database: Database) {
     )
 
     // Executes a database query within a coroutine context
-    private suspend fun <T> dbQuery(block: suspend () -> T): T =
-        newSuspendedTransaction(Dispatchers.IO, database) { block() }
+    private suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction(Dispatchers.IO, database) { block() }
 
     // Read Methods
     // Retrieves a category by its ID
