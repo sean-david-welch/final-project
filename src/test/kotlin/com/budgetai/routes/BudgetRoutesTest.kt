@@ -1,9 +1,6 @@
 package com.budgetai.routes
 
-import com.budgetai.models.BudgetDTO
-import com.budgetai.models.Budgets
-import com.budgetai.models.UpdateBudgetTotalsRequest
-import com.budgetai.models.Users
+import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
 import com.budgetai.services.BudgetService
 import io.ktor.client.request.*
@@ -55,7 +52,7 @@ class BudgetRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    BudgetService.BudgetCreationRequest(
+                    BudgetCreationRequest(
                         userId = 1,
                         name = "Test Budget",
                         description = "Test Description",
@@ -83,7 +80,7 @@ class BudgetRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    BudgetService.BudgetCreationRequest(
+                    BudgetCreationRequest(
                         userId = 1,
                         name = "Test Budget",
                         description = "Test Description",
@@ -124,7 +121,7 @@ class BudgetRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    BudgetService.BudgetCreationRequest(
+                    BudgetCreationRequest(
                         userId = 1,
                         name = "Test Budget",
                         description = "Test Description",
@@ -163,7 +160,7 @@ class BudgetRoutesTest {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
-                        BudgetService.BudgetCreationRequest(
+                        BudgetCreationRequest(
                             userId = 1,
                             name = "Test Budget $it",
                             description = "Test Description",
@@ -195,7 +192,7 @@ class BudgetRoutesTest {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
-                    BudgetService.BudgetCreationRequest(
+                    BudgetCreationRequest(
                         userId = 1,
                         name = "Test Budget",
                         description = "Test Description",

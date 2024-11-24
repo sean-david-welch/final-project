@@ -1,16 +1,15 @@
 package com.budgetai.routes
 
+import com.budgetai.models.BudgetCreationRequest
 import com.budgetai.models.UpdateBudgetRequest
 import com.budgetai.models.UpdateBudgetTotalsRequest
 import com.budgetai.repositories.BudgetRepository
 import com.budgetai.services.BudgetService
-import com.budgetai.services.BudgetService.BudgetCreationRequest
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 import java.math.BigDecimal
 
