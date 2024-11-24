@@ -1,5 +1,6 @@
 package com.budgetai.services
 
+import com.budgetai.models.BudgetItems
 import com.budgetai.repositories.BudgetItemRepository
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
@@ -66,7 +67,7 @@ class BudgetItemServiceTest {
     }
 
     @Test
-    fun `createBudgetItem should throw exception for negative amount`() = runBlocking {
+    fun `createBudgetItem should throw exception for negative amount`(): Unit = runBlocking {
         // Given
         val request = BudgetItemService.BudgetItemCreationRequest(
             budgetId = testBudgetId, categoryId = testCategoryId, name = "Groceries", amount = -100.0
