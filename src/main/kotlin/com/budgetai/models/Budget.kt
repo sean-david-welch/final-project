@@ -1,8 +1,5 @@
 package com.budgetai.models
 
-import com.budgetai.models.Budgets.default
-import com.budgetai.models.Budgets.defaultExpression
-import com.budgetai.models.Budgets.nullable
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ReferenceOption
