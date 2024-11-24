@@ -24,17 +24,13 @@ class SavingsGoalServiceTest {
     private val dbFile = File("test.db")
     private val userId = 1
     private val tomorrow = Clock.System.now()
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-        .date
-        .plus(kotlinx.datetime.DatePeriod(days = 1))
-        .toString()
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date.plus(kotlinx.datetime.DatePeriod(days = 1)).toString()
 
     @Before
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -81,9 +77,7 @@ class SavingsGoalServiceTest {
     fun `createSavingsGoal should throw exception for negative target amount`() = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Invalid Goal",
-            targetAmount = -1000.0
+            userId = userId, name = "Invalid Goal", targetAmount = -1000.0
         )
 
         // When/Then
@@ -97,10 +91,7 @@ class SavingsGoalServiceTest {
         // Given
         val pastDate = "2020-01-01"
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Invalid Goal",
-            targetAmount = 1000.0,
-            targetDate = pastDate
+            userId = userId, name = "Invalid Goal", targetAmount = 1000.0, targetDate = pastDate
         )
 
         // When/Then
@@ -113,10 +104,7 @@ class SavingsGoalServiceTest {
     fun `addContribution should update current amount correctly`() = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Vacation",
-            targetAmount = 5000.0,
-            initialAmount = 1000.0
+            userId = userId, name = "Vacation", targetAmount = 5000.0, initialAmount = 1000.0
         )
         val goalId = service.createSavingsGoal(request)
 
@@ -132,10 +120,7 @@ class SavingsGoalServiceTest {
     fun `addContribution should throw exception when exceeding target amount`() = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Vacation",
-            targetAmount = 5000.0,
-            initialAmount = 4500.0
+            userId = userId, name = "Vacation", targetAmount = 5000.0, initialAmount = 4500.0
         )
         val goalId = service.createSavingsGoal(request)
 
@@ -149,10 +134,7 @@ class SavingsGoalServiceTest {
     fun `withdrawAmount should update current amount correctly`() = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Vacation",
-            targetAmount = 5000.0,
-            initialAmount = 1000.0
+            userId = userId, name = "Vacation", targetAmount = 5000.0, initialAmount = 1000.0
         )
         val goalId = service.createSavingsGoal(request)
 
@@ -168,10 +150,7 @@ class SavingsGoalServiceTest {
     fun `withdrawAmount should throw exception when amount exceeds current balance`() = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Vacation",
-            targetAmount = 5000.0,
-            initialAmount = 1000.0
+            userId = userId, name = "Vacation", targetAmount = 5000.0, initialAmount = 1000.0
         )
         val goalId = service.createSavingsGoal(request)
 
@@ -185,11 +164,7 @@ class SavingsGoalServiceTest {
     fun `getGoalProgress should return correct progress information`() = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Vacation",
-            targetAmount = 1000.0,
-            initialAmount = 250.0,
-            targetDate = tomorrow
+            userId = userId, name = "Vacation", targetAmount = 1000.0, initialAmount = 250.0, targetDate = tomorrow
         )
         val goalId = service.createSavingsGoal(request)
 
@@ -207,15 +182,12 @@ class SavingsGoalServiceTest {
     fun `updateSavingsGoal should update goal details correctly`() = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Original Name",
-            targetAmount = 1000.0
+            userId = userId, name = "Original Name", targetAmount = 1000.0
         )
         val goalId = service.createSavingsGoal(request)
 
         val updateRequest = SavingsGoalService.SavingsGoalUpdateRequest(
-            name = "Updated Name",
-            targetAmount = 2000.0
+            name = "Updated Name", targetAmount = 2000.0
         )
 
         // When
@@ -232,14 +204,9 @@ class SavingsGoalServiceTest {
         // Given
         val requests = listOf(
             SavingsGoalService.SavingsGoalCreationRequest(
-                userId = userId,
-                name = "Goal 1",
-                targetAmount = 1000.0
-            ),
-            SavingsGoalService.SavingsGoalCreationRequest(
-                userId = userId,
-                name = "Goal 2",
-                targetAmount = 2000.0
+                userId = userId, name = "Goal 1", targetAmount = 1000.0
+            ), SavingsGoalService.SavingsGoalCreationRequest(
+                userId = userId, name = "Goal 2", targetAmount = 2000.0
             )
         )
 
@@ -256,9 +223,7 @@ class SavingsGoalServiceTest {
     fun `deleteSavingsGoal should remove goal`() = runBlocking {
         // Given
         val request = SavingsGoalService.SavingsGoalCreationRequest(
-            userId = userId,
-            name = "Temporary Goal",
-            targetAmount = 1000.0
+            userId = userId, name = "Temporary Goal", targetAmount = 1000.0
         )
         val goalId = service.createSavingsGoal(request)
 
@@ -275,14 +240,9 @@ class SavingsGoalServiceTest {
         // Given
         val requests = listOf(
             SavingsGoalService.SavingsGoalCreationRequest(
-                userId = userId,
-                name = "Goal 1",
-                targetAmount = 1000.0
-            ),
-            SavingsGoalService.SavingsGoalCreationRequest(
-                userId = userId,
-                name = "Goal 2",
-                targetAmount = 2000.0
+                userId = userId, name = "Goal 1", targetAmount = 1000.0
+            ), SavingsGoalService.SavingsGoalCreationRequest(
+                userId = userId, name = "Goal 2", targetAmount = 2000.0
             )
         )
 
