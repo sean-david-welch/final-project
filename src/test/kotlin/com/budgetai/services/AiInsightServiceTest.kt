@@ -132,7 +132,7 @@ class AiInsightServiceTest {
         val insightId = service.createInsight(createRequest)
 
         val updateRequest = AiInsightService.InsightUpdateRequest(
-            prompt = "Updated prompt", response = "Updated response", type = InsightType.BUDGET_RECOMMENDATION
+            prompt = "Updated prompt", response = "Updated response", type = InsightType.SAVING_SUGGESTION
         )
 
         // When
@@ -181,7 +181,7 @@ class AiInsightServiceTest {
                 budgetId = testBudgetId,
                 prompt = testPrompt,
                 response = testResponse,
-                type = InsightType.BUDGET_RECOMMENDATION,
+                type = InsightType.SAVING_SUGGESTION,
                 sentiment = Sentiment.NEUTRAL
             )
         )
@@ -193,7 +193,7 @@ class AiInsightServiceTest {
         // Then
         assertEquals(2, analytics.totalInsights)
         assertEquals(1, analytics.typeDistribution[InsightType.ITEM_ANALYSIS])
-        assertEquals(1, analytics.typeDistribution[InsightType.BUDGET_RECOMMENDATION])
+        assertEquals(1, analytics.typeDistribution[InsightType.SAVING_SUGGESTION])
         assertEquals(1, analytics.sentimentDistribution[Sentiment.POSITIVE])
         assertEquals(1, analytics.sentimentDistribution[Sentiment.NEUTRAL])
     }
@@ -281,14 +281,14 @@ class AiInsightServiceTest {
                 budgetId = testBudgetId,
                 prompt = testPrompt,
                 response = testResponse,
-                type = InsightType.BUDGET_RECOMMENDATION
+                type = InsightType.SAVING_SUGGESTION
             )
         )
         requests.forEach { service.createInsight(it) }
 
         // When
         val spendingPatternInsights = service.getInsightsByType(InsightType.ITEM_ANALYSIS)
-        val budgetRecommendationInsights = service.getInsightsByType(InsightType.BUDGET_RECOMMENDATION)
+        val budgetRecommendationInsights = service.getInsightsByType(InsightType.SAVING_SUGGESTION)
 
         // Then
         assertEquals(1, spendingPatternInsights.size)
