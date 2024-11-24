@@ -15,8 +15,7 @@ object Users : IntIdTable("users") {
     val passwordHash = varchar("password_hash", 255)
     val name = varchar("name", 100)
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
-
-    }
+}
 
 object BudgetItems : IntIdTable("budget_items") {
     val budgetId = reference("budget_id", Budgets, onDelete = ReferenceOption.CASCADE)
@@ -33,17 +32,5 @@ object SavingsGoals : IntIdTable("savings_goals") {
     val targetAmount = decimal("target_amount", 10, 2)
     val currentAmount = decimal("current_amount", 10, 2).default(BigDecimal.ZERO)
     val targetDate = date("target_date").nullable()
-    val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
-}
-
-object AiInsights : IntIdTable("ai_insights") {
-    val userId = reference("user_id", Users, onDelete = ReferenceOption.CASCADE)
-    val budgetId = reference("budget_id", Budgets, onDelete = ReferenceOption.CASCADE)
-    val budgetItemId = reference("budget_item_id", BudgetItems, onDelete = ReferenceOption.CASCADE).nullable()
-    val prompt = text("prompt")
-    val response = text("response")
-    val type = enumerationByName("type", 20, InsightType::class)
-    val sentiment = enumerationByName("sentiment", 20, Sentiment::class).nullable()
-    val metadata = json("metadata", Json.Default, JsonElement.serializer()).nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }
