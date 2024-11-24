@@ -8,9 +8,7 @@ class CategoryService(private val repository: CategoryRepository) {
 
     // Data Models
     // Request model for creating a new category
-    data class CategoryCreationRequest(
-        val name: String, val type: CategoryType, val description: String? = null
-    )
+
 
     // Helper Methods
     // Verifies a category exists and returns it or throws exception

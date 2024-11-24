@@ -28,3 +28,8 @@ data class CategoryDTO(
 data class UpdateCategoryRequest(
     val name: String, val type: CategoryType, val description: String?
 )
+
+@Serializable
+data class CategoryCreationRequest(
+    val name: String, val type: CategoryType, val description: String? = null
+)
