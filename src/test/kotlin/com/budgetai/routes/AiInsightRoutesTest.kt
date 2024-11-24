@@ -76,8 +76,7 @@ class AiInsightRoutesTest {
         type: InsightType = InsightType.SAVING_SUGGESTION,
         prompt: String = "Analyze my dining expenses for this month",
         response: String = "Your dining expenses have increased by 25% compared to last month."
-    ) = InsightCreationRequest(
-        userId = userId,
+    ) = InsightCreationRequest(userId = userId,
         budgetId = budgetId,
         budgetItemId = budgetItemId,
         prompt = prompt,
@@ -91,8 +90,7 @@ class AiInsightRoutesTest {
             put("previousMonthSpend", JsonPrimitive(200.00))
             put("percentageChange", JsonPrimitive(25.00))
             put("remainingBudget", JsonPrimitive(50.00))
-        }
-    )
+        })
 
     @Before
     fun setUp() {
