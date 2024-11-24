@@ -1,5 +1,7 @@
 package com.budgetai.routes
 
+import com.budgetai.models.UpdateBudgetRequest
+import com.budgetai.models.UpdateBudgetTotalsRequest
 import com.budgetai.repositories.BudgetRepository
 import com.budgetai.services.BudgetService
 import com.budgetai.services.BudgetService.BudgetCreationRequest
@@ -16,17 +18,6 @@ fun Route.budgetRoutes(database: Database) {
     // Initialize repositories and services
     val budgetRepository = BudgetRepository(database)
     val budgetService = BudgetService(budgetRepository)
-
-    // Data classes for requests
-    @Serializable
-    data class UpdateBudgetRequest(
-        val name: String, val description: String?, val startDate: String?, val endDate: String?
-    )
-
-    @Serializable
-    data class UpdateBudgetTotalsRequest(
-        val totalIncome: Double, val totalExpenses: Double
-    )
 
     route("/budgets") {
         // Create new budget
