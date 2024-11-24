@@ -2,7 +2,6 @@ package com.budgetai.routes
 
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
-import com.budgetai.services.BudgetService
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
