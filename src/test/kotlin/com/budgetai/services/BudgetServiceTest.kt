@@ -71,7 +71,7 @@ class BudgetServiceTest {
     }
 
     @Test
-    fun `createBudget should throw exception when end date is before start date`() = runBlocking {
+    fun `createBudget should throw exception when end date is before start date`(): Unit = runBlocking {
         // Given
         val request = BudgetService.BudgetCreationRequest(
             userId = 1,
@@ -107,7 +107,7 @@ class BudgetServiceTest {
     }
 
     @Test
-    fun `updateBudgetTotals should throw exception for negative income`() = runBlocking {
+    fun `updateBudgetTotals should throw exception for negative income`(): Unit = runBlocking {
         // Given
         val request = BudgetService.BudgetCreationRequest(
             userId = 1,
