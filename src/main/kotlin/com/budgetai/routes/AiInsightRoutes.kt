@@ -24,7 +24,7 @@ fun Route.aiInsightRoutes(database: Database) {
             } catch (e: IllegalArgumentException) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error creating insight")
+                call.respond(HttpStatusCode.InternalServerError, "Error creating insight: ${e.message}")
             }
         }
 
