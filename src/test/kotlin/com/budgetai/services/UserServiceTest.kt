@@ -1,6 +1,7 @@
 package com.budgetai.services
 
 import com.budgetai.models.UserDTO
+import com.budgetai.models.Users
 import com.budgetai.repositories.UserRepository
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
