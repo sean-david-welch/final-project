@@ -25,8 +25,7 @@ class BudgetItemRoutesTest {
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
         transaction(database) {
             SchemaUtils.create(Users, Budgets, BudgetItems, Categories)
@@ -78,8 +77,7 @@ class BudgetItemRoutesTest {
                 categoryId = 1,
                 name = "Item 1",
                 amount = 100.0,
-            ),
-            BudgetItemCreationRequest(
+            ), BudgetItemCreationRequest(
                 budgetId = 1,
                 categoryId = 1,
                 name = "Item 2",
@@ -212,9 +210,7 @@ class BudgetItemRoutesTest {
             setBody(
                 Json.encodeToString(
                     BudgetItemUpdateRequest(
-                        name = "Updated Item",
-                        amount = 150.0,
-                        categoryId = 1
+                        name = "Updated Item", amount = 150.0, categoryId = 1
                     )
                 )
             )
