@@ -13,11 +13,8 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit): String {
         attributes["data-x-bind:class"] = "darkMode ? 'dark' : ''"
 
         Navbar(
-            brandName = "BudgetAI",
-            navItems = listOf(
-                NavItem("Dashboard", "/", true),
-                NavItem("Reports", "/reports"),
-                NavItem("Settings", "/settings")
+            brandName = "BudgetAI", navItems = listOf(
+                NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
             )
         )
 
@@ -40,12 +37,9 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit): String {
         }
 
         Footer(
-            companyName = "BudgetAI",
-            links = listOf(
-                SimpleFooterLink("Privacy", "/privacy"),
-                SimpleFooterLink("Terms", "/terms")
-            ),
-            showThemeToggle = true
+            companyName = "BudgetAI", links = listOf(
+                SimpleFooterLink("Privacy", "/privacy"), SimpleFooterLink("Terms", "/terms")
+            ), showThemeToggle = true
         )
     }
 }
@@ -59,7 +53,7 @@ fun createDashboardPage(): String {
                     classes = setOf("stat-card")
                     div {
                         classes = setOf("stat-label")
-                        +when(index) {
+                        +when (index) {
                             0 -> "Total Revenue"
                             1 -> "Active com.budgetai.models.Users"
                             else -> "Growth Rate"
@@ -67,7 +61,7 @@ fun createDashboardPage(): String {
                     }
                     div {
                         classes = setOf("stat-value")
-                        +when(index) {
+                        +when (index) {
                             0 -> "$24,500"
                             1 -> "2,345"
                             else -> "+12.3%"
