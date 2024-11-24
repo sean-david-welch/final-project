@@ -16,8 +16,7 @@ object Users : IntIdTable("users") {
     val name = varchar("name", 100)
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 
-}
-
+    }
 
 object BudgetItems : IntIdTable("budget_items") {
     val budgetId = reference("budget_id", Budgets, onDelete = ReferenceOption.CASCADE)

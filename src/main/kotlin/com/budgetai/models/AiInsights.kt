@@ -1,5 +1,4 @@
-import com.budgetai.models.InsightType
-import com.budgetai.models.Sentiment
+package com.budgetai.models
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
 
@@ -16,3 +15,4 @@ data class AiInsightDTO(
     val metadata: JsonElement? = null,
     val createdAt: String? = null
 )
+
