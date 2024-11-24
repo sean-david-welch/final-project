@@ -21,8 +21,7 @@ class BudgetItemRepository(private val database: Database) {
     }
 
     // Helper Methods
-    private suspend fun <T> dbQuery(block: suspend () -> T): T =
-        newSuspendedTransaction(Dispatchers.IO, database) { block() }
+    private suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction(Dispatchers.IO, database) { block() }
 
     // Maps database row to BudgetItemDTO
     private fun toBudgetItem(row: ResultRow) = BudgetItemDTO(
@@ -58,8 +57,7 @@ class BudgetItemRepository(private val database: Database) {
 
     // Get total amount of budget items by category within a budget
     suspend fun getTotalAmountByCategory(budgetId: Int, categoryId: Int): Double = dbQuery {
-        BudgetItems.select(BudgetItems.amount.sum())
-            .where { (BudgetItems.budgetId eq budgetId) and (BudgetItems.categoryId eq categoryId) }
+        BudgetItems.select(BudgetItems.amount.sum()).where { (BudgetItems.budgetId eq budgetId) and (BudgetItems.categoryId eq categoryId) }
             .map { it[BudgetItems.amount.sum()]?.toDouble() ?: 0.0 }.single()
     }
 
