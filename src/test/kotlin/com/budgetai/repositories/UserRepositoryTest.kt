@@ -24,8 +24,7 @@ class UserRepositoryTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -47,13 +46,10 @@ class UserRepositoryTest {
     }
 
     private fun createSampleUser(
-        email: String = "test@example.com",
-        name: String = "Test User"
+        email: String = "test@example.com", name: String = "Test User"
     ): UserDTO {
         return UserDTO(
-            id = 0,
-            email = email,
-            name = name
+            id = 0, email = email, name = name
         )
     }
 
@@ -110,9 +106,7 @@ class UserRepositoryTest {
 
         // When
         val updatedUser = initialUser.copy(
-            id = createdId,
-            name = "Updated Name",
-            email = "updated@example.com"
+            id = createdId, name = "Updated Name", email = "updated@example.com"
         )
         repository.update(createdId, updatedUser)
         val retrievedUser = repository.findById(createdId)
