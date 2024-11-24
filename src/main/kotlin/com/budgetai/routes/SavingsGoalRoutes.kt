@@ -13,20 +13,7 @@ fun Route.savingsGoalRoutes(database: Database) {
     val savingsGoalRepository = SavingsGoalRepository(database)
     val savingsGoalService = SavingsGoalService(savingsGoalRepository)
 
-    @Serializable
-    data class ContributionRequest(
-        val amount: Double
-    )
 
-    @Serializable
-    data class WithdrawalRequest(
-        val amount: Double
-    )
-
-    @Serializable
-    data class UpdateCurrentAmountRequest(
-        val amount: Double
-    )
 
     route("/savings-goals") {
         // Create new savings goal

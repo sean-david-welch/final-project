@@ -31,7 +31,6 @@ data class SavingsGoalDTO(
     val createdAt: String? = null
 )
 
-
 // Serializers
 @Serializable
 data class SavingsGoalCreationRequest(
@@ -61,3 +60,17 @@ data class GoalProgress(
     val requiredDailySavings: Double
 )
 
+@Serializable
+data class ContributionRequest(
+    val amount: Double
+)
+
+@Serializable
+data class WithdrawalRequest(
+    val amount: Double
+)
+
+@Serializable
+data class UpdateCurrentAmountRequest(
+    val amount: Double
+)
