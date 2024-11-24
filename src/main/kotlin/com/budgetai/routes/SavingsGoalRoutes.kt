@@ -30,8 +30,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Get savings goal by ID
         get("/{id}") {
             try {
-                val id =
-                    call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
 
                 val goal = savingsGoalService.getSavingsGoal(id)
                 if (goal != null) {
@@ -49,8 +48,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Get goal progress
         get("/{id}/progress") {
             try {
-                val id =
-                    call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
 
                 val progress = savingsGoalService.getGoalProgress(id)
                 call.respond(progress)
@@ -64,8 +62,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Get all user's savings goals
         get("/user/{userId}") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val goals = savingsGoalService.getUserSavingsGoals(userId)
                 call.respond(goals)
@@ -79,8 +76,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Get active savings goals
         get("/user/{userId}/active") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val goals = savingsGoalService.getActiveSavingsGoals(userId)
                 call.respond(goals)
@@ -94,8 +90,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Get completed savings goals
         get("/user/{userId}/completed") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val goals = savingsGoalService.getCompletedSavingsGoals(userId)
                 call.respond(goals)
@@ -109,8 +104,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Get upcoming savings goals
         get("/user/{userId}/upcoming") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                 val goals = savingsGoalService.getUpcomingSavingsGoals(userId)
                 call.respond(goals)
@@ -124,8 +118,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Get total user savings
         get("/user/{userId}/total") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
                 val total = savingsGoalService.getTotalUserSavings(userId)
                 call.respond(mapOf("total" to total))
             } catch (e: IllegalArgumentException) {
@@ -138,8 +131,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Update savings goal
         put("/{id}") {
             try {
-                val id =
-                    call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
                 val request = call.receive<SavingsGoalUpdateRequest>()
                 savingsGoalService.updateSavingsGoal(id, request)
                 call.respond(HttpStatusCode.OK, "Savings goal updated successfully")
@@ -153,8 +145,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Add contribution
         post("/{id}/contribute") {
             try {
-                val id =
-                    call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
                 val request = call.receive<ContributionRequest>()
                 savingsGoalService.addContribution(id, request.amount)
                 call.respond(HttpStatusCode.OK, "Contribution added successfully")
@@ -168,8 +159,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Withdraw amount
         post("/{id}/withdraw") {
             try {
-                val id =
-                    call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
                 val request = call.receive<WithdrawalRequest>()
                 savingsGoalService.withdrawAmount(id, request.amount)
                 call.respond(HttpStatusCode.OK, "Withdrawal processed successfully")
@@ -183,8 +173,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Update current amount
         put("/{id}/current-amount") {
             try {
-                val id =
-                    call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
                 val request = call.receive<UpdateCurrentAmountRequest>()
                 savingsGoalService.updateCurrentAmount(id, request.amount)
                 call.respond(HttpStatusCode.OK, "Current amount updated successfully")
@@ -198,8 +187,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Delete savings goal
         delete("/{id}") {
             try {
-                val id =
-                    call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
                 savingsGoalService.deleteSavingsGoal(id)
                 call.respond(HttpStatusCode.OK, "Savings goal deleted successfully")
             } catch (e: IllegalArgumentException) {
@@ -212,8 +200,7 @@ fun Route.savingsGoalRoutes(database: Database) {
         // Delete all user's savings goals
         delete("/user/{userId}") {
             try {
-                val userId =
-                    call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
                 savingsGoalService.deleteUserSavingsGoals(userId)
                 call.respond(HttpStatusCode.OK, "User savings goals deleted successfully")
             } catch (e: IllegalArgumentException) {
