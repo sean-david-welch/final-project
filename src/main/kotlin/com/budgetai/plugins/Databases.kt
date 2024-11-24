@@ -35,13 +35,8 @@ object DatabaseConfig {
     }
 
     private fun migrateDatabase(jdbcUrl: String, migrationLocation: String) {
-        Flyway.configure()
-            .dataSource(jdbcUrl, "", "")
-            .locations(migrationLocation)
-            .mixed(true)
-            .baselineOnMigrate(true)
-            .load()
-            .migrate()
+        Flyway.configure().dataSource(jdbcUrl, "", "").locations(migrationLocation).mixed(true).baselineOnMigrate(true)
+            .load().migrate()
     }
 
     private fun connectToDatabase(dbFile: File, settings: DatabaseSettings): Database {
@@ -53,8 +48,7 @@ object DatabaseConfig {
         val jdbcUrl = "jdbc:sqlite:${dbFile.absolutePath}?$params"
 
         return Database.connect(
-            url = jdbcUrl,
-            driver = "org.sqlite.JDBC"
+            url = jdbcUrl, driver = "org.sqlite.JDBC"
         )
     }
 }
