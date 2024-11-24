@@ -25,8 +25,7 @@ class BudgetItemRepositoryTest {
     fun setUp() {
         // Setup SQLite database for testing
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
 
         // Create tables
@@ -47,18 +46,10 @@ class BudgetItemRepositoryTest {
     }
 
     private fun createSampleBudgetItem(
-        budgetId: Int = 1,
-        categoryId: Int = 1,
-        name: String = "Test Item",
-        amount: Double = 100.0
+        budgetId: Int = 1, categoryId: Int = 1, name: String = "Test Item", amount: Double = 100.0
     ): BudgetItemDTO {
         return BudgetItemDTO(
-            id = 0,
-            budgetId = budgetId,
-            categoryId = categoryId,
-            name = name,
-            amount = amount,
-            createdAt = ""
+            id = 0, budgetId = budgetId, categoryId = categoryId, name = name, amount = amount, createdAt = ""
         )
     }
 
@@ -154,9 +145,7 @@ class BudgetItemRepositoryTest {
         // When
         val createdId = repository.create(initialItem)
         val updatedItem = initialItem.copy(
-            id = createdId,
-            name = "Updated Item",
-            amount = 200.0
+            id = createdId, name = "Updated Item", amount = 200.0
         )
         repository.update(createdId, updatedItem)
         val retrievedItem = repository.findById(createdId)
