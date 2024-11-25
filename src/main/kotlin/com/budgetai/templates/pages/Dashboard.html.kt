@@ -9,12 +9,12 @@ import com.budgetai.templates.components.SimpleFooterLink
 
 fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit): String {
     return BaseTemplate {
-        attributes["data-x-data"] = "{darkMode: false, mobileMenuOpen: false}"
-        attributes["data-x-bind:class"] = "darkMode ? 'dark' : ''"
-
         Navbar(
-            brandName = "BudgetAI", navItems = listOf(
-                NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
+            brandName = "BudgetAI",
+            navItems = listOf(
+                NavItem("Dashboard", "/", true),
+                NavItem("Reports", "/reports"),
+                NavItem("Settings", "/settings")
             )
         )
 
@@ -37,9 +37,10 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit): String {
         }
 
         Footer(
-            companyName = "BudgetAI", links = listOf(
-                SimpleFooterLink("Privacy", "/privacy"), SimpleFooterLink("Terms", "/terms")
-            ), showThemeToggle = true
+            links = listOf(
+                SimpleFooterLink("Privacy", "/privacy"),
+                SimpleFooterLink("Terms", "/terms")
+            )
         )
     }
 }
@@ -55,7 +56,7 @@ fun createDashboardPage(): String {
                         classes = setOf("stat-label")
                         +when (index) {
                             0 -> "Total Revenue"
-                            1 -> "Active com.budgetai.models.Users"
+                            1 -> "Active Users"
                             else -> "Growth Rate"
                         }
                     }
