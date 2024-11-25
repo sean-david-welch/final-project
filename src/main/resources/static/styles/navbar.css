@@ -1,46 +1,46 @@
 /* Navbar container styles */
 .navbar {
-  @apply bg-gray-800;
+    @apply bg-gray-800;
 }
 
 .navbar-container {
-  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
 }
 
 .navbar-content {
-  @apply flex h-16 items-center justify-between;
+    @apply flex h-16 items-center justify-between;
 }
 
 .navbar-brand-container {
-  @apply flex items-center;
+    @apply flex items-center;
 }
 
 .navbar-brand-logo {
-  @apply flex-shrink-0;
+    @apply flex-shrink-0;
 }
 
 .navbar-brand-text {
-  @apply text-white text-xl font-bold;
+    @apply text-white text-xl font-bold;
 }
 
 /* Navigation menu styles */
 .navbar-desktop-menu {
-  @apply hidden md:block ml-10;
+    @apply hidden md:block ml-10;
 }
 
 .navbar-menu-container {
-  @apply flex items-baseline space-x-4;
+    @apply flex items-baseline space-x-4;
 }
 
 .navbar-menu-list {
-  @apply flex space-x-4;
+    @apply flex space-x-4;
 }
 
 /* Navigation items */
 .nav-item-active {
-  @apply px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md;
+    @apply px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md;
 }
 
 .nav-item-inactive {
-  @apply px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md;
+    @apply px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md;
 }
