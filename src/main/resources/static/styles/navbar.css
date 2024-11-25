@@ -44,28 +44,3 @@
 .nav-item-inactive {
   @apply px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md;
 }
-
-/* Mobile menu styles */
-.navbar-mobile-toggle {
-  @apply md:hidden;
-}
-
-.mobile-menu-button {
-  @apply inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white;
-}
-
-.mobile-menu-icon {
-  @apply h-6 w-6;
-}
-
-.mobile-menu-container {
-  @apply md:hidden;
-}
-
-.mobile-menu-content {
-  @apply space-y-1 px-2 pb-3 pt-2;
-}
-
-.sr-now {
-  @apply sr-only;
-}
