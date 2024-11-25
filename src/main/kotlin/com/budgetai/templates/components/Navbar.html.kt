@@ -19,7 +19,7 @@ private fun UL.renderNavItems(items: List<NavItem>) {
     }
 }
 
-fun FlowContent.Navbar(brandName: String = "Your Brand", navItems: List<NavItem> = listOf(), showMobileMenu: String = "false") {
+fun FlowContent.Navbar(brandName: String = "Your Brand", navItems: List<NavItem> = listOf()) {
     nav {
         classes = setOf("navbar")
         div {
@@ -45,39 +45,6 @@ fun FlowContent.Navbar(brandName: String = "Your Brand", navItems: List<NavItem>
                             }
                         }
                     }
-                }
-                div {
-                    classes = setOf("navbar-mobile-toggle")
-                    button {
-                        attributes["type"] = "button"
-                        attributes["data-x-on:click"] = "mobileMenuOpen = !mobileMenuOpen"
-                        classes = setOf("mobile-menu-button")
-                        span {
-                            classes = setOf("sr-now")
-                            +"Toggle menu"
-                        }
-                        div {
-                            classes = setOf("mobile-menu-icon")
-                            unsafe {
-                                +"""
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                                </svg>
-                                """.trimIndent()
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        div {
-            classes = setOf("mobile-menu-container")
-            attributes["data-x-show"] = "mobileMenuOpen"
-            attributes["style"] = "display: none;"
-            div {
-                classes = setOf("mobile-menu-content")
-                ul {
-                    renderNavItems(navItems)
                 }
             }
         }
