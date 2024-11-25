@@ -1,4 +1,4 @@
-package com.budgetai.templates.components
+package com.budgetai.templates.layout
 
 import kotlinx.html.*
 
