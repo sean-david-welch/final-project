@@ -15,179 +15,180 @@ fun Route.budgetItemRoutes(database: Database) {
     val budgetItemRepository = BudgetItemRepository(database)
     val budgetItemService = BudgetItemService(budgetItemRepository)
 
+    route("/api") {
 
-
-    route("/budget-items") {
-        // Create new budget item
-        post {
-            try {
-                val request = call.receive<BudgetItemCreationRequest>()
-                val itemId = budgetItemService.createBudgetItem(request)
-                call.respond(HttpStatusCode.Created, mapOf("id" to itemId))
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error creating budget item")
-            }
-        }
-
-        // Bulk create budget items
-        post("/bulk") {
-            try {
-                val requests = call.receive<List<BudgetItemCreationRequest>>()
-                val itemIds = budgetItemService.createBulkBudgetItems(requests)
-                call.respond(HttpStatusCode.Created, mapOf("ids" to itemIds))
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error creating budget items")
-            }
-        }
-
-        // Get budget item by ID
-        get("/{id}") {
-            try {
-                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
-
-                val item = budgetItemService.getBudgetItem(id)
-                if (item != null) {
-                    call.respond(item)
-                } else {
-                    call.respond(HttpStatusCode.NotFound, "Budget item not found")
+        route("/budget-items") {
+            // Create new budget item
+            post {
+                try {
+                    val request = call.receive<BudgetItemCreationRequest>()
+                    val itemId = budgetItemService.createBudgetItem(request)
+                    call.respond(HttpStatusCode.Created, mapOf("id" to itemId))
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error creating budget item")
                 }
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error retrieving budget item")
             }
-        }
 
-        // Get all budget items for a budget
-        get("/budget/{budgetId}") {
-            try {
-                val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
-
-                val items = budgetItemService.getBudgetItems(budgetId)
-                call.respond(items)
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error retrieving budget items")
+            // Bulk create budget items
+            post("/bulk") {
+                try {
+                    val requests = call.receive<List<BudgetItemCreationRequest>>()
+                    val itemIds = budgetItemService.createBulkBudgetItems(requests)
+                    call.respond(HttpStatusCode.Created, mapOf("ids" to itemIds))
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error creating budget items")
+                }
             }
-        }
 
-        // Get all budget items for a category
-        get("/category/{categoryId}") {
-            try {
-                val categoryId = call.parameters["categoryId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+            // Get budget item by ID
+            get("/{id}") {
+                try {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
 
-                val items = budgetItemService.getCategoryItems(categoryId)
-                call.respond(items)
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error retrieving category items")
+                    val item = budgetItemService.getBudgetItem(id)
+                    if (item != null) {
+                        call.respond(item)
+                    } else {
+                        call.respond(HttpStatusCode.NotFound, "Budget item not found")
+                    }
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error retrieving budget item")
+                }
             }
-        }
 
-        // Get total amount for a budget
-        get("/budget/{budgetId}/total") {
-            try {
-                val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
+            // Get all budget items for a budget
+            get("/budget/{budgetId}") {
+                try {
+                    val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
-                val total = budgetItemService.getBudgetTotalAmount(budgetId)
-                call.respond(mapOf("total" to total))
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error calculating total amount")
+                    val items = budgetItemService.getBudgetItems(budgetId)
+                    call.respond(items)
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error retrieving budget items")
+                }
             }
-        }
 
-        // Get total amount for a category within a budget
-        get("/budget/{budgetId}/category/{categoryId}/total") {
-            try {
-                val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
-                val categoryId = call.parameters["categoryId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+            // Get all budget items for a category
+            get("/category/{categoryId}") {
+                try {
+                    val categoryId = call.parameters["categoryId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
-                val total = budgetItemService.getCategoryTotalAmount(budgetId, categoryId)
-                call.respond(mapOf("total" to total))
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error calculating category total")
+                    val items = budgetItemService.getCategoryItems(categoryId)
+                    call.respond(items)
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error retrieving category items")
+                }
             }
-        }
 
-        // Update budget item
-        put("/{id}") {
-            try {
-                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
-                val request = call.receive<BudgetItemUpdateRequest>()
+            // Get total amount for a budget
+            get("/budget/{budgetId}/total") {
+                try {
+                    val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
-                budgetItemService.updateBudgetItem(id, request)
-                call.respond(HttpStatusCode.OK, "Budget item updated successfully")
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error updating budget item")
+                    val total = budgetItemService.getBudgetTotalAmount(budgetId)
+                    call.respond(mapOf("total" to total))
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error calculating total amount")
+                }
             }
-        }
 
-        // Update budget item amount only
-        put("/{id}/amount") {
-            try {
-                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
-                val request = call.receive<UpdateAmountRequest>()
+            // Get total amount for a category within a budget
+            get("/budget/{budgetId}/category/{categoryId}/total") {
+                try {
+                    val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
+                    val categoryId = call.parameters["categoryId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
-                budgetItemService.updateBudgetItemAmount(id, request.amount)
-                call.respond(HttpStatusCode.OK, "Amount updated successfully")
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error updating amount")
+                    val total = budgetItemService.getCategoryTotalAmount(budgetId, categoryId)
+                    call.respond(mapOf("total" to total))
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error calculating category total")
+                }
             }
-        }
 
-        // Delete budget item
-        delete("/{id}") {
-            try {
-                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
+            // Update budget item
+            put("/{id}") {
+                try {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
+                    val request = call.receive<BudgetItemUpdateRequest>()
 
-                budgetItemService.deleteBudgetItem(id)
-                call.respond(HttpStatusCode.OK, "Budget item deleted successfully")
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error deleting budget item")
+                    budgetItemService.updateBudgetItem(id, request)
+                    call.respond(HttpStatusCode.OK, "Budget item updated successfully")
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error updating budget item")
+                }
             }
-        }
 
-        // Delete all budget items for a budget
-        delete("/budget/{budgetId}") {
-            try {
-                val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
+            // Update budget item amount only
+            put("/{id}/amount") {
+                try {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
+                    val request = call.receive<UpdateAmountRequest>()
 
-                budgetItemService.deleteBudgetItems(budgetId)
-                call.respond(HttpStatusCode.OK, "Budget items deleted successfully")
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error deleting budget items")
+                    budgetItemService.updateBudgetItemAmount(id, request.amount)
+                    call.respond(HttpStatusCode.OK, "Amount updated successfully")
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error updating amount")
+                }
             }
-        }
 
-        // Delete all budget items for a category
-        delete("/category/{categoryId}") {
-            try {
-                val categoryId = call.parameters["categoryId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+            // Delete budget item
+            delete("/{id}") {
+                try {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
 
-                budgetItemService.deleteCategoryItems(categoryId)
-                call.respond(HttpStatusCode.OK, "Category items deleted successfully")
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error deleting category items")
+                    budgetItemService.deleteBudgetItem(id)
+                    call.respond(HttpStatusCode.OK, "Budget item deleted successfully")
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error deleting budget item")
+                }
+            }
+
+            // Delete all budget items for a budget
+            delete("/budget/{budgetId}") {
+                try {
+                    val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
+
+                    budgetItemService.deleteBudgetItems(budgetId)
+                    call.respond(HttpStatusCode.OK, "Budget items deleted successfully")
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error deleting budget items")
+                }
+            }
+
+            // Delete all budget items for a category
+            delete("/category/{categoryId}") {
+                try {
+                    val categoryId = call.parameters["categoryId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+
+                    budgetItemService.deleteCategoryItems(categoryId)
+                    call.respond(HttpStatusCode.OK, "Category items deleted successfully")
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error deleting category items")
+                }
             }
         }
     }
