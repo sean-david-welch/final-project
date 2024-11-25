@@ -47,7 +47,7 @@ class BudgetItemRoutesTest {
             configureRouting(database = database)
         }
 
-        val response = client.post("/budget-items") {
+        val response = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -85,7 +85,7 @@ class BudgetItemRoutesTest {
             )
         )
 
-        val response = client.post("/budget-items/bulk") {
+        val response = client.post("/api/budget-items/bulk") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(items))
         }
@@ -101,7 +101,7 @@ class BudgetItemRoutesTest {
         }
 
         // Create an item first
-        val createResponse = client.post("/budget-items") {
+        val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -116,7 +116,7 @@ class BudgetItemRoutesTest {
         }
         val itemId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.get("/budget-items/$itemId")
+        val response = client.get("/api/budget-items/$itemId")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -129,7 +129,7 @@ class BudgetItemRoutesTest {
 
         // Create two items for the same budget
         repeat(2) {
-            client.post("/budget-items") {
+            client.post("/api/budget-items") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
@@ -144,7 +144,7 @@ class BudgetItemRoutesTest {
             }
         }
 
-        val response = client.get("/budget-items/budget/1")
+        val response = client.get("/api/budget-items/budget/1")
         assertEquals(HttpStatusCode.OK, response.status)
 
         val items = Json.decodeFromString<List<BudgetItemDTO>>(response.bodyAsText())
@@ -160,7 +160,7 @@ class BudgetItemRoutesTest {
 
         // Create two items with known amounts
         repeat(2) {
-            client.post("/budget-items") {
+            client.post("/api/budget-items") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
@@ -175,7 +175,7 @@ class BudgetItemRoutesTest {
             }
         }
 
-        val response = client.get("/budget-items/budget/1/total")
+        val response = client.get("/api/budget-items/budget/1/total")
         assertEquals(HttpStatusCode.OK, response.status)
 
         val total = Json.decodeFromString<Map<String, Double>>(response.bodyAsText())["total"]
@@ -190,7 +190,7 @@ class BudgetItemRoutesTest {
         }
 
         // Create an item first
-        val createResponse = client.post("/budget-items") {
+        val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -205,7 +205,7 @@ class BudgetItemRoutesTest {
         }
         val itemId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.put("/budget-items/$itemId") {
+        val response = client.put("/api/budget-items/$itemId") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -227,7 +227,7 @@ class BudgetItemRoutesTest {
         }
 
         // Create an item first
-        val createResponse = client.post("/budget-items") {
+        val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -242,7 +242,7 @@ class BudgetItemRoutesTest {
         }
         val itemId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.put("/budget-items/$itemId/amount") {
+        val response = client.put("/api/budget-items/$itemId/amount") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(UpdateAmountRequest(amount = 150.0)))
         }
@@ -258,7 +258,7 @@ class BudgetItemRoutesTest {
         }
 
         // Create an item first
-        val createResponse = client.post("/budget-items") {
+        val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -273,10 +273,10 @@ class BudgetItemRoutesTest {
         }
         val itemId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val deleteResponse = client.delete("/budget-items/$itemId")
+        val deleteResponse = client.delete("/api/budget-items/$itemId")
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
-        val getResponse = client.get("/budget-items/$itemId")
+        val getResponse = client.get("/api/budget-items/$itemId")
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 
@@ -289,7 +289,7 @@ class BudgetItemRoutesTest {
 
         // Create two items for the same budget
         repeat(2) {
-            client.post("/budget-items") {
+            client.post("/api/budget-items") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
@@ -304,10 +304,10 @@ class BudgetItemRoutesTest {
             }
         }
 
-        val deleteResponse = client.delete("/budget-items/budget/1")
+        val deleteResponse = client.delete("/api/budget-items/budget/1")
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
-        val getResponse = client.get("/budget-items/budget/1")
+        val getResponse = client.get("/api/budget-items/budget/1")
         val items = Json.decodeFromString<List<BudgetItemDTO>>(getResponse.bodyAsText())
         assertEquals(0, items.size)
     }
