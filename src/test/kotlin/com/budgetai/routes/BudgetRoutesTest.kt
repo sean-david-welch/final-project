@@ -49,7 +49,7 @@ class BudgetRoutesTest {
         }
 
         // Test
-        val response = client.post("/budgets") {
+        val response = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -78,7 +78,7 @@ class BudgetRoutesTest {
         }
 
         // Create a budget first
-        val createResponse = client.post("/budgets") {
+        val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -95,7 +95,7 @@ class BudgetRoutesTest {
         val budgetId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Test
-        val response = client.get("/budgets/$budgetId")
+        val response = client.get("/api/budgets/$budgetId")
 
         // Verify
         assertEquals(HttpStatusCode.OK, response.status)
@@ -109,7 +109,7 @@ class BudgetRoutesTest {
             configureRouting(database = database)
         }
 
-        val response = client.get("/budgets/999")
+        val response = client.get("/api/budgets/999")
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
@@ -121,7 +121,7 @@ class BudgetRoutesTest {
         }
 
         // Create a budget first
-        val createResponse = client.post("/budgets") {
+        val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -138,7 +138,7 @@ class BudgetRoutesTest {
         val budgetId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Update the totals
-        val response = client.put("/budgets/$budgetId/totals") {
+        val response = client.put("/api/budgets/$budgetId/totals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -161,7 +161,7 @@ class BudgetRoutesTest {
 
         // Create two budgets for the same user
         repeat(2) {
-            client.post("/budgets") {
+            client.post("/api/budgets") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
@@ -178,7 +178,7 @@ class BudgetRoutesTest {
         }
 
         // Get budgets for user
-        val response = client.get("/budgets/user/1")
+        val response = client.get("/api/budgets/user/1")
         assertEquals(HttpStatusCode.OK, response.status)
 
         // Parse response and verify count
@@ -194,7 +194,7 @@ class BudgetRoutesTest {
         }
 
         // Create a budget first
-        val createResponse = client.post("/budgets") {
+        val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -211,11 +211,11 @@ class BudgetRoutesTest {
         val budgetId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Delete the budget
-        val deleteResponse = client.delete("/budgets/$budgetId")
+        val deleteResponse = client.delete("/api/budgets/$budgetId")
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
         // Verify it's gone
-        val getResponse = client.get("/budgets/$budgetId")
+        val getResponse = client.get("/api/budgets/$budgetId")
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 }
