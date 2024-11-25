@@ -10,11 +10,8 @@ import com.budgetai.templates.components.SimpleFooterLink
 fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit): String {
     return BaseTemplate {
         Navbar(
-            brandName = "BudgetAI",
-            navItems = listOf(
-                NavItem("Dashboard", "/", true),
-                NavItem("Reports", "/reports"),
-                NavItem("Settings", "/settings")
+            brandName = "BudgetAI", navItems = listOf(
+                NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
             )
         )
 
@@ -38,8 +35,7 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit): String {
 
         Footer(
             links = listOf(
-                SimpleFooterLink("Privacy", "/privacy"),
-                SimpleFooterLink("Terms", "/terms")
+                SimpleFooterLink("Privacy", "/privacy"), SimpleFooterLink("Terms", "/terms")
             )
         )
     }
