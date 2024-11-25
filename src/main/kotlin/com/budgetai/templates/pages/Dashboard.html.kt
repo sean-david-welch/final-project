@@ -1,8 +1,7 @@
 package com.budgetai.templates.pages
 
 import kotlinx.html.*
-import com.budgetai.templates.layout.BaseTemplate
-import com.budgetai.templates.components.*
+import com.budgetai.templates.layout.*
 
 fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
     Navbar(
