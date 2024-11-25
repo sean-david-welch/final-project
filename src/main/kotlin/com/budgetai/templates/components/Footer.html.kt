@@ -12,8 +12,7 @@ fun FlowContent.Footer(links: List<SimpleFooterLink> = listOf()) {
         div {
             classes = setOf("footer-container")
             div {
-                classes = setOf("footer-copyright")
-                +"© ${java.time.Year.now().value} BudgetAI"
+                classes = setOf("footer-copyright") +"© ${java.time.Year.now().value} BudgetAI"
             }
             div {
                 classes = setOf("footer-links-container")
