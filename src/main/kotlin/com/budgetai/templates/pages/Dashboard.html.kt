@@ -5,11 +5,8 @@ import com.budgetai.templates.layout.*
 
 fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
     Navbar(
-        brandName = "BudgetAI",
-        navItems = listOf(
-            NavItem("Dashboard", "/", true),
-            NavItem("Reports", "/reports"),
-            NavItem("Settings", "/settings")
+        brandName = "BudgetAI", navItems = listOf(
+            NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
         )
     )
 
@@ -24,8 +21,7 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
 
     Footer(
         links = listOf(
-            SimpleFooterLink("Privacy", "/privacy"),
-            SimpleFooterLink("Terms", "/terms")
+            SimpleFooterLink("Privacy", "/privacy"), SimpleFooterLink("Terms", "/terms")
         )
     )
 }
