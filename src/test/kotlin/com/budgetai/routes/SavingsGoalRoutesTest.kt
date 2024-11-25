@@ -47,7 +47,7 @@ class SavingsGoalRoutesTest {
             configureRouting(database = database)
         }
 
-        val response = client.post("/savings-goals") {
+        val response = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -73,7 +73,7 @@ class SavingsGoalRoutesTest {
         }
 
         // Create a goal first
-        val createResponse = client.post("/savings-goals") {
+        val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -89,7 +89,7 @@ class SavingsGoalRoutesTest {
         }
         val goalId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.get("/savings-goals/$goalId")
+        val response = client.get("/api/savings-goals/$goalId")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -101,7 +101,7 @@ class SavingsGoalRoutesTest {
         }
 
         // Create a goal with known amounts
-        val createResponse = client.post("/savings-goals") {
+        val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -118,7 +118,7 @@ class SavingsGoalRoutesTest {
         }
         val goalId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.get("/savings-goals/$goalId/progress")
+        val response = client.get("/api/savings-goals/$goalId/progress")
         assertEquals(HttpStatusCode.OK, response.status)
 
         val progress = Json.decodeFromString<GoalProgress>(response.bodyAsText())
@@ -134,7 +134,7 @@ class SavingsGoalRoutesTest {
 
         // Create multiple goals for the same user
         repeat(3) {
-            client.post("/savings-goals") {
+            client.post("/api/savings-goals") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
@@ -146,7 +146,7 @@ class SavingsGoalRoutesTest {
             }
         }
 
-        val response = client.get("/savings-goals/user/1")
+        val response = client.get("/api/savings-goals/user/1")
         assertEquals(HttpStatusCode.OK, response.status)
 
         val goals = Json.decodeFromString<List<SavingsGoalDTO>>(response.bodyAsText())
@@ -161,7 +161,7 @@ class SavingsGoalRoutesTest {
         }
 
         // Create goals with different statuses
-        client.post("/savings-goals") {
+        client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -172,7 +172,7 @@ class SavingsGoalRoutesTest {
             )
         }
 
-        val response = client.get("/savings-goals/user/1/active")
+        val response = client.get("/api/savings-goals/user/1/active")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -184,7 +184,7 @@ class SavingsGoalRoutesTest {
         }
 
         // Create a goal first
-        val createResponse = client.post("/savings-goals") {
+        val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -200,7 +200,7 @@ class SavingsGoalRoutesTest {
         }
         val goalId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.put("/savings-goals/$goalId") {
+        val response = client.put("/api/savings-goals/$goalId") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -222,7 +222,7 @@ class SavingsGoalRoutesTest {
         }
 
         // Create a goal first
-        val createResponse = client.post("/savings-goals") {
+        val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -234,7 +234,7 @@ class SavingsGoalRoutesTest {
         }
         val goalId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.post("/savings-goals/$goalId/contribute") {
+        val response = client.post("/api/savings-goals/$goalId/contribute") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(ContributionRequest(amount = 500.0)))
         }
@@ -250,7 +250,7 @@ class SavingsGoalRoutesTest {
         }
 
         // Create a goal with initial amount
-        val createResponse = client.post("/savings-goals") {
+        val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -267,7 +267,7 @@ class SavingsGoalRoutesTest {
         }
         val goalId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.post("/savings-goals/$goalId/withdraw") {
+        val response = client.post("/api/savings-goals/$goalId/withdraw") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(WithdrawalRequest(amount = 200.0)))
         }
@@ -283,7 +283,7 @@ class SavingsGoalRoutesTest {
         }
 
         // Create a goal first
-        val createResponse = client.post("/savings-goals") {
+        val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -295,7 +295,7 @@ class SavingsGoalRoutesTest {
         }
         val goalId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.put("/savings-goals/$goalId/current-amount") {
+        val response = client.put("/api/savings-goals/$goalId/current-amount") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(UpdateCurrentAmountRequest(amount = 750.0)))
         }
@@ -311,7 +311,7 @@ class SavingsGoalRoutesTest {
         }
 
         // Create a goal first
-        val createResponse = client.post("/savings-goals") {
+        val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -323,10 +323,10 @@ class SavingsGoalRoutesTest {
         }
         val goalId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val deleteResponse = client.delete("/savings-goals/$goalId")
+        val deleteResponse = client.delete("/api/savings-goals/$goalId")
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
-        val getResponse = client.get("/savings-goals/$goalId")
+        val getResponse = client.get("/api/savings-goals/$goalId")
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 }
