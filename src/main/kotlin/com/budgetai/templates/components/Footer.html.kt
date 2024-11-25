@@ -6,9 +6,7 @@ data class SimpleFooterLink(
     val text: String, val href: String
 )
 
-fun FlowContent.Footer(
-    links: List<SimpleFooterLink> = listOf()
-) {
+fun FlowContent.Footer(links: List<SimpleFooterLink> = listOf()) {
     footer {
         classes = setOf("footer")
         div {
