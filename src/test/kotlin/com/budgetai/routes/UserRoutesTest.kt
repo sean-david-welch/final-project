@@ -52,7 +52,7 @@ class UserRoutesTest {
             email = "test@example.com", password = "StrongPassword999", name = "Test User"
         )
 
-        val response = client.post("/users/register") {
+        val response = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(userRequest))
         }
@@ -70,7 +70,7 @@ class UserRoutesTest {
         }
 
         // Create first user
-        client.post("/users/register") {
+        client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -82,7 +82,7 @@ class UserRoutesTest {
         }
 
         // Try to create another user with same email
-        val response = client.post("/users/register") {
+        val response = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -104,7 +104,7 @@ class UserRoutesTest {
         }
 
         // Create user first
-        client.post("/users/register") {
+        client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -116,7 +116,7 @@ class UserRoutesTest {
         }
 
         // Try to login
-        val response = client.post("/users/login") {
+        val response = client.post("/api/users/login") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -138,7 +138,7 @@ class UserRoutesTest {
         }
 
         // Create user first
-        client.post("/users/register") {
+        client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -150,7 +150,7 @@ class UserRoutesTest {
         }
 
         // Try to login with wrong password
-        val response = client.post("/users/login") {
+        val response = client.post("/api/users/login") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -172,7 +172,7 @@ class UserRoutesTest {
         }
 
         // Create user first
-        val createResponse = client.post("/users/register") {
+        val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -184,7 +184,7 @@ class UserRoutesTest {
         }
         val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.get("/users/$userId")
+        val response = client.get("/api/users/$userId")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -196,7 +196,7 @@ class UserRoutesTest {
         }
 
         // Create user first
-        client.post("/users/register") {
+        client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -207,7 +207,7 @@ class UserRoutesTest {
             )
         }
 
-        val response = client.get("/users/email/test@example.com")
+        val response = client.get("/api/users/email/test@example.com")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -219,7 +219,7 @@ class UserRoutesTest {
         }
 
         // Create user first
-        val createResponse = client.post("/users/register") {
+        val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -231,7 +231,7 @@ class UserRoutesTest {
         }
         val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.put("/users/$userId") {
+        val response = client.put("/api/users/$userId") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -253,7 +253,7 @@ class UserRoutesTest {
         }
 
         // Create user first
-        val createResponse = client.post("/users/register") {
+        val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -265,7 +265,7 @@ class UserRoutesTest {
         }
         val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.put("/users/$userId/password") {
+        val response = client.put("/api/users/$userId/password") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -287,7 +287,7 @@ class UserRoutesTest {
         }
 
         // Create user first
-        val createResponse = client.post("/users/register") {
+        val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -299,7 +299,7 @@ class UserRoutesTest {
         }
         val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.put("/users/$userId/password") {
+        val response = client.put("/api/users/$userId/password") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -321,7 +321,7 @@ class UserRoutesTest {
         }
 
         // Create user first
-        val createResponse = client.post("/users/register") {
+        val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -333,10 +333,10 @@ class UserRoutesTest {
         }
         val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val deleteResponse = client.delete("/users/$userId")
+        val deleteResponse = client.delete("/api/users/$userId")
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
-        val getResponse = client.get("/users/$userId")
+        val getResponse = client.get("/api/users/$userId")
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 }
