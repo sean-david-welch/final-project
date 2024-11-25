@@ -6,3 +6,78 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Layout Components */
+.layout-base {
+    @apply min-h-screen bg-gray-50 dark:bg-gray-800 py-6;
+}
+
+.container-base {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+/* Content Components */
+.content-section {
+    @apply bg-white dark:bg-gray-900 rounded-lg shadow p-6;
+}
+
+.card-base {
+    @apply bg-gray-50 dark:bg-gray-800 rounded-lg p-6 shadow-sm;
+}
+
+/* Typography Components */
+.heading-large {
+    @apply text-gray-900 dark:text-white text-2xl font-semibold;
+}
+
+.heading-medium {
+    @apply text-gray-900 dark:text-white text-lg font-medium;
+}
+
+.text-base {
+    @apply text-gray-600 dark:text-gray-400 text-sm;
+}
+
+.text-muted {
+    @apply text-gray-500 dark:text-gray-400 text-sm;
+}
+
+/* List Components */
+.list-container {
+    @apply border border-gray-200 dark:border-gray-700 rounded-lg
+           divide-y divide-gray-200 dark:divide-gray-700;
+}
+
+.list-item {
+    @apply p-4 text-gray-900 dark:text-white;
+}
+
+/* Grid Components */
+.grid-stats {
+    @apply grid gap-6 md:grid-cols-2 lg:grid-cols-3;
+}
+
+/* Interactive Elements */
+.button-primary {
+    @apply bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600
+           text-white font-medium
+           px-4 py-2 rounded-lg;
+}
+
+.button-secondary {
+    @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600
+           text-gray-900 dark:text-white font-medium
+           px-4 py-2 rounded-lg;
+}
+
+/* Form Components */
+.input-base {
+    @apply bg-white dark:bg-gray-800
+           border border-gray-300 dark:border-gray-600
+           text-gray-900 dark:text-white
+           rounded-lg px-3 py-2
+           focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+}
+
+.label-base {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+}
