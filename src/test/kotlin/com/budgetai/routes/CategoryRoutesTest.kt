@@ -48,7 +48,7 @@ class CategoryRoutesTest {
             configureRouting(database = database)
         }
 
-        val response = client.post("/categories") {
+        val response = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -73,7 +73,7 @@ class CategoryRoutesTest {
 
         // Create two categories first
         repeat(2) { index ->
-            client.post("/categories") {
+            client.post("/api/categories") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
@@ -85,7 +85,7 @@ class CategoryRoutesTest {
             }
         }
 
-        val response = client.get("/categories")
+        val response = client.get("/api/categories")
         assertEquals(HttpStatusCode.OK, response.status)
         val categories = Json.decodeFromString<List<CategoryDTO>>(response.bodyAsText())
         assertEquals(2, categories.size)
@@ -99,7 +99,7 @@ class CategoryRoutesTest {
         }
 
         // Create a category first
-        val createResponse = client.post("/categories") {
+        val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -111,7 +111,7 @@ class CategoryRoutesTest {
         }
         val categoryId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.get("/categories/$categoryId")
+        val response = client.get("/api/categories/$categoryId")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -122,7 +122,7 @@ class CategoryRoutesTest {
             configureRouting(database = database)
         }
 
-        val response = client.get("/categories/999")
+        val response = client.get("/api/categories/999")
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
@@ -135,7 +135,7 @@ class CategoryRoutesTest {
 
         // Create a category first
         val categoryName = "Test Category"
-        client.post("/categories") {
+        client.post("/api/categories") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -146,7 +146,7 @@ class CategoryRoutesTest {
             )
         }
 
-        val response = client.get("/categories/name/$categoryName")
+        val response = client.get("/api/categories/name/$categoryName")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -158,7 +158,7 @@ class CategoryRoutesTest {
         }
 
         // Create categories of different types
-        client.post("/categories") {
+        client.post("/api/categories") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -169,7 +169,7 @@ class CategoryRoutesTest {
             )
         }
 
-        client.post("/categories") {
+        client.post("/api/categories") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -180,7 +180,7 @@ class CategoryRoutesTest {
             )
         }
 
-        val response = client.get("/categories/type/INCOME")
+        val response = client.get("/api/categories/type/INCOME")
         assertEquals(HttpStatusCode.OK, response.status)
         val categories = Json.decodeFromString<List<CategoryDTO>>(response.bodyAsText())
         assertTrue(categories.all { it.type == CategoryType.INCOME })
@@ -194,7 +194,7 @@ class CategoryRoutesTest {
         }
 
         // Create a category first
-        val createResponse = client.post("/categories") {
+        val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -207,7 +207,7 @@ class CategoryRoutesTest {
         val categoryId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Update the category
-        val response = client.put("/categories/$categoryId") {
+        val response = client.put("/api/categories/$categoryId") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -221,7 +221,7 @@ class CategoryRoutesTest {
         assertEquals(HttpStatusCode.OK, response.status)
 
         // Verify the update
-        val getResponse = client.get("/categories/$categoryId")
+        val getResponse = client.get("/api/categories/$categoryId")
         val updatedCategory = Json.decodeFromString<CategoryDTO>(getResponse.bodyAsText())
         assertEquals("Updated Name", updatedCategory.name)
         assertEquals(CategoryType.INCOME, updatedCategory.type)
@@ -236,7 +236,7 @@ class CategoryRoutesTest {
         }
 
         // Create a category first
-        val createResponse = client.post("/categories") {
+        val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -249,11 +249,11 @@ class CategoryRoutesTest {
         val categoryId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Delete the category
-        val deleteResponse = client.delete("/categories/$categoryId")
+        val deleteResponse = client.delete("/api/categories/$categoryId")
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
         // Verify it's gone
-        val getResponse = client.get("/categories/$categoryId")
+        val getResponse = client.get("/api/categories/$categoryId")
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 }
