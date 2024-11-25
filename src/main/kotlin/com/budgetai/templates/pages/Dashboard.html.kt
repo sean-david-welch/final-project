@@ -10,12 +10,10 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
         )
     )
 
-    main {
-        div(classes = "page-header") {
+    main(classes = "dashboard-layout") {
+        div(classes = "dashboard-container") {
             h1(classes = "page-title") { +title }
-        }
-        div(classes = "content-section") {
-            contentFn()
+            div(classes = "content-wrapper") { contentFn() }
         }
     }
 
@@ -27,10 +25,9 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
 }
 
 fun createDashboardPage() = DashboardTemplate("Dashboard Overview") {
-    // Stats Section
-    div(classes = "grid-stats") {
+    div(classes = "stats-grid") {
         repeat(3) { index ->
-            div(classes = "card-base") {
+            div(classes = "stat-card") {
                 div(classes = "stat-label") {
                     +when (index) {
                         0 -> "Total Revenue"
@@ -49,31 +46,15 @@ fun createDashboardPage() = DashboardTemplate("Dashboard Overview") {
         }
     }
 
-    // Activity Section
     div(classes = "activity-section") {
         h2(classes = "activity-title") { +"Recent Activity" }
-        div(classes = "list-container") {
+        div(classes = "activity-list") {
             repeat(3) {
-                div(classes = "list-item") {
+                div(classes = "activity-item") {
                     div(classes = "activity-text") { +"User completed action ${it + 1}" }
                     div(classes = "activity-time") { +"2 minutes ago" }
                 }
             }
         }
-    }
-}
-
-// Helper functions to make the template more reusable
-fun DIV.statCard(label: String, value: String) {
-    div(classes = "card-base") {
-        div(classes = "stat-label") { +label }
-        div(classes = "stat-value") { +value }
-    }
-}
-
-fun DIV.activityItem(text: String, time: String) {
-    div(classes = "list-item") {
-        div(classes = "activity-text") { +text }
-        div(classes = "activity-time") { +time }
     }
 }
