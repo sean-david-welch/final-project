@@ -8,11 +8,7 @@ private fun UL.renderNavItems(items: List<NavItem>) {
     items.forEach { item ->
         li {
             a(href = item.href) {
-                classes = if (item.isActive) {
-                    setOf("nav-item-active")
-                } else {
-                    setOf("nav-item-inactive")
-                }
+                classes = if (item.isActive) setOf("nav-item-active") else setOf("nav-item-inactive")
                 +item.text
             }
         }
@@ -20,31 +16,14 @@ private fun UL.renderNavItems(items: List<NavItem>) {
 }
 
 fun FlowContent.Navbar(brandName: String = "Your Brand", navItems: List<NavItem> = listOf()) {
-    nav {
-        classes = setOf("navbar")
-        div {
-            classes = setOf("navbar-container")
-            div {
-                classes = setOf("navbar-content")
-                div {
-                    classes = setOf("navbar-brand-container")
-                    div {
-                        classes = setOf("navbar-brand-logo")
-                        span {
-                            classes = setOf("navbar-brand-text")
-                            +brandName
-                        }
-                    }
-                    div {
-                        classes = setOf("navbar-desktop-menu")
-                        div {
-                            classes = setOf("navbar-menu-container")
-                            ul {
-                                classes = setOf("navbar-menu-list")
-                                renderNavItems(navItems)
-                            }
-                        }
-                    }
+    nav(classes = "navbar") {
+        div(classes = "navbar-container navbar-content") {
+            div(classes = "navbar-brand-container") {
+                span(classes = "navbar-brand-text") { +brandName }
+            }
+            div(classes = "navbar-desktop-menu navbar-menu-container") {
+                ul(classes = "navbar-menu-list") {
+                    renderNavItems(navItems)
                 }
             }
         }
