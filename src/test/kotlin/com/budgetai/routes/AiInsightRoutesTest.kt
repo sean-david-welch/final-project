@@ -119,7 +119,7 @@ class AiInsightRoutesTest {
             configureRouting(database = database)
         }
 
-        val response = client.post("/ai-insights") {
+        val response = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(createSampleInsightRequest()))
         }
@@ -134,13 +134,13 @@ class AiInsightRoutesTest {
         }
 
         // Create insight first
-        val createResponse = client.post("/ai-insights") {
+        val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(createSampleInsightRequest()))
         }
         val insightId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.get("/ai-insights/$insightId")
+        val response = client.get("/api/ai-insights/$insightId")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -153,7 +153,7 @@ class AiInsightRoutesTest {
 
         // Create insights with specific type
         repeat(2) {
-            client.post("/ai-insights") {
+            client.post("/api/ai-insights") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
@@ -165,7 +165,7 @@ class AiInsightRoutesTest {
             }
         }
 
-        val response = client.get("/ai-insights/type/SAVING_SUGGESTION")
+        val response = client.get("/api/ai-insights/type/SAVING_SUGGESTION")
         assertEquals(HttpStatusCode.OK, response.status)
 
         val insights = Json.decodeFromString<List<AiInsightDTO>>(response.bodyAsText())
@@ -184,13 +184,13 @@ class AiInsightRoutesTest {
         val request = createSampleInsightRequest().copy(sentiment = Sentiment.POSITIVE)
 
         repeat(2) {
-            client.post("/ai-insights") {
+            client.post("/api/ai-insights") {
                 contentType(ContentType.Application.Json)
                 setBody(Json.encodeToString(request))
             }
         }
 
-        val response = client.get("/ai-insights/sentiment/POSITIVE")
+        val response = client.get("/api/ai-insights/sentiment/POSITIVE")
         assertEquals(HttpStatusCode.OK, response.status)
 
         val insights = Json.decodeFromString<List<AiInsightDTO>>(response.bodyAsText())
@@ -206,7 +206,7 @@ class AiInsightRoutesTest {
 
         // Create multiple insights for user
         repeat(3) {
-            client.post("/ai-insights") {
+            client.post("/api/ai-insights") {
                 contentType(ContentType.Application.Json)
                 setBody(
                     Json.encodeToString(
@@ -218,7 +218,7 @@ class AiInsightRoutesTest {
             }
         }
 
-        val response = client.get("/ai-insights/user/1")
+        val response = client.get("/api/ai-insights/user/1")
         assertEquals(HttpStatusCode.OK, response.status)
 
         val insights = Json.decodeFromString<List<AiInsightDTO>>(response.bodyAsText())
@@ -234,7 +234,7 @@ class AiInsightRoutesTest {
 
         // Create some insights
         repeat(2) {
-            client.post("/ai-insights") {
+            client.post("/api/ai-insights") {
                 contentType(ContentType.Application.Json)
                 setBody(Json.encodeToString(createSampleInsightRequest()))
             }
@@ -243,7 +243,7 @@ class AiInsightRoutesTest {
         val startDate = LocalDateTime(2024, 1, 1, 0, 0)
         val endDate = LocalDateTime(2024, 12, 31, 23, 59)
 
-        val response = client.get("/ai-insights/user/1/date-range?startDate=$startDate&endDate=$endDate")
+        val response = client.get("/api/ai-insights/user/1/date-range?startDate=$startDate&endDate=$endDate")
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -255,7 +255,7 @@ class AiInsightRoutesTest {
         }
 
         // Create insight first
-        val createResponse = client.post("/ai-insights") {
+        val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(createSampleInsightRequest()))
         }
@@ -266,7 +266,7 @@ class AiInsightRoutesTest {
             put("amount", 200.0)
         }
 
-        val response = client.put("/ai-insights/$insightId") {
+        val response = client.put("/api/ai-insights/$insightId") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
@@ -292,13 +292,13 @@ class AiInsightRoutesTest {
         }
 
         // Create insight first
-        val createResponse = client.post("/ai-insights") {
+        val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(createSampleInsightRequest()))
         }
         val insightId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.put("/ai-insights/$insightId/sentiment") {
+        val response = client.put("/api/ai-insights/$insightId/sentiment") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(UpdateSentimentRequest(sentiment = Sentiment.POSITIVE)))
         }
@@ -314,7 +314,7 @@ class AiInsightRoutesTest {
         }
 
         // Create insight first
-        val createResponse = client.post("/ai-insights") {
+        val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(createSampleInsightRequest()))
         }
@@ -326,7 +326,7 @@ class AiInsightRoutesTest {
             put("note", "Updated via test")
         }
 
-        val response = client.put("/ai-insights/$insightId/metadata") {
+        val response = client.put("/api/ai-insights/$insightId/metadata") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(UpdateMetadataRequest(metadata = newMetadata)))
         }
@@ -342,16 +342,16 @@ class AiInsightRoutesTest {
         }
 
         // Create insight first
-        val createResponse = client.post("/ai-insights") {
+        val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(createSampleInsightRequest()))
         }
         val insightId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val deleteResponse = client.delete("/ai-insights/$insightId")
+        val deleteResponse = client.delete("/api/ai-insights/$insightId")
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
-        val getResponse = client.get("/ai-insights/$insightId")
+        val getResponse = client.get("/api/ai-insights/$insightId")
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 }
