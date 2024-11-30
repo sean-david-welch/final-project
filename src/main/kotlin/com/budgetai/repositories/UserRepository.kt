@@ -90,6 +90,7 @@ class UserRepository(private val database: Database) {
         Users.update({ Users.id eq id }) {
             it[email] = user.email
             it[name] = user.name
+            it[role] = user.role.uppercase()
         }
     }
 
