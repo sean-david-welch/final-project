@@ -34,11 +34,15 @@ fun Application.configureRoutes(database: Database? = null) {
 
     routing {
         staticResources("/static", "static")
+
+        // Template routes
         get("/") {
             call.respondText(
                 text = createDashboardPage(), contentType = ContentType.Text.Html
             )
         }
+
+        // API routes
         userRoutes(userService)
         budgetRoutes(budgetService)
         categoryRoutes(categoryService)
