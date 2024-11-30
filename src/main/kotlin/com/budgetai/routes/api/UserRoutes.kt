@@ -1,6 +1,7 @@
 package com.budgetai.routes.api
 
 import com.budgetai.models.*
+import com.budgetai.plugins.TOKEN_EXPIRATION
 import com.budgetai.services.UserService
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -10,6 +11,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.userRoutes(service: UserService) {
+
+    val cookieConfig = CookieConfig(
+        name = "jwt_token", maxAgeInSeconds = TOKEN_EXPIRATION, path = "/", secure = true, httpOnly = true
+    )
 
     route("/api/users") {
         // Authentication Routes
