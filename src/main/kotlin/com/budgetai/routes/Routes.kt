@@ -2,6 +2,7 @@ package com.budgetai.routes
 
 import com.budgetai.plugins.DatabaseConfig
 import com.budgetai.repositories.*
+import com.budgetai.routes.api.*
 import com.budgetai.services.*
 import com.budgetai.templates.pages.createDashboardPage
 import io.ktor.http.*
