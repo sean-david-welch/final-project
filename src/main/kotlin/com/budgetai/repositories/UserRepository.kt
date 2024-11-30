@@ -73,6 +73,7 @@ class UserRepository(private val database: Database) {
         Users.insert {
             it[email] = user.email
             it[name] = user.name
+            it[role] = user.role.uppercase()
             it[passwordHash] = ""
         }[Users.id].value
     }
