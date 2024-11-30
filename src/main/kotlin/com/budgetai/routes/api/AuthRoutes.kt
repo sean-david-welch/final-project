@@ -6,6 +6,7 @@ import com.budgetai.models.UserCreationRequest
 import com.budgetai.plugins.TOKEN_EXPIRATION
 import com.budgetai.services.UserService
 import io.ktor.http.*
+import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
@@ -13,10 +14,27 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.date.*
 
+private fun ApplicationCall.setAuthCookie(token: String, cookieConfig: CookieConfig) {
+    response.cookies.append(
+        Cookie(
+            name = cookieConfig.name,
+            value = token,
+            maxAge = cookieConfig.maxAgeInSeconds,
+            expires = null,
+            domain = null,
+            path = cookieConfig.path,
+            secure = cookieConfig.secure,
+            httpOnly = cookieConfig.httpOnly,
+            extensions = mapOf("SameSite" to "Strict")
+        )
+    )
+}
+
 fun Route.authRoutes(service: UserService) {
     val cookieConfig = CookieConfig(
         name = "jwt_token", maxAgeInSeconds = TOKEN_EXPIRATION, path = "/", secure = true, httpOnly = true
     )
+
 
     route("/auth") {
         // Create new user
