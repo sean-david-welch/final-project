@@ -10,9 +10,7 @@ import io.ktor.server.routing.*
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.exposed.sql.Database
 
-fun Route.aiInsightRoutes(database: Database) {
-    val aiInsightRepository = AiInsightRepository(database)
-    val aiInsightService = AiInsightService(aiInsightRepository)
+fun Route.aiInsightRoutes(service: AiInsightService) {
 
     route("/api") {
 
@@ -21,7 +19,7 @@ fun Route.aiInsightRoutes(database: Database) {
             post {
                 try {
                     val request = call.receive<InsightCreationRequest>()
-                    val insightId = aiInsightService.createInsight(request)
+                    val insightId = service.createInsight(request)
                     call.respond(HttpStatusCode.Created, mapOf("id" to insightId))
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -35,7 +33,7 @@ fun Route.aiInsightRoutes(database: Database) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
 
-                    val insight = aiInsightService.getInsight(id)
+                    val insight = service.getInsight(id)
                     if (insight != null) {
                         call.respond(insight)
                     } else {
@@ -53,7 +51,7 @@ fun Route.aiInsightRoutes(database: Database) {
                 try {
                     val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
-                    val insights = aiInsightService.getUserInsights(userId)
+                    val insights = service.getUserInsights(userId)
                     call.respond(insights)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -67,7 +65,7 @@ fun Route.aiInsightRoutes(database: Database) {
                 try {
                     val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
-                    val insights = aiInsightService.getBudgetInsights(budgetId)
+                    val insights = service.getBudgetInsights(budgetId)
                     call.respond(insights)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -82,7 +80,7 @@ fun Route.aiInsightRoutes(database: Database) {
                     val budgetItemId =
                         call.parameters["budgetItemId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
 
-                    val insights = aiInsightService.getBudgetItemInsights(budgetItemId)
+                    val insights = service.getBudgetItemInsights(budgetItemId)
                     call.respond(insights)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -98,7 +96,7 @@ fun Route.aiInsightRoutes(database: Database) {
                         call.parameters["type"] ?: throw IllegalArgumentException("Invalid insight type")
                     )
 
-                    val insights = aiInsightService.getInsightsByType(type)
+                    val insights = service.getInsightsByType(type)
                     call.respond(insights)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -114,7 +112,7 @@ fun Route.aiInsightRoutes(database: Database) {
                         call.parameters["sentiment"] ?: throw IllegalArgumentException("Invalid sentiment")
                     )
 
-                    val insights = aiInsightService.getInsightsBySentiment(sentiment)
+                    val insights = service.getInsightsBySentiment(sentiment)
                     call.respond(insights)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -134,7 +132,7 @@ fun Route.aiInsightRoutes(database: Database) {
                         call.parameters["endDate"] ?: throw IllegalArgumentException("End date required")
                     )
 
-                    val insights = aiInsightService.getInsightsInDateRange(userId, startDate, endDate)
+                    val insights = service.getInsightsInDateRange(userId, startDate, endDate)
                     call.respond(insights)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -148,7 +146,7 @@ fun Route.aiInsightRoutes(database: Database) {
                 try {
                     val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
-                    val analytics = aiInsightService.getUserInsightAnalytics(userId)
+                    val analytics = service.getUserInsightAnalytics(userId)
                     call.respond(analytics)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -164,7 +162,7 @@ fun Route.aiInsightRoutes(database: Database) {
                     val page = call.parameters["page"]?.toIntOrNull() ?: 0
                     val pageSize = call.parameters["pageSize"]?.toIntOrNull() ?: 10
 
-                    val insights = aiInsightService.getRecentInsightsPaginated(userId, page, pageSize)
+                    val insights = service.getRecentInsightsPaginated(userId, page, pageSize)
                     call.respond(insights)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -179,7 +177,7 @@ fun Route.aiInsightRoutes(database: Database) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
                     val request = call.receive<InsightUpdateRequest>()
 
-                    aiInsightService.updateInsight(id, request)
+                    service.updateInsight(id, request)
                     call.respond(HttpStatusCode.OK, "Insight updated successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -194,7 +192,7 @@ fun Route.aiInsightRoutes(database: Database) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
                     val request = call.receive<UpdateSentimentRequest>()
 
-                    aiInsightService.updateInsightSentiment(id, request.sentiment)
+                    service.updateInsightSentiment(id, request.sentiment)
                     call.respond(HttpStatusCode.OK, "Sentiment updated successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -209,7 +207,7 @@ fun Route.aiInsightRoutes(database: Database) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
                     val request = call.receive<UpdateMetadataRequest>()
 
-                    aiInsightService.updateInsightMetadata(id, request.metadata)
+                    service.updateInsightMetadata(id, request.metadata)
                     call.respond(HttpStatusCode.OK, "Metadata updated successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -223,7 +221,7 @@ fun Route.aiInsightRoutes(database: Database) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid insight ID")
 
-                    aiInsightService.deleteInsight(id)
+                    service.deleteInsight(id)
                     call.respond(HttpStatusCode.OK, "Insight deleted successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -237,7 +235,7 @@ fun Route.aiInsightRoutes(database: Database) {
                 try {
                     val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
-                    aiInsightService.deleteUserInsights(userId)
+                    service.deleteUserInsights(userId)
                     call.respond(HttpStatusCode.OK, "User insights deleted successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -251,7 +249,7 @@ fun Route.aiInsightRoutes(database: Database) {
                 try {
                     val budgetId = call.parameters["budgetId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
-                    aiInsightService.deleteBudgetInsights(budgetId)
+                    service.deleteBudgetInsights(budgetId)
                     call.respond(HttpStatusCode.OK, "Budget insights deleted successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -266,7 +264,7 @@ fun Route.aiInsightRoutes(database: Database) {
                     val budgetItemId =
                         call.parameters["budgetItemId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
 
-                    aiInsightService.deleteBudgetItemInsights(budgetItemId)
+                    service.deleteBudgetItemInsights(budgetItemId)
                     call.respond(HttpStatusCode.OK, "Budget item insights deleted successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
