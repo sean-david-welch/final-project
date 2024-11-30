@@ -31,14 +31,6 @@ fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
     }
 }
 
-fun createTokenValidationPlugin() = createRouteScopedPlugin("TokenValidation") {
-    onCall { call ->
-        call.handleAuthFailure {
-            call.principal<JWTPrincipal>()?.validateToken()
-        }
-    }
-}
-
 // Route extensions
 fun Route.authenticate(build: Route.() -> Unit) {
     authenticate {
