@@ -7,16 +7,17 @@ import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
 
 // models
 object Users : IntIdTable("users") {
+    val name = varchar("name", 100)
+    val role = varchar("role", 100)
     val email = varchar("email", 255).uniqueIndex()
     val passwordHash = varchar("password_hash", 255)
-    val name = varchar("name", 100)
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }
 
 // DTO
 @Serializable
 data class UserDTO(
-    val id: Int = 0, val email: String, val name: String, val createdAt: String? = null
+    val id: Int = 0, val name: String, val role: String, val email: String, val createdAt: String? = null
 )
 
 @Serializable
