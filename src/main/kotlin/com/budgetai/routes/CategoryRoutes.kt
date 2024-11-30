@@ -11,19 +11,15 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 
-fun Route.categoryRoutes(database: Database) {
-    // Initialize repositories and services
-    val categoryRepository = CategoryRepository(database)
-    val categoryService = CategoryService(categoryRepository)
+fun Route.categoryRoutes(service: CategoryService) {
 
     route("/api") {
-
         route("/categories") {
             // Create new category
             post {
                 try {
                     val request = call.receive<CategoryCreationRequest>()
-                    val categoryId = categoryService.createCategory(request)
+                    val categoryId = service.createCategory(request)
                     call.respond(HttpStatusCode.Created, mapOf("id" to categoryId))
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -35,7 +31,7 @@ fun Route.categoryRoutes(database: Database) {
             // Get all categories
             get {
                 try {
-                    val categories = categoryService.getAllCategories()
+                    val categories = service.getAllCategories()
                     call.respond(categories)
                 } catch (e: Exception) {
                     call.respond(
@@ -49,7 +45,7 @@ fun Route.categoryRoutes(database: Database) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
-                    val category = categoryService.getCategory(id)
+                    val category = service.getCategory(id)
                     if (category != null) {
                         call.respond(category)
                     } else {
@@ -69,7 +65,7 @@ fun Route.categoryRoutes(database: Database) {
                 try {
                     val name = call.parameters["name"] ?: throw IllegalArgumentException("Name is required")
 
-                    val category = categoryService.getCategoryByName(name)
+                    val category = service.getCategoryByName(name)
                     if (category != null) {
                         call.respond(category)
                     } else {
@@ -95,7 +91,7 @@ fun Route.categoryRoutes(database: Database) {
                         throw IllegalArgumentException("Invalid category type")
                     }
 
-                    val categories = categoryService.getCategoriesByType(type)
+                    val categories = service.getCategoriesByType(type)
                     call.respond(categories)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -112,13 +108,13 @@ fun Route.categoryRoutes(database: Database) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
                     val request = call.receive<UpdateCategoryRequest>()
-                    val existingCategory = categoryService.getCategory(id) ?: throw IllegalArgumentException("Category not found")
+                    val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
 
                     val updatedCategory = existingCategory.copy(
                         name = request.name, type = request.type, description = request.description
                     )
 
-                    categoryService.updateCategory(id, updatedCategory)
+                    service.updateCategory(id, updatedCategory)
                     call.respond(HttpStatusCode.OK, "Category updated successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -134,7 +130,7 @@ fun Route.categoryRoutes(database: Database) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
-                    categoryService.deleteCategory(id)
+                    service.deleteCategory(id)
                     call.respond(HttpStatusCode.OK, "Category deleted successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
