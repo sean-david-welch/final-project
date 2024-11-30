@@ -37,6 +37,7 @@ fun Application.configureRoutes(config: ApplicationConfig,  database: Database? 
         staticResources("/static", "static")
 
         // Template routes
+        authRoutes(userService)
         homeRoutes()
         dashboardRoutes()
 
