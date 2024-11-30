@@ -10,12 +10,6 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
             div(classes = "content-wrapper") { contentFn() }
         }
     }
-
-    Footer(
-        links = listOf(
-            FooterLink("Privacy", "/privacy"), FooterLink("Terms", "/terms")
-        )
-    )
 }
 
 fun createDashboardPage() = DashboardTemplate("Dashboard Overview") {
