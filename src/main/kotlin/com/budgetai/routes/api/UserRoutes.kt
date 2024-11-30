@@ -3,6 +3,8 @@ package com.budgetai.routes.api
 import com.budgetai.models.*
 import com.budgetai.services.UserService
 import io.ktor.http.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -14,14 +16,30 @@ fun Route.userRoutes(service: UserService) {
         post("/login") {
             try {
                 val request = call.receive<UserAuthenticationRequest>()
-                val user = service.authenticateUser(request)
-                if (user != null) {
-                    call.respond(HttpStatusCode.OK, user)
-                } else {
-                    call.respond(HttpStatusCode.Unauthorized, "Invalid credentials")
+                val result = service.authenticateUserWithToken(request)
+                if (result != null) {
+                    val (user, token) = result
+                    call.respond(HttpStatusCode.OK, hashMapOf("user" to user, "to" to token))
                 }
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            }
+        }
+
+        // refresh token
+        post("/refresh") {
+            val principal = call.principal<JWTPrincipal>()
+            val userId = principal?.getClaim("userId", String::class)?.toIntOrNull()
+
+            if (userId != null) {
+                val newToken = service.refreshToken(userId)
+                if (newToken != null) {
+                    call.respond(hashMapOf("token" to newToken))
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "User not found")
+                }
+            } else {
+                call.respond(HttpStatusCode.Unauthorized, "Invalid token")
             }
         }
 
