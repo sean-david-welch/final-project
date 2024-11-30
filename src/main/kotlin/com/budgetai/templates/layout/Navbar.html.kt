@@ -5,18 +5,6 @@ import kotlinx.html.*
 // Navitem data class
 data class NavItem(val text: String, val href: String, val isActive: Boolean = false)
 
-// helper function to render navitems
-private fun UL.renderNavItems(items: List<NavItem>) {
-    items.forEach { item ->
-        li {
-            a(href = item.href) {
-                classes = if (item.isActive) setOf("nav-item-active") else setOf("nav-item-inactive")
-                +item.text
-            }
-        }
-    }
-}
-
 // default nav items for all pages
 val navItems = listOf(
     NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
@@ -31,7 +19,14 @@ fun FlowContent.Navbar() {
             }
             div(classes = "navbar-desktop-menu navbar-menu-container") {
                 ul(classes = "navbar-menu-list") {
-                    renderNavItems(navItems)
+                    navItems.forEach { item ->
+                        li {
+                            a(href = item.href) {
+                                classes = if (item.isActive) setOf("nav-item-active") else setOf("nav-item-inactive")
+                                +item.text
+                            }
+                        }
+                    }
                 }
             }
         }
