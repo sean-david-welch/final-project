@@ -7,7 +7,6 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.config.*
-import java.util.*
 
 const val TOKEN_EXPIRATION = 60 * 60 * 24
 
@@ -29,7 +28,6 @@ fun Application.configureSecurity(config: ApplicationConfig) {
             challenge { _, _ ->
                 call.response.status(HttpStatusCode.Unauthorized)
             }
-            cookieName = "jwt_token"
         }
     }
 }
