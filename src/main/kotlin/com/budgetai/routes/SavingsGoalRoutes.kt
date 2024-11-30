@@ -1,13 +1,11 @@
 package com.budgetai.routes
 
 import com.budgetai.models.*
-import com.budgetai.repositories.SavingsGoalRepository
 import com.budgetai.services.SavingsGoalService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.jetbrains.exposed.sql.Database
 
 fun Route.savingsGoalRoutes(service: SavingsGoalService) {
     route("/api") {
