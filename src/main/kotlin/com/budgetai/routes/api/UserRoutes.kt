@@ -27,19 +27,11 @@ fun Route.userRoutes(service: UserService) {
                     val (user, token) = result
                     call.response.cookies.append(
                         Cookie(
-                            name = cookieConfig.name,
-                            value = token,
-                            maxAge = cookieConfig.maxAgeInSeconds,
-                            expires = null,
-                            domain = null,
-                            path = cookieConfig.path,
-                            secure = cookieConfig.secure,
-                            httpOnly = cookieConfig.httpOnly,
+                            name = cookieConfig.name, value = token, maxAge = cookieConfig.maxAgeInSeconds, expires = null, domain = null,
+                            path = cookieConfig.path, secure = cookieConfig.secure, httpOnly = cookieConfig.httpOnly,
                             extensions = mapOf("SameSite" to "Strict")
                         )
                     )
-
-                    // Only return the user data, not the token
                     call.respond(HttpStatusCode.OK, hashMapOf("user" to user))
                 }
             } catch (e: Exception) {
