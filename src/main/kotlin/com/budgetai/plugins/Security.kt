@@ -38,12 +38,6 @@ fun generateToken(userId: String, role: String, config: ApplicationConfig): Stri
     val jwtIssuer = config.property("jwt.issuer").getString()
     val jwtSecret = config.property("jwt.secret").getString()
 
-    return JWT.create()
-        .withAudience(jwtAudience)
-        .withIssuer(jwtIssuer)
-        .withClaim("userId", userId)
-        .withClaim("role", role)
-        .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000))
-        .withIssuedAt(Date())
-        .sign(Algorithm.HMAC256(jwtSecret))
+    return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("userId", userId).withClaim("role", role)
+        .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000)).withIssuedAt(Date()).sign(Algorithm.HMAC256(jwtSecret))
 }
