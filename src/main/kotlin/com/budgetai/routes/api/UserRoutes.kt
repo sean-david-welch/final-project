@@ -44,24 +44,17 @@ fun Route.userRoutes(service: UserService) {
             val principal = call.principal<JWTPrincipal>()
             val userId = principal?.getClaim("userId", String::class)?.toIntOrNull()
 
-               if (userId != null) {
-                    val newToken = service.refreshToken(userId)
-                    if (newToken != null) {
-                        // Update the JWT cookie with the new token
-                        call.response.cookies.append(
-                            Cookie(
-                                name = cookieConfig.name,
-                                value = newToken,
-                                maxAge = cookieConfig.maxAgeInSeconds,
-                                expires = null,
-                                domain = null,
-                                path = cookieConfig.path,
-                                secure = cookieConfig.secure,
-                                httpOnly = cookieConfig.httpOnly,
-                                extensions = mapOf("SameSite" to "Strict")
-                            )
+            if (userId != null) {
+                val newToken = service.refreshToken(userId)
+                if (newToken != null) {
+                    call.response.cookies.append(
+                        Cookie(
+                            name = cookieConfig.name, value = newToken, maxAge = cookieConfig.maxAgeInSeconds, expires = null,
+                            domain = null, path = cookieConfig.path, secure = cookieConfig.secure, httpOnly = cookieConfig.httpOnly,
+                            extensions = mapOf("SameSite" to "Strict")
                         )
-                        call.respond(HttpStatusCode.OK, "Token refreshed")
+                    )
+                    call.respond(HttpStatusCode.OK, "Token refreshed")
                 } else {
                     call.respond(HttpStatusCode.NotFound, "User not found")
                 }
