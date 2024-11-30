@@ -23,7 +23,7 @@ val navItems = listOf(
 )
 
 // main navbar template
-fun FlowContent.Navbar(navItems: List<NavItem>? = null) {
+fun FlowContent.Navbar() {
     nav(classes = "navbar") {
         div(classes = "navbar-container navbar-content") {
             div(classes = "navbar-brand-container") {
@@ -31,9 +31,7 @@ fun FlowContent.Navbar(navItems: List<NavItem>? = null) {
             }
             div(classes = "navbar-desktop-menu navbar-menu-container") {
                 ul(classes = "navbar-menu-list") {
-                    if (navItems != null) {
-                        renderNavItems(navItems)
-                    }
+                    renderNavItems(navItems)
                 }
             }
         }
