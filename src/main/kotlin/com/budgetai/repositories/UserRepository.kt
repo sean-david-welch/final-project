@@ -64,6 +64,7 @@ class UserRepository(private val database: Database) {
     suspend fun create(user: UserDTO): Int = dbQuery {
         // Validate role
         validateRole(user.role)
+
         // First check if email exists
         val existingUser = Users.selectAll().where { Users.email eq user.email }.firstOrNull()
         if (existingUser != null) {
@@ -80,6 +81,9 @@ class UserRepository(private val database: Database) {
 
     // Updates user's basic information
     suspend fun update(id: Int, user: UserDTO) = dbQuery {
+        // Validate role
+        validateRole(user.role)
+
         // Check if new email already exists for a DIFFERENT user
         val existingUser = Users.selectAll().where { (Users.email eq user.email) and (Users.id neq id) }.firstOrNull()
 
