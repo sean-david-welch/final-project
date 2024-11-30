@@ -3,6 +3,7 @@ package com.budgetai.routes
 import com.budgetai.plugins.DatabaseConfig
 import com.budgetai.repositories.*
 import com.budgetai.routes.api.*
+import com.budgetai.routes.templates.dashboardRoutes
 import com.budgetai.services.*
 import com.budgetai.templates.pages.createDashboardPage
 import io.ktor.http.*
@@ -37,11 +38,7 @@ fun Application.configureRoutes(database: Database? = null) {
         staticResources("/static", "static")
 
         // Template routes
-        get("/") {
-            call.respondText(
-                text = createDashboardPage(), contentType = ContentType.Text.Html
-            )
-        }
+        dashboardRoutes()
 
         // API routes
         userRoutes(userService)
