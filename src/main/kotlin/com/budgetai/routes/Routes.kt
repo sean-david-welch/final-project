@@ -2,8 +2,10 @@ package com.budgetai.routes
 
 import com.budgetai.plugins.DatabaseConfig
 import com.budgetai.repositories.BudgetRepository
+import com.budgetai.repositories.CategoryRepository
 import com.budgetai.repositories.UserRepository
 import com.budgetai.services.BudgetService
+import com.budgetai.services.CategoryService
 import com.budgetai.services.UserService
 import com.budgetai.templates.pages.createDashboardPage
 import io.ktor.http.*
@@ -20,10 +22,12 @@ fun Application.configureRoutes(database: Database? = null) {
     // instantiate repositories
     val userRepository = UserRepository(db)
     val budgetRepository = BudgetRepository(db)
+    val categoryRepository = CategoryRepository(db)
 
     // instantiate services
     val userService = UserService(userRepository)
     val budgetService = BudgetService(budgetRepository)
+    val categoryService = CategoryService(categoryRepository)
 
     routing {
         staticResources("/static", "static")
@@ -34,7 +38,7 @@ fun Application.configureRoutes(database: Database? = null) {
         }
         userRoutes(userService)
         budgetRoutes(budgetService)
-        categoryRoutes(database = db)
+        categoryRoutes(categoryService)
         budgetItemRoutes(database = db)
         savingsGoalRoutes(database = db)
         aiInsightRoutes(database = db)
