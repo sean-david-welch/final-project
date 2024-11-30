@@ -13,7 +13,7 @@ import io.ktor.server.routing.*
 import io.ktor.util.date.*
 
 fun Route.authRoutes(service: UserService) {
-        val cookieConfig = CookieConfig(
+    val cookieConfig = CookieConfig(
         name = "jwt_token", maxAgeInSeconds = TOKEN_EXPIRATION, path = "/", secure = true, httpOnly = true
     )
 
