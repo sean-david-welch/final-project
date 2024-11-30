@@ -49,6 +49,11 @@ class UserRepository(private val database: Database) {
         Users.selectAll().where { Users.email eq email }.map(::toUser).singleOrNull()
     }
 
+    // Retrieves users by role
+    suspend fun findByRole(role: UserRole): List<UserDTO> = dbQuery {
+        Users.selectAll().where { Users.role eq role.name }.map(::toUser)
+    }
+
     // Retrieves password hash for a user by ID
     suspend fun findPasswordHash(id: Int): String? = dbQuery {
         Users.select(Users.passwordHash).where { Users.id eq id }.map { it[Users.passwordHash] }.singleOrNull()
@@ -57,6 +62,8 @@ class UserRepository(private val database: Database) {
     // Write Methods
     // Creates a new user and returns their ID
     suspend fun create(user: UserDTO): Int = dbQuery {
+        // Validate role
+        validateRole(user.role)
         // First check if email exists
         val existingUser = Users.selectAll().where { Users.email eq user.email }.firstOrNull()
         if (existingUser != null) {
