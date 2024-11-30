@@ -13,19 +13,14 @@ import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.Database
 import java.math.BigDecimal
 
-fun Route.budgetRoutes(database: Database) {
-    // Initialize repositories and services
-    val budgetRepository = BudgetRepository(database)
-    val budgetService = BudgetService(budgetRepository)
-
+fun Route.budgetRoutes(database: Database, service: BudgetService) {
     route("/api") {
-
         route("/budgets") {
             // Create new budget
             post {
                 try {
                     val request = call.receive<BudgetCreationRequest>()
-                    val budgetId = budgetService.createBudget(request)
+                    val budgetId = service.createBudget(request)
                     call.respond(HttpStatusCode.Created, mapOf("id" to budgetId))
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -39,7 +34,7 @@ fun Route.budgetRoutes(database: Database) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
-                    val budget = budgetService.getBudget(id)
+                    val budget = service.getBudget(id)
                     if (budget != null) {
                         call.respond(budget)
                     } else {
@@ -57,7 +52,7 @@ fun Route.budgetRoutes(database: Database) {
                 try {
                     val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
-                    val budgets = budgetService.getUserBudgets(userId)
+                    val budgets = service.getUserBudgets(userId)
                     call.respond(budgets)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -77,7 +72,7 @@ fun Route.budgetRoutes(database: Database) {
                         "End date is required"
                     )
 
-                    val budgets = budgetService.getUserBudgetsInDateRange(userId, startDate, endDate)
+                    val budgets = service.getUserBudgetsInDateRange(userId, startDate, endDate)
                     call.respond(budgets)
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -92,13 +87,13 @@ fun Route.budgetRoutes(database: Database) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
                     val request = call.receive<UpdateBudgetRequest>()
-                    val existingBudget = budgetService.getBudget(id) ?: throw IllegalArgumentException("Budget not found")
+                    val existingBudget = service.getBudget(id) ?: throw IllegalArgumentException("Budget not found")
 
                     val updatedBudget = existingBudget.copy(
                         name = request.name, description = request.description, startDate = request.startDate, endDate = request.endDate
                     )
 
-                    budgetService.updateBudget(id, updatedBudget)
+                    service.updateBudget(id, updatedBudget)
                     call.respond(HttpStatusCode.OK, "Budget updated successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -113,7 +108,7 @@ fun Route.budgetRoutes(database: Database) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
                     val request = call.receive<UpdateBudgetTotalsRequest>()
-                    budgetService.updateBudgetTotals(
+                    service.updateBudgetTotals(
                         id, BigDecimal.valueOf(request.totalIncome), BigDecimal.valueOf(request.totalExpenses)
                     )
                     call.respond(HttpStatusCode.OK, "Budget totals updated successfully")
@@ -129,7 +124,7 @@ fun Route.budgetRoutes(database: Database) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
-                    budgetService.deleteBudget(id)
+                    service.deleteBudget(id)
                     call.respond(HttpStatusCode.OK, "Budget deleted successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -143,7 +138,7 @@ fun Route.budgetRoutes(database: Database) {
                 try {
                     val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
-                    budgetService.deleteUserBudgets(userId)
+                    service.deleteUserBudgets(userId)
                     call.respond(HttpStatusCode.OK, "User budgets deleted successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
