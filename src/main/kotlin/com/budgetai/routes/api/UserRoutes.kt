@@ -1,15 +1,14 @@
 package com.budgetai.routes.api
 
-import com.budgetai.models.*
-import com.budgetai.plugins.TOKEN_EXPIRATION
+import com.budgetai.models.UpdatePasswordRequest
+import com.budgetai.models.UpdateUserRequest
+import com.budgetai.models.UserCreationRequest
+import com.budgetai.models.UserDTO
 import com.budgetai.services.UserService
 import io.ktor.http.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.util.date.*
 
 fun Route.userRoutes(service: UserService) {
 
