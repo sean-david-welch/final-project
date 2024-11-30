@@ -40,6 +40,10 @@ suspend fun PipelineContext<Unit, ApplicationCall>.handleAuthFailure(block: susp
     }
 }
 
+fun ApplicationCall.getUserId(): String? {
+    return principal<JWTPrincipal>()?.payload?.getClaim("userId")?.asString()
+}
+
 fun Route.authenticate(build: Route.() -> Unit) {
     authenticate {
         build()
@@ -81,6 +85,3 @@ fun Route.withValidToken(build: Route.() -> Unit) {
     }
 }
 
-fun ApplicationCall.getUserId(): String? {
-    return principal<JWTPrincipal>()?.payload?.getClaim("userId")?.asString()
-}
