@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 
 fun Route.budgetItemRoutes(service: BudgetItemService) {
 
-    route("/budget-items") {
+    route("/api/budget-items") {
         // Create new budget item
         post {
             try {
