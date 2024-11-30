@@ -27,7 +27,7 @@ class DataSeeder(database: Database) {
         val userIds = (1..5).map { index ->
             userRepository.create(
                 UserDTO(
-                    email = "user$index@example.com", name = "Test User $index"
+                    email = "user$index@example.com", name = "Test User $index", role = UserRole.USER.toString()
                 )
             ).also { userId ->
                 userRepository.updatePassword(userId, "hashed_password_$index")
