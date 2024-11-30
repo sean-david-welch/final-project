@@ -11,132 +11,130 @@ import io.ktor.server.routing.*
 
 fun Route.categoryRoutes(service: CategoryService) {
 
-    route("/api") {
-        route("/categories") {
-            // Create new category
-            post {
-                try {
-                    val request = call.receive<CategoryCreationRequest>()
-                    val categoryId = service.createCategory(request)
-                    call.respond(HttpStatusCode.Created, mapOf("id" to categoryId))
-                } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-                } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Error creating category")
-                }
+    route("/api/categories") {
+        // Create new category
+        post {
+            try {
+                val request = call.receive<CategoryCreationRequest>()
+                val categoryId = service.createCategory(request)
+                call.respond(HttpStatusCode.Created, mapOf("id" to categoryId))
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.InternalServerError, "Error creating category")
             }
+        }
 
-            // Get all categories
-            get {
-                try {
-                    val categories = service.getAllCategories()
-                    call.respond(categories)
-                } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError, "Error retrieving categories"
-                    )
-                }
+        // Get all categories
+        get {
+            try {
+                val categories = service.getAllCategories()
+                call.respond(categories)
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError, "Error retrieving categories"
+                )
             }
+        }
 
-            // Get category by ID
-            get("/{id}") {
-                try {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+        // Get category by ID
+        get("/{id}") {
+            try {
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
-                    val category = service.getCategory(id)
-                    if (category != null) {
-                        call.respond(category)
-                    } else {
-                        call.respond(HttpStatusCode.NotFound, "Category not found")
-                    }
-                } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-                } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError, "Error retrieving category"
-                    )
+                val category = service.getCategory(id)
+                if (category != null) {
+                    call.respond(category)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Category not found")
                 }
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError, "Error retrieving category"
+                )
             }
+        }
 
-            // Get category by name
-            get("/name/{name}") {
-                try {
-                    val name = call.parameters["name"] ?: throw IllegalArgumentException("Name is required")
+        // Get category by name
+        get("/name/{name}") {
+            try {
+                val name = call.parameters["name"] ?: throw IllegalArgumentException("Name is required")
 
-                    val category = service.getCategoryByName(name)
-                    if (category != null) {
-                        call.respond(category)
-                    } else {
-                        call.respond(HttpStatusCode.NotFound, "Category not found")
-                    }
-                } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-                } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError, "Error retrieving category"
-                    )
+                val category = service.getCategoryByName(name)
+                if (category != null) {
+                    call.respond(category)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "Category not found")
                 }
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError, "Error retrieving category"
+                )
             }
+        }
 
-            // Get categories by type
-            get("/type/{type}") {
-                try {
-                    val typeStr = call.parameters["type"] ?: throw IllegalArgumentException("Type is required")
+        // Get categories by type
+        get("/type/{type}") {
+            try {
+                val typeStr = call.parameters["type"] ?: throw IllegalArgumentException("Type is required")
 
-                    val type = try {
-                        CategoryType.valueOf(typeStr.uppercase())
-                    } catch (e: IllegalArgumentException) {
-                        throw IllegalArgumentException("Invalid category type")
-                    }
-
-                    val categories = service.getCategoriesByType(type)
-                    call.respond(categories)
+                val type = try {
+                    CategoryType.valueOf(typeStr.uppercase())
                 } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-                } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError, "Error retrieving categories"
-                    )
+                    throw IllegalArgumentException("Invalid category type")
                 }
+
+                val categories = service.getCategoriesByType(type)
+                call.respond(categories)
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError, "Error retrieving categories"
+                )
             }
+        }
 
-            // Update category
-            put("/{id}") {
-                try {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+        // Update category
+        put("/{id}") {
+            try {
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
-                    val request = call.receive<UpdateCategoryRequest>()
-                    val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
+                val request = call.receive<UpdateCategoryRequest>()
+                val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
 
-                    val updatedCategory = existingCategory.copy(
-                        name = request.name, type = request.type, description = request.description
-                    )
+                val updatedCategory = existingCategory.copy(
+                    name = request.name, type = request.type, description = request.description
+                )
 
-                    service.updateCategory(id, updatedCategory)
-                    call.respond(HttpStatusCode.OK, "Category updated successfully")
-                } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-                } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError, "Error updating category"
-                    )
-                }
+                service.updateCategory(id, updatedCategory)
+                call.respond(HttpStatusCode.OK, "Category updated successfully")
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError, "Error updating category"
+                )
             }
+        }
 
-            // Delete category
-            delete("/{id}") {
-                try {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+        // Delete category
+        delete("/{id}") {
+            try {
+                val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
-                    service.deleteCategory(id)
-                    call.respond(HttpStatusCode.OK, "Category deleted successfully")
-                } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-                } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError, "Error deleting category"
-                    )
-                }
+                service.deleteCategory(id)
+                call.respond(HttpStatusCode.OK, "Category deleted successfully")
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            } catch (e: Exception) {
+                call.respond(
+                    HttpStatusCode.InternalServerError, "Error deleting category"
+                )
             }
         }
     }
