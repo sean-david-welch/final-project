@@ -4,14 +4,13 @@ import com.budgetai.models.*
 import com.budgetai.routes.middleware.authenticate
 import com.budgetai.services.SavingsGoalService
 import io.ktor.http.*
-import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.savingsGoalRoutes(service: SavingsGoalService) {
         // protected routes
-        authenticate("jwt-auth") {
+        authenticate {
             route("/api/savings-goals") {
                 // Create new savings goal
                 post {
