@@ -2,6 +2,7 @@ package com.budgetai.routes.api
 
 import com.budgetai.models.CookieConfig
 import com.budgetai.models.UserAuthenticationRequest
+import com.budgetai.models.UserCreationRequest
 import com.budgetai.plugins.TOKEN_EXPIRATION
 import com.budgetai.services.UserService
 import io.ktor.http.*
@@ -18,6 +19,19 @@ fun Route.authRoutes(service: UserService) {
     )
 
     route("/auth") {
+        // Create new user
+        post("/register") {
+            try {
+                val request = call.receive<UserCreationRequest>()
+                val userId = service.createUser(request)
+                call.respond(HttpStatusCode.Created, mapOf("id" to userId))
+            } catch (e: IllegalArgumentException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.InternalServerError, "Error creating user")
+            }
+        }
+
         // Authentication Routes
         post("/login") {
             try {
