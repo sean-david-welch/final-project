@@ -7,44 +7,36 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
+// Create plugins for role and token validation
+fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
+    onCall { call ->
+        handleAuthFailure {
+            call.principal<JWTPrincipal>()?.requireRole(role)
+        }
+    }
+}
+
+fun createTokenValidationPlugin() = createRouteScopedPlugin("TokenValidation") {
+    onCall { call ->
+        handleAuthFailure {
+            call.principal<JWTPrincipal>()?.validateToken()
+        }
+    }
+}
+
+// Improved route extensions
 fun Route.authenticate(build: Route.() -> Unit) {
     authenticate {
         build()
     }
 }
 
-fun Route.requireRole(role: String, build: Route.() -> Unit) {
-    authenticate {
-        install(createRouteScopedPlugin("RoleCheck") {
-            onCall { call ->
-                val principal = call.principal<JWTPrincipal>()
-                val userRole = principal?.payload?.getClaim("role")?.asString()
+fun Route.requireRole(role: String, build: Route.() -> Unit) { authenticate {
+    install(createRoleCheckPlugin(role))
+    build()
+}}
 
-                if (userRole != role) {
-                    call.respond(HttpStatusCode.Forbidden, "Insufficient permissions")
-                    return@onCall
-                }
-            }
-        })
-        build()
-    }
-}
-
-fun Route.withValidToken(build: Route.() -> Unit) {
-    authenticate {
-        install(createRouteScopedPlugin("TokenValidation") {
-            onCall { call ->
-                val principal = call.principal<JWTPrincipal>()
-                val expiresAt = principal?.expiresAt?.time ?: 0
-                val currentTime = System.currentTimeMillis()
-
-                if (expiresAt < currentTime) {
-                    call.respond(HttpStatusCode.Unauthorized, "Token has expired")
-                    return@onCall
-                }
-            }
-        })
-        build()
-    }
-}
-
+fun Route.withValidToken(build: Route.() -> Unit) { authenticate {
+    install(createTokenValidationPlugin())
+    build()
+}}
