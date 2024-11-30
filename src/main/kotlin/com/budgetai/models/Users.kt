@@ -22,7 +22,7 @@ data class UserDTO(
 
 @Serializable
 data class UserCreationRequest(
-    val email: String, val name: String, val password: String
+    val name: String, val role: String, val email: String, val password: String
 )
 
 @Serializable
@@ -33,7 +33,7 @@ data class UserAuthenticationRequest(
 // Data classes for requests
 @Serializable
 data class UpdateUserRequest(
-    val email: String, val name: String
+    val email: String, val name: String, val role: String
 )
 
 @Serializable
