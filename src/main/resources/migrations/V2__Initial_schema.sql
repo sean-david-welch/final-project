@@ -3,7 +3,7 @@ CREATE TABLE users
 (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     name          VARCHAR(100) NOT NULL,
-    role          VARCHAR(255) NOT NULL,
+    role          VARCHAR(100) NOT NULL,
     email         VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
