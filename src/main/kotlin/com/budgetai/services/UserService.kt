@@ -26,6 +26,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
         return Pair(user, token)
     }
 
+    // token calidartion method
     fun validateToken(token: String): Boolean {
         return try {
             val jwtAudience = config.property("jwt.audience").getString()
