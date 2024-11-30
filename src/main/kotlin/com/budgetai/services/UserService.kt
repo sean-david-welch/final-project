@@ -3,15 +3,29 @@ package com.budgetai.services
 import com.budgetai.models.UserAuthenticationRequest
 import com.budgetai.models.UserCreationRequest
 import com.budgetai.models.UserDTO
+import com.budgetai.plugins.generateToken
 import com.budgetai.repositories.UserRepository
+import io.ktor.server.config.*
 import java.security.SecureRandom
 import java.util.*
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
-class UserService(private val repository: UserRepository) {
+class UserService(private val repository: UserRepository, private val config: ApplicationConfig) {
 
-    // Helper Methods
+    // generate new token for user
+    suspend fun authenticateUserWithToken(request: UserAuthenticationRequest): Pair<UserDTO, String>? {
+        val user = authenticateUser(request) ?: return null
+
+        val token = generateToken(
+            userId = user.id.toString(),
+            role = user.role,
+            config = config
+        )
+
+        return Pair(user, token)
+    }
+
     // Generates a random salt for password hashing
     private fun generateSalt(): ByteArray {
         val random = SecureRandom()
