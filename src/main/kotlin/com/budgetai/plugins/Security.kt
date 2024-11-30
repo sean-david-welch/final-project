@@ -3,6 +3,7 @@ package com.budgetai.plugins
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.http.*
+import io.ktor.http.auth.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -17,7 +18,7 @@ fun Application.configureSecurity(config: ApplicationConfig) {
     val jwtSecret = config.property("jwt.secret").getString()
 
     authentication {
-        jwt {
+        jwt("auth-jwt") {
             realm = jwtRealm
             verifier(
                 JWT.require(Algorithm.HMAC256(jwtSecret)).withAudience(jwtAudience).withIssuer(jwtIssuer).build()
@@ -27,6 +28,11 @@ fun Application.configureSecurity(config: ApplicationConfig) {
             }
             challenge { _, _ ->
                 call.response.status(HttpStatusCode.Unauthorized)
+            }
+            authHeader { call ->
+                call.request.cookies["jwt_token"]?.let { token ->
+                    HttpAuthHeader.Single("Bearer", token)
+                }
             }
         }
     }
