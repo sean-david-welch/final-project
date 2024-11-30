@@ -1,7 +1,6 @@
 package com.budgetai.services
 
 import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.algorithms.Algorithm.HMAC256
 import com.budgetai.models.UserAuthenticationRequest
 import com.budgetai.models.UserCreationRequest
