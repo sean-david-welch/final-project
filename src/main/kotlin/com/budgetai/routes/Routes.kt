@@ -4,6 +4,7 @@ import com.budgetai.plugins.DatabaseConfig
 import com.budgetai.repositories.*
 import com.budgetai.routes.api.*
 import com.budgetai.routes.templates.dashboardRoutes
+import com.budgetai.routes.templates.homeRoutes
 import com.budgetai.services.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
@@ -35,6 +36,7 @@ fun Application.configureRoutes(database: Database? = null) {
         staticResources("/static", "static")
 
         // Template routes
+        homeRoutes()
         dashboardRoutes()
 
         // API routes
