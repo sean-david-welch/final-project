@@ -3,13 +3,11 @@ package com.budgetai.routes
 import com.budgetai.models.BudgetItemCreationRequest
 import com.budgetai.models.BudgetItemUpdateRequest
 import com.budgetai.models.UpdateAmountRequest
-import com.budgetai.repositories.BudgetItemRepository
 import com.budgetai.services.BudgetItemService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import org.jetbrains.exposed.sql.Database
 
 fun Route.budgetItemRoutes(service: BudgetItemService) {
 
