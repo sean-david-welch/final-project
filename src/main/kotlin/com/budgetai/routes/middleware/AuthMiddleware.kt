@@ -2,7 +2,6 @@ package com.budgetai.routes.middleware
 
 import com.budgetai.utils.AuthenticationException
 import com.budgetai.utils.requireRole
-import com.budgetai.utils.validateToken
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
