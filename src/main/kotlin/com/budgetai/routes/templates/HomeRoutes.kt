@@ -1,6 +1,5 @@
 package com.budgetai.routes.templates
 
-import com.budgetai.templates.pages.createDashboardPage
 import com.budgetai.templates.pages.createHomePage
 import io.ktor.http.*
 import io.ktor.server.response.*
