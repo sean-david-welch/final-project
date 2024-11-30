@@ -21,6 +21,7 @@ fun Application.configureRoutes(database: Database? = null) {
     val categoryRepository = CategoryRepository(db)
     val budgetItemRepository = BudgetItemRepository(db)
     val savingsGoalRepository = SavingsGoalRepository(db)
+    val aiInsightsRepository = AiInsightRepository(db)
 
     // instantiate services
     val userService = UserService(userRepository)
@@ -28,6 +29,7 @@ fun Application.configureRoutes(database: Database? = null) {
     val categoryService = CategoryService(categoryRepository)
     val budgetItemService = BudgetItemService(budgetItemRepository)
     val savingsGoalService = SavingsGoalService(savingsGoalRepository)
+    val aiInsightService = AiInsightService(aiInsightsRepository)
 
 
     routing {
@@ -42,6 +44,6 @@ fun Application.configureRoutes(database: Database? = null) {
         categoryRoutes(categoryService)
         budgetItemRoutes(budgetItemService)
         savingsGoalRoutes(savingsGoalService)
-        aiInsightRoutes(database = db)
+        aiInsightRoutes(aiInsightService)
     }
 }
