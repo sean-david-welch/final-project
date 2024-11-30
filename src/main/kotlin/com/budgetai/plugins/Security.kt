@@ -38,7 +38,7 @@ fun generateToken(userId: String, config: ApplicationConfig): String {
         .withAudience(jwtAudience)
         .withIssuer(jwtIssuer)
         .withClaim("userId", userId)
-        .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION))
+        .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000))
         .withIssuedAt(Date())
         .sign(Algorithm.HMAC256(jwtSecret))
 }
