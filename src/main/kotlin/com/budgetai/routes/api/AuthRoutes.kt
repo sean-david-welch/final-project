@@ -17,7 +17,7 @@ fun Route.authRoutes(service: UserService) {
         name = "jwt_token", maxAgeInSeconds = TOKEN_EXPIRATION, path = "/", secure = true, httpOnly = true
     )
 
-    route("/api/users") {
+    route("/auth") {
         // Authentication Routes
         post("/login") {
             try {
