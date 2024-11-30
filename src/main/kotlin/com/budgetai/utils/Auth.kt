@@ -15,14 +15,6 @@ fun JWTPrincipal.requireRole(role: String) {
     }
 }
 
-// Extension function for token validation
-fun JWTPrincipal.validateToken() {
-    val expiresAt = expiresAt?.time ?: 0
-    if (expiresAt < System.currentTimeMillis()) {
-        throw AuthenticationException("Token has expired")
-    }
-}
-
 fun ApplicationCall.getUserId(): String? {
     return principal<JWTPrincipal>()?.payload?.getClaim("userId")?.asString()
 }
