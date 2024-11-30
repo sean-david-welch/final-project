@@ -14,6 +14,7 @@ fun main() {
 }
 
 fun Application.module() {
+    val config = environment.config
     val database = DatabaseConfig.initialize()
 
     val isDevelopment = checkDevelopmentMode(this)
@@ -30,7 +31,7 @@ fun Application.module() {
     } else {
         log.info("Running in production mode - skipping database seeding")
     }
-    configureSecurity()
+    configureSecurity(config)
     configureHTTP()
     configureSerialization()
     configureRouting(database = database)
