@@ -5,11 +5,8 @@ import com.budgetai.repositories.*
 import com.budgetai.routes.api.*
 import com.budgetai.routes.templates.dashboardRoutes
 import com.budgetai.services.*
-import com.budgetai.templates.pages.createDashboardPage
-import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 
