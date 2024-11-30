@@ -85,13 +85,7 @@ fun Route.authRoutes(service: UserService) {
                 if (userId != null) {
                     val newToken = service.refreshToken(userId)
                     if (newToken != null) {
-                        call.response.cookies.append(
-                            Cookie(
-                                name = cookieConfig.name, value = newToken, maxAge = cookieConfig.maxAgeInSeconds, expires = null,
-                                domain = null, path = cookieConfig.path, secure = cookieConfig.secure, httpOnly = cookieConfig.httpOnly,
-                                extensions = mapOf("SameSite" to "Strict")
-                            )
-                        )
+                        call.setAuthCookie(newToken, cookieConfig)
                         call.respond(HttpStatusCode.OK, "Token refreshed")
                     } else {
                         call.respond(HttpStatusCode.NotFound, "User not found")
