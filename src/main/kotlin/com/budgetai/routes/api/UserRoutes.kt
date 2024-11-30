@@ -68,14 +68,8 @@ fun Route.userRoutes(service: UserService) {
             // Clear the JWT cookie
             call.response.cookies.append(
                 Cookie(
-                    name = cookieConfig.name,
-                    value = "",
-                    maxAge = 0,
-                    expires = GMTDate(0),
-                    domain = null,
-                    path = cookieConfig.path,
-                    secure = cookieConfig.secure,
-                    httpOnly = cookieConfig.httpOnly
+                    name = cookieConfig.name, value = "", maxAge = 0, expires = GMTDate(0), domain = null, path = cookieConfig.path,
+                    secure = cookieConfig.secure, httpOnly = cookieConfig.httpOnly
                 )
             )
             call.respond(HttpStatusCode.OK, "Logged out successfully")
