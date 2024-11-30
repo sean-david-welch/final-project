@@ -31,12 +31,16 @@ fun Route.authenticate(build: Route.() -> Unit) {
     }
 }
 
-fun Route.requireRole(role: String, build: Route.() -> Unit) { authenticate {
-    install(createRoleCheckPlugin(role))
-    build()
-}}
+fun Route.requireRole(role: String, build: Route.() -> Unit) {
+    authenticate {
+        install(createRoleCheckPlugin(role))
+        build()
+    }
+}
 
-fun Route.withValidToken(build: Route.() -> Unit) { authenticate {
-    install(createTokenValidationPlugin())
-    build()
-}}
+fun Route.withValidToken(build: Route.() -> Unit) {
+    authenticate {
+        install(createTokenValidationPlugin())
+        build()
+    }
+}
