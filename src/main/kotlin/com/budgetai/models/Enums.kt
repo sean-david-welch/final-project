@@ -11,3 +11,7 @@ enum class InsightType {
 enum class Sentiment {
     POSITIVE, NEGATIVE, NEUTRAL
 }
+
+enum class UserRole {
+    USER, ADMIN, STAFF
+}
