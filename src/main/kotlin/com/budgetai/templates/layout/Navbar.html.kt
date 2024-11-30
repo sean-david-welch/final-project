@@ -2,8 +2,10 @@ package com.budgetai.templates.layout
 
 import kotlinx.html.*
 
+// Navitem data class
 data class NavItem(val text: String, val href: String, val isActive: Boolean = false)
 
+// helper function to render navitems
 private fun UL.renderNavItems(items: List<NavItem>) {
     items.forEach { item ->
         li {
@@ -15,7 +17,13 @@ private fun UL.renderNavItems(items: List<NavItem>) {
     }
 }
 
-fun FlowContent.Navbar(navItems: List<NavItem> = listOf()) {
+// default nav items for all pages
+val navItems = listOf(
+    NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
+)
+
+// main navbar template
+fun FlowContent.Navbar(navItems: List<NavItem>? = null) {
     nav(classes = "navbar") {
         div(classes = "navbar-container navbar-content") {
             div(classes = "navbar-brand-container") {
@@ -23,7 +31,9 @@ fun FlowContent.Navbar(navItems: List<NavItem> = listOf()) {
             }
             div(classes = "navbar-desktop-menu navbar-menu-container") {
                 ul(classes = "navbar-menu-list") {
-                    renderNavItems(navItems)
+                    if (navItems != null) {
+                        renderNavItems(navItems)
+                    }
                 }
             }
         }
