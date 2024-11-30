@@ -1,11 +1,12 @@
 package com.budgetai.services
 
 import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.algorithms.Algorithm.HMAC256
 import com.budgetai.models.UserAuthenticationRequest
 import com.budgetai.models.UserCreationRequest
 import com.budgetai.models.UserDTO
-import com.budgetai.plugins.generateToken
+import com.budgetai.plugins.TOKEN_EXPIRATION
 import com.budgetai.repositories.UserRepository
 import io.ktor.server.config.*
 import java.security.SecureRandom
@@ -14,6 +15,16 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
 class UserService(private val repository: UserRepository, private val config: ApplicationConfig) {
+
+    private fun generateToken(userId: String, role: String, config: ApplicationConfig): String {
+        val jwtAudience = config.property("jwt.audience").getString()
+        val jwtIssuer = config.property("jwt.issuer").getString()
+        val jwtSecret = config.property("jwt.secret").getString()
+
+        return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("userId", userId).withClaim("role", role)
+            .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000)).withIssuedAt(Date())
+            .sign(HMAC256(jwtSecret))
+    }
 
     // generate new token for user
     suspend fun authenticateUserWithToken(request: UserAuthenticationRequest): Pair<UserDTO, String>? {
