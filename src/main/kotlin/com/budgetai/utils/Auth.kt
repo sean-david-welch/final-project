@@ -26,19 +26,6 @@ fun JWTPrincipal.validateToken() {
     }
 }
 
-// PipelineContext extension to handle auth failures consistently
-suspend fun PipelineContext<Unit, ApplicationCall>.handleAuthFailure(block: suspend () -> Unit) {
-    try {
-        block()
-    } catch (e: AuthenticationException) {
-        when (e.message) {
-            "Token has expired" -> context.respond(HttpStatusCode.Unauthorized, e.message ?: "Token expired")
-            else -> context.respond(HttpStatusCode.Forbidden, e.message ?: "Access denied")
-        }
-        finish()
-    }
-}
-
 fun ApplicationCall.getUserId(): String? {
     return principal<JWTPrincipal>()?.payload?.getClaim("userId")?.asString()
 }
