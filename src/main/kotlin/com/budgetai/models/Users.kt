@@ -40,3 +40,11 @@ data class UpdateUserRequest(
 data class UpdatePasswordRequest(
     val currentPassword: String, val newPassword: String
 )
+
+data class CookieConfig(
+    val name: String,
+    val maxAgeInSeconds: Int,
+    val path: String,
+    val secure: Boolean,
+    val httpOnly: Boolean
+)
