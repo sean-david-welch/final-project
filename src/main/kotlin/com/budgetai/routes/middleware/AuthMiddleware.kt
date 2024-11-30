@@ -52,10 +52,3 @@ fun Route.requireRole(role: String, build: Route.() -> Unit) {
         build()
     }
 }
-
-fun Route.withValidToken(build: Route.() -> Unit) {
-    authenticate {
-        install(createTokenValidationPlugin())
-        build()
-    }
-}
