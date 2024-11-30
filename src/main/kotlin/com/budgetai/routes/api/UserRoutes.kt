@@ -82,7 +82,7 @@ fun Route.userRoutes(service: UserService) {
 
                 val request = call.receive<UpdateUserRequest>()
                 val userDTO = UserDTO(
-                    id = id, email = request.email, name = request.name
+                    id = id, email = request.email, name = request.name, role = request.role
                 )
 
                 service.updateUser(id, userDTO)
