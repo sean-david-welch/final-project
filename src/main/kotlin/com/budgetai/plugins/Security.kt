@@ -12,10 +12,11 @@ import io.ktor.server.config.*
 const val TOKEN_EXPIRATION = 60 * 60 * 24
 
 fun Application.configureSecurity(config: ApplicationConfig) {
-    val jwtAudience = config.property("jwt.audience").getString()
-    val jwtIssuer = config.property("jwt.issuer").getString()
-    val jwtRealm = config.property("jwt.realm").getString()
-    val jwtSecret = config.property("jwt.secret").getString()
+    val jwtConfig = config.config("jwt")
+    val jwtAudience = jwtConfig.property("audience").getString()
+    val jwtIssuer = jwtConfig.property("issuer").getString()
+    val jwtRealm = jwtConfig.property("realm").getString()
+    val jwtSecret = jwtConfig.property("secret").getString()
 
     authentication {
         jwt("auth-jwt") {
