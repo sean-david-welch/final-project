@@ -9,6 +9,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.date.*
 
 fun Route.userRoutes(service: UserService) {
 
@@ -61,6 +62,23 @@ fun Route.userRoutes(service: UserService) {
             } else {
                 call.respond(HttpStatusCode.Unauthorized, "Invalid token")
             }
+        }
+
+        post("/logout") {
+            // Clear the JWT cookie
+            call.response.cookies.append(
+                Cookie(
+                    name = cookieConfig.name,
+                    value = "",
+                    maxAge = 0,
+                    expires = GMTDate(0),
+                    domain = null,
+                    path = cookieConfig.path,
+                    secure = cookieConfig.secure,
+                    httpOnly = cookieConfig.httpOnly
+                )
+            )
+            call.respond(HttpStatusCode.OK, "Logged out successfully")
         }
 
         // User Management Routes
