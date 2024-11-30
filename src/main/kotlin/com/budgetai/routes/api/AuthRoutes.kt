@@ -42,7 +42,18 @@ fun Route.authRoutes(service: UserService) {
             try {
                 val request = call.receive<UserCreationRequest>()
                 val userId = service.createUser(request)
-                call.respond(HttpStatusCode.Created, mapOf("id" to userId))
+
+                // Auto-login after registration
+                val authRequest = UserAuthenticationRequest(request.email, request.password)
+                val result = service.authenticateUserWithToken(authRequest)
+
+                if (result != null) {
+                    val (user, token) = result
+                    call.setAuthCookie(token, cookieConfig)
+                    call.respond(HttpStatusCode.Created, hashMapOf("user" to user))
+                } else {
+                    call.respond(HttpStatusCode.Created, mapOf("id" to userId))
+                }
             } catch (e: IllegalArgumentException) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             } catch (e: Exception) {
@@ -50,20 +61,14 @@ fun Route.authRoutes(service: UserService) {
             }
         }
 
-        // Authentication Routes
+        // login
         post("/login") {
             try {
                 val request = call.receive<UserAuthenticationRequest>()
                 val result = service.authenticateUserWithToken(request)
                 if (result != null) {
                     val (user, token) = result
-                    call.response.cookies.append(
-                        Cookie(
-                            name = cookieConfig.name, value = token, maxAge = cookieConfig.maxAgeInSeconds, expires = null, domain = null,
-                            path = cookieConfig.path, secure = cookieConfig.secure, httpOnly = cookieConfig.httpOnly,
-                            extensions = mapOf("SameSite" to "Strict")
-                        )
-                    )
+                    call.setAuthCookie(token, cookieConfig)
                     call.respond(HttpStatusCode.OK, hashMapOf("user" to user))
                 }
             } catch (e: Exception) {
