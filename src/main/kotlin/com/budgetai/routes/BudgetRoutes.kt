@@ -63,9 +63,9 @@ fun Route.budgetRoutes(service: BudgetService) {
             get("/user/{userId}/date-range") {
                 try {
                     val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
-                    val startDate =
-                        call.parameters["startDate"]?.let { LocalDate.parse(it) }
-                            ?: throw IllegalArgumentException("Start date is required")
+                    val startDate = call.parameters["startDate"]?.let { LocalDate.parse(it) } ?: throw IllegalArgumentException(
+                        "Start date is required"
+                    )
                     val endDate = call.parameters["endDate"]?.let { LocalDate.parse(it) } ?: throw IllegalArgumentException(
                         "End date is required"
                     )
