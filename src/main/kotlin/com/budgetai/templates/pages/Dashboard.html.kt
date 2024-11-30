@@ -4,12 +4,6 @@ import kotlinx.html.*
 import com.budgetai.templates.layout.*
 
 fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
-    Navbar(
-        navItems = listOf(
-            NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
-        )
-    )
-
     main(classes = "dashboard-layout") {
         div(classes = "dashboard-container") {
             h1(classes = "page-title") { +title }
@@ -19,7 +13,7 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
 
     Footer(
         links = listOf(
-            SimpleFooterLink("Privacy", "/privacy"), SimpleFooterLink("Terms", "/terms")
+            FooterLink("Privacy", "/privacy"), FooterLink("Terms", "/terms")
         )
     )
 }
