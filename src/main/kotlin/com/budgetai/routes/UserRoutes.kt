@@ -27,7 +27,6 @@ fun Route.userRoutes(service: UserService) {
             }
 
             // User Management Routes
-
             // Create new user
             post("/register") {
                 try {
