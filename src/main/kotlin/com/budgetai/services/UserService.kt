@@ -85,7 +85,7 @@ class UserService(private val repository: UserRepository) {
         val finalHash = "$encodedSalt:$hashedPassword"
 
         val userDTO = UserDTO(
-            email = request.email, name = request.name
+            email = request.email, name = request.name, role = request.role
         )
 
         val userId = repository.create(userDTO)
