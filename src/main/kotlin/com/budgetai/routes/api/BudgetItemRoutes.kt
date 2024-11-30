@@ -1,4 +1,4 @@
-package com.budgetai.routes
+package com.budgetai.routes.api
 
 import com.budgetai.models.BudgetItemCreationRequest
 import com.budgetai.models.BudgetItemUpdateRequest
