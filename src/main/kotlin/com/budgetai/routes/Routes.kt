@@ -10,7 +10,12 @@ import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 
 fun Application.configureRoutes(database: Database? = null) {
+    // database instantiation if null
     val db = database ?: DatabaseConfig.getDatabase()
+
+    // instantiate repositories
+
+    // instantiate services
 
     routing {
         staticResources("/static", "static")
