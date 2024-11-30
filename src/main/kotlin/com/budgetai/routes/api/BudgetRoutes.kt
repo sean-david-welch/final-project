@@ -15,7 +15,6 @@ import java.math.BigDecimal
 
 fun Route.budgetRoutes(service: BudgetService) {
     authenticate("jwt-auth") {
-
         route("/api/budgets") {
             // Create new budget
             post {
