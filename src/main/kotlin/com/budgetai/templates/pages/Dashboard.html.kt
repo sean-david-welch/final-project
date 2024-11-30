@@ -5,7 +5,7 @@ import com.budgetai.templates.layout.*
 
 fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
     Navbar(
-        brandName = "BudgetAI", navItems = listOf(
+        navItems = listOf(
             NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
         )
     )
