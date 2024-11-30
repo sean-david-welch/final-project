@@ -75,8 +75,9 @@ fun Route.aiInsightRoutes(service: AiInsightService) {
             // Get insights for a budget item
             get("/budget-item/{budgetItemId}") {
                 try {
-                    val budgetItemId =
-                        call.parameters["budgetItemId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
+                    val budgetItemId = call.parameters["budgetItemId"]?.toIntOrNull() ?: throw IllegalArgumentException(
+                        "Invalid budget item ID"
+                    )
 
                     val insights = service.getBudgetItemInsights(budgetItemId)
                     call.respond(insights)
@@ -259,8 +260,9 @@ fun Route.aiInsightRoutes(service: AiInsightService) {
             // Delete all insights for a budget item
             delete("/budget-item/{budgetItemId}") {
                 try {
-                    val budgetItemId =
-                        call.parameters["budgetItemId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget item ID")
+                    val budgetItemId = call.parameters["budgetItemId"]?.toIntOrNull() ?: throw IllegalArgumentException(
+                        "Invalid budget item ID"
+                    )
 
                     service.deleteBudgetItemInsights(budgetItemId)
                     call.respond(HttpStatusCode.OK, "Budget item insights deleted successfully")
