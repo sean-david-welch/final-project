@@ -8,8 +8,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.savingsGoalRoutes(service: SavingsGoalService) {
-    route("/api") {
-        route("/savings-goals") {
+        route("/api/savings-goals") {
             // Create new savings goal
             post {
                 try {
@@ -206,5 +205,4 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                 }
             }
         }
-    }
 }
