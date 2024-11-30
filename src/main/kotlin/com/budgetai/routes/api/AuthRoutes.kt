@@ -76,7 +76,7 @@ fun Route.authRoutes(service: UserService) {
             }
         }
 
-        authenticate("auth-jwt") {
+        authenticate {
             // refresh token
             post("/refresh") {
                 val principal = call.principal<JWTPrincipal>()
