@@ -41,22 +41,6 @@ class UserService(private val repository: UserRepository, private val config: Ap
         )
     }
 
-    // token calidartion method
-    fun validateToken(token: String): Boolean {
-        return try {
-            val jwtAudience = config.property("jwt.audience").getString()
-            val jwtIssuer = config.property("jwt.issuer").getString()
-            val jwtSecret = config.property("jwt.secret").getString()
-
-            val verifier = JWT.require(HMAC256(jwtSecret)).withAudience(jwtAudience).withIssuer(jwtIssuer).build()
-
-            verifier.verify(token)
-            true
-        } catch (e: Exception) {
-            false
-        }
-    }
-
     // Generates a random salt for password hashing
     private fun generateSalt(): ByteArray {
         val random = SecureRandom()
