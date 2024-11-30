@@ -29,7 +29,7 @@ fun Application.configureSecurity(config: ApplicationConfig) {
     }
 }
 
-fun generateToken(userId: String, config: ApplicationConfig): String {
+fun generateToken(userId: String, role: String, config: ApplicationConfig): String {
     val jwtAudience = config.property("jwt.audience").getString()
     val jwtIssuer = config.property("jwt.issuer").getString()
     val jwtSecret = config.property("jwt.secret").getString()
@@ -38,6 +38,7 @@ fun generateToken(userId: String, config: ApplicationConfig): String {
         .withAudience(jwtAudience)
         .withIssuer(jwtIssuer)
         .withClaim("userId", userId)
+        .withClaim("role", role)
         .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000))
         .withIssuedAt(Date())
         .sign(Algorithm.HMAC256(jwtSecret))
