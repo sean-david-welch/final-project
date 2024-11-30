@@ -1,6 +1,7 @@
 package com.budgetai.repositories
 
 import com.budgetai.models.UserDTO
+import com.budgetai.models.UserRole
 import com.budgetai.models.Users
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
@@ -21,9 +22,18 @@ class UserRepository(private val database: Database) {
     // Maps database row to UserDTO
     private fun toUser(row: ResultRow) = UserDTO(
         id = row[Users.id].value,
-        email = row[Users.email],
         name = row[Users.name],
+        role = row[Users.role],
+        email = row[Users.email],
     )
+
+    private fun validateRole(role: String) {
+        try {
+            UserRole.valueOf(role.uppercase())
+        } catch (e: IllegalArgumentException) {
+            throw Exception("Invalid role: $role. Must be one of: ${UserRole.entries.joinToString()}")
+        }
+    }
 
     // Executes a database query within a coroutine context
     private suspend fun <T> dbQuery(block: suspend () -> T): T = newSuspendedTransaction(Dispatchers.IO, database) { block() }
