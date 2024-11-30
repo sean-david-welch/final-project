@@ -28,9 +28,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
     suspend fun refreshToken(userId: Int): String? {
         val user = getUser(userId) ?: return null
         return generateToken(
-            userId = user.id.toString(),
-            role = user.role,
-            config = config
+            userId = user.id.toString(), role = user.role, config = config
         )
     }
 
