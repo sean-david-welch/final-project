@@ -22,8 +22,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
         val jwtSecret = config.property("jwt.secret").getString()
 
         return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("userId", userId).withClaim("role", role)
-            .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000)).withIssuedAt(Date())
-            .sign(HMAC256(jwtSecret))
+            .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000)).withIssuedAt(Date()).sign(HMAC256(jwtSecret))
     }
 
     // generate new token for user
