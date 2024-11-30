@@ -29,7 +29,7 @@ fun Application.configureRoutes(database: Database? = null) {
             )
         }
         userRoutes(database = db)
-        budgetRoutes(database = db)
+        budgetRoutes(budgetService)
         categoryRoutes(database = db)
         budgetItemRoutes(database = db)
         savingsGoalRoutes(database = db)

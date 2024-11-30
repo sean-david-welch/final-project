@@ -3,17 +3,15 @@ package com.budgetai.routes
 import com.budgetai.models.BudgetCreationRequest
 import com.budgetai.models.UpdateBudgetRequest
 import com.budgetai.models.UpdateBudgetTotalsRequest
-import com.budgetai.repositories.BudgetRepository
 import com.budgetai.services.BudgetService
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.datetime.LocalDate
-import org.jetbrains.exposed.sql.Database
 import java.math.BigDecimal
 
-fun Route.budgetRoutes(database: Database, service: BudgetService) {
+fun Route.budgetRoutes(service: BudgetService) {
     route("/api") {
         route("/budgets") {
             // Create new budget
