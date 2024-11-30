@@ -1,9 +1,11 @@
 package com.budgetai.routes
 
 import com.budgetai.plugins.DatabaseConfig
+import com.budgetai.repositories.BudgetItemRepository
 import com.budgetai.repositories.BudgetRepository
 import com.budgetai.repositories.CategoryRepository
 import com.budgetai.repositories.UserRepository
+import com.budgetai.services.BudgetItemService
 import com.budgetai.services.BudgetService
 import com.budgetai.services.CategoryService
 import com.budgetai.services.UserService
@@ -23,11 +25,13 @@ fun Application.configureRoutes(database: Database? = null) {
     val userRepository = UserRepository(db)
     val budgetRepository = BudgetRepository(db)
     val categoryRepository = CategoryRepository(db)
+    val budgetItemRepository = BudgetItemRepository(db)
 
     // instantiate services
     val userService = UserService(userRepository)
     val budgetService = BudgetService(budgetRepository)
     val categoryService = CategoryService(categoryRepository)
+    val budgetItemService = BudgetItemService(budgetItemRepository)
 
     routing {
         staticResources("/static", "static")
@@ -39,7 +43,7 @@ fun Application.configureRoutes(database: Database? = null) {
         userRoutes(userService)
         budgetRoutes(budgetService)
         categoryRoutes(categoryService)
-        budgetItemRoutes(database = db)
+        budgetItemRoutes(budgetItemService)
         savingsGoalRoutes(database = db)
         aiInsightRoutes(database = db)
     }
