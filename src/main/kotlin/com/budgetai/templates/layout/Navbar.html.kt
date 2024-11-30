@@ -15,11 +15,11 @@ private fun UL.renderNavItems(items: List<NavItem>) {
     }
 }
 
-fun FlowContent.Navbar(brandName: String = "Your Brand", navItems: List<NavItem> = listOf()) {
+fun FlowContent.Navbar(navItems: List<NavItem> = listOf()) {
     nav(classes = "navbar") {
         div(classes = "navbar-container navbar-content") {
             div(classes = "navbar-brand-container") {
-                span(classes = "navbar-brand-text") { +brandName }
+                span(classes = "navbar-brand-text") { +"BudgetAI" }
             }
             div(classes = "navbar-desktop-menu navbar-menu-container") {
                 ul(classes = "navbar-menu-list") {
