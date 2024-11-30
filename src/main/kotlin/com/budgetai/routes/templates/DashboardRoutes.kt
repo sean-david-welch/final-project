@@ -7,11 +7,10 @@ import io.ktor.server.routing.*
 
 fun Route.dashboardRoutes() {
     route("/dashboard") {
-
-    get("/") {
-        call.respondText(
-            text = createDashboardPage(), contentType = ContentType.Text.Html
-        )
-    }
+        get("/") {
+            call.respondText(
+                text = createDashboardPage(), contentType = ContentType.Text.Html
+            )
+        }
     }
 }
