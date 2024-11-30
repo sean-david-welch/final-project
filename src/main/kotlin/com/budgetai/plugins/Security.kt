@@ -2,6 +2,7 @@ package com.budgetai.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -24,6 +25,9 @@ fun Application.configureSecurity(config: ApplicationConfig) {
             )
             validate { credential ->
                 if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+            }
+            challenge { _, _ ->
+                call.response.status(HttpStatusCode.Unauthorized)
             }
         }
     }
