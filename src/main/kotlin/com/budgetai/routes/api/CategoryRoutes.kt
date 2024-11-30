@@ -6,13 +6,12 @@ import com.budgetai.models.UpdateCategoryRequest
 import com.budgetai.routes.middleware.authenticate
 import com.budgetai.services.CategoryService
 import io.ktor.http.*
-import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.categoryRoutes(service: CategoryService) {
-    authenticate("jwt-auth") {
+    authenticate {
         route("/api/categories") {
             // Create new category
             post {
