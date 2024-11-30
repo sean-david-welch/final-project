@@ -6,9 +6,9 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.homeRoutes() {
-        get("/") {
-            call.respondText(
-                text = createDashboardPage(), contentType = ContentType.Text.Html
-            )
-        }
+    get("/") {
+        call.respondText(
+            text = createDashboardPage(), contentType = ContentType.Text.Html
+        )
+    }
 }
