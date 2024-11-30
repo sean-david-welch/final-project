@@ -34,7 +34,7 @@ fun Application.module() {
     configureSecurity(config)
     configureHTTP()
     configureSerialization()
-    configureRouting(database = database)
+    configureRouting(config, database)
 }
 
 private fun checkDevelopmentMode(application: Application): Boolean {
