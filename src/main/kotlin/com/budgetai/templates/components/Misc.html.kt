@@ -40,4 +40,3 @@ fun DIV.activityItem(text: String, time: String) {
         div(classes = "text-muted mt-1") { +time }
     }
 }
-
