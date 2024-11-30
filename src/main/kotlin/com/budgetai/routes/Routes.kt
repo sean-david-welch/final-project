@@ -7,11 +7,12 @@ import com.budgetai.routes.templates.dashboardRoutes
 import com.budgetai.routes.templates.homeRoutes
 import com.budgetai.services.*
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 
-fun Application.configureRoutes(database: Database? = null) {
+fun Application.configureRoutes(config: ApplicationConfig,  database: Database? = null) {
     // database instantiation if null
     val db = database ?: DatabaseConfig.getDatabase()
 
@@ -24,7 +25,7 @@ fun Application.configureRoutes(database: Database? = null) {
     val aiInsightsRepository = AiInsightRepository(db)
 
     // instantiate services
-    val userService = UserService(userRepository)
+    val userService = UserService(userRepository, config)
     val budgetService = BudgetService(budgetRepository)
     val categoryService = CategoryService(categoryRepository)
     val budgetItemService = BudgetItemService(budgetItemRepository)
