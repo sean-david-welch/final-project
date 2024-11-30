@@ -24,6 +24,15 @@ class UserService(private val repository: UserRepository, private val config: Ap
         return Pair(user, token)
     }
 
+    suspend fun refreshToken(userId: Int): String? {
+        val user = getUser(userId) ?: return null
+        return generateToken(
+            userId = user.id.toString(),
+            role = user.role,
+            config = config
+        )
+    }
+
     // token calidartion method
     fun validateToken(token: String): Boolean {
         return try {
