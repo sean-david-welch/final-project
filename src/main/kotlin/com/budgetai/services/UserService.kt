@@ -18,11 +18,9 @@ class UserService(private val repository: UserRepository, private val config: Ap
     // generate new token for user
     suspend fun authenticateUserWithToken(request: UserAuthenticationRequest): Pair<UserDTO, String>? {
         val user = authenticateUser(request) ?: return null
-
         val token = generateToken(
             userId = user.id.toString(), role = user.role, config = config
         )
-
         return Pair(user, token)
     }
 
