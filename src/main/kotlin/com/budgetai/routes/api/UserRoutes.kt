@@ -14,22 +14,9 @@ import io.ktor.server.routing.*
 
 fun Route.userRoutes(service: UserService) {
 
-    route("/api/users") {
-        // Create new user
-        post("/register") {
-            try {
-                val request = call.receive<UserCreationRequest>()
-                val userId = service.createUser(request)
-                call.respond(HttpStatusCode.Created, mapOf("id" to userId))
-            } catch (e: IllegalArgumentException) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "Error creating user")
-            }
-        }
-
-        // proteted routes
-        authenticate("jwt-auth") {
+    // proteted routes
+    authenticate("jwt-auth") {
+        route("/api/users") {
             // Get user by ID
             get("/{id}") {
                 try {
