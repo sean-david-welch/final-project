@@ -20,5 +20,5 @@ fun Application.configureRouting(config: ApplicationConfig, database: Database? 
     install(Webjars) {
         path = "/webjars"
     }
-    database?.let { configureRoutes(database = database) } ?: run { configureRoutes() }
+    database?.let { configureRoutes(config, database) } ?: run { configureRoutes(config) }
 }
