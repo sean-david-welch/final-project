@@ -1,5 +1,7 @@
 package com.budgetai.services
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm.HMAC256
 import com.budgetai.models.UserAuthenticationRequest
 import com.budgetai.models.UserCreationRequest
 import com.budgetai.models.UserDTO
@@ -24,6 +26,24 @@ class UserService(private val repository: UserRepository, private val config: Ap
         )
 
         return Pair(user, token)
+    }
+
+    fun validateToken(token: String): Boolean {
+        return try {
+            val jwtAudience = config.property("jwt.audience").getString()
+            val jwtIssuer = config.property("jwt.issuer").getString()
+            val jwtSecret = config.property("jwt.secret").getString()
+
+            val verifier = JWT.require(HMAC256(jwtSecret))
+                .withAudience(jwtAudience)
+                .withIssuer(jwtIssuer)
+                .build()
+
+            verifier.verify(token)
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 
     // Generates a random salt for password hashing
