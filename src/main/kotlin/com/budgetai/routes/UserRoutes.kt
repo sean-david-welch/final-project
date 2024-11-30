@@ -9,18 +9,15 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 
-fun Route.userRoutes(database: Database) {
-    // Initialize repositories and services
-    val userRepository = UserRepository(database)
-    val userService = UserService(userRepository)
-    route("/api") {
+fun Route.userRoutes(service: UserService) {
 
+    route("/api") {
         route("/users") {
             // Authentication Routes
             post("/login") {
                 try {
                     val request = call.receive<UserAuthenticationRequest>()
-                    val user = userService.authenticateUser(request)
+                    val user = service.authenticateUser(request)
                     if (user != null) {
                         call.respond(HttpStatusCode.OK, user)
                     } else {
@@ -37,7 +34,7 @@ fun Route.userRoutes(database: Database) {
             post("/register") {
                 try {
                     val request = call.receive<UserCreationRequest>()
-                    val userId = userService.createUser(request)
+                    val userId = service.createUser(request)
                     call.respond(HttpStatusCode.Created, mapOf("id" to userId))
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -51,7 +48,7 @@ fun Route.userRoutes(database: Database) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
-                    val user = userService.getUser(id)
+                    val user = service.getUser(id)
                     if (user != null) {
                         call.respond(user)
                     } else {
@@ -69,7 +66,7 @@ fun Route.userRoutes(database: Database) {
                 try {
                     val email = call.parameters["email"] ?: throw IllegalArgumentException("Email is required")
 
-                    val user = userService.getUserByEmail(email)
+                    val user = service.getUserByEmail(email)
                     if (user != null) {
                         call.respond(user)
                     } else {
@@ -92,7 +89,7 @@ fun Route.userRoutes(database: Database) {
                         id = id, email = request.email, name = request.name
                     )
 
-                    userService.updateUser(id, userDTO)
+                    service.updateUser(id, userDTO)
                     call.respond(HttpStatusCode.OK, "User updated successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -107,7 +104,7 @@ fun Route.userRoutes(database: Database) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                     val request = call.receive<UpdatePasswordRequest>()
-                    userService.updatePassword(id, request.currentPassword, request.newPassword)
+                    service.updatePassword(id, request.currentPassword, request.newPassword)
                     call.respond(HttpStatusCode.OK, "Password updated successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -121,7 +118,7 @@ fun Route.userRoutes(database: Database) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
-                    userService.deleteUser(id)
+                    service.deleteUser(id)
                     call.respond(HttpStatusCode.OK, "User deleted successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
