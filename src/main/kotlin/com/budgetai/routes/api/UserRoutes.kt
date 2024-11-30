@@ -16,6 +16,7 @@ fun Route.userRoutes(service: UserService) {
         name = "jwt_token", maxAgeInSeconds = TOKEN_EXPIRATION, path = "/", secure = true, httpOnly = true
     )
 
+
     route("/api/users") {
         // Authentication Routes
         post("/login") {
@@ -24,7 +25,22 @@ fun Route.userRoutes(service: UserService) {
                 val result = service.authenticateUserWithToken(request)
                 if (result != null) {
                     val (user, token) = result
-                    call.respond(HttpStatusCode.OK, hashMapOf("user" to user, "to" to token))
+                    call.response.cookies.append(
+                        Cookie(
+                            name = cookieConfig.name,
+                            value = token,
+                            maxAge = cookieConfig.maxAgeInSeconds,
+                            expires = null,
+                            domain = null,
+                            path = cookieConfig.path,
+                            secure = cookieConfig.secure,
+                            httpOnly = cookieConfig.httpOnly,
+                            extensions = mapOf("SameSite" to "Strict")
+                        )
+                    )
+
+                    // Only return the user data, not the token
+                    call.respond(HttpStatusCode.OK, hashMapOf("user" to user))
                 }
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
