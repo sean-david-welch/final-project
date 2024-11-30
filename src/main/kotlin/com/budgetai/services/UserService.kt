@@ -20,9 +20,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
         val user = authenticateUser(request) ?: return null
 
         val token = generateToken(
-            userId = user.id.toString(),
-            role = user.role,
-            config = config
+            userId = user.id.toString(), role = user.role, config = config
         )
 
         return Pair(user, token)
@@ -34,10 +32,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
             val jwtIssuer = config.property("jwt.issuer").getString()
             val jwtSecret = config.property("jwt.secret").getString()
 
-            val verifier = JWT.require(HMAC256(jwtSecret))
-                .withAudience(jwtAudience)
-                .withIssuer(jwtIssuer)
-                .build()
+            val verifier = JWT.require(HMAC256(jwtSecret)).withAudience(jwtAudience).withIssuer(jwtIssuer).build()
 
             verifier.verify(token)
             true
