@@ -16,5 +16,9 @@ fun BaseTemplate(bodyFn: BODY.() -> Unit) = "<!DOCTYPE html>" + createHTML().htm
             rel = "stylesheet"
         }
     }
-    body(classes = "font-inter layout-base coontainer-base") { bodyFn() }
+    body(classes = "font-inter layout-base coontainer-base") {
+        Navbar()
+        bodyFn()
+        Footer()
+    }
 }
