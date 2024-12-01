@@ -46,6 +46,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `POST register - creates user successfully`() = testApplication {
+        configureTestApplication(database)
         val userRequest = UserCreationRequest(
             email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
         )
@@ -62,6 +63,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `POST register - fails with duplicate email`() = testApplication {
+        configureTestApplication(database)
         // Create first user
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -91,6 +93,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `POST login - authenticates successfully`() = testApplication {
+        configureTestApplication(database)
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -120,6 +123,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `POST login - fails with incorrect password`() = testApplication {
+        configureTestApplication(database)
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -149,6 +153,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `GET user - returns user when exists`() = testApplication {
+        configureTestApplication(database)
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -168,6 +173,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `GET user by email - returns user when exists`() = testApplication {
+        configureTestApplication(database)
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -186,6 +192,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `PUT user - updates successfully`() = testApplication {
+        configureTestApplication(database)
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -215,6 +222,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `PUT password - updates successfully`() = testApplication {
+        configureTestApplication(database)
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -244,6 +252,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `PUT password - fails with incorrect current password`() = testApplication {
+        configureTestApplication(database)
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -273,6 +282,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
     @Test
     fun `DELETE user - deletes successfully`() = testApplication {
+        configureTestApplication(database)
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
