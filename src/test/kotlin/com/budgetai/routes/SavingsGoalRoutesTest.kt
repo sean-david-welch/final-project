@@ -10,6 +10,8 @@ import com.typesafe.config.ConfigFactory
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.encodeToString
@@ -76,11 +78,15 @@ class SavingsGoalRoutesTest {
 
         val response = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
-            header(HttpHeaders.Authorization, "Bearer $token")
+            // Set the JWT as a cookie instead of header
+            cookie("jwt_token", token)
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1, name = "New Car", targetAmount = 20000.0, targetDate = "2024-12-31",
+                        userId = 1,
+                        name = "New Car",
+                        targetAmount = 20000.0,
+                        targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
                 )
