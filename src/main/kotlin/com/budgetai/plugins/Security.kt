@@ -11,7 +11,7 @@ import io.ktor.server.config.*
 
 const val TOKEN_EXPIRATION = 60 * 60 * 24
 
-fun Application.configureSecurity(config: ApplicationConfig, isTest: Boolean = false) {
+fun Application.configureSecurity(config: ApplicationConfig) {
     val jwtConfig = config.config("jwt")
     val jwtAudience = jwtConfig.property("audience").getString()
     val jwtIssuer = jwtConfig.property("issuer").getString()
@@ -19,7 +19,7 @@ fun Application.configureSecurity(config: ApplicationConfig, isTest: Boolean = f
     val jwtSecret = jwtConfig.property("secret").getString()
 
     authentication {
-        jwt("auth-jwt") {
+        jwt {
             realm = jwtRealm
             verifier(
                 JWT.require(Algorithm.HMAC256(jwtSecret)).withAudience(jwtAudience).withIssuer(jwtIssuer).build()
