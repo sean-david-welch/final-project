@@ -8,7 +8,7 @@ import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import kotlinx.coroutines.runBlocking
 
-class OpenAi(private val apiKey: String) {
+class OpenAi(apiKey: String) {
     private val client = OpenAI(apiKey)
 
     // Default model, can be overridden in methods
