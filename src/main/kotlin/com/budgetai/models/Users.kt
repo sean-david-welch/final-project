@@ -17,12 +17,12 @@ object Users : IntIdTable("users") {
 // DTO
 @Serializable
 data class UserDTO(
-    val id: Int = 0, val name: String, val role: String, val email: String, val createdAt: String? = null
+    val id: Int = 0, val name: String, val role: String = UserRole.USER.toString(), val email: String, val createdAt: String? = null
 )
 
 @Serializable
 data class UserCreationRequest(
-    val name: String, val role: String, val email: String, val password: String
+    val name: String, val role: String = UserRole.USER.toString(), val email: String, val password: String
 )
 
 @Serializable
@@ -33,7 +33,7 @@ data class UserAuthenticationRequest(
 // Data classes for requests
 @Serializable
 data class UpdateUserRequest(
-    val email: String, val name: String, val role: String
+    val email: String, val name: String, val role: String = UserRole.USER.toString()
 )
 
 @Serializable
