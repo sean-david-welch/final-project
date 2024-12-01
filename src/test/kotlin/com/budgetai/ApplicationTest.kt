@@ -29,20 +29,14 @@ class ApplicationTest {
 }
 
 abstract class AuthenticatedTest {
-    private val testConfig = ConfigFactory.parseString(
-        """
-        jwt {
-            secret = "your-test-secret-key"
-            issuer = "http://0.0.0.0:8080/"
-            audience = "http://0.0.0.0:8080/hello"
-            realm = "Access to 'hello'"
-        }
-    """
-    )
+    private val config = HoconApplicationConfig(ConfigFactory.load("development.conf"))
+
+    init {
+        System.setProperty("config.resource", "development.conf")
+    }
 
     protected fun ApplicationTestBuilder.configureTestApplication(database: Database) {
         application {
-            val config = HoconApplicationConfig(testConfig)
             configureSecurity(config)
             configureSerialization()
             configureRouting(config, database)
@@ -53,7 +47,10 @@ abstract class AuthenticatedTest {
         cookie("jwt_token", createTestJwtToken())
     }
 
-    private fun createTestJwtToken() = JWT.create().withAudience("http://0.0.0.0:8080/hello").withIssuer("http://0.0.0.0:8080/")
-        .withExpiresAt(Date(System.currentTimeMillis() + 60000)).withClaim("userId", 1).withClaim("role", "user")
-        .sign(HMAC256("your-test-secret-key"))
+    private fun createTestJwtToken(): String {
+        val jwtConfig = config.config("jwt")
+        return JWT.create().withAudience(jwtConfig.property("audience").getString()).withIssuer(jwtConfig.property("issuer").getString())
+            .withExpiresAt(Date(System.currentTimeMillis() + 60000)).withClaim("userId", 1).withClaim("role", "user")
+            .sign(HMAC256(jwtConfig.property("secret").getString()))
+    }
 }
