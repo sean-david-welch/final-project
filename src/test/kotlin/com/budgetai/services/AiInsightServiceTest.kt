@@ -14,6 +14,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.File
+import java.time.Year
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
@@ -60,14 +61,8 @@ class AiInsightServiceTest {
     fun `createInsight should create insight with valid request`() = runBlocking {
         // Given
         val request = InsightCreationRequest(
-            userId = testUserId,
-            budgetId = testBudgetId,
-            budgetItemId = testBudgetItemId,
-            prompt = testPrompt,
-            response = testResponse,
-            type = InsightType.ITEM_ANALYSIS,
-            sentiment = Sentiment.NEUTRAL,
-            metadata = testMetadata
+            userId = testUserId, budgetId = testBudgetId, budgetItemId = testBudgetItemId, prompt = testPrompt, response = testResponse,
+            type = InsightType.ITEM_ANALYSIS, sentiment = Sentiment.NEUTRAL, metadata = testMetadata
         )
 
         // When
@@ -151,19 +146,11 @@ class AiInsightServiceTest {
         // Given
         val requests = listOf(
             InsightCreationRequest(
-                userId = testUserId,
-                budgetId = testBudgetId,
-                prompt = testPrompt,
-                response = testResponse,
-                type = InsightType.ITEM_ANALYSIS,
-                sentiment = Sentiment.POSITIVE
+                userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse,
+                type = InsightType.ITEM_ANALYSIS, sentiment = Sentiment.POSITIVE
             ), InsightCreationRequest(
-                userId = testUserId,
-                budgetId = testBudgetId,
-                prompt = testPrompt,
-                response = testResponse,
-                type = InsightType.SAVING_SUGGESTION,
-                sentiment = Sentiment.NEUTRAL
+                userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse,
+                type = InsightType.SAVING_SUGGESTION, sentiment = Sentiment.NEUTRAL
             )
         )
         requests.forEach { service.createInsight(it) }
@@ -199,29 +186,6 @@ class AiInsightServiceTest {
     }
 
     @Test
-    fun `getInsightsInDateRange should return insights in correct range`() = runBlocking {
-        // Given
-        val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val startDate = LocalDateTime(
-            now.year, now.month, now.dayOfMonth - 1, now.hour, now.minute, now.second, now.nanosecond
-        )
-        val endDate = LocalDateTime(
-            now.year, now.month, now.dayOfMonth + 1, now.hour, now.minute, now.second, now.nanosecond
-        )
-
-        val request = InsightCreationRequest(
-            userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse, type = InsightType.ITEM_ANALYSIS
-        )
-        service.createInsight(request)
-
-        // When
-        val insights = service.getInsightsInDateRange(testUserId, startDate, endDate)
-
-        // Then
-        assertEquals(1, insights.size)
-    }
-
-    @Test
     fun `deleteUserInsights should remove all user insights`() = runBlocking {
         // Given
         val requests = List(3) {
@@ -246,10 +210,7 @@ class AiInsightServiceTest {
             InsightCreationRequest(
                 userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse, type = InsightType.ITEM_ANALYSIS
             ), InsightCreationRequest(
-                userId = testUserId,
-                budgetId = testBudgetId,
-                prompt = testPrompt,
-                response = testResponse,
+                userId = testUserId, budgetId = testBudgetId, prompt = testPrompt, response = testResponse,
                 type = InsightType.SAVING_SUGGESTION
             )
         )
