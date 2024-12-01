@@ -52,6 +52,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
 
     @Test
     fun `POST budget - creates budget successfully`() = testApplication {
+        configureTestApplication(database)
         // Test
         val response = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
@@ -75,6 +76,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
 
     @Test
     fun `GET budget - returns budget when exists`() = testApplication {
+        configureTestApplication(database)
         // Set up
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
@@ -103,12 +105,14 @@ class BudgetRoutesTest : AuthenticatedTest() {
 
     @Test
     fun `GET budget - returns 404 when budget doesn't exist`() = testApplication {
+        configureTestApplication(database)
         val response = client.get("/api/budgets/999")
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
     @Test
     fun `PUT budget totals - updates successfully`() = testApplication {
+        configureTestApplication(database)
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
@@ -143,6 +147,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
 
     @Test
     fun `GET budgets by user - returns all user budgets`() = testApplication {
+        configureTestApplication(database)
         // Create two budgets for the same user
         repeat(2) {
             client.post("/api/budgets") {
@@ -172,6 +177,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
 
     @Test
     fun `DELETE budget - deletes successfully`() = testApplication {
+        configureTestApplication(database)
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
