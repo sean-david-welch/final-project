@@ -29,14 +29,16 @@ class ApplicationTest {
 }
 
 abstract class AuthenticatedTest {
-    private val testConfig = ConfigFactory.parseString("""
+    private val testConfig = ConfigFactory.parseString(
+        """
         jwt {
             secret = "your-test-secret-key"
             issuer = "http://0.0.0.0:8080/"
             audience = "http://0.0.0.0:8080/hello"
             realm = "Access to 'hello'"
         }
-    """)
+    """
+    )
 
     protected fun ApplicationTestBuilder.configureTestApplication(database: Database) {
         application {
@@ -51,11 +53,7 @@ abstract class AuthenticatedTest {
         cookie("jwt_token", createTestJwtToken())
     }
 
-    private fun createTestJwtToken() = JWT.create()
-        .withAudience("http://0.0.0.0:8080/hello")
-        .withIssuer("http://0.0.0.0:8080/")
-        .withExpiresAt(Date(System.currentTimeMillis() + 60000))
-        .withClaim("userId", 1)
-        .withClaim("role", "user")
+    private fun createTestJwtToken() = JWT.create().withAudience("http://0.0.0.0:8080/hello").withIssuer("http://0.0.0.0:8080/")
+        .withExpiresAt(Date(System.currentTimeMillis() + 60000)).withClaim("userId", 1).withClaim("role", "user")
         .sign(HMAC256("your-test-secret-key"))
 }
