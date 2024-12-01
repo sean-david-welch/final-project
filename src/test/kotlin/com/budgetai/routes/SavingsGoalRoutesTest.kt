@@ -2,13 +2,9 @@ package com.budgetai.routes
 
 import com.budgetai.AuthenticatedTest
 import com.budgetai.models.*
-import com.budgetai.plugins.configureRouting
-import com.budgetai.plugins.configureSerialization
-import com.typesafe.config.ConfigFactory
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
