@@ -1,6 +1,7 @@
 package com.budgetai.repositories
 
 import com.budgetai.models.UserDTO
+import com.budgetai.models.UserRole
 import com.budgetai.models.Users
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
@@ -46,10 +47,10 @@ class UserRepositoryTest {
     }
 
     private fun createSampleUser(
-        email: String = "test@example.com", name: String = "Test User"
+        email: String = "test@example.com", name: String = "Test User", role: UserRole = UserRole.USER
     ): UserDTO {
         return UserDTO(
-            id = 0, email = email, name = name
+            id = 0, email = email, name = name, role = role.toString()
         )
     }
 
