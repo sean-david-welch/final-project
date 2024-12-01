@@ -74,19 +74,11 @@ class AiInsightRoutesTest : AuthenticatedTest() {
     }
 
     private fun createSampleInsightRequest(
-        userId: Int = 1,
-        budgetId: Int = 1,
-        budgetItemId: Int? = 1,
-        type: InsightType = InsightType.SAVING_SUGGESTION,
+        userId: Int = 1, budgetId: Int = 1, budgetItemId: Int? = 1, type: InsightType = InsightType.SAVING_SUGGESTION,
         prompt: String = "Analyze my dining expenses for this month",
         response: String = "Your dining expenses have increased by 25% compared to last month."
-    ) = InsightCreationRequest(userId = userId,
-        budgetId = budgetId,
-        budgetItemId = budgetItemId,
-        prompt = prompt,
-        response = response,
-        type = type,
-        metadata = buildJsonObject {
+    ) = InsightCreationRequest(userId = userId, budgetId = budgetId, budgetItemId = budgetItemId, prompt = prompt, response = response,
+        type = type, metadata = buildJsonObject {
             put("categoryId", JsonPrimitive(1))
             put("categoryName", JsonPrimitive("Dining"))
             put("budgetedAmount", JsonPrimitive(300.00))
@@ -262,11 +254,8 @@ class AiInsightRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     InsightUpdateRequest(
-                        prompt = "Updated analysis request",
-                        response = "Updated analysis result",
-                        type = InsightType.ITEM_ANALYSIS,
-                        sentiment = Sentiment.POSITIVE,
-                        metadata = updatedMetadata
+                        prompt = "Updated analysis request", response = "Updated analysis result", type = InsightType.ITEM_ANALYSIS,
+                        sentiment = Sentiment.POSITIVE, metadata = updatedMetadata
                     )
                 )
             )
