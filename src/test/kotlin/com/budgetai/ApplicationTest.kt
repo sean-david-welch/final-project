@@ -11,6 +11,8 @@ import kotlin.test.Test
 class ApplicationTest {
     @Test
     fun testRoot() = testApplication {
+        System.setProperty("config.resource", "development.conf")
+
         val config = HoconApplicationConfig(ConfigFactory.load("development.conf"))
         application {
             configureSecurity(config)
