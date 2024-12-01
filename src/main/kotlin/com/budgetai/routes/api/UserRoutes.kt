@@ -3,7 +3,7 @@ package com.budgetai.routes.api
 import com.budgetai.models.UpdatePasswordRequest
 import com.budgetai.models.UpdateUserRequest
 import com.budgetai.models.UserDTO
-import com.budgetai.routes.middleware.authenticate
+import com.budgetai.routes.middleware.requireAuth
 import com.budgetai.services.UserService
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -13,7 +13,7 @@ import io.ktor.server.routing.*
 fun Route.userRoutes(service: UserService) {
 
     // proteted routes
-    authenticate {
+     requireAuth {
         route("/api/users") {
             // Get user by ID
             get("/{id}") {
