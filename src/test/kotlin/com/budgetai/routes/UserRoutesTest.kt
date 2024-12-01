@@ -306,10 +306,7 @@ class UserRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com",
-                        password = "StrongPassword999",
-                        name = "Test User",
-                        role = UserRole.USER.toString()
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
