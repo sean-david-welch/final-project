@@ -11,9 +11,9 @@ import kotlin.test.Test
 class ApplicationTest {
     @Test
     fun testRoot() = testApplication {
-        val config = HoconApplicationConfig(ConfigFactory.load())
+        val config = HoconApplicationConfig(ConfigFactory.load("development.conf"))
         application {
-            configureSecurity(config, isTest = true)
+            configureSecurity(config)
             configureHTTP()
             configureSerialization()
         }
