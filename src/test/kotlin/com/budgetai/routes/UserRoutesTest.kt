@@ -279,4 +279,23 @@ class UserRoutesTest {
 
     @Test
     fun `DELETE user - deletes successfully`() = testApplication {
+        // Create user first
+        val createResponse = client.post("/api/users/register") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                Json.encodeToString(
+                    UserCreationRequest(
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
+                    )
+                )
+            )
+        }
+        val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
+
+        val deleteResponse = client.delete("/api/users/$userId")
+        assertEquals(HttpStatusCode.OK, deleteResponse.status)
+
+        val getResponse = client.get("/api/users/$userId")
+        assertEquals(HttpStatusCode.NotFound, getResponse.status)
+    }
 }
