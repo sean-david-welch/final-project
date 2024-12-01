@@ -12,7 +12,7 @@ class OpenAi(private val apiKey: String) {
     private val client = OpenAI(apiKey)
 
     // Default model, can be overridden in methods
-    private val defaultModel = ModelId("gpt-4")
+    private val defaultModel = ModelId("gpt-4o-mini")
 
     /**
      * Sends a simple message to the API and returns the response
