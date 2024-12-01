@@ -1,17 +1,13 @@
 package com.budgetai.routes
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm.HMAC256
+import com.budgetai.AuthenticatedTest
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
-import com.budgetai.plugins.configureSecurity
 import com.budgetai.plugins.configureSerialization
 import com.typesafe.config.ConfigFactory
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.encodeToString
@@ -23,34 +19,17 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.File
-import java.util.*
 import kotlin.test.assertEquals
 
-class SavingsGoalRoutesTest {
+class SavingsGoalRoutesTest : AuthenticatedTest() {
     private lateinit var database: Database
     private val dbFile = File("test.db")
-
-    // Test JWT constants
-    private val testSecret = "your-test-secret-key"
-    private val testIssuer = "http://0.0.0.0:8080/"
-    private val testAudience = "http://0.0.0.0:8080/hello"
-    private val testRealm = "Access to 'hello'"
-
-    private val testConfig = ConfigFactory.parseString(
-        """
-        jwt {
-            secret = "$testSecret"
-            issuer = "$testIssuer"
-            audience = "$testAudience"
-            realm = "$testRealm"
-        }
-    """
-    )
 
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}",
+            driver = "org.sqlite.JDBC"
         )
         transaction(database) {
             SchemaUtils.create(Users, SavingsGoals)
@@ -67,19 +46,10 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `POST savings-goal - creates goal successfully`() = testApplication {
-        application {
-            val config = HoconApplicationConfig(testConfig)
-            configureSecurity(config)
-            configureSerialization()
-            configureRouting(config, database)
-        }
-
-        val token = createTestJwtToken()
 
         val response = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
-            // Set the JWT as a cookie instead of header
-            cookie("jwt_token", token)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
@@ -94,11 +64,6 @@ class SavingsGoalRoutesTest {
         }
 
         assertEquals(HttpStatusCode.Created, response.status)
-    }
-
-    private fun createTestJwtToken(): String {
-        return JWT.create().withAudience(testAudience).withIssuer(testIssuer).withExpiresAt(Date(System.currentTimeMillis() + 60000))
-            .withClaim("userId", 1).withClaim("role", "user").sign(HMAC256(testSecret))
     }
 
     @Test
