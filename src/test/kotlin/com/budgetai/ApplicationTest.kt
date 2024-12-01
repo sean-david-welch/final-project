@@ -38,6 +38,7 @@ abstract class AuthenticatedTest {
     protected fun ApplicationTestBuilder.configureTestApplication(database: Database) {
         application {
             configureSecurity(config)
+            configureHTTP()
             configureSerialization()
             configureRouting(config, database)
         }
