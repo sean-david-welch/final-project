@@ -210,7 +210,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UpdateUserRequest(
-                        email = "updated@example.com", name = "Updated User"
+                        email = "updated@example.com", name = "Updated User", role = UserRole.USER.toString()
                     )
                 )
             )
