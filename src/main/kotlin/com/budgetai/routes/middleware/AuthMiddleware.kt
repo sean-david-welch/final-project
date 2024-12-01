@@ -31,7 +31,7 @@ fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
 }
 
 // Route extensions
-fun Route.authenticate(build: Route.() -> Unit) {
+fun Route.requireAuth(build: Route.() -> Unit) {
     authenticate {
         build()
     }
