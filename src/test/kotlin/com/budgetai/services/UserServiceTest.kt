@@ -5,6 +5,8 @@ import com.budgetai.models.UserCreationRequest
 import com.budgetai.models.UserDTO
 import com.budgetai.models.Users
 import com.budgetai.repositories.UserRepository
+import com.typesafe.config.ConfigFactory
+import io.ktor.server.config.*
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -41,7 +43,8 @@ class UserServiceTest {
         }
 
         repository = UserRepository(database)
-        service = UserService(repository)
+        val config = HoconApplicationConfig(ConfigFactory.load())
+        service = UserService(repository, config)
     }
 
     @After
