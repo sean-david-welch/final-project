@@ -3,9 +3,11 @@ package com.budgetai.routes
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
 import com.budgetai.plugins.configureSerialization
+import com.typesafe.config.ConfigFactory
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -30,6 +32,13 @@ class BudgetItemRoutesTest {
         transaction(database) {
             SchemaUtils.create(Users, Budgets, BudgetItems, Categories)
         }
+                TestApplication {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+            application {
+                configureSerialization()
+                configureRouting(config, database)
+            }
+        }
     }
 
     @After
@@ -42,11 +51,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `POST budget-item - creates item successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         val response = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
             setBody(
@@ -66,11 +70,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `POST bulk budget-items - creates multiple items successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         val items = listOf(
             BudgetItemCreationRequest(
                 budgetId = 1,
@@ -95,11 +94,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `GET budget-item - returns item when exists`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create an item first
         val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
@@ -122,11 +116,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `GET budget items by budget - returns all items for budget`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create two items for the same budget
         repeat(2) {
             client.post("/api/budget-items") {
@@ -153,11 +142,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `GET budget total - calculates total correctly`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create two items with known amounts
         repeat(2) {
             client.post("/api/budget-items") {
@@ -184,11 +168,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `PUT budget-item - updates successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create an item first
         val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
@@ -221,11 +200,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `PUT budget-item amount - updates amount successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create an item first
         val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
@@ -252,11 +226,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `DELETE budget-item - deletes successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create an item first
         val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
@@ -282,11 +251,6 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `DELETE budget items - deletes all items for budget`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create two items for the same budget
         repeat(2) {
             client.post("/api/budget-items") {
