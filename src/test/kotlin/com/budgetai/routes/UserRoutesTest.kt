@@ -53,7 +53,7 @@ class UserRoutesTest {
     @Test
     fun `POST register - creates user successfully`() = testApplication {
         val userRequest = UserCreationRequest(
-            email = "test@example.com", password = "StrongPassword999", name = "Test User"
+            email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
         )
 
         val response = client.post("/api/users/register") {
@@ -74,7 +74,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
@@ -86,7 +86,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "password456", name = "Another User"
+                        email = "test@example.com", password = "password456", name = "Another User", role = UserRole.USER.toString()
                     )
                 )
             )
@@ -103,7 +103,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
@@ -132,7 +132,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
@@ -161,7 +161,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
@@ -180,7 +180,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
@@ -198,7 +198,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
@@ -227,7 +227,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
@@ -256,7 +256,7 @@ class UserRoutesTest {
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
+                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
                     )
                 )
             )
