@@ -13,7 +13,7 @@ class ApplicationTest {
     fun testRoot() = testApplication {
         val config = HoconApplicationConfig(ConfigFactory.load())
         application {
-            configureSecurity(config)
+            configureSecurity(config, isTest = true)
             configureHTTP()
             configureSerialization()
         }
