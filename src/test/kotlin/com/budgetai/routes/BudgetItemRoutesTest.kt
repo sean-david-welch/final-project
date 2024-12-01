@@ -32,7 +32,7 @@ class BudgetItemRoutesTest {
         transaction(database) {
             SchemaUtils.create(Users, Budgets, BudgetItems, Categories)
         }
-                TestApplication {
+        TestApplication {
             val config = HoconApplicationConfig(ConfigFactory.load())
             application {
                 configureSerialization()
