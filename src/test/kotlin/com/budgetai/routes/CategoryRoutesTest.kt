@@ -52,11 +52,6 @@ class CategoryRoutesTest {
 
     @Test
     fun `POST category - creates category successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         val response = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
             setBody(
@@ -75,11 +70,6 @@ class CategoryRoutesTest {
 
     @Test
     fun `GET categories - returns all categories`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create two categories first
         repeat(2) { index ->
             client.post("/api/categories") {
@@ -102,11 +92,6 @@ class CategoryRoutesTest {
 
     @Test
     fun `GET category by ID - returns category when exists`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a category first
         val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
@@ -126,22 +111,12 @@ class CategoryRoutesTest {
 
     @Test
     fun `GET category by ID - returns 404 when category doesn't exist`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         val response = client.get("/api/categories/999")
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
     @Test
     fun `GET category by name - returns category when exists`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a category first
         val categoryName = "Test Category"
         client.post("/api/categories") {
@@ -161,11 +136,6 @@ class CategoryRoutesTest {
 
     @Test
     fun `GET categories by type - returns all categories of specified type`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create categories of different types
         client.post("/api/categories") {
             contentType(ContentType.Application.Json)
@@ -197,11 +167,6 @@ class CategoryRoutesTest {
 
     @Test
     fun `PUT category - updates successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a category first
         val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
@@ -239,11 +204,6 @@ class CategoryRoutesTest {
 
     @Test
     fun `DELETE category - deletes successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a category first
         val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
