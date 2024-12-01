@@ -56,6 +56,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
         // Test
         val response = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetCreationRequest(
@@ -81,6 +82,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetCreationRequest(
@@ -96,7 +98,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
         val budgetId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Test
-        val response = client.get("/api/budgets/$budgetId")
+        val response = client.get("/api/budgets/$budgetId") { withAuth() }
 
         // Verify
         assertEquals(HttpStatusCode.OK, response.status)
@@ -106,7 +108,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
     @Test
     fun `GET budget - returns 404 when budget doesn't exist`() = testApplication {
         configureTestApplication(database)
-        val response = client.get("/api/budgets/999")
+        val response = client.get("/api/budgets/999") { withAuth() }
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
@@ -116,6 +118,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetCreationRequest(
@@ -133,6 +136,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
         // Update the totals
         val response = client.put("/api/budgets/$budgetId/totals") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UpdateBudgetTotalsRequest(
@@ -152,6 +156,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
         repeat(2) {
             client.post("/api/budgets") {
                 contentType(ContentType.Application.Json)
+                withAuth()
                 setBody(
                     Json.encodeToString(
                         BudgetCreationRequest(
@@ -167,7 +172,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
         }
 
         // Get budgets for user
-        val response = client.get("/api/budgets/user/1")
+        val response = client.get("/api/budgets/user/1") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
 
         // Parse response and verify count
@@ -181,6 +186,7 @@ class BudgetRoutesTest : AuthenticatedTest() {
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetCreationRequest(
@@ -196,11 +202,11 @@ class BudgetRoutesTest : AuthenticatedTest() {
         val budgetId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Delete the budget
-        val deleteResponse = client.delete("/api/budgets/$budgetId")
+        val deleteResponse = client.delete("/api/budgets/$budgetId") { withAuth() }
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
         // Verify it's gone
-        val getResponse = client.get("/api/budgets/$budgetId")
+        val getResponse = client.get("/api/budgets/$budgetId") { withAuth() }
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 }
