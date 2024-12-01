@@ -267,7 +267,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `PUT password - fails with incorrect current password`() = testApplication {
         configureTestApplication(database)
         // Create user first
-        val createResponse = client.post("/api/users/register") {
+        val createResponse = client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -278,7 +278,8 @@ class UserRoutesTest : AuthenticatedTest() {
                 )
             )
         }
-        val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
+        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
+        val userId = responseData["user"]?.id
 
         val response = client.put("/api/users/$userId/password") {
             contentType(ContentType.Application.Json)
