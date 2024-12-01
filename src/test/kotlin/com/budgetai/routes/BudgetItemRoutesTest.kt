@@ -1,5 +1,6 @@
 package com.budgetai.routes
 
+import com.budgetai.AuthenticatedTest
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
 import com.budgetai.plugins.configureSerialization
@@ -20,7 +21,7 @@ import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-class BudgetItemRoutesTest {
+class BudgetItemRoutesTest: AuthenticatedTest() {
     private lateinit var database: Database
     private val dbFile = File("test.db")
 
@@ -51,8 +52,10 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `POST budget-item - creates item successfully`() = testApplication {
+        configureTestApplication(database)
         val response = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetItemCreationRequest(
@@ -70,6 +73,7 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `POST bulk budget-items - creates multiple items successfully`() = testApplication {
+        configureTestApplication(database)
         val items = listOf(
             BudgetItemCreationRequest(
                 budgetId = 1,
@@ -86,6 +90,7 @@ class BudgetItemRoutesTest {
 
         val response = client.post("/api/budget-items/bulk") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(Json.encodeToString(items))
         }
 
@@ -94,9 +99,11 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `GET budget-item - returns item when exists`() = testApplication {
+        configureTestApplication(database)
         // Create an item first
         val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetItemCreationRequest(
@@ -116,10 +123,12 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `GET budget items by budget - returns all items for budget`() = testApplication {
+        configureTestApplication(database)
         // Create two items for the same budget
         repeat(2) {
             client.post("/api/budget-items") {
                 contentType(ContentType.Application.Json)
+                withAuth()
                 setBody(
                     Json.encodeToString(
                         BudgetItemCreationRequest(
@@ -142,10 +151,12 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `GET budget total - calculates total correctly`() = testApplication {
+        configureTestApplication(database)
         // Create two items with known amounts
         repeat(2) {
             client.post("/api/budget-items") {
                 contentType(ContentType.Application.Json)
+                withAuth()
                 setBody(
                     Json.encodeToString(
                         BudgetItemCreationRequest(
@@ -168,9 +179,11 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `PUT budget-item - updates successfully`() = testApplication {
+        configureTestApplication(database)
         // Create an item first
         val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetItemCreationRequest(
@@ -186,6 +199,7 @@ class BudgetItemRoutesTest {
 
         val response = client.put("/api/budget-items/$itemId") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetItemUpdateRequest(
@@ -200,9 +214,11 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `PUT budget-item amount - updates amount successfully`() = testApplication {
+        configureTestApplication(database)
         // Create an item first
         val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetItemCreationRequest(
@@ -218,6 +234,7 @@ class BudgetItemRoutesTest {
 
         val response = client.put("/api/budget-items/$itemId/amount") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(Json.encodeToString(UpdateAmountRequest(amount = 150.0)))
         }
 
@@ -226,9 +243,11 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `DELETE budget-item - deletes successfully`() = testApplication {
+        configureTestApplication(database)
         // Create an item first
         val createResponse = client.post("/api/budget-items") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     BudgetItemCreationRequest(
@@ -251,10 +270,12 @@ class BudgetItemRoutesTest {
 
     @Test
     fun `DELETE budget items - deletes all items for budget`() = testApplication {
+        configureTestApplication(database)
         // Create two items for the same budget
         repeat(2) {
             client.post("/api/budget-items") {
                 contentType(ContentType.Application.Json)
+                withAuth()
                 setBody(
                     Json.encodeToString(
                         BudgetItemCreationRequest(
