@@ -48,10 +48,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `POST register - creates user successfully`() = testApplication {
         configureTestApplication(database)
         val userRequest = UserCreationRequest(
-            email = "test@example.com",
-            password = "StrongPassword999",
-            name = "Test User",
-            role = UserRole.USER.toString()
+            email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
         )
 
         val response = client.post("/auth/register") {
