@@ -48,7 +48,10 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `POST register - creates user successfully`() = testApplication {
         configureTestApplication(database)
         val userRequest = UserCreationRequest(
-            email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
+            email = "test@example.com",
+            password = "StrongPassword999",
+            name = "Test User",
+            role = UserRole.USER.toString()
         )
 
         val response = client.post("/auth/register") {
@@ -58,8 +61,8 @@ class UserRoutesTest : AuthenticatedTest() {
         }
 
         assertEquals(HttpStatusCode.Created, response.status)
-        val responseBody = Json.decodeFromString<Map<String, Int>>(response.bodyAsText())
-        assertNotNull(responseBody["id"])
+        val responseBody = Json.decodeFromString<Map<String, UserDTO>>(response.bodyAsText())
+        assertNotNull(responseBody["user"]?.id)
     }
 
     @Test
