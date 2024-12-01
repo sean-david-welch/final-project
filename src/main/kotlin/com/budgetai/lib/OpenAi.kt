@@ -23,11 +23,9 @@ class OpenAi(private val apiKey: String) {
     fun sendMessage(prompt: String, model: ModelId = defaultModel): String = runBlocking {
         try {
             val request = ChatCompletionRequest(
-                model = model,
-                messages = listOf(
+                model = model, messages = listOf(
                     ChatMessage(
-                        role = ChatRole.User,
-                        content = prompt
+                        role = ChatRole.User, content = prompt
                     )
                 )
             )
@@ -50,14 +48,12 @@ class OpenAi(private val apiKey: String) {
         try {
             val chatMessages = messages.map { (content, isUser) ->
                 ChatMessage(
-                    role = if (isUser) ChatRole.User else ChatRole.Assistant,
-                    content = content
+                    role = if (isUser) ChatRole.User else ChatRole.Assistant, content = content
                 )
             }
 
             val request = ChatCompletionRequest(
-                model = model,
-                messages = chatMessages
+                model = model, messages = chatMessages
             )
 
             val response: ChatCompletion = client.chatCompletion(request)
