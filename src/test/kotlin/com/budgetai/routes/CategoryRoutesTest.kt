@@ -87,7 +87,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             }
         }
 
-        val response = client.get("/api/categories")
+        val response = client.get("/api/categories") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
         val categories = Json.decodeFromString<List<CategoryDTO>>(response.bodyAsText())
         assertEquals(2, categories.size)
@@ -109,7 +109,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         }
         val categoryId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.get("/api/categories/$categoryId")
+        val response = client.get("/api/categories/$categoryId") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -136,7 +136,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             )
         }
 
-        val response = client.get("/api/categories/name/$categoryName")
+        val response = client.get("/api/categories/name/$categoryName") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -166,7 +166,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             )
         }
 
-        val response = client.get("/api/categories/type/INCOME")
+        val response = client.get("/api/categories/type/INCOME") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
         val categories = Json.decodeFromString<List<CategoryDTO>>(response.bodyAsText())
         assertTrue(categories.all { it.type == CategoryType.INCOME })
@@ -203,7 +203,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         assertEquals(HttpStatusCode.OK, response.status)
 
         // Verify the update
-        val getResponse = client.get("/api/categories/$categoryId")
+        val getResponse = client.get("/api/categories/$categoryId") { withAuth() }
         val updatedCategory = Json.decodeFromString<CategoryDTO>(getResponse.bodyAsText())
         assertEquals("Updated Name", updatedCategory.name)
         assertEquals(CategoryType.INCOME, updatedCategory.type)
@@ -227,11 +227,11 @@ class CategoryRoutesTest : AuthenticatedTest() {
         val categoryId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
         // Delete the category
-        val deleteResponse = client.delete("/api/categories/$categoryId")
+        val deleteResponse = client.delete("/api/categories/$categoryId") { withAuth() }
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
         // Verify it's gone
-        val getResponse = client.get("/api/categories/$categoryId")
+        val getResponse = client.get("/api/categories/$categoryId") { withAuth() }
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 }
