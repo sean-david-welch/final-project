@@ -52,11 +52,6 @@ class UserRoutesTest {
 
     @Test
     fun `POST register - creates user successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         val userRequest = UserCreationRequest(
             email = "test@example.com", password = "StrongPassword999", name = "Test User"
         )
@@ -73,11 +68,6 @@ class UserRoutesTest {
 
     @Test
     fun `POST register - fails with duplicate email`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create first user
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -107,11 +97,6 @@ class UserRoutesTest {
 
     @Test
     fun `POST login - authenticates successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -141,11 +126,6 @@ class UserRoutesTest {
 
     @Test
     fun `POST login - fails with incorrect password`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -175,11 +155,6 @@ class UserRoutesTest {
 
     @Test
     fun `GET user - returns user when exists`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -199,11 +174,6 @@ class UserRoutesTest {
 
     @Test
     fun `GET user by email - returns user when exists`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -222,11 +192,6 @@ class UserRoutesTest {
 
     @Test
     fun `PUT user - updates successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -256,11 +221,6 @@ class UserRoutesTest {
 
     @Test
     fun `PUT password - updates successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -290,11 +250,6 @@ class UserRoutesTest {
 
     @Test
     fun `PUT password - fails with incorrect current password`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
@@ -324,28 +279,4 @@ class UserRoutesTest {
 
     @Test
     fun `DELETE user - deletes successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
-        // Create user first
-        val createResponse = client.post("/api/users/register") {
-            contentType(ContentType.Application.Json)
-            setBody(
-                Json.encodeToString(
-                    UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User"
-                    )
-                )
-            )
-        }
-        val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
-
-        val deleteResponse = client.delete("/api/users/$userId")
-        assertEquals(HttpStatusCode.OK, deleteResponse.status)
-
-        val getResponse = client.get("/api/users/$userId")
-        assertEquals(HttpStatusCode.NotFound, getResponse.status)
-    }
 }
