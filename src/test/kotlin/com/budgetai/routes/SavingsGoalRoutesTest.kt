@@ -1,7 +1,10 @@
 package com.budgetai.routes
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm.HMAC256
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
+import com.budgetai.plugins.configureSecurity
 import com.budgetai.plugins.configureSerialization
 import com.typesafe.config.ConfigFactory
 import io.ktor.client.request.*
@@ -18,11 +21,29 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.File
+import java.util.*
 import kotlin.test.assertEquals
 
 class SavingsGoalRoutesTest {
     private lateinit var database: Database
     private val dbFile = File("test.db")
+
+    // Test JWT constants
+    private val testSecret = "your-test-secret-key"
+    private val testIssuer = "http://0.0.0.0:8080/"
+    private val testAudience = "http://0.0.0.0:8080/hello"
+    private val testRealm = "Access to 'hello'"
+
+    private val testConfig = ConfigFactory.parseString(
+        """
+        jwt {
+            secret = "$testSecret"
+            issuer = "$testIssuer"
+            audience = "$testAudience"
+            realm = "$testRealm"
+        }
+    """
+    )
 
     @Before
     fun setUp() {
@@ -31,13 +52,6 @@ class SavingsGoalRoutesTest {
         )
         transaction(database) {
             SchemaUtils.create(Users, SavingsGoals)
-        }
-        TestApplication {
-            val config = HoconApplicationConfig(ConfigFactory.load())
-            application {
-                configureSerialization()
-                configureRouting(config, database)
-            }
         }
     }
 
@@ -51,15 +65,22 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `POST savings-goal - creates goal successfully`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(testConfig)
+            configureSecurity(config)
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
+        val token = createTestJwtToken()
+
         val response = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
+            header(HttpHeaders.Authorization, "Bearer $token")
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "New Car",
-                        targetAmount = 20000.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "New Car", targetAmount = 20000.0, targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
                 )
@@ -69,18 +90,27 @@ class SavingsGoalRoutesTest {
         assertEquals(HttpStatusCode.Created, response.status)
     }
 
+    private fun createTestJwtToken(): String {
+        return JWT.create().withAudience(testAudience).withIssuer(testIssuer).withExpiresAt(Date(System.currentTimeMillis() + 60000))
+            .withClaim("userId", 1).withClaim("role", "user").sign(HMAC256(testSecret))
+    }
+
     @Test
     fun `GET savings-goal - returns goal when exists`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "New Car",
-                        targetAmount = 20000.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "New Car", targetAmount = 20000.0, targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
                 )
@@ -94,17 +124,20 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `GET goal progress - returns correct progress`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create a goal with known amounts
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "New Car",
-                        targetAmount = 20000.0,
-                        initialAmount = 5000.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "New Car", targetAmount = 20000.0, initialAmount = 5000.0, targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
                 )
@@ -121,6 +154,13 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `GET user savings goals - returns all goals for user`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create multiple goals for the same user
         repeat(3) {
             client.post("/api/savings-goals") {
@@ -144,6 +184,13 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `GET active savings goals - returns only active goals`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create goals with different statuses
         client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -162,16 +209,20 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `PUT savings-goal - updates successfully`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Original Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "Original Goal", targetAmount = 1000.0, targetDate = "2024-12-31",
                         description = "Original description"
                     )
                 )
@@ -195,6 +246,13 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `POST contribute - adds contribution successfully`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -218,17 +276,20 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `POST withdraw - processes withdrawal successfully`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create a goal with initial amount
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Test Goal",
-                        targetAmount = 1000.0,
-                        initialAmount = 200.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "Test Goal", targetAmount = 1000.0, initialAmount = 200.0, targetDate = "2024-12-31",
                         description = "Test goal"
                     )
                 )
@@ -246,6 +307,13 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `PUT current-amount - updates amount successfully`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -269,6 +337,13 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `DELETE savings-goal - deletes successfully`() = testApplication {
+        application {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+
+            configureSerialization()
+            configureRouting(config, database)
+        }
+
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
