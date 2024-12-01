@@ -34,13 +34,6 @@ class UserRoutesTest: AuthenticatedTest() {
         transaction(database) {
             SchemaUtils.create(Users)
         }
-        TestApplication {
-            val config = HoconApplicationConfig(ConfigFactory.load())
-            application {
-                configureSerialization()
-                configureRouting(config, database)
-            }
-        }
     }
 
     @After
