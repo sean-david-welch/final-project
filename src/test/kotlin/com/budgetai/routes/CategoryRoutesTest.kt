@@ -34,13 +34,6 @@ class CategoryRoutesTest : AuthenticatedTest() {
         transaction(database) {
             SchemaUtils.create(Categories)
         }
-        TestApplication {
-            val config = HoconApplicationConfig(ConfigFactory.load())
-            application {
-                configureSerialization()
-                configureRouting(config, database)
-            }
-        }
     }
 
     @After
@@ -56,6 +49,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         configureTestApplication(database)
         val response = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
@@ -77,6 +71,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         repeat(2) { index ->
             client.post("/api/categories") {
                 contentType(ContentType.Application.Json)
+                withAuth()
                 setBody(
                     Json.encodeToString(
                         CategoryCreationRequest(
@@ -99,6 +94,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         // Create a category first
         val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
@@ -116,7 +112,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
     @Test
     fun `GET category by ID - returns 404 when category doesn't exist`() = testApplication {
         configureTestApplication(database)
-        val response = client.get("/api/categories/999")
+        val response = client.get("/api/categories/999") { withAuth() }
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
@@ -127,6 +123,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         val categoryName = "Test Category"
         client.post("/api/categories") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
@@ -146,6 +143,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         // Create categories of different types
         client.post("/api/categories") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
@@ -157,6 +155,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
 
         client.post("/api/categories") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
@@ -178,6 +177,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         // Create a category first
         val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
@@ -191,6 +191,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         // Update the category
         val response = client.put("/api/categories/$categoryId") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UpdateCategoryRequest(
@@ -216,6 +217,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         // Create a category first
         val createResponse = client.post("/api/categories") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
