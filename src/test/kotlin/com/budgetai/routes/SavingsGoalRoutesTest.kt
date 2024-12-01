@@ -28,8 +28,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
     @Before
     fun setUp() {
         database = Database.connect(
-            url = "jdbc:sqlite:${dbFile.absolutePath}",
-            driver = "org.sqlite.JDBC"
+            url = "jdbc:sqlite:${dbFile.absolutePath}", driver = "org.sqlite.JDBC"
         )
         transaction(database) {
             SchemaUtils.create(Users, SavingsGoals)
@@ -46,6 +45,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
 
     @Test
     fun `POST savings-goal - creates goal successfully`() = testApplication {
+        configureTestApplication(database)
 
         val response = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -53,10 +53,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "New Car",
-                        targetAmount = 20000.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "New Car", targetAmount = 20000.0, targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
                 )
