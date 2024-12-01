@@ -117,7 +117,7 @@ class BudgetItemRoutesTest : AuthenticatedTest() {
         }
         val itemId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val response = client.get("/api/budget-items/$itemId")
+        val response = client.get("/api/budget-items/$itemId") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -142,7 +142,7 @@ class BudgetItemRoutesTest : AuthenticatedTest() {
             }
         }
 
-        val response = client.get("/api/budget-items/budget/1")
+        val response = client.get("/api/budget-items/budget/1") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
 
         val items = Json.decodeFromString<List<BudgetItemDTO>>(response.bodyAsText())
@@ -170,7 +170,7 @@ class BudgetItemRoutesTest : AuthenticatedTest() {
             }
         }
 
-        val response = client.get("/api/budget-items/budget/1/total")
+        val response = client.get("/api/budget-items/budget/1/total") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
 
         val total = Json.decodeFromString<Map<String, Double>>(response.bodyAsText())["total"]
@@ -261,10 +261,10 @@ class BudgetItemRoutesTest : AuthenticatedTest() {
         }
         val itemId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val deleteResponse = client.delete("/api/budget-items/$itemId")
+        val deleteResponse = client.delete("/api/budget-items/$itemId") { withAuth() }
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
-        val getResponse = client.get("/api/budget-items/$itemId")
+        val getResponse = client.get("/api/budget-items/$itemId") { withAuth() }
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 
@@ -289,10 +289,10 @@ class BudgetItemRoutesTest : AuthenticatedTest() {
             }
         }
 
-        val deleteResponse = client.delete("/api/budget-items/budget/1")
+        val deleteResponse = client.delete("/api/budget-items/budget/1") { withAuth() }
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
-        val getResponse = client.get("/api/budget-items/budget/1")
+        val getResponse = client.get("/api/budget-items/budget/1") { withAuth() }
         val items = Json.decodeFromString<List<BudgetItemDTO>>(getResponse.bodyAsText())
         assertEquals(0, items.size)
     }
