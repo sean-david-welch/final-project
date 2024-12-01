@@ -3,9 +3,11 @@ package com.budgetai.routes
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
 import com.budgetai.plugins.configureSerialization
+import com.typesafe.config.ConfigFactory
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.server.config.*
 import io.ktor.server.testing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -30,6 +32,13 @@ class SavingsGoalRoutesTest {
         transaction(database) {
             SchemaUtils.create(Users, SavingsGoals)
         }
+        TestApplication {
+            val config = HoconApplicationConfig(ConfigFactory.load())
+            application {
+                configureSerialization()
+                configureRouting(config, database)
+            }
+        }
     }
 
     @After
@@ -42,11 +51,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `POST savings-goal - creates goal successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         val response = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
             setBody(
@@ -67,11 +71,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `GET savings-goal - returns goal when exists`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -95,11 +94,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `GET goal progress - returns correct progress`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a goal with known amounts
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -127,11 +121,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `GET user savings goals - returns all goals for user`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create multiple goals for the same user
         repeat(3) {
             client.post("/api/savings-goals") {
@@ -155,11 +144,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `GET active savings goals - returns only active goals`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create goals with different statuses
         client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -178,11 +162,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `PUT savings-goal - updates successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -216,11 +195,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `POST contribute - adds contribution successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -244,11 +218,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `POST withdraw - processes withdrawal successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a goal with initial amount
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -277,11 +246,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `PUT current-amount - updates amount successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
@@ -305,11 +269,6 @@ class SavingsGoalRoutesTest {
 
     @Test
     fun `DELETE savings-goal - deletes successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a goal first
         val createResponse = client.post("/api/savings-goals") {
             contentType(ContentType.Application.Json)
