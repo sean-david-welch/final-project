@@ -3,8 +3,6 @@ package com.budgetai.services
 import com.budgetai.models.*
 import com.budgetai.repositories.AiInsightRepository
 import kotlinx.coroutines.runBlocking
-import kotlinx.datetime.*
-
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.jetbrains.exposed.sql.Database
@@ -14,7 +12,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.File
-import java.time.Year
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
