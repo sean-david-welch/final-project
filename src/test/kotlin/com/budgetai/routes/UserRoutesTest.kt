@@ -51,7 +51,7 @@ class UserRoutesTest : AuthenticatedTest() {
             email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
         )
 
-        val response = client.post("/api/users/register") {
+        val response = client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(Json.encodeToString(userRequest))
@@ -66,7 +66,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `POST register - fails with duplicate email`() = testApplication {
         configureTestApplication(database)
         // Create first user
-        client.post("/api/users/register") {
+        client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -79,7 +79,7 @@ class UserRoutesTest : AuthenticatedTest() {
         }
 
         // Try to create another user with same email
-        val response = client.post("/api/users/register") {
+        val response = client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -98,7 +98,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `POST login - authenticates successfully`() = testApplication {
         configureTestApplication(database)
         // Create user first
-        client.post("/api/users/register") {
+        client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -111,7 +111,7 @@ class UserRoutesTest : AuthenticatedTest() {
         }
 
         // Try to login
-        val response = client.post("/api/users/login") {
+        val response = client.post("/auth/login") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -130,7 +130,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `POST login - fails with incorrect password`() = testApplication {
         configureTestApplication(database)
         // Create user first
-        client.post("/api/users/register") {
+        client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -143,7 +143,7 @@ class UserRoutesTest : AuthenticatedTest() {
         }
 
         // Try to login with wrong password
-        val response = client.post("/api/users/login") {
+        val response = client.post("/auth/login") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -162,7 +162,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `GET user - returns user when exists`() = testApplication {
         configureTestApplication(database)
         // Create user first
-        val createResponse = client.post("/api/users/register") {
+        val createResponse = client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -173,9 +173,10 @@ class UserRoutesTest : AuthenticatedTest() {
                 )
             )
         }
-        val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
+        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
+        val userId = responseData["user"]?.id
 
-        val response = client.get("/api/users/$userId")
+        val response = client.get("/api/users/$userId") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -183,7 +184,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `GET user by email - returns user when exists`() = testApplication {
         configureTestApplication(database)
         // Create user first
-        client.post("/api/users/register") {
+        client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -195,7 +196,7 @@ class UserRoutesTest : AuthenticatedTest() {
             )
         }
 
-        val response = client.get("/api/users/email/test@example.com")
+        val response = client.get("/api/users/email/test@example.com") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
     }
 
@@ -203,7 +204,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `PUT user - updates successfully`() = testApplication {
         configureTestApplication(database)
         // Create user first
-        val createResponse = client.post("/api/users/register") {
+        val createResponse = client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -214,7 +215,8 @@ class UserRoutesTest : AuthenticatedTest() {
                 )
             )
         }
-        val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
+        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
+        val userId = responseData["user"]?.id
 
         val response = client.put("/api/users/$userId") {
             contentType(ContentType.Application.Json)
@@ -235,7 +237,7 @@ class UserRoutesTest : AuthenticatedTest() {
     fun `PUT password - updates successfully`() = testApplication {
         configureTestApplication(database)
         // Create user first
-        val createResponse = client.post("/api/users/register") {
+        val createResponse = client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
@@ -246,7 +248,8 @@ class UserRoutesTest : AuthenticatedTest() {
                 )
             )
         }
-        val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
+        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
+        val userId = responseData["user"]?.id
 
         val response = client.put("/api/users/$userId/password") {
             contentType(ContentType.Application.Json)
