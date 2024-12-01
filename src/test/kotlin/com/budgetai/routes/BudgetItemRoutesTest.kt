@@ -21,7 +21,7 @@ import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-class BudgetItemRoutesTest: AuthenticatedTest() {
+class BudgetItemRoutesTest : AuthenticatedTest() {
     private lateinit var database: Database
     private val dbFile = File("test.db")
 
