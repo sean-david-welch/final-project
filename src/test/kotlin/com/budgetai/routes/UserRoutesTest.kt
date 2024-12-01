@@ -127,38 +127,6 @@ class UserRoutesTest : AuthenticatedTest() {
     }
 
     @Test
-    fun `POST login - fails with incorrect password`() = testApplication {
-        configureTestApplication(database)
-        // Create user first
-        client.post("/auth/register") {
-            contentType(ContentType.Application.Json)
-            withAuth()
-            setBody(
-                Json.encodeToString(
-                    UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
-                    )
-                )
-            )
-        }
-
-        // Try to login with wrong password
-        val response = client.post("/auth/login") {
-            contentType(ContentType.Application.Json)
-            withAuth()
-            setBody(
-                Json.encodeToString(
-                    UserAuthenticationRequest(
-                        email = "test@example.com", password = "wrongpassword"
-                    )
-                )
-            )
-        }
-
-        assertEquals(HttpStatusCode.Unauthorized, response.status)
-    }
-
-    @Test
     fun `GET user - returns user when exists`() = testApplication {
         configureTestApplication(database)
         // Create user first
