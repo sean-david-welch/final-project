@@ -123,11 +123,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `POST insight - creates insight successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         val response = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
             setBody(Json.encodeToString(createSampleInsightRequest()))
@@ -137,11 +132,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `GET insight - returns insight when exists`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create insight first
         val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
@@ -155,11 +145,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `GET insights by type - returns filtered insights`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create insights with specific type
         repeat(2) {
             client.post("/api/ai-insights") {
@@ -184,11 +169,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `GET insights by sentiment - returns filtered insights`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create insights with specific sentiment
         val request = createSampleInsightRequest().copy(sentiment = Sentiment.POSITIVE)
 
@@ -208,11 +188,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `GET user insights - returns all user insights`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create multiple insights for user
         repeat(3) {
             client.post("/api/ai-insights") {
@@ -236,11 +211,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `GET insights in date range - returns filtered insights`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create some insights
         repeat(2) {
             client.post("/api/ai-insights") {
@@ -258,11 +228,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `PUT insight - updates successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create insight first
         val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
@@ -295,11 +260,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `PUT sentiment - updates sentiment successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create insight first
         val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
@@ -317,11 +277,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `PUT metadata - updates metadata successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create insight first
         val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
@@ -345,11 +300,6 @@ class AiInsightRoutesTest {
 
     @Test
     fun `DELETE insight - deletes successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create insight first
         val createResponse = client.post("/api/ai-insights") {
             contentType(ContentType.Application.Json)
