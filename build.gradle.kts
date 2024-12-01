@@ -68,6 +68,9 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:3.47.0.0")
     implementation("org.flywaydb:flyway-core:10.21.0")
 
+    // open ai
+    implementation("com.aallam.openai:openai-client:3.6.2")
+
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
