@@ -53,6 +53,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
         val response = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(Json.encodeToString(userRequest))
         }
 
@@ -67,6 +68,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create first user
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -79,6 +81,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Try to create another user with same email
         val response = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -97,6 +100,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -109,6 +113,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Try to login
         val response = client.post("/api/users/login") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserAuthenticationRequest(
@@ -127,6 +132,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -139,6 +145,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Try to login with wrong password
         val response = client.post("/api/users/login") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserAuthenticationRequest(
@@ -157,6 +164,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -177,6 +185,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create user first
         client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -196,6 +205,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -208,6 +218,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
         val response = client.put("/api/users/$userId") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UpdateUserRequest(
@@ -226,6 +237,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -238,6 +250,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
         val response = client.put("/api/users/$userId/password") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UpdatePasswordRequest(
@@ -256,6 +269,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
@@ -268,6 +282,7 @@ class UserRoutesTest: AuthenticatedTest() {
 
         val response = client.put("/api/users/$userId/password") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UpdatePasswordRequest(
@@ -286,6 +301,7 @@ class UserRoutesTest: AuthenticatedTest() {
         // Create user first
         val createResponse = client.post("/api/users/register") {
             contentType(ContentType.Application.Json)
+            withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
