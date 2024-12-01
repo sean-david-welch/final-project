@@ -51,12 +51,6 @@ class BudgetRoutesTest {
 
     @Test
     fun `POST budget - creates budget successfully`() = testApplication {
-        // Set up
-        application {
-            configureSerialization()
-            configureRouting(database = database)  // Your main routing configuration
-        }
-
         // Test
         val response = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
@@ -81,11 +75,6 @@ class BudgetRoutesTest {
     @Test
     fun `GET budget - returns budget when exists`() = testApplication {
         // Set up
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
@@ -113,22 +102,12 @@ class BudgetRoutesTest {
 
     @Test
     fun `GET budget - returns 404 when budget doesn't exist`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         val response = client.get("/api/budgets/999")
         assertEquals(HttpStatusCode.NotFound, response.status)
     }
 
     @Test
     fun `PUT budget totals - updates successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
@@ -163,11 +142,6 @@ class BudgetRoutesTest {
 
     @Test
     fun `GET budgets by user - returns all user budgets`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create two budgets for the same user
         repeat(2) {
             client.post("/api/budgets") {
@@ -197,11 +171,6 @@ class BudgetRoutesTest {
 
     @Test
     fun `DELETE budget - deletes successfully`() = testApplication {
-        application {
-            configureSerialization()
-            configureRouting(database = database)
-        }
-
         // Create a budget first
         val createResponse = client.post("/api/budgets") {
             contentType(ContentType.Application.Json)
