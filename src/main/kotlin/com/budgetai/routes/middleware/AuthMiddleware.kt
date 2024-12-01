@@ -32,13 +32,13 @@ fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
 
 // Route extensions
 fun Route.authenticate(build: Route.() -> Unit) {
-    authenticate("auth-jwt") {
+    authenticate {
         build()
     }
 }
 
 fun Route.requireRole(role: String, build: Route.() -> Unit) {
-    authenticate("auth-jwt") {
+    authenticate {
         install(createRoleCheckPlugin(role))
         build()
     }
