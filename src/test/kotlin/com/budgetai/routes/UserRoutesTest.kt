@@ -22,7 +22,7 @@ import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-class UserRoutesTest: AuthenticatedTest() {
+class UserRoutesTest : AuthenticatedTest() {
     private lateinit var database: Database
     private val dbFile = File("test.db")
 
@@ -298,24 +298,31 @@ class UserRoutesTest: AuthenticatedTest() {
     @Test
     fun `DELETE user - deletes successfully`() = testApplication {
         configureTestApplication(database)
+
         // Create user first
-        val createResponse = client.post("/api/users/register") {
+        val createResponse = client.post("/auth/register") {
             contentType(ContentType.Application.Json)
             withAuth()
             setBody(
                 Json.encodeToString(
                     UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
+                        email = "test@example.com",
+                        password = "StrongPassword999",
+                        name = "Test User",
+                        role = UserRole.USER.toString()
                     )
                 )
             )
         }
-        val userId = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())["id"]
 
-        val deleteResponse = client.delete("/api/users/$userId")
+        // Parse the nested response structure
+        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
+        val userId = responseData["user"]?.id
+
+        val deleteResponse = client.delete("/api/users/$userId") { withAuth() }
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
 
-        val getResponse = client.get("/api/users/$userId")
+        val getResponse = client.get("/api/users/$userId") { withAuth() }
         assertEquals(HttpStatusCode.NotFound, getResponse.status)
     }
 }
