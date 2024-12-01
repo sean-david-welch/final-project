@@ -1,5 +1,6 @@
 package com.budgetai.routes
 
+import com.budgetai.AuthenticatedTest
 import com.budgetai.models.*
 import com.budgetai.plugins.configureRouting
 import com.budgetai.plugins.configureSerialization
@@ -20,7 +21,7 @@ import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
 
-class BudgetRoutesTest {
+class BudgetRoutesTest : AuthenticatedTest() {
     private lateinit var database: Database
     private val dbFile = File("test.db")
 
