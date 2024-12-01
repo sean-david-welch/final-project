@@ -74,10 +74,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "New Car",
-                        targetAmount = 20000.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "New Car", targetAmount = 20000.0, targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
                 )
@@ -102,11 +99,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "New Car",
-                        targetAmount = 20000.0,
-                        initialAmount = 5000.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "New Car", targetAmount = 20000.0, initialAmount = 5000.0, targetDate = "2024-12-31",
                         description = "Saving for a new car"
                     )
                 )
@@ -135,11 +128,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
                 setBody(
                     Json.encodeToString(
                         SavingsGoalCreationRequest(
-                            userId = 1,
-                            name = "Goal $it",
-                            targetAmount = 1000.0,
-                            targetDate = "2024-12-31",
-                            description = "Test goal $it"
+                            userId = 1, name = "Goal $it", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal $it"
                         )
                     )
                 )
@@ -165,11 +154,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Active Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
-                        description = "Active goal"
+                        userId = 1, name = "Active Goal", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Active goal"
                     )
                 )
             )
@@ -192,10 +177,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Original Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "Original Goal", targetAmount = 1000.0, targetDate = "2024-12-31",
                         description = "Original description"
                     )
                 )
@@ -209,10 +191,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalUpdateRequest(
-                        name = "Updated Goal",
-                        targetAmount = 2000.0,
-                        targetDate = "2025-12-31",
-                        description = "Updated description"
+                        name = "Updated Goal", targetAmount = 2000.0, targetDate = "2025-12-31", description = "Updated description"
                     )
                 )
             )
@@ -232,11 +211,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Test Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
-                        description = "Test goal"
+                        userId = 1, name = "Test Goal", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal"
                     )
                 )
             )
@@ -262,11 +237,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Test Goal",
-                        targetAmount = 1000.0,
-                        initialAmount = 200.0,
-                        targetDate = "2024-12-31",
+                        userId = 1, name = "Test Goal", targetAmount = 1000.0, initialAmount = 200.0, targetDate = "2024-12-31",
                         description = "Test goal"
                     )
                 )
@@ -293,11 +264,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Test Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
-                        description = "Test goal"
+                        userId = 1, name = "Test Goal", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal"
                     )
                 )
             )
@@ -323,11 +290,7 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     SavingsGoalCreationRequest(
-                        userId = 1,
-                        name = "Test Goal",
-                        targetAmount = 1000.0,
-                        targetDate = "2024-12-31",
-                        description = "Test goal"
+                        userId = 1, name = "Test Goal", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal"
                     )
                 )
             )
