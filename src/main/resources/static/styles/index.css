@@ -4,6 +4,7 @@
 @import "dashboard.css";
 @import "reports.css";
 @import "settings.css";
+@import "auth.css";
 
 @tailwind base;
 @tailwind components;
