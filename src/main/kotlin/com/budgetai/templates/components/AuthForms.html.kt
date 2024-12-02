@@ -41,7 +41,7 @@ fun DIV.loginForm() {
 }
 
 fun DIV.registerForm() {
-    form(classes = "auth-form register-form hidden") {
+    form(classes = "auth-form register-form") {
         formField("Full Name", InputType.text, "John Doe")
         formField("Email", InputType.email, "your@email.com")
         formField("Password", InputType.password, "••••••••", showPasswordToggle = true)
