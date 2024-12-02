@@ -18,6 +18,5 @@ fun Application.configureRouting(config: ApplicationConfig, database: Database? 
             call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
         }
     }
-    install(Webjars) { path = "/webjars" }
     database?.let { configureRoutes(config, database) } ?: run { configureRoutes(config) }
 }
