@@ -2,70 +2,54 @@ package com.budgetai.templates.components
 
 import kotlinx.html.*
 
-fun DIV.loginForm() {
-    form(classes = "auth-form login-form") {
-        div(classes = "form-group") {
-            label { +"Email" }
-            input(type = InputType.email, classes = "input-field") {
-                placeholder = "your@email.com"
-                required = true
-            }
-        }
-        div(classes = "form-group") {
-            label { +"Password" }
+private fun FORM.formField(
+    label: String,
+    type: InputType,
+    placeholder: String,
+    showPasswordToggle: Boolean = false
+) {
+    div(classes = "form-group") {
+        label { +label }
+        if (showPasswordToggle) {
             div(classes = "password-input-wrapper") {
-                input(type = InputType.password, classes = "input-field") {
-                    placeholder = "••••••••"
+                input(type = type, classes = "input-field") {
+                    this.placeholder = placeholder
                     required = true
                 }
                 button(type = ButtonType.button, classes = "show-password-button") {
                     +"Show"
                 }
             }
+        } else {
+            input(type = type, classes = "input-field") {
+                this.placeholder = placeholder
+                required = true
+            }
         }
-        button(type = ButtonType.submit, classes = "submit-button") {
-            +"Sign In"
-        }
+    }
+}
+
+private fun FORM.submitButton(text: String) {
+    button(type = ButtonType.submit, classes = "submit-button") {
+        +text
+    }
+}
+
+fun DIV.loginForm() {
+    form(classes = "auth-form login-form") {
+        formField("Email", InputType.email, "your@email.com")
+        formField("Password", InputType.password, "••••••••", showPasswordToggle = true)
+        submitButton("Sign In")
     }
 }
 
 fun DIV.registerForm() {
     form(classes = "auth-form register-form hidden") {
-        div(classes = "form-group") {
-            label { +"Full Name" }
-            input(type = InputType.text, classes = "input-field") {
-                placeholder = "John Doe"
-                required = true
-            }
-        }
-        div(classes = "form-group") {
-            label { +"Email" }
-            input(type = InputType.email, classes = "input-field") {
-                placeholder = "your@email.com"
-                required = true
-            }
-        }
-        div(classes = "form-group") {
-            label { +"Password" }
-            div(classes = "password-input-wrapper") {
-                input(type = InputType.password, classes = "input-field") {
-                    placeholder = "••••••••"
-                    required = true
-                }
-                button(type = ButtonType.button, classes = "show-password-button") {
-                    +"Show"
-                }
-            }
-        }
-        div(classes = "form-group") {
-            label { +"Confirm Password" }
-            div(classes = "password-input-wrapper") {
-                input(type = InputType.password, classes = "input-field") {
-                    placeholder = "••••••••"
-                    required = true
-                }
-            }
-        }
+        formField("Full Name", InputType.text, "John Doe")
+        formField("Email", InputType.email, "your@email.com")
+        formField("Password", InputType.password, "••••••••", showPasswordToggle = true)
+        formField("Confirm Password", InputType.password, "••••••••", showPasswordToggle = true)
+
         div(classes = "terms-agreement") {
             input(type = InputType.checkBox, classes = "checkbox")
             label {
@@ -75,8 +59,6 @@ fun DIV.registerForm() {
                 a(href = "/privacy", classes = "link") { +"Privacy Policy" }
             }
         }
-        button(type = ButtonType.submit, classes = "submit-button") {
-            +"Create Account"
-        }
+        submitButton("Create Account")
     }
 }
