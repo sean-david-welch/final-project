@@ -52,7 +52,7 @@
     @apply space-y-4;
 }
 
-.auth-form.hidden {
+.auth-form-hidden {
     @apply hidden;
 }
 
