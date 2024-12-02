@@ -16,6 +16,7 @@ fun FlowContent.Navbar() {
         div(classes = "navbar-container navbar-content") {
             div(classes = "navbar-brand-container") {
                 span(classes = "navbar-brand-text") { +"BudgetAI" }
+            img(src = "/static/images/logo.png", alt = "logo-image", classes = )
             }
             div(classes = "navbar-desktop-menu navbar-menu-container") {
                 ul(classes = "navbar-menu-list") {
