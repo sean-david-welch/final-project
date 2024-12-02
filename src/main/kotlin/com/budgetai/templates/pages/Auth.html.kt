@@ -26,11 +26,36 @@ fun createAuthPage() = AuthTemplate {
         }
     }
 
-    div(classes = "auth-tabs") {
-        button(classes = "tab-button active") { +"Login" }
-        button(classes = "tab-button") { +"Register" }
-    }
+    // Add x-data to manage the active tab state
+    div("auth-content") {
+        attributes["x-data"] = "{ activeTab: 'login' }"
 
-    loginForm()
-    registerForm()
+        div(classes = "auth-tabs") {
+            button(classes = "tab-button") {
+                attributes["x-bind:class"] = "{ 'active': activeTab === 'login' }"
+                attributes["onclick"] = "activeTab = 'login'"
+                +"Login"
+            }
+            button(classes = "tab-button") {
+                attributes["x-bind:class"] = "{ 'active': activeTab === 'register' }"
+                attributes["onclick"] = "activeTab = 'register'"
+                +"Register"
+            }
+        }
+
+        div {
+            // Login form wrapper
+            div {
+                attributes["x-show"] = "activeTab === 'login'"
+                attributes["x-transition"] = ""
+                loginForm()
+            }
+            // Register form wrapper
+            div {
+                attributes["x-show"] = "activeTab === 'register'"
+                attributes["x-transition"] = ""
+                registerForm()
+            }
+        }
+    }
 }
