@@ -32,7 +32,6 @@ fun createAuthPage() = AuthTemplate {
 
         div(classes = "auth-tabs") {
             button(classes = "tab-button") {
-                // Use x-on:click instead of @click
                 attributes["x-on:click"] = "activeTab = 'login'"
                 attributes["x-bind:class"] = "{'active': activeTab === 'login'}"
                 +"Login"
@@ -44,17 +43,25 @@ fun createAuthPage() = AuthTemplate {
             }
         }
 
-        div(classes = "forms-container") {
-            div {
+        div(classes = "forms-container relative") {
+            div(classes = "form-panel absolute w-full") {
                 attributes["x-show"] = "activeTab === 'login'"
-                attributes["x-transition:enter"] = "transition ease-out duration-300"
-                attributes["x-transition:leave"] = "transition ease-in duration-300"
+                attributes["x-transition:enter"] = "transform transition ease-out duration-300"
+                attributes["x-transition:enter-start"] = "opacity-0 translate-x-4"
+                attributes["x-transition:enter-end"] = "opacity-100 translate-x-0"
+                attributes["x-transition:leave"] = "transform transition ease-in duration-300"
+                attributes["x-transition:leave-start"] = "opacity-100 translate-x-0"
+                attributes["x-transition:leave-end"] = "opacity-0 -translate-x-4"
                 loginForm()
             }
-            div {
+            div(classes = "form-panel absolute w-full") {
                 attributes["x-show"] = "activeTab === 'register'"
-                attributes["x-transition:enter"] = "transition ease-out duration-300"
-                attributes["x-transition:leave"] = "transition ease-in duration-300"
+                attributes["x-transition:enter"] = "transform transition ease-out duration-300"
+                attributes["x-transition:enter-start"] = "opacity-0 translate-x-4"
+                attributes["x-transition:enter-end"] = "opacity-100 translate-x-0"
+                attributes["x-transition:leave"] = "transform transition ease-in duration-300"
+                attributes["x-transition:leave-start"] = "opacity-100 translate-x-0"
+                attributes["x-transition:leave-end"] = "opacity-0 -translate-x-4"
                 registerForm()
             }
         }
