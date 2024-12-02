@@ -117,21 +117,4 @@ fun createAuthPage() = AuthTemplate {
             +"Create Account"
         }
     }
-
-    // Social Login Options
-    div(classes = "social-login") {
-        p(classes = "divider") { +"Or continue with" }
-        div(classes = "social-buttons") {
-            button(classes = "social-button") {
-                // Google icon placeholder
-                div(classes = "social-icon google")
-                +"Google"
-            }
-            button(classes = "social-button") {
-                // Apple icon placeholder
-                div(classes = "social-icon apple")
-                +"Apple"
-            }
-        }
-    }
 }
