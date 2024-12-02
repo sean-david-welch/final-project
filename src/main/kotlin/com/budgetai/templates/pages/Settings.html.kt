@@ -30,29 +30,6 @@ fun createSettingsPage() = SettingsTemplate("Account Settings") {
             }
         }
 
-        // Notification Preferences
-        div(classes = "settings-section") {
-            h2(classes = "section-title") { +"Notifications" }
-            div(classes = "settings-list") {
-                repeat(3) { index ->
-                    div(classes = "setting-item") {
-                        div(classes = "setting-content") {
-                            h3(classes = "setting-title") {
-                                +when (index) {
-                                    0 -> "Budget Alerts"
-                                    1 -> "Spending Insights"
-                                    else -> "Monthly Reports"
-                                }
-                            }
-                        }
-                        div(classes = "setting-control") {
-                            input(type = InputType.checkBox, classes = "toggle")
-                        }
-                    }
-                }
-            }
-        }
-
         // Budget Categories
         div(classes = "settings-section") {
             h2(classes = "section-title") { +"Budget Categories" }
