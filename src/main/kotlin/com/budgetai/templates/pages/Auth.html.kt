@@ -27,7 +27,6 @@ fun createAuthPage() = AuthTemplate {
     }
 
     div(classes = "auth-content") {
-        // Initialize Alpine.js state
         attributes["x-data"] = "{activeTab: 'login'}"
 
         div(classes = "auth-tabs") {
@@ -43,25 +42,15 @@ fun createAuthPage() = AuthTemplate {
             }
         }
 
-        div(classes = "forms-container relative") {
-            div(classes = "form-panel absolute w-full") {
+        div(classes = "forms-container") {
+            div {
                 attributes["x-show"] = "activeTab === 'login'"
-                attributes["x-transition:enter"] = "transform transition ease-out duration-300"
-                attributes["x-transition:enter-start"] = "opacity-0 translate-x-4"
-                attributes["x-transition:enter-end"] = "opacity-100 translate-x-0"
-                attributes["x-transition:leave"] = "transform transition ease-in duration-300"
-                attributes["x-transition:leave-start"] = "opacity-100 translate-x-0"
-                attributes["x-transition:leave-end"] = "opacity-0 -translate-x-4"
+                attributes["x-transition"] = ""
                 loginForm()
             }
-            div(classes = "form-panel absolute w-full") {
+            div {
                 attributes["x-show"] = "activeTab === 'register'"
-                attributes["x-transition:enter"] = "transform transition ease-out duration-300"
-                attributes["x-transition:enter-start"] = "opacity-0 translate-x-4"
-                attributes["x-transition:enter-end"] = "opacity-100 translate-x-0"
-                attributes["x-transition:leave"] = "transform transition ease-in duration-300"
-                attributes["x-transition:leave-start"] = "opacity-100 translate-x-0"
-                attributes["x-transition:leave-end"] = "opacity-0 -translate-x-4"
+                attributes["x-transition"] = ""
                 registerForm()
             }
         }
