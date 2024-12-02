@@ -40,3 +40,5 @@ out/
 /src/main/resources/static/styles/output.css
 /src/main/kotlin/com/budgetai/database/database.db-wal
 /src/main/kotlin/com/budgetai/database/database.db-shm
+
+node_modules
