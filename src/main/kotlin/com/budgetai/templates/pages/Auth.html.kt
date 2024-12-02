@@ -27,33 +27,35 @@ fun createAuthPage() = AuthTemplate {
     }
 
     // Add x-data to manage the active tab state
-    div("auth-content") {
-        attributes["x-data"] = "{ activeTab: 'login' }"
+    div(classes = "auth-content") {
+        // Initialize Alpine.js state
+        attributes["x-data"] = "{activeTab: 'login'}"
 
         div(classes = "auth-tabs") {
             button(classes = "tab-button") {
-                attributes["x-bind:class"] = "{ 'active': activeTab === 'login' }"
-                attributes["onclick"] = "activeTab = 'login'"
+                // Use @click instead of onclick for Alpine.js
+                attributes["@click"] = "activeTab = 'login'"
+                // Use template syntax for class binding
+                attributes["x-bind:class"] = "{'active': activeTab === 'login'}"
                 +"Login"
             }
             button(classes = "tab-button") {
-                attributes["x-bind:class"] = "{ 'active': activeTab === 'register' }"
-                attributes["onclick"] = "activeTab = 'register'"
+                attributes["@click"] = "activeTab = 'register'"
+                attributes["x-bind:class"] = "{'active': activeTab === 'register'}"
                 +"Register"
             }
         }
 
-        div {
+        // Forms container
+        div(classes = "forms-container") {
             // Login form wrapper
             div {
-                attributes["x-show"] = "activeTab === 'login'"
-                attributes["x-transition"] = ""
+                attributes["x-show.transition"] = "activeTab === 'login'"
                 loginForm()
             }
             // Register form wrapper
             div {
-                attributes["x-show"] = "activeTab === 'register'"
-                attributes["x-transition"] = ""
+                attributes["x-show.transition"] = "activeTab === 'register'"
                 registerForm()
             }
         }
