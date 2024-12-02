@@ -7,6 +7,7 @@ import io.ktor.server.config.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import io.ktor.server.webjars.*
 import org.jetbrains.exposed.sql.Database
 
@@ -17,8 +18,6 @@ fun Application.configureRouting(config: ApplicationConfig, database: Database? 
             call.respondText(text = "500: $cause", status = HttpStatusCode.InternalServerError)
         }
     }
-    install(Webjars) {
-        path = "/webjars"
-    }
+    install(Webjars) { path = "/webjars" }
     database?.let { configureRoutes(config, database) } ?: run { configureRoutes(config) }
 }
