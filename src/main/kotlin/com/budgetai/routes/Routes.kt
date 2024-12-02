@@ -11,10 +11,11 @@ import com.budgetai.services.*
 import io.ktor.server.application.*
 import io.ktor.server.config.*
 import io.ktor.server.http.content.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 
-fun Application.configureRoutes(config: ApplicationConfig,  database: Database? = null) {
+fun Application.configureRoutes(config: ApplicationConfig, database: Database? = null) {
     // database instantiation if null
     val db = database ?: DatabaseConfig.getDatabase()
 
@@ -36,6 +37,17 @@ fun Application.configureRoutes(config: ApplicationConfig,  database: Database? 
 
 
     routing {
+        routing {
+            get("/webjars-debug") {
+                val webjars = call.application.environment.classLoader
+                    .getResourceAsStream("META-INF/maven/org.webjars.npm")
+                    ?.bufferedReader()
+                    ?.readText()
+                    ?: "No webjars found"
+
+                call.respondText(webjars)
+            }
+        }
         staticResources("/static", "static")
 
         // Template routes
