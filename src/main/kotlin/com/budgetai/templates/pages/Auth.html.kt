@@ -53,15 +53,6 @@ fun createAuthPage() = AuthTemplate {
                 }
             }
         }
-        div(classes = "form-options") {
-            div(classes = "remember-me") {
-                input(type = InputType.checkBox, classes = "checkbox")
-                label { +"Remember me" }
-            }
-            a(href = "/forgot-password", classes = "forgot-password") {
-                +"Forgot password?"
-            }
-        }
         button(type = ButtonType.submit, classes = "submit-button") {
             +"Sign In"
         }
