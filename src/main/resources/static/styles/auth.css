@@ -82,26 +82,6 @@
     hover:text-gray-700 dark:hover:text-gray-200;
 }
 
-/* Form Options */
-.form-options {
-    @apply flex items-center justify-between;
-}
-
-.remember-me {
-    @apply flex items-center space-x-2;
-}
-
-.checkbox {
-    @apply h-4 w-4 text-blue-600 rounded
-    border-gray-300 dark:border-gray-600
-    focus:ring-blue-500;
-}
-
-.forgot-password {
-    @apply text-sm text-blue-600 dark:text-blue-400
-    hover:text-blue-700 dark:hover:text-blue-300;
-}
-
 .submit-button {
     @apply w-full py-2 px-4 bg-blue-600 text-white rounded-lg
     hover:bg-blue-700 transition-colors duration-200
