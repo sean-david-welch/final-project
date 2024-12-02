@@ -60,14 +60,6 @@ fun createSettingsPage() = SettingsTemplate("Account Settings") {
             div(classes = "settings-list") {
                 div(classes = "setting-item") {
                     div(classes = "setting-content") {
-                        h3(classes = "setting-title") { +"Dark Mode" }
-                    }
-                    div(classes = "setting-control") {
-                        input(type = InputType.checkBox, classes = "toggle")
-                    }
-                }
-                div(classes = "setting-item") {
-                    div(classes = "setting-content") {
                         h3(classes = "setting-title") { +"Currency" }
                     }
                     div(classes = "setting-control") {
