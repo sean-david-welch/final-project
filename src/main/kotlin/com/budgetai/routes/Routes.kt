@@ -4,7 +4,7 @@ import com.budgetai.plugins.DatabaseConfig
 import com.budgetai.repositories.*
 import com.budgetai.routes.api.*
 import com.budgetai.routes.templates.dashboardRoutes
-import com.budgetai.routes.templates.homeRoutes
+import com.budgetai.routes.templates.mainRoutes
 import com.budgetai.routes.templates.reportRoutes
 import com.budgetai.routes.templates.settingsRoutes
 import com.budgetai.services.*
@@ -40,7 +40,7 @@ fun Application.configureRoutes(config: ApplicationConfig,  database: Database? 
 
         // Template routes
         authRoutes(userService)
-        homeRoutes()
+        mainRoutes()
         dashboardRoutes()
         reportRoutes()
         settingsRoutes()

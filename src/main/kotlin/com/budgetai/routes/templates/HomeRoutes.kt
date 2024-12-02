@@ -5,7 +5,7 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.homeRoutes() {
+fun Route.mainRoutes() {
     get("/") {
         call.respondText(
             text = createHomePage(), contentType = ContentType.Text.Html
