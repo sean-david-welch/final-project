@@ -114,7 +114,7 @@
 
 /* Enhanced Forms Container */
 .forms-container {
-    @apply relative min-h-[400px] overflow-hidden;  /* Adjust min-height based on your form height */
+    @apply relative min-h-[400px] overflow-hidden;
 }
 
 .form-panel {
