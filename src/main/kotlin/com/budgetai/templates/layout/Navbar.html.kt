@@ -7,7 +7,7 @@ data class NavItem(val text: String, val href: String, val isActive: Boolean = f
 
 // default nav items for all pages
 val navItems = listOf(
-    NavItem("Dashboard", "/dashboard", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
+    NavItem("Dashboard", "/dashboard", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings"), NavItem("Login/Register", "/auth")
 )
 
 // main navbar template
