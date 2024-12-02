@@ -3,10 +3,7 @@ package com.budgetai.templates.components
 import kotlinx.html.*
 
 private fun FORM.formField(
-    label: String,
-    type: InputType,
-    placeholder: String,
-    showPasswordToggle: Boolean = false
+    label: String, type: InputType, placeholder: String, showPasswordToggle: Boolean = false
 ) {
     div(classes = "form-group") {
         label { +label }
