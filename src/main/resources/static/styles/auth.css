@@ -111,3 +111,54 @@
     after:bg-gray-200 dark:after:bg-gray-700
     after:absolute after:right-0 after:top-1/2;
 }
+
+/* Enhanced Forms Container */
+.forms-container {
+    @apply relative min-h-[400px] overflow-hidden;  /* Adjust min-height based on your form height */
+}
+
+.form-panel {
+    @apply top-0 left-0 right-0;
+    backface-visibility: hidden;
+}
+
+/* Transition Classes */
+.transform {
+    @apply transition-all;
+}
+
+.transition {
+    @apply transition-all;
+}
+
+.duration-300 {
+    @apply duration-300;
+}
+
+.ease-in {
+    @apply ease-in;
+}
+
+.ease-out {
+    @apply ease-out;
+}
+
+.opacity-0 {
+    @apply opacity-0;
+}
+
+.opacity-100 {
+    @apply opacity-100;
+}
+
+.translate-x-4 {
+    @apply translate-x-4;
+}
+
+.translate-x-0 {
+    @apply translate-x-0;
+}
+
+.-translate-x-4 {
+    @apply -translate-x-4;
+}
