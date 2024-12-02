@@ -3,6 +3,7 @@
 @import "home.css";
 @import "dashboard.css";
 @import "reports.css";
+@import "settings.css";
 
 @tailwind base;
 @tailwind components;
