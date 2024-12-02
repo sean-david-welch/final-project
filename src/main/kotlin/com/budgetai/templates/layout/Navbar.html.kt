@@ -7,16 +7,16 @@ data class NavItem(val text: String, val href: String, val isActive: Boolean = f
 
 // default nav items for all pages
 val navItems = listOf(
-    NavItem("Dashboard", "/", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
+    NavItem("Dashboard", "/dashboard", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
 )
 
 // main navbar template
 fun FlowContent.Navbar() {
     nav(classes = "navbar") {
         div(classes = "navbar-container navbar-content") {
-            div(classes = "navbar-brand-container") {
+            a(classes = "navbar-brand-container", href = "/") {
+                img(src = "/static/images/logo.png", alt = "logo-image", classes = "nav-logo")
                 span(classes = "navbar-brand-text") { +"BudgetAI" }
-            img(src = "/static/images/logo.png", alt = "logo-image", classes = "nav-logo")
             }
             div(classes = "navbar-desktop-menu navbar-menu-container") {
                 ul(classes = "navbar-menu-list") {
