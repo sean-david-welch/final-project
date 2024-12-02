@@ -39,8 +39,8 @@
 
 .tab-button {
     @apply flex-1 py-2 text-sm font-medium rounded-lg
-           text-gray-500 dark:text-gray-400
-           hover:text-gray-700 dark:hover:text-gray-200;
+    text-gray-500 dark:text-gray-400
+    hover:text-gray-700 dark:hover:text-gray-200;
 }
 
 .tab-button.active {
@@ -66,10 +66,10 @@
 
 .input-field {
     @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600
-           rounded-lg bg-white dark:bg-gray-700
-           text-gray-900 dark:text-white
-           focus:ring-2 focus:ring-blue-500 focus:border-transparent
-           placeholder-gray-400 dark:placeholder-gray-500;
+    rounded-lg bg-white dark:bg-gray-700
+    text-gray-900 dark:text-white
+    focus:ring-2 focus:ring-blue-500 focus:border-transparent
+    placeholder-gray-400 dark:placeholder-gray-500;
 }
 
 .password-input-wrapper {
@@ -78,8 +78,8 @@
 
 .show-password-button {
     @apply absolute right-3 top-1/2 -translate-y-1/2
-           text-sm text-gray-500 dark:text-gray-400
-           hover:text-gray-700 dark:hover:text-gray-200;
+    text-sm text-gray-500 dark:text-gray-400
+    hover:text-gray-700 dark:hover:text-gray-200;
 }
 
 /* Form Options */
@@ -93,19 +93,19 @@
 
 .checkbox {
     @apply h-4 w-4 text-blue-600 rounded
-           border-gray-300 dark:border-gray-600
-           focus:ring-blue-500;
+    border-gray-300 dark:border-gray-600
+    focus:ring-blue-500;
 }
 
 .forgot-password {
     @apply text-sm text-blue-600 dark:text-blue-400
-           hover:text-blue-700 dark:hover:text-blue-300;
+    hover:text-blue-700 dark:hover:text-blue-300;
 }
 
 .submit-button {
     @apply w-full py-2 px-4 bg-blue-600 text-white rounded-lg
-           hover:bg-blue-700 transition-colors duration-200
-           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    hover:bg-blue-700 transition-colors duration-200
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
 }
 
 /* Terms Agreement */
@@ -124,12 +124,12 @@
 
 .divider {
     @apply relative text-center text-sm text-gray-500 dark:text-gray-400
-           before:content-[''] before:block before:h-px
-           before:bg-gray-200 dark:before:bg-gray-700
-           before:absolute before:left-0 before:top-1/2
-           after:content-[''] after:block after:h-px
-           after:bg-gray-200 dark:after:bg-gray-700
-           after:absolute after:right-0 after:top-1/2;
+    before:content-[''] before:block before:h-px
+    before:bg-gray-200 dark:before:bg-gray-700
+    before:absolute before:left-0 before:top-1/2
+    after:content-[''] after:block after:h-px
+    after:bg-gray-200 dark:after:bg-gray-700
+    after:absolute after:right-0 after:top-1/2;
 }
 
 .social-buttons {
@@ -138,10 +138,10 @@
 
 .social-button {
     @apply flex items-center justify-center space-x-2 py-2 px-4
-           border border-gray-300 dark:border-gray-600 rounded-lg
-           text-sm text-gray-700 dark:text-gray-300
-           hover:bg-gray-50 dark:hover:bg-gray-800
-           transition-colors duration-200;
+    border border-gray-300 dark:border-gray-600 rounded-lg
+    text-sm text-gray-700 dark:text-gray-300
+    hover:bg-gray-50 dark:hover:bg-gray-800
+    transition-colors duration-200;
 }
 
 .social-icon {
