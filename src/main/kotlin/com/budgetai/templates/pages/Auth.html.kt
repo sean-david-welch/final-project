@@ -26,36 +26,35 @@ fun createAuthPage() = AuthTemplate {
         }
     }
 
-    // Add x-data to manage the active tab state
     div(classes = "auth-content") {
         // Initialize Alpine.js state
         attributes["x-data"] = "{activeTab: 'login'}"
 
         div(classes = "auth-tabs") {
             button(classes = "tab-button") {
-                // Use @click instead of onclick for Alpine.js
-                attributes["@click"] = "activeTab = 'login'"
-                // Use template syntax for class binding
+                // Use x-on:click instead of @click
+                attributes["x-on:click"] = "activeTab = 'login'"
                 attributes["x-bind:class"] = "{'active': activeTab === 'login'}"
                 +"Login"
             }
             button(classes = "tab-button") {
-                attributes["@click"] = "activeTab = 'register'"
+                attributes["x-on:click"] = "activeTab = 'register'"
                 attributes["x-bind:class"] = "{'active': activeTab === 'register'}"
                 +"Register"
             }
         }
 
-        // Forms container
         div(classes = "forms-container") {
-            // Login form wrapper
             div {
-                attributes["x-show.transition"] = "activeTab === 'login'"
+                attributes["x-show"] = "activeTab === 'login'"
+                attributes["x-transition:enter"] = "transition ease-out duration-300"
+                attributes["x-transition:leave"] = "transition ease-in duration-300"
                 loginForm()
             }
-            // Register form wrapper
             div {
-                attributes["x-show.transition"] = "activeTab === 'register'"
+                attributes["x-show"] = "activeTab === 'register'"
+                attributes["x-transition:enter"] = "transition ease-out duration-300"
+                attributes["x-transition:leave"] = "transition ease-in duration-300"
                 registerForm()
             }
         }
