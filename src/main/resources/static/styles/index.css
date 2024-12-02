@@ -2,6 +2,7 @@
 @import "navbar.css";
 @import "home.css";
 @import "dashboard.css";
+@import "reports.css";
 
 @tailwind base;
 @tailwind components;
