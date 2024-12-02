@@ -6,7 +6,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.settingsRoutes() {
-    route("/reports") {
+    route("/settings") {
         get("") {
             call.respondText(
                 text = createDashboardPage(), contentType = ContentType.Text.Html
