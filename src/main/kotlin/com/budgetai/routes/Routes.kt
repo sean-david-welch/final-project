@@ -37,16 +37,14 @@ fun Application.configureRoutes(config: ApplicationConfig, database: Database? =
 
 
     routing {
-        routing {
-            get("/webjars-debug") {
-                val webjars = call.application.environment.classLoader
-                    .getResourceAsStream("META-INF/maven/org.webjars.npm")
-                    ?.bufferedReader()
-                    ?.readText()
-                    ?: "No webjars found"
+        get("/webjars-debug") {
+            val webjars = call.application.environment.classLoader
+                .getResourceAsStream("META-INF/maven/org.webjars.npm")
+                ?.bufferedReader()
+                ?.readText()
+                ?: "No webjars found"
 
-                call.respondText(webjars)
-            }
+            call.respondText(webjars)
         }
         staticResources("/static", "static")
 
