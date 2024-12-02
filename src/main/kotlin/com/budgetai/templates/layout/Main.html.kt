@@ -8,7 +8,7 @@ fun BaseTemplate(bodyFn: BODY.() -> Unit) = "<!DOCTYPE html>" + createHTML().htm
     head {
         meta { charset = "UTF-8" }
         meta { name = "viewport"; content = "width=device-width, initial-scale=1.0" }
-        script { src = "/webjars/alpinejs/3.14.3/dist/cdn.js"; defer = true }
+        script { src = "/webjars/alpinejs/3.14.3/dist/alpine.js"; defer = true }
         script { src = "/webjars/htmx.org/2.0.3/dist/htmx.min.js"; defer = true }
         link { href = "/static/images/favicon.ico"; rel = "icon"; type = "image/x-icon" }
         link { href = "/static/styles/output.css"; rel = "stylesheet" }
