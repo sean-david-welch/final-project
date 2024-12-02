@@ -5,6 +5,8 @@ import com.budgetai.repositories.*
 import com.budgetai.routes.api.*
 import com.budgetai.routes.templates.dashboardRoutes
 import com.budgetai.routes.templates.homeRoutes
+import com.budgetai.routes.templates.reportRoutes
+import com.budgetai.routes.templates.settingsRoutes
 import com.budgetai.services.*
 import io.ktor.server.application.*
 import io.ktor.server.config.*
@@ -40,6 +42,8 @@ fun Application.configureRoutes(config: ApplicationConfig,  database: Database? 
         authRoutes(userService)
         homeRoutes()
         dashboardRoutes()
+        reportRoutes()
+        settingsRoutes()
 
         // API routes
         userRoutes(userService)
