@@ -25,8 +25,8 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
     val jwtCookie = request.cookies["jwt_token"]
 
     logger.info("Creating template context for request: ${request.uri}")
-    logger.debug("JWT cookie present: ${jwtCookie != null}")
-    logger.debug("JWT Principal present: ${principal != null}")
+    logger.info("JWT cookie present: ${jwtCookie != null}")
+    logger.info("JWT Principal present: ${principal != null}")
 
     if (jwtCookie != null && principal == null) {
         logger.warn("Cookie exists but JWT validation failed - token might be invalid or expired")
