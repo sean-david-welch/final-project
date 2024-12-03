@@ -52,28 +52,27 @@ fun DIV.registerForm() {
         attributes["hx-trigger"] = "submit"
         attributes["hx-target"] = "#response-div"
         attributes["hx-indicator"] = "#loading"
-        // Convert form data to JSON and set content type
         attributes["hx-ext"] = "json-enc"
+        // Explicitly set the content type header
         attributes["hx-headers"] = """{"Content-Type": "application/json"}"""
 
         formField("Full Name", InputType.text, "John Doe") {
-            name = "name"  // matches UserCreationRequest
+            name = "name"
             required = true
         }
         formField("Email", InputType.email, "your@email.com") {
-            name = "email"  // matches UserCreationRequest
+            name = "email"
             required = true
         }
         formField("Password", InputType.password, "••••••••") {
-            name = "password"  // matches UserCreationRequest
+            name = "password"
             required = true
             attributes["minlength"] = "8"
         }
 
-        // Add hidden field for role
         input(type = InputType.hidden) {
             name = "role"
-            value = "USER"  // matches UserRole.USER.toString()
+            value = "USER"
         }
 
         submitButton("Create Account")
