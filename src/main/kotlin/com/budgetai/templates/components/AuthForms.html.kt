@@ -27,7 +27,6 @@ fun DIV.loginForm() {
         attributes["hx-post"] = "/auth/login"
         attributes["hx-trigger"] = "submit"
         attributes["hx-target"] = "#response-div"
-        attributes["hx-indicator"] = "#loading"
 
         formField("Email", InputType.email, "your@email.com")
         formField("Password", InputType.password, "••••••••")
@@ -35,12 +34,6 @@ fun DIV.loginForm() {
 
         div {
             attributes["id"] = "response-div"
-        }
-        div {
-            attributes["id"] = "loading"
-            attributes["class"] = "htmx-indicator"
-            attributes["style"] = "display: none;"
-            +"Loading..."
         }
     }
 }
@@ -53,8 +46,7 @@ fun DIV.registerForm() {
             attributes["hx-trigger"] = "submit"
             attributes["hx-target"] = "#register-repsponse-div"
             attributes["hx-swap"] = "innerHTML"
-            attributes["hx-indicator"] = "#loading"
-            attributes["hx-on::after-request"] = "this.reset()"
+            attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
 
             formField("Full Name", InputType.text, "John Doe") {
                 name = "name"
@@ -73,12 +65,6 @@ fun DIV.registerForm() {
         }
         div {
             attributes["id"] = "register-repsponse-div"
-        }
-        div {
-            attributes["id"] = "loading"
-            attributes["class"] = "htmx-indicator"
-            attributes["style"] = "display: none;"
-            +"Loading..."
         }
     }
 }
