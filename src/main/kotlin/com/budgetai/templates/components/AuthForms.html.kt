@@ -66,14 +66,7 @@ fun DIV.registerForm() {
             required = true
             attributes["minlength"] = "8"
         }
-
-        input(type = InputType.hidden) {
-            name = "role"
-            value = "USER"
-        }
-
         submitButton("Create Account")
-
         div {
             attributes["id"] = "response-div"
         }
