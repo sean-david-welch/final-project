@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentTimestamp
 import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
+import java.security.Principal
 
 // models
 object Users : IntIdTable("users") {
@@ -41,6 +42,7 @@ data class UpdatePasswordRequest(
     val currentPassword: String, val newPassword: String
 )
 
+// authetication classes
 data class CookieConfig(
     val name: String,
     val maxAgeInSeconds: Int,
@@ -48,3 +50,8 @@ data class CookieConfig(
     val secure: Boolean,
     val httpOnly: Boolean
 )
+
+abstract class UserPrincipal(
+    val id: String,
+    val email: String,
+) : Principal
