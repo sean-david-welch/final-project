@@ -38,7 +38,7 @@ fun Route.authRoutes(service: UserService) {
                 println("Authentication result: $result")
 
                 if (result != null) {
-                    val (user, token) = result
+                    val (_, token) = result
                     call.setAuthCookie(token, cookieConfig)
                     call.respondText(
                         """
@@ -73,7 +73,7 @@ fun Route.authRoutes(service: UserService) {
                 val result = service.authenticateUserWithToken(authRequest)
 
                 if (result != null) {
-                    val (user, token) = result
+                    val (_, token) = result
                     call.setAuthCookie(token, cookieConfig)
                     call.respondText(
                         """
