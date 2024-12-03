@@ -13,6 +13,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.date.*
+import io.ktor.utils.io.*
+import kotlinx.serialization.json.Json
 
 private fun ApplicationCall.setAuthCookie(token: String, cookieConfig: CookieConfig) {
     response.cookies.append(
@@ -65,53 +67,37 @@ fun Route.authRoutes(service: UserService) {
         // Create new user
         post("/register") {
             try {
-                val request = call.receive<UserCreationRequest>()
-                val userId = service.createUser(request)
+                // Log content type
+                println("Content-Type: ${call.request.contentType()}")
 
-                // Auto-login after registration
-                val authRequest = UserAuthenticationRequest(request.email, request.password)
-                val result = service.authenticateUserWithToken(authRequest)
+                // Get and log raw content
+                val rawContent = call.receiveText()
+                println("Raw request content: $rawContent")
 
-                if (result != null) {
-                    val (_, token) = result
-                    call.setAuthCookie(token, cookieConfig)
-                    call.respondText(
-                        """
-                <div class="success-message">
-                    Account created successfully! Redirecting to dashboard...
-                </div>
-                <script>
-                    window.location.href = '/dashboard';
-                </script>
-                """.trimIndent(), ContentType.Text.Html, HttpStatusCode.Created
-                    )
-                } else {
-                    call.respondText(
-                        """
-                <div class="success-message">
-                    Account created successfully! Please <a href="/login">login</a> to continue.
-                </div>
-                """.trimIndent(), ContentType.Text.Html, HttpStatusCode.Created
-                    )
+                // Try to parse as UserCreationRequest
+                try {
+                    val request = Json.decodeFromString<UserCreationRequest>(rawContent)
+                    println("Successfully parsed request: $request")
+
+                    service.createUser(request)
+
+                    // Auto-login after registration
+                    val authRequest = UserAuthenticationRequest(request.email, request.password)
+                    service.authenticateUserWithToken(authRequest)
+                    // ... rest of your code ...
+                } catch (e: Exception) {
+                    println("Failed to parse request: ${e.message}")
+                    throw IllegalArgumentException("Invalid request format")
                 }
-            } catch (e: IllegalArgumentException) {
-                call.respondText(
-                    """
-            <div class="error-message">
-                ${e.message?.replace("<", "&lt;")?.replace(">", "&gt;") ?: "Invalid registration data"}
-            </div>
-            """.trimIndent(), ContentType.Text.Html, HttpStatusCode.BadRequest
-                )
             } catch (e: Exception) {
                 println("Registration error: ${e.message}")
                 e.printStackTrace()
-
                 call.respondText(
                     """
             <div class="error-message">
-                An error occurred during registration. Please try again later.
+                ${e.message ?: "Registration failed. Please try again."}
             </div>
-            """.trimIndent(), ContentType.Text.Html, HttpStatusCode.InternalServerError
+            """.trimIndent(), ContentType.Text.Html, HttpStatusCode.BadRequest
                 )
             }
         }
