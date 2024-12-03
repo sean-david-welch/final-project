@@ -47,11 +47,9 @@ fun Route.authRoutes(service: UserService) {
                     val (_, token) = result
                     call.setAuthCookie(token, cookieConfig)
 
-                    val response = ResponseComponents.success("Login successful! Redirecting...") + """
-                    <script>
-                        window.location.href = '/dashboard';
-                    </script>
-                """.trimIndent()
+                    val response = ResponseComponents.success(
+                        "Login successful! Redirecting..."
+                    ) + """<script>window.location.href = '/dashboard';</script>""".trimIndent()
 
                     call.respondText(
                         response, ContentType.Text.Html
@@ -59,15 +57,12 @@ fun Route.authRoutes(service: UserService) {
                 }
             } catch (e: Exception) {
                 logger.error("Login failed", e)
-
                 val errorMessage = when (e) {
                     is IllegalArgumentException -> e.message
                     else -> "Invalid login credentials"
                 }
-
                 val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
                 logger.debug("Generated error response: $errorResponse")
-
                 call.respondText(
                     errorResponse, ContentType.Text.Html, HttpStatusCode.BadRequest
                 )
