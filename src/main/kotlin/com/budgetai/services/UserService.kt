@@ -21,11 +21,14 @@ class UserService(private val repository: UserRepository, private val config: Ap
         val jwtAudience = config.property("jwt.audience").getString()
         val jwtIssuer = config.property("jwt.issuer").getString()
         val jwtSecret = config.property("jwt.secret").getString()
-        logger.info("Generating token with audience: $jwtAudience, issuer: $jwtIssuer")
+
+        val issuedAt = Date()
+        val expiresAt = Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000)
+
+        logger.info("Generating token with timestamps - issuedAt: $issuedAt, expiresAt: $expiresAt")
 
         return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("id", id).withClaim("email", email)
-            .withClaim("role", role)
-            .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000)).withIssuedAt(Date()).sign(HMAC256(jwtSecret))
+            .withClaim("role", role).withExpiresAt(expiresAt).withIssuedAt(issuedAt).sign(HMAC256(jwtSecret))
     }
 
     // generate new token for user
