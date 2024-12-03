@@ -21,34 +21,44 @@ fun Application.configureSecurity(config: ApplicationConfig) {
     val jwtRealm = jwtConfig.property("realm").getString()
     val jwtSecret = jwtConfig.property("secret").getString()
 
+    logger.info("Configuring security with audience: $jwtAudience, issuer: $jwtIssuer")
+
     authentication {
         jwt {
             realm = jwtRealm
             verifier(
-                JWT.require(Algorithm.HMAC256(jwtSecret)).withAudience(jwtAudience).withIssuer(jwtIssuer).build()
+                JWT.require(Algorithm.HMAC256(jwtSecret))
+                    .withAudience(jwtAudience)
+                    .withIssuer(jwtIssuer)
+                    .build()
             )
             validate { credential ->
-                logger.debug("Validating JWT token for audience: {}", credential.payload.audience)
+                logger.info("Validating token - Audience: ${credential.payload.audience}, Issuer: ${credential.payload.issuer}")
+                logger.info("Available claims: ${credential.payload.claims.keys}")
+
                 if (credential.payload.audience.contains(jwtAudience)) {
                     JWTPrincipal(credential.payload).also {
-                        logger.debug("JWT validation successful - Claims: {}", credential.payload.claims)
+                        logger.info("JWT validation successful - Claims: ${credential.payload.claims}")
                     }
                 } else {
-                    logger.warn(
-                        "JWT validation failed - invalid audience. Expected: {}, Got: {}", jwtAudience, credential.payload.audience
-                    )
+                    logger.warn("JWT validation failed - Expected audience: $jwtAudience, Got: ${credential.payload.audience}")
                     null
                 }
             }
-            challenge { _, _ ->
-                call.response.status(HttpStatusCode.Unauthorized)
-                logger.debug("Authentication challenge failed")
-            }
             authHeader { call ->
                 val cookie = call.request.cookies["jwt_token"]
-                logger.debug("Found jwt_token cookie: {}", cookie != null)
-                cookie?.let { token ->
-                    parseAuthorizationHeader("Bearer $token")
+                if (cookie != null) {
+                    try {
+                        parseAuthorizationHeader("Bearer $cookie").also {
+                            logger.info("Successfully parsed auth header from cookie")
+                        }
+                    } catch (e: Exception) {
+                        logger.error("Failed to parse auth header from cookie: ${e.message}")
+                        null
+                    }
+                } else {
+                    logger.info("No jwt_token cookie found")
+                    null
                 }
             }
         }
