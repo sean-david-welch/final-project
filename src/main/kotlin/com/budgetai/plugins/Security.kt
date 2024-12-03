@@ -25,10 +25,7 @@ fun Application.configureSecurity(config: ApplicationConfig) {
         jwt {
             realm = jwtRealm
             verifier(
-                JWT.require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtIssuer)
-                    .build()
+                JWT.require(Algorithm.HMAC256(jwtSecret)).withAudience(jwtAudience).withIssuer(jwtIssuer).build()
             )
             validate { credential ->
                 logger.debug("Validating JWT token for audience: {}", credential.payload.audience)
