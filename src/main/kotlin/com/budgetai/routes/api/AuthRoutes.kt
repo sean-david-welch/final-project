@@ -34,48 +34,45 @@ fun Route.authRoutes(service: UserService) {
     )
     route("/auth") {
         // login
-    post("/login") {
-        try {
-            val parameters = call.receiveParameters()
-            val request = UserAuthenticationRequest(
-                email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
-                password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
-            )
+        post("/login") {
+            try {
+                val parameters = call.receiveParameters()
+                val request = UserAuthenticationRequest(
+                    email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
+                    password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
+                )
 
-            val result = service.authenticateUserWithToken(request)
-            if (result != null) {
-                val (_, token) = result
-                call.setAuthCookie(token, cookieConfig)
+                val result = service.authenticateUserWithToken(request)
+                if (result != null) {
+                    val (_, token) = result
+                    call.setAuthCookie(token, cookieConfig)
 
-                val response = ResponseComponents.success("Login successful! Redirecting...") + """
+                    val response = ResponseComponents.success("Login successful! Redirecting...") + """
                     <script>
                         window.location.href = '/dashboard';
                     </script>
                 """.trimIndent()
 
+                    call.respondText(
+                        response, ContentType.Text.Html
+                    )
+                }
+            } catch (e: Exception) {
+                logger.error("Login failed", e)
+
+                val errorMessage = when (e) {
+                    is IllegalArgumentException -> e.message
+                    else -> "Invalid login credentials"
+                }
+
+                val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
+                logger.debug("Generated error response: $errorResponse")
+
                 call.respondText(
-                    response,
-                    ContentType.Text.Html
+                    errorResponse, ContentType.Text.Html, HttpStatusCode.BadRequest
                 )
             }
-        } catch (e: Exception) {
-            logger.error("Login failed", e)
-
-            val errorMessage = when (e) {
-                is IllegalArgumentException -> e.message
-                else -> "Invalid login credentials"
-            }
-
-            val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
-            logger.debug("Generated error response: $errorResponse")
-
-            call.respondText(
-                errorResponse,
-                ContentType.Text.Html,
-                HttpStatusCode.BadRequest
-            )
         }
-    }
 
         // Create new user
         post("/register") {
