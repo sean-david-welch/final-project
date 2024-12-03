@@ -47,7 +47,8 @@ data class CookieConfig(
     val name: String, val maxAgeInSeconds: Int, val path: String, val secure: Boolean, val httpOnly: Boolean
 )
 
-abstract class UserPrincipal(
-    val id: String,
-    val email: String,
-) : Principal
+data class UserPrincipal(val id: String, val email: String) : Principal {
+    override fun getName(): String {
+        TODO("Not yet implemented")
+    }
+}
