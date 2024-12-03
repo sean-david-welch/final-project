@@ -12,6 +12,8 @@
 
     <!-- Your application logs -->
     <logger name="AuthRoutes" level="DEBUG"/>
+    <logger name="Security" level="DEBUG"/>
+    <logger name="AuthContext" level="DEBUG"/>
 
     <!-- Root logger -->
     <root level="INFO">
