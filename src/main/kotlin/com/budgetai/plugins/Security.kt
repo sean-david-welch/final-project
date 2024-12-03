@@ -25,10 +25,7 @@ fun Application.configureSecurity(config: ApplicationConfig) {
         jwt {
             realm = jwtRealm
             verifier(
-                JWT.require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtIssuer)
-                    .build()
+                JWT.require(Algorithm.HMAC256(jwtSecret)).withAudience(jwtAudience).withIssuer(jwtIssuer).build()
             )
             validate { credential ->
                 logger.debug("Validating JWT token for audience: {}", credential.payload.audience)
@@ -37,8 +34,9 @@ fun Application.configureSecurity(config: ApplicationConfig) {
                         logger.debug("JWT validation successful - Claims: {}", credential.payload.claims)
                     }
                 } else {
-                    logger.warn("JWT validation failed - invalid audience. Expected: {}, Got: {}",
-                        jwtAudience, credential.payload.audience)
+                    logger.warn(
+                        "JWT validation failed - invalid audience. Expected: {}, Got: {}", jwtAudience, credential.payload.audience
+                    )
                     null
                 }
             }
