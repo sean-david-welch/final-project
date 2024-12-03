@@ -11,9 +11,9 @@
     <logger name="io.netty" level="INFO"/>
 
     <!-- Your application logs -->
-    <logger name="AuthRoutes" level="DEBUG"/>
-    <logger name="Security" level="DEBUG"/>
-    <logger name="AuthContext" level="DEBUG"/>
+    <logger name="com.budgetai.utils.AuthContext" level="DEBUG"/>
+    <logger name="com.budgetai.routes.AuthRoutes" level="DEBUG"/>
+    <logger name="com.budgetai.plugins.Security" level="DEBUG"/>
 
     <!-- Root logger -->
     <root level="INFO">
