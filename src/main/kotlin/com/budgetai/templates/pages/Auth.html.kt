@@ -17,9 +17,7 @@ fun AuthTemplate(contentFn: DIV.() -> Unit) = BaseTemplate {
 }
 
 fun createAuthPage(context: BaseTemplateContext) = AuthTemplate {
-    if (context.auth.isAuthenticated) {
-        h1 { +"Youre logged in!!!" }
-    }
+    if (context.auth.isAuthenticated) { h1 { +"Youre logged in!!!" } }
     div(classes = "auth-header") {
         div(classes = "logo-container") {
             div(classes = "logo-placeholder")
