@@ -11,6 +11,7 @@ private fun FORM.formField(
             div(classes = "password-input-wrapper") {
                 input(type = type, classes = "input-field") {
                     this.placeholder = placeholder
+                    name = label.lowercase() // Add name attribute for form submission
                     required = true
                 }
                 button(type = ButtonType.button, classes = "show-password-button") {
@@ -20,6 +21,7 @@ private fun FORM.formField(
         } else {
             input(type = type, classes = "input-field") {
                 this.placeholder = placeholder
+                name = label.lowercase() // Add name attribute for form submission
                 required = true
             }
         }
@@ -33,15 +35,32 @@ private fun FORM.submitButton(text: String) {
 }
 
 fun DIV.loginForm() {
-    form(classes = "auth-form login-form") {
+    form {
+        attributes["class"] = "auth-form login-form"
+        attributes["hx-post"] = "/auth/login"
+        attributes["hx-trigger"] = "submit"
+        attributes["hx-target"] = "#response-div"
+        attributes["hx-indicator"] = "#loading"
+
         formField("Email", InputType.email, "your@email.com")
         formField("Password", InputType.password, "••••••••", showPasswordToggle = true)
         submitButton("Sign In")
+
+        div {
+            attributes["id"] = "response-div"
+        }
+        div {
+            attributes["id"] = "loading"
+            attributes["class"] = "htmx-indicator"
+            attributes["style"] = "display: none;"
+            +"Loading..."
+        }
     }
 }
 
 fun DIV.registerForm() {
     form(classes = "auth-form register-form") {
+
         formField("Full Name", InputType.text, "John Doe")
         formField("Email", InputType.email, "your@email.com")
         formField("Password", InputType.password, "••••••••", showPasswordToggle = true)
