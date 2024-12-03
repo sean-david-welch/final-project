@@ -6,7 +6,7 @@ import com.budgetai.templates.components.registerForm
 import com.budgetai.templates.layout.BaseTemplateContext
 import kotlinx.html.*
 
-fun AuthTemplate(context: BaseTemplateContext, contentFn: DIV.() -> Unit) = BaseTemplate(context) {
+fun AuthTemplate(contentFn: DIV.() -> Unit) = BaseTemplate {
     main(classes = "auth-layout") {
         div(classes = "auth-container") {
             div(classes = "auth-card") {
@@ -16,7 +16,10 @@ fun AuthTemplate(context: BaseTemplateContext, contentFn: DIV.() -> Unit) = Base
     }
 }
 
-fun createAuthPage(context: BaseTemplateContext) = AuthTemplate(context) {
+fun createAuthPage(context: BaseTemplateContext) = AuthTemplate {
+    if (context.auth.isAuthenticated) {
+        h1 { +"Youre logged in!!!" }
+    }
     div(classes = "auth-header") {
         div(classes = "logo-container") {
             div(classes = "logo-placeholder")
