@@ -67,35 +67,40 @@ fun Route.authRoutes(service: UserService) {
         // Create new user
         post("/register") {
             try {
-                // Log content type
-                println("Content-Type: ${call.request.contentType()}")
-
-                // Get and log raw content
-                val rawContent = call.receiveText()
-                println("Raw request content: $rawContent")
-
-                // Try to parse as UserCreationRequest
-                try {
-                    val request = Json.decodeFromString<UserCreationRequest>(rawContent)
-                    println("Successfully parsed request: $request")
-
-                    service.createUser(request)
-
-                    // Auto-login after registration
-                    val authRequest = UserAuthenticationRequest(request.email, request.password)
-                    service.authenticateUserWithToken(authRequest)
-                    // ... rest of your code ...
-                } catch (e: Exception) {
-                    println("Failed to parse request: ${e.message}")
-                    throw IllegalArgumentException("Invalid request format")
+                // Ensure we're receiving JSON
+                val contentType = call.request.contentType()
+                if (!contentType.match(ContentType.Application.Json)) {
+                    throw IllegalArgumentException("Expected JSON content type but got: $contentType")
                 }
+
+                // Receive and parse the JSON body
+                val request = call.receive<UserCreationRequest>()
+
+                // Create user
+                service.createUser(request)
+
+                // Auto-login after registration
+                val authRequest = UserAuthenticationRequest(request.email, request.password)
+                val token = service.authenticateUserWithToken(authRequest)
+
+                call.respondText(
+                    """
+            <div class="success-message">
+                Registration successful! Redirecting...
+            </div>
+            """.trimIndent(), ContentType.Text.Html
+                )
             } catch (e: Exception) {
-                println("Registration error: ${e.message}")
-                e.printStackTrace()
+                val errorMessage = when (e) {
+                    is ContentTransformationException -> "Invalid request format"
+                    is IllegalArgumentException -> e.message
+                    else -> "Registration failed. Please try again."
+                }
+
                 call.respondText(
                     """
             <div class="error-message">
-                ${e.message ?: "Registration failed. Please try again."}
+                $errorMessage
             </div>
             """.trimIndent(), ContentType.Text.Html, HttpStatusCode.BadRequest
                 )
