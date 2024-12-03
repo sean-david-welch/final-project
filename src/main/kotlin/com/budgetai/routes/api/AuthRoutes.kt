@@ -17,14 +17,8 @@ import io.ktor.util.date.*
 private fun ApplicationCall.setAuthCookie(token: String, cookieConfig: CookieConfig) {
     response.cookies.append(
         Cookie(
-            name = cookieConfig.name,
-            value = token,
-            maxAge = cookieConfig.maxAgeInSeconds,
-            expires = null,
-            domain = null,
-            path = cookieConfig.path,
-            secure = cookieConfig.secure,
-            httpOnly = cookieConfig.httpOnly,
+            name = cookieConfig.name, value = token, maxAge = cookieConfig.maxAgeInSeconds, expires = null, domain = null,
+            path = cookieConfig.path, secure = cookieConfig.secure, httpOnly = cookieConfig.httpOnly,
             extensions = mapOf("SameSite" to "Strict")
         )
     )
@@ -34,9 +28,22 @@ fun Route.authRoutes(service: UserService) {
     val cookieConfig = CookieConfig(
         name = "jwt_token", maxAgeInSeconds = TOKEN_EXPIRATION, path = "/", secure = true, httpOnly = true
     )
-
-
     route("/auth") {
+        // login
+        post("/login") {
+            try {
+                val request = call.receive<UserAuthenticationRequest>()
+                val result = service.authenticateUserWithToken(request)
+                if (result != null) {
+                    val (user, token) = result
+                    call.setAuthCookie(token, cookieConfig)
+                    call.respond(HttpStatusCode.OK, hashMapOf("user" to user))
+                }
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+            }
+        }
+
         // Create new user
         post("/register") {
             try {
@@ -58,21 +65,6 @@ fun Route.authRoutes(service: UserService) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.InternalServerError, "Error creating user")
-            }
-        }
-
-        // login
-        post("/login") {
-            try {
-                val request = call.receive<UserAuthenticationRequest>()
-                val result = service.authenticateUserWithToken(request)
-                if (result != null) {
-                    val (user, token) = result
-                    call.setAuthCookie(token, cookieConfig)
-                    call.respond(HttpStatusCode.OK, hashMapOf("user" to user))
-                }
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
             }
         }
 
