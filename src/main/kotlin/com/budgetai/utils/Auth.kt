@@ -1,5 +1,6 @@
 package com.budgetai.utils
 
+import com.budgetai.templates.layout.BaseTemplateContext
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -28,6 +29,20 @@ val ApplicationCall.auth: AuthContext
             )
         } else AuthContext()
     }
+
+fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
+    return BaseTemplateContext(
+        auth = AuthContext(
+            user = principal<JWTPrincipal>()?.let { principal ->
+                UserPrincipal(
+                    id = principal.payload.getClaim("id").asString(),
+                    email = principal.payload.getClaim("email").asString()
+                )
+            },
+            isAuthenticated = principal<JWTPrincipal>() != null
+        )
+    )
+}
 
 // Custom exception for auth failures
 class AuthenticationException(message: String) : Exception(message)
