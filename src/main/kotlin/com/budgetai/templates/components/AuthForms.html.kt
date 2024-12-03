@@ -46,27 +46,30 @@ fun DIV.loginForm() {
 }
 
 fun DIV.registerForm() {
-    form {
-        attributes["class"] = "auth-form register-form"
-        attributes["hx-post"] = "/auth/register"
-        attributes["hx-trigger"] = "submit"
-        attributes["hx-target"] = "#response-div"
-        attributes["hx-indicator"] = "#loading"
+    div {
+        form {
+            attributes["class"] = "auth-form register-form"
+            attributes["hx-post"] = "/auth/register"
+            attributes["hx-trigger"] = "submit"
+            attributes["hx-target"] = "#response-div"
+            attributes["hx-indicator"] = "#loading"
+            attributes["hx-on"] = "htmx:afterRequest: this.reset()"
 
-        formField("Full Name", InputType.text, "John Doe") {
-            name = "name"
-            required = true
+            formField("Full Name", InputType.text, "John Doe") {
+                name = "name"
+                required = true
+            }
+            formField("Email", InputType.email, "your@email.com") {
+                name = "email"
+                required = true
+            }
+            formField("Password", InputType.password, "••••••••") {
+                name = "password"
+                required = true
+                attributes["minlength"] = "8"
+            }
+            submitButton("Create Account")
         }
-        formField("Email", InputType.email, "your@email.com") {
-            name = "email"
-            required = true
-        }
-        formField("Password", InputType.password, "••••••••") {
-            name = "password"
-            required = true
-            attributes["minlength"] = "8"
-        }
-        submitButton("Create Account")
         div {
             attributes["id"] = "response-div"
         }
