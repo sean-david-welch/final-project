@@ -4,7 +4,6 @@ import com.budgetai.models.*
 import com.budgetai.routes.middleware.requireAuth
 import com.budgetai.services.AiInsightService
 import io.ktor.http.*
-import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
