@@ -15,6 +15,10 @@
     <logger name="com.budgetai.routes.AuthRoutes" level="DEBUG"/>
     <logger name="com.budgetai.plugins.Security" level="DEBUG"/>
     <logger name="com.budgetai.services.UserService" level="DEBUG"/>
+    <logger name="Security" level="DEBUG"/>  <!-- Add this -->
+    <logger name="AuthContext" level="DEBUG"/>
+    <logger name="AuthRoutes" level="DEBUG"/>
+    <logger name="UserService" level="DEBUG"/>
 
     <!-- Root logger -->
     <root level="INFO">
