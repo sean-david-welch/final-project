@@ -74,7 +74,6 @@ fun Route.authRoutes(service: UserService) {
                     name = parameters["name"] ?: throw IllegalArgumentException("Name is required"),
                     email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
                     password = parameters["password"] ?: throw IllegalArgumentException("Password is required"),
-                    role = parameters["role"] ?: "USER"
                 )
 
                 service.createUser(request)
