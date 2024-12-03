@@ -63,20 +63,20 @@ fun Route.authRoutes(service: UserService) {
         }
 
         // Create new user
-post("/register") {
-    try {
-        val request = call.receive<UserCreationRequest>()
-        val userId = service.createUser(request)
+        post("/register") {
+            try {
+                val request = call.receive<UserCreationRequest>()
+                val userId = service.createUser(request)
 
-        // Auto-login after registration
-        val authRequest = UserAuthenticationRequest(request.email, request.password)
-        val result = service.authenticateUserWithToken(authRequest)
+                // Auto-login after registration
+                val authRequest = UserAuthenticationRequest(request.email, request.password)
+                val result = service.authenticateUserWithToken(authRequest)
 
-        if (result != null) {
-            val (user, token) = result
-            call.setAuthCookie(token, cookieConfig)
-            call.respondText(
-                """
+                if (result != null) {
+                    val (user, token) = result
+                    call.setAuthCookie(token, cookieConfig)
+                    call.respondText(
+                        """
                 <div class="success-message">
                     Account created successfully! Redirecting to dashboard...
                 </div>
@@ -84,45 +84,45 @@ post("/register") {
                     window.location.href = '/dashboard';
                 </script>
                 """.trimIndent(),
-                ContentType.Text.Html,
-                HttpStatusCode.Created
-            )
-        } else {
-            call.respondText(
-                """
+                        ContentType.Text.Html,
+                        HttpStatusCode.Created
+                    )
+                } else {
+                    call.respondText(
+                        """
                 <div class="success-message">
                     Account created successfully! Please <a href="/login">login</a> to continue.
                 </div>
                 """.trimIndent(),
-                ContentType.Text.Html,
-                HttpStatusCode.Created
-            )
-        }
-    } catch (e: IllegalArgumentException) {
-        call.respondText(
-            """
+                        ContentType.Text.Html,
+                        HttpStatusCode.Created
+                    )
+                }
+            } catch (e: IllegalArgumentException) {
+                call.respondText(
+                    """
             <div class="error-message">
                 ${e.message?.replace("<", "&lt;")?.replace(">", "&gt;") ?: "Invalid registration data"}
             </div>
             """.trimIndent(),
-            ContentType.Text.Html,
-            HttpStatusCode.BadRequest
-        )
-    } catch (e: Exception) {
-        println("Registration error: ${e.message}")
-        e.printStackTrace()
+                    ContentType.Text.Html,
+                    HttpStatusCode.BadRequest
+                )
+            } catch (e: Exception) {
+                println("Registration error: ${e.message}")
+                e.printStackTrace()
 
-        call.respondText(
-            """
+                call.respondText(
+                    """
             <div class="error-message">
                 An error occurred during registration. Please try again later.
             </div>
             """.trimIndent(),
-            ContentType.Text.Html,
-            HttpStatusCode.InternalServerError
-        )
-    }
-}
+                    ContentType.Text.Html,
+                    HttpStatusCode.InternalServerError
+                )
+            }
+        }
 
         authenticate {
             // refresh token
