@@ -71,46 +71,29 @@ fun Route.authRoutes(service: UserService) {
         // Create new user
         post("/register") {
             try {
-                logger.debug("Starting registration process")
                 val parameters = call.receiveParameters()
-                logger.debug("Received parameters: {}", parameters)
-
                 val request = UserCreationRequest(
                     name = parameters["name"] ?: throw IllegalArgumentException("Name is required"),
                     email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
                     password = parameters["password"] ?: throw IllegalArgumentException("Password is required"),
                 )
-                logger.debug("Created user request object")
-
                 service.createUser(request)
-                logger.debug("User created successfully")
-
                 val authRequest = UserAuthenticationRequest(request.email, request.password)
                 service.authenticateUserWithToken(authRequest)
-                logger.debug("User authenticated")
-
                 val response = ResponseComponents.success("Registration successful! Redirecting...")
-                logger.debug("Generated success response: $response")
-
                 call.respondText(
-                    response,
-                    ContentType.Text.Html
+                    response, ContentType.Text.Html
                 )
             } catch (e: Exception) {
                 logger.error("Registration failed", e)
-
                 val errorMessage = when (e) {
                     is IllegalArgumentException -> e.message
                     else -> "Registration failed. Please try again."
                 }
-
                 val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
                 logger.debug("Generated error response: $errorResponse")
-
                 call.respondText(
-                    errorResponse,
-                    ContentType.Text.Html,
-                    HttpStatusCode.BadRequest
+                    errorResponse, ContentType.Text.Html, HttpStatusCode.BadRequest
                 )
             }
         }
