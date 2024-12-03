@@ -22,18 +22,27 @@ private fun FORM.submitButton(text: String) {
 }
 
 fun DIV.loginForm() {
-    form {
-        attributes["class"] = "auth-form login-form"
-        attributes["hx-post"] = "/auth/login"
-        attributes["hx-trigger"] = "submit"
-        attributes["hx-target"] = "#response-div"
+    div {
+        form {
+            attributes["class"] = "auth-form login-form"
+            attributes["hx-post"] = "/auth/login"
+            attributes["hx-trigger"] = "submit"
+            attributes["hx-target"] = "#login-response-div"
+            attributes["hx-swap"] = "innerHTML"
+            attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
 
-        formField("Email", InputType.email, "your@email.com")
-        formField("Password", InputType.password, "••••••••")
-        submitButton("Sign In")
-
+            formField("Email", InputType.email, "your@email.com") {
+                name = "email"
+                required = true
+            }
+            formField("Password", InputType.password, "••••••••") {
+                name = "password"
+                required = true
+            }
+            submitButton("Sign In")
+        }
         div {
-            attributes["id"] = "response-div"
+            attributes["id"] = "login-response-div"
         }
     }
 }
