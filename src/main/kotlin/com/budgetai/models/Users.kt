@@ -44,11 +44,7 @@ data class UpdatePasswordRequest(
 
 // authetication classes
 data class CookieConfig(
-    val name: String,
-    val maxAgeInSeconds: Int,
-    val path: String,
-    val secure: Boolean,
-    val httpOnly: Boolean
+    val name: String, val maxAgeInSeconds: Int, val path: String, val secure: Boolean, val httpOnly: Boolean
 )
 
 abstract class UserPrincipal(
