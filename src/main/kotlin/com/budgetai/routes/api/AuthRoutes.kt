@@ -14,8 +14,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.date.*
-import io.ktor.utils.io.*
-import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 
 private fun ApplicationCall.setAuthCookie(token: String, cookieConfig: CookieConfig) {
