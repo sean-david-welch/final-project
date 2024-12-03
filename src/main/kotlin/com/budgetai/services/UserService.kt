@@ -15,12 +15,12 @@ import javax.crypto.spec.PBEKeySpec
 
 class UserService(private val repository: UserRepository, private val config: ApplicationConfig) {
 
-    private fun generateToken(userId: String, role: String, config: ApplicationConfig): String {
+    private fun generateToken(userId: String, email: String, role: String, config: ApplicationConfig): String {
         val jwtAudience = config.property("jwt.audience").getString()
         val jwtIssuer = config.property("jwt.issuer").getString()
         val jwtSecret = config.property("jwt.secret").getString()
 
-        return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("userId", userId).withClaim("role", role)
+        return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("userId", userId).withClaim("email", email).withClaim("role", role)
             .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000)).withIssuedAt(Date()).sign(HMAC256(jwtSecret))
     }
 
@@ -28,7 +28,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
     suspend fun authenticateUserWithToken(request: UserAuthenticationRequest): Pair<UserDTO, String>? {
         val user = authenticateUser(request) ?: return null
         val token = generateToken(
-            userId = user.id.toString(), role = user.role, config = config
+            userId = user.id.toString(), email = user.email, role = user.role, config = config
         )
         return Pair(user, token)
     }
@@ -37,7 +37,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
     suspend fun refreshToken(userId: Int): String? {
         val user = getUser(userId) ?: return null
         return generateToken(
-            userId = user.id.toString(), role = user.role, config = config
+            userId = user.id.toString(), email = user.email, role = user.role, config = config
         )
     }
 
