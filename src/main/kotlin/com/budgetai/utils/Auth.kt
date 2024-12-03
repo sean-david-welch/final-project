@@ -6,7 +6,6 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import org.slf4j.LoggerFactory
 
-// Add logger at the top level
 private val logger = LoggerFactory.getLogger("AuthContext")
 
 data class BaseTemplateContext(
