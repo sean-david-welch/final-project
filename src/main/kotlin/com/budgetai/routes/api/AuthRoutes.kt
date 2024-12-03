@@ -34,37 +34,48 @@ fun Route.authRoutes(service: UserService) {
     )
     route("/auth") {
         // login
-        post("/login") {
-            try {
-                val request = call.receive<UserAuthenticationRequest>()
-                println("Parsed request: $request")
-                val result = service.authenticateUserWithToken(request)
-                println("Authentication result: $result")
+    post("/login") {
+        try {
+            val parameters = call.receiveParameters()
+            val request = UserAuthenticationRequest(
+                email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
+                password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
+            )
 
-                if (result != null) {
-                    val (_, token) = result
-                    call.setAuthCookie(token, cookieConfig)
-                    call.respondText(
-                        """
-                        <div class="success-message">
-                            Login successful! Redirecting...
-                        </div>
-                        <script>
-                            window.location.href = '/dashboard';
-                        </script>
-                        """.trimIndent(), ContentType.Text.Html
-                    )
-                }
-            } catch (e: Exception) {
+            val result = service.authenticateUserWithToken(request)
+            if (result != null) {
+                val (_, token) = result
+                call.setAuthCookie(token, cookieConfig)
+
+                val response = ResponseComponents.success("Login successful! Redirecting...") + """
+                    <script>
+                        window.location.href = '/dashboard';
+                    </script>
+                """.trimIndent()
+
                 call.respondText(
-                    """
-                    <div class="error-message">
-                        ${e.message ?: "Invalid login credentials"}
-                    </div>
-                    """.trimIndent(), ContentType.Text.Html, HttpStatusCode.BadRequest
+                    response,
+                    ContentType.Text.Html
                 )
             }
+        } catch (e: Exception) {
+            logger.error("Login failed", e)
+
+            val errorMessage = when (e) {
+                is IllegalArgumentException -> e.message
+                else -> "Invalid login credentials"
+            }
+
+            val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
+            logger.debug("Generated error response: $errorResponse")
+
+            call.respondText(
+                errorResponse,
+                ContentType.Text.Html,
+                HttpStatusCode.BadRequest
+            )
         }
+    }
 
         // Create new user
         post("/register") {
@@ -95,6 +106,7 @@ fun Route.authRoutes(service: UserService) {
                 )
             }
         }
+
         authenticate {
             // refresh token
             post("/refresh") {
