@@ -6,10 +6,20 @@ import kotlinx.html.stream.createHTML
 // Component for rendering messages
 fun DIV.messageComponent(message: String, type: String) {
     div {
-        attributes["class"] = "$type-message"
-        +message
+        attributes["class"] = when (type) {
+            "success" -> "success-message animate-fade-in"
+            "error" -> "error-message animate-fade-in"
+            else -> "$type-message"
+        }
+
+        // Optional: Add icon spans
+        span {
+            attributes["class"] = "message-content"
+            +message
+        }
     }
 }
+
 
 // Reusable response components
 object ResponseComponents {
