@@ -33,14 +33,32 @@ fun Route.authRoutes(service: UserService) {
         post("/login") {
             try {
                 val request = call.receive<UserAuthenticationRequest>()
+                println("Parsed request: $request")
                 val result = service.authenticateUserWithToken(request)
+                println("Authentication result: $result")
+
                 if (result != null) {
                     val (user, token) = result
                     call.setAuthCookie(token, cookieConfig)
-                    call.respond(HttpStatusCode.OK, hashMapOf("user" to user))
+                    call.respondText(
+                        """
+                        <div class="success-message">
+                            Login successful! Redirecting...
+                        </div>
+                        <script>
+                            window.location.href = '/dashboard';
+                        </script>
+                        """.trimIndent(), ContentType.Text.Html
+                    )
                 }
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                call.respondText(
+                    """
+                    <div class="error-message">
+                        ${e.message ?: "Invalid login credentials"}
+                    </div>
+                    """.trimIndent(), ContentType.Text.Html, HttpStatusCode.BadRequest
+                )
             }
         }
 
