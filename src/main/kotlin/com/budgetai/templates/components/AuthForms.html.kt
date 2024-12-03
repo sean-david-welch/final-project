@@ -81,5 +81,4 @@ fun DIV.registerForm() {
             +"Loading..."
         }
     }
-
 }
