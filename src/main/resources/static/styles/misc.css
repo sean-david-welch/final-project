@@ -21,3 +21,16 @@
 .error-message::before {
     @apply content-['✕'] mr-2 font-bold;
 }
+
+.animate-fade-in {
+    @apply opacity-0 animate-[fadeIn_0.3s_ease-in_forwards];
+}
+
+@keyframes fadeIn {
+    from {
+        @apply opacity-0 transform translate-y-1;
+    }
+    to {
+        @apply opacity-100 transform translate-y-0;
+    }
+}
