@@ -3,7 +3,7 @@ package com.budgetai.templates.pages
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.templates.components.loginForm
 import com.budgetai.templates.components.registerForm
-import com.budgetai.templates.layout.BaseTemplateContext
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
 fun AuthTemplate(contentFn: DIV.() -> Unit) = BaseTemplate {

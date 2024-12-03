@@ -1,10 +1,13 @@
 package com.budgetai.utils
 
-import com.budgetai.templates.layout.BaseTemplateContext
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import java.security.Principal
+
+data class BaseTemplateContext(
+    val auth: AuthContext,
+)
 
 // Auth context
 data class UserPrincipal(val id: String, val email: String) : Principal {

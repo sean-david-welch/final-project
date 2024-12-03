@@ -4,9 +4,7 @@ import com.budgetai.utils.AuthContext
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 
-data class BaseTemplateContext(
-    val auth: AuthContext,
-)
+
 
 fun BaseTemplate(bodyFn: BODY.() -> Unit) = "<!DOCTYPE html>" + createHTML().html {
     lang = "en"
