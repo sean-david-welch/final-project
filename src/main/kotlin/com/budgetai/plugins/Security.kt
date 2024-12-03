@@ -25,25 +25,31 @@ fun Application.configureSecurity(config: ApplicationConfig) {
         jwt {
             realm = jwtRealm
             verifier(
-                JWT.require(Algorithm.HMAC256(jwtSecret)).withAudience(jwtAudience).withIssuer(jwtIssuer).build()
+                JWT.require(Algorithm.HMAC256(jwtSecret))
+                    .withAudience(jwtAudience)
+                    .withIssuer(jwtIssuer)
+                    .build()
             )
             validate { credential ->
                 logger.debug("Validating JWT token for audience: {}", credential.payload.audience)
                 if (credential.payload.audience.contains(jwtAudience)) {
                     JWTPrincipal(credential.payload).also {
-                        logger.debug("JWT validation successful")
+                        logger.debug("JWT validation successful - Claims: {}", credential.payload.claims)
                     }
                 } else {
-                    logger.warn("JWT validation failed - invalid audience")
+                    logger.warn("JWT validation failed - invalid audience. Expected: {}, Got: {}",
+                        jwtAudience, credential.payload.audience)
                     null
                 }
             }
             challenge { _, _ ->
                 call.response.status(HttpStatusCode.Unauthorized)
+                logger.debug("Authentication challenge failed")
             }
-            // Extract JWT from cookie instead of Authorization header
             authHeader { call ->
-                call.request.cookies["jwt_token"]?.let { token ->
+                val cookie = call.request.cookies["jwt_token"]
+                logger.debug("Found jwt_token cookie: {}", cookie != null)
+                cookie?.let { token ->
                     parseAuthorizationHeader("Bearer $token")
                 }
             }
