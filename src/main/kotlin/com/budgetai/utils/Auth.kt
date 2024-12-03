@@ -22,19 +22,18 @@ fun ApplicationCall.getUserId(): String? {
 
 // Auth context
 class AuthContext(
-    val user: UserPrincipal? = null,
-    val isAuthenticated: Boolean = false
+    val user: UserPrincipal? = null, val isAuthenticated: Boolean = false
 )
 
 // Extension function to easily access auth context
-val ApplicationCall.auth: AuthContext get() {
+val ApplicationCall.auth: AuthContext
+    get() {
         val principal = principal<JWTPrincipal>()
         return if (principal != null) {
-            AuthContext(user = UserPrincipal(
-                    id = principal.payload.getClaim("id").asString(),
-                    email = principal.payload.getClaim("email").asString()
-                ),
-                isAuthenticated = true
+            AuthContext(
+                user = UserPrincipal(
+                    id = principal.payload.getClaim("id").asString(), email = principal.payload.getClaim("email").asString()
+                ), isAuthenticated = true
             )
         } else AuthContext()
     }
