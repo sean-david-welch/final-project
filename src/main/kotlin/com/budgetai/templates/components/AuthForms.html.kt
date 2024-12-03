@@ -60,6 +60,12 @@ fun DIV.loginForm() {
 
 fun DIV.registerForm() {
     form(classes = "auth-form register-form") {
+        attributes["class"] = "auth-form login-form"
+        attributes["hx-post"] = "/auth/login"
+        attributes["hx-trigger"] = "submit"
+        attributes["hx-target"] = "#response-div"
+        attributes["hx-indicator"] = "#loading"
+
 
         formField("Full Name", InputType.text, "John Doe")
         formField("Email", InputType.email, "your@email.com")
