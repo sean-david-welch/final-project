@@ -52,9 +52,6 @@ fun DIV.registerForm() {
         attributes["hx-trigger"] = "submit"
         attributes["hx-target"] = "#response-div"
         attributes["hx-indicator"] = "#loading"
-        attributes["hx-ext"] = "json-enc"
-        // Explicitly set the content type header
-        attributes["hx-headers"] = """{"Content-Type": "application/json"}"""
 
         formField("Full Name", InputType.text, "John Doe") {
             name = "name"
