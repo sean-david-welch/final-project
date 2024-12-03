@@ -12,7 +12,6 @@ fun DIV.messageComponent(message: String, type: String) {
             else -> "$type-message"
         }
 
-        // Optional: Add icon spans
         span {
             attributes["class"] = "message-content"
             +message
