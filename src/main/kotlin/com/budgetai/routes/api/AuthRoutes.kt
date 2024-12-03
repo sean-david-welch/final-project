@@ -41,7 +41,6 @@ fun Route.authRoutes(service: UserService) {
                     email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
                     password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
                 )
-
                 val result = service.authenticateUserWithToken(request)
                 if (result != null) {
                     val (_, token) = result
@@ -81,6 +80,11 @@ fun Route.authRoutes(service: UserService) {
                 service.createUser(request)
                 val authRequest = UserAuthenticationRequest(request.email, request.password)
                 service.authenticateUserWithToken(authRequest)
+                val result = service.authenticateUserWithToken(authRequest)
+                if (result != null) {
+                    val (_, token) = result
+                    call.setAuthCookie(token, cookieConfig)
+                }
                 val response = ResponseComponents.success("Registration successful! Redirecting...")
                 call.respondText(
                     response, ContentType.Text.Html
