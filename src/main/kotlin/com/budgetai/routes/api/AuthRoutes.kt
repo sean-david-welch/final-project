@@ -83,9 +83,7 @@ fun Route.authRoutes(service: UserService) {
                 <script>
                     window.location.href = '/dashboard';
                 </script>
-                """.trimIndent(),
-                        ContentType.Text.Html,
-                        HttpStatusCode.Created
+                """.trimIndent(), ContentType.Text.Html, HttpStatusCode.Created
                     )
                 } else {
                     call.respondText(
@@ -93,9 +91,7 @@ fun Route.authRoutes(service: UserService) {
                 <div class="success-message">
                     Account created successfully! Please <a href="/login">login</a> to continue.
                 </div>
-                """.trimIndent(),
-                        ContentType.Text.Html,
-                        HttpStatusCode.Created
+                """.trimIndent(), ContentType.Text.Html, HttpStatusCode.Created
                     )
                 }
             } catch (e: IllegalArgumentException) {
@@ -104,9 +100,7 @@ fun Route.authRoutes(service: UserService) {
             <div class="error-message">
                 ${e.message?.replace("<", "&lt;")?.replace(">", "&gt;") ?: "Invalid registration data"}
             </div>
-            """.trimIndent(),
-                    ContentType.Text.Html,
-                    HttpStatusCode.BadRequest
+            """.trimIndent(), ContentType.Text.Html, HttpStatusCode.BadRequest
                 )
             } catch (e: Exception) {
                 println("Registration error: ${e.message}")
@@ -117,9 +111,7 @@ fun Route.authRoutes(service: UserService) {
             <div class="error-message">
                 An error occurred during registration. Please try again later.
             </div>
-            """.trimIndent(),
-                    ContentType.Text.Html,
-                    HttpStatusCode.InternalServerError
+            """.trimIndent(), ContentType.Text.Html, HttpStatusCode.InternalServerError
                 )
             }
         }
