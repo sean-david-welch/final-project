@@ -36,18 +36,16 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
         user = principal?.let { jwt ->
             try {
                 UserPrincipal(
-                    id = jwt.payload.getClaim("id").asString(),
-                    email = jwt.payload.getClaim("email").asString()
+                    id = jwt.payload.getClaim("id").asString(), email = jwt.payload.getClaim("email").asString()
                 ).also {
                     logger.debug("User authenticated - ID: ${it.id}, Email: ${it.email}")
                 }
             } catch (e: Exception) {
                 logger.error("Error extracting user data from JWT - Claims might be missing: ${e.message}")
-                logger.debug("Available claims: ${jwt.payload.claims.keys}")
+                logger.debug("Available claims: {}", jwt.payload.claims.keys)
                 null
             }
-        },
-        isAuthenticated = principal != null
+        }, isAuthenticated = principal != null
     ).also {
         logger.info("Auth state: isAuthenticated=${it.isAuthenticated}")
     })
