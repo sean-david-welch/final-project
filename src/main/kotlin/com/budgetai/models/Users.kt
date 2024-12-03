@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentTimestamp
 import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
-import java.security.Principal
 
 // models
 object Users : IntIdTable("users") {
@@ -46,9 +45,3 @@ data class UpdatePasswordRequest(
 data class CookieConfig(
     val name: String, val maxAgeInSeconds: Int, val path: String, val secure: Boolean, val httpOnly: Boolean
 )
-
-data class UserPrincipal(val id: String, val email: String) : Principal {
-    override fun getName(): String {
-        TODO("Not yet implemented")
-    }
-}
