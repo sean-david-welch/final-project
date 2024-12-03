@@ -67,32 +67,29 @@ fun Route.authRoutes(service: UserService) {
         // Create new user
         post("/register") {
             try {
-                // Ensure we're receiving JSON
-                val contentType = call.request.contentType()
-                if (!contentType.match(ContentType.Application.Json)) {
-                    throw IllegalArgumentException("Expected JSON content type but got: $contentType")
-                }
+                val parameters = call.receiveParameters()
 
-                // Receive and parse the JSON body
-                val request = call.receive<UserCreationRequest>()
+                val request = UserCreationRequest(
+                    name = parameters["name"] ?: throw IllegalArgumentException("Name is required"),
+                    email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
+                    password = parameters["password"] ?: throw IllegalArgumentException("Password is required"),
+                    role = parameters["role"] ?: "USER"
+                )
 
-                // Create user
                 service.createUser(request)
-
-                // Auto-login after registration
                 val authRequest = UserAuthenticationRequest(request.email, request.password)
-                val token = service.authenticateUserWithToken(authRequest)
+                service.authenticateUserWithToken(authRequest)
 
                 call.respondText(
                     """
             <div class="success-message">
                 Registration successful! Redirecting...
             </div>
-            """.trimIndent(), ContentType.Text.Html
+            """.trimIndent(),
+                    ContentType.Text.Html
                 )
             } catch (e: Exception) {
                 val errorMessage = when (e) {
-                    is ContentTransformationException -> "Invalid request format"
                     is IllegalArgumentException -> e.message
                     else -> "Registration failed. Please try again."
                 }
@@ -102,7 +99,9 @@ fun Route.authRoutes(service: UserService) {
             <div class="error-message">
                 $errorMessage
             </div>
-            """.trimIndent(), ContentType.Text.Html, HttpStatusCode.BadRequest
+            """.trimIndent(),
+                    ContentType.Text.Html,
+                    HttpStatusCode.BadRequest
                 )
             }
         }
