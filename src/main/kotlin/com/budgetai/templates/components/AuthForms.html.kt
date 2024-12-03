@@ -3,27 +3,14 @@ package com.budgetai.templates.components
 import kotlinx.html.*
 
 private fun FORM.formField(
-    label: String, type: InputType, placeholder: String, showPasswordToggle: Boolean = false, inputConfig: INPUT.() -> Unit = {}
+    label: String, type: InputType, placeholder: String, inputConfig: INPUT.() -> Unit = {}
 ) {
     div(classes = "form-group") {
         label { +label }
-        if (showPasswordToggle) {
-            div(classes = "password-input-wrapper") {
-                input(type = type, classes = "input-field") {
-                    this.placeholder = placeholder
-                    required = true
-                    inputConfig()
-                }
-                button(type = ButtonType.button, classes = "show-password-button") {
-                    +"Show"
-                }
-            }
-        } else {
-            input(type = type, classes = "input-field") {
-                this.placeholder = placeholder
-                required = true
-                inputConfig()
-            }
+        input(type = type, classes = "input-field") {
+            this.placeholder = placeholder
+            required = true
+            inputConfig()
         }
     }
 }
@@ -43,7 +30,7 @@ fun DIV.loginForm() {
         attributes["hx-indicator"] = "#loading"
 
         formField("Email", InputType.email, "your@email.com")
-        formField("Password", InputType.password, "••••••••", showPasswordToggle = true)
+        formField("Password", InputType.password, "••••••••")
         submitButton("Sign In")
 
         div {
@@ -61,47 +48,36 @@ fun DIV.loginForm() {
 fun DIV.registerForm() {
     form {
         attributes["class"] = "auth-form register-form"
-        attributes["hx-post"] = "/auth/register"  // Changed to register endpoint
+        attributes["hx-post"] = "/auth/register"
         attributes["hx-trigger"] = "submit"
         attributes["hx-target"] = "#response-div"
         attributes["hx-indicator"] = "#loading"
+        // Convert form data to JSON and set content type
+        attributes["hx-ext"] = "json-enc"
+        attributes["hx-headers"] = """{"Content-Type": "application/json"}"""
 
         formField("Full Name", InputType.text, "John Doe") {
-            name = "fullName"
+            name = "name"  // matches UserCreationRequest
             required = true
         }
         formField("Email", InputType.email, "your@email.com") {
-            name = "email"
+            name = "email"  // matches UserCreationRequest
             required = true
         }
-        formField("Password", InputType.password, "••••••••", showPasswordToggle = true) {
-            name = "password"
-            required = true
-            attributes["minlength"] = "8"  // Optional: add password requirements
-        }
-        formField("Confirm Password", InputType.password, "••••••••", showPasswordToggle = true) {
-            name = "confirmPassword"
+        formField("Password", InputType.password, "••••••••") {
+            name = "password"  // matches UserCreationRequest
             required = true
             attributes["minlength"] = "8"
         }
 
-        div(classes = "terms-agreement") {
-            input(type = InputType.checkBox) {
-                name = "termsAccepted"
-                required = true
-                classes = setOf("checkbox")
-            }
-            label {
-                +"I agree to the "
-                a(href = "/terms", classes = "link") { +"Terms of Service" }
-                +" and "
-                a(href = "/privacy", classes = "link") { +"Privacy Policy" }
-            }
+        // Add hidden field for role
+        input(type = InputType.hidden) {
+            name = "role"
+            value = "USER"  // matches UserRole.USER.toString()
         }
 
         submitButton("Create Account")
 
-        // Add response and loading divs
         div {
             attributes["id"] = "response-div"
         }
