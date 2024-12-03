@@ -5,6 +5,7 @@ import com.budgetai.models.UserAuthenticationRequest
 import com.budgetai.models.UserCreationRequest
 import com.budgetai.plugins.TOKEN_EXPIRATION
 import com.budgetai.services.UserService
+import com.budgetai.templates.components.ResponseComponents
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -65,46 +66,38 @@ fun Route.authRoutes(service: UserService) {
         }
 
         // Create new user
-        post("/register") {
-            try {
-                val parameters = call.receiveParameters()
+post("/register") {
+    try {
+        val parameters = call.receiveParameters()
 
-                val request = UserCreationRequest(
-                    name = parameters["name"] ?: throw IllegalArgumentException("Name is required"),
-                    email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
-                    password = parameters["password"] ?: throw IllegalArgumentException("Password is required"),
-                    role = parameters["role"] ?: "USER"
-                )
+        val request = UserCreationRequest(
+            name = parameters["name"] ?: throw IllegalArgumentException("Name is required"),
+            email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
+            password = parameters["password"] ?: throw IllegalArgumentException("Password is required"),
+            role = parameters["role"] ?: "USER"
+        )
 
-                service.createUser(request)
-                val authRequest = UserAuthenticationRequest(request.email, request.password)
-                service.authenticateUserWithToken(authRequest)
+        service.createUser(request)
+        val authRequest = UserAuthenticationRequest(request.email, request.password)
+        service.authenticateUserWithToken(authRequest)
 
-                call.respondText(
-                    """
-            <div class="success-message">
-                Registration successful! Redirecting...
-            </div>
-            """.trimIndent(),
-                    ContentType.Text.Html
-                )
-            } catch (e: Exception) {
-                val errorMessage = when (e) {
-                    is IllegalArgumentException -> e.message
-                    else -> "Registration failed. Please try again."
-                }
-
-                call.respondText(
-                    """
-            <div class="error-message">
-                $errorMessage
-            </div>
-            """.trimIndent(),
-                    ContentType.Text.Html,
-                    HttpStatusCode.BadRequest
-                )
-            }
+        call.respondText(
+            ResponseComponents.success("Registration successful! Redirecting..."),
+            ContentType.Text.Html
+        )
+    } catch (e: Exception) {
+        val errorMessage = when (e) {
+            is IllegalArgumentException -> e.message
+            else -> "Registration failed. Please try again."
         }
+
+        call.respondText(
+            ResponseComponents.error(errorMessage ?: "An unknown error occurred"),
+            ContentType.Text.Html,
+            HttpStatusCode.BadRequest
+        )
+    }
+}
 
         authenticate {
             // refresh token
