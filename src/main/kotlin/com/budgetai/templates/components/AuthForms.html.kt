@@ -51,9 +51,10 @@ fun DIV.registerForm() {
             attributes["class"] = "auth-form register-form"
             attributes["hx-post"] = "/auth/register"
             attributes["hx-trigger"] = "submit"
-            attributes["hx-target"] = "#response-div"
+            attributes["hx-target"] = "#register-repsponse-div"
+            attributes["hx-swap"] = "innerHTML"
             attributes["hx-indicator"] = "#loading"
-            attributes["hx-on"] = "htmx:afterRequest: this.reset()"
+            attributes["hx-on::after-request"] = "this.reset()"
 
             formField("Full Name", InputType.text, "John Doe") {
                 name = "name"
@@ -71,7 +72,7 @@ fun DIV.registerForm() {
             submitButton("Create Account")
         }
         div {
-            attributes["id"] = "response-div"
+            attributes["id"] = "register-repsponse-div"
         }
         div {
             attributes["id"] = "loading"
@@ -80,4 +81,5 @@ fun DIV.registerForm() {
             +"Loading..."
         }
     }
+
 }
