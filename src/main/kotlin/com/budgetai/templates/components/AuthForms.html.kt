@@ -3,7 +3,11 @@ package com.budgetai.templates.components
 import kotlinx.html.*
 
 private fun FORM.formField(
-    label: String, type: InputType, placeholder: String, showPasswordToggle: Boolean = false
+    label: String,
+    type: InputType,
+    placeholder: String,
+    showPasswordToggle: Boolean = false,
+    inputConfig: INPUT.() -> Unit = {}
 ) {
     div(classes = "form-group") {
         label { +label }
@@ -11,8 +15,8 @@ private fun FORM.formField(
             div(classes = "password-input-wrapper") {
                 input(type = type, classes = "input-field") {
                     this.placeholder = placeholder
-                    name = label.lowercase() // Add name attribute for form submission
                     required = true
+                    inputConfig()
                 }
                 button(type = ButtonType.button, classes = "show-password-button") {
                     +"Show"
@@ -21,8 +25,8 @@ private fun FORM.formField(
         } else {
             input(type = type, classes = "input-field") {
                 this.placeholder = placeholder
-                name = label.lowercase() // Add name attribute for form submission
                 required = true
+                inputConfig()
             }
         }
     }
