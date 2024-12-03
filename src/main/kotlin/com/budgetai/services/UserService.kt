@@ -21,7 +21,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
         val jwtAudience = config.property("jwt.audience").getString()
         val jwtIssuer = config.property("jwt.issuer").getString()
         val jwtSecret = config.property("jwt.secret").getString()
-        logger.debug("Generating token with audience: $jwtAudience, issuer: $jwtIssuer")
+        logger.info("Generating token with audience: $jwtAudience, issuer: $jwtIssuer")
 
         return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("id", id).withClaim("email", email)
             .withClaim("role", role)
