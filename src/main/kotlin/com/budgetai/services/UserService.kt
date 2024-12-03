@@ -8,19 +8,23 @@ import com.budgetai.models.UserDTO
 import com.budgetai.plugins.TOKEN_EXPIRATION
 import com.budgetai.repositories.UserRepository
 import io.ktor.server.config.*
+import org.slf4j.LoggerFactory
 import java.security.SecureRandom
 import java.util.*
 import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
 class UserService(private val repository: UserRepository, private val config: ApplicationConfig) {
+    private val logger = LoggerFactory.getLogger("UserService")
 
     private fun generateToken(id: String, email: String, role: String, config: ApplicationConfig): String {
         val jwtAudience = config.property("jwt.audience").getString()
         val jwtIssuer = config.property("jwt.issuer").getString()
         val jwtSecret = config.property("jwt.secret").getString()
+        logger.debug("Generating token with audience: $jwtAudience, issuer: $jwtIssuer")
 
-        return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("id", id).withClaim("email", email).withClaim("role", role)
+        return JWT.create().withAudience(jwtAudience).withIssuer(jwtIssuer).withClaim("id", id).withClaim("email", email)
+            .withClaim("role", role)
             .withExpiresAt(Date(System.currentTimeMillis() + TOKEN_EXPIRATION * 1000)).withIssuedAt(Date()).sign(HMAC256(jwtSecret))
     }
 
