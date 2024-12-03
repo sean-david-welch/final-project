@@ -14,13 +14,11 @@ data class BaseTemplateContext(
 )
 
 data class UserPrincipal(
-    val id: String,
-    val email: String
+    val id: String, val email: String
 )
 
 data class AuthContext(
-    val user: UserPrincipal? = null,
-    val isAuthenticated: Boolean = false
+    val user: UserPrincipal? = null, val isAuthenticated: Boolean = false
 )
 
 fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
@@ -30,24 +28,20 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
     logger.info("Creating template context for request: ${request.uri}")
     logger.debug("JWT Principal present: ${principal != null}")
 
-    return BaseTemplateContext(
-        auth = AuthContext(
-            user = principal?.let { jwt ->
-                try {
-                    UserPrincipal(
-                        id = jwt.payload.getClaim("id").asString(),
-                        email = jwt.payload.getClaim("email").asString()
-                    ).also {
-                        logger.debug("User authenticated - ID: ${it.id}, Email: ${it.email}")
-                    }
-                } catch (e: Exception) {
-                    logger.error("Error extracting user data from JWT: ${e.message}")
-                    null
+    return BaseTemplateContext(auth = AuthContext(
+        user = principal?.let { jwt ->
+            try {
+                UserPrincipal(
+                    id = jwt.payload.getClaim("id").asString(), email = jwt.payload.getClaim("email").asString()
+                ).also {
+                    logger.debug("User authenticated - ID: ${it.id}, Email: ${it.email}")
                 }
-            },
-            isAuthenticated = principal != null
-        ).also {
-            logger.info("Auth state: isAuthenticated=${it.isAuthenticated}")
-        }
-    )
+            } catch (e: Exception) {
+                logger.error("Error extracting user data from JWT: ${e.message}")
+                null
+            }
+        }, isAuthenticated = principal != null
+    ).also {
+        logger.info("Auth state: isAuthenticated=${it.isAuthenticated}")
+    })
 }
