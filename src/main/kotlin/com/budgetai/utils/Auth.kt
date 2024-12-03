@@ -55,6 +55,3 @@ fun JWTPrincipal.requireRole(role: String) {
     }
 }
 
-fun ApplicationCall.getUserId(): String? {
-    return principal<JWTPrincipal>()?.payload?.getClaim("userId")?.asString()
-}
