@@ -5,21 +5,6 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 
-// Custom exception for auth failures
-class AuthenticationException(message: String) : Exception(message)
-
-// Extension function for role validation
-fun JWTPrincipal.requireRole(role: String) {
-    val userRole = payload.getClaim("role")?.asString()
-    if (userRole != role) {
-        throw AuthenticationException("Insufficient permissions")
-    }
-}
-
-fun ApplicationCall.getUserId(): String? {
-    return principal<JWTPrincipal>()?.payload?.getClaim("userId")?.asString()
-}
-
 // Auth context
 class AuthContext(
     val user: UserPrincipal? = null, val isAuthenticated: Boolean = false
@@ -37,3 +22,18 @@ val ApplicationCall.auth: AuthContext
             )
         } else AuthContext()
     }
+
+// Custom exception for auth failures
+class AuthenticationException(message: String) : Exception(message)
+
+// Extension function for role validation
+fun JWTPrincipal.requireRole(role: String) {
+    val userRole = payload.getClaim("role")?.asString()
+    if (userRole != role) {
+        throw AuthenticationException("Insufficient permissions")
+    }
+}
+
+fun ApplicationCall.getUserId(): String? {
+    return principal<JWTPrincipal>()?.payload?.getClaim("userId")?.asString()
+}
