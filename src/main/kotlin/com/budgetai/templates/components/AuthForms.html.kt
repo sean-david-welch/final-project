@@ -59,21 +59,38 @@ fun DIV.loginForm() {
 }
 
 fun DIV.registerForm() {
-    form(classes = "auth-form register-form") {
-        attributes["class"] = "auth-form login-form"
-        attributes["hx-post"] = "/auth/login"
+    form {
+        attributes["class"] = "auth-form register-form"
+        attributes["hx-post"] = "/auth/register"  // Changed to register endpoint
         attributes["hx-trigger"] = "submit"
         attributes["hx-target"] = "#response-div"
         attributes["hx-indicator"] = "#loading"
 
-
-        formField("Full Name", InputType.text, "John Doe")
-        formField("Email", InputType.email, "your@email.com")
-        formField("Password", InputType.password, "••••••••", showPasswordToggle = true)
-        formField("Confirm Password", InputType.password, "••••••••", showPasswordToggle = true)
+        formField("Full Name", InputType.text, "John Doe") {
+            name = "fullName"
+            required = true
+        }
+        formField("Email", InputType.email, "your@email.com") {
+            name = "email"
+            required = true
+        }
+        formField("Password", InputType.password, "••••••••", showPasswordToggle = true) {
+            name = "password"
+            required = true
+            attributes["minlength"] = "8"  // Optional: add password requirements
+        }
+        formField("Confirm Password", InputType.password, "••••••••", showPasswordToggle = true) {
+            name = "confirmPassword"
+            required = true
+            attributes["minlength"] = "8"
+        }
 
         div(classes = "terms-agreement") {
-            input(type = InputType.checkBox, classes = "checkbox")
+            input(type = InputType.checkBox) {
+                name = "termsAccepted"
+                required = true
+                classes = setOf("checkbox")
+            }
             label {
                 +"I agree to the "
                 a(href = "/terms", classes = "link") { +"Terms of Service" }
@@ -81,6 +98,18 @@ fun DIV.registerForm() {
                 a(href = "/privacy", classes = "link") { +"Privacy Policy" }
             }
         }
+
         submitButton("Create Account")
+
+        // Add response and loading divs
+        div {
+            attributes["id"] = "response-div"
+        }
+        div {
+            attributes["id"] = "loading"
+            attributes["class"] = "htmx-indicator"
+            attributes["style"] = "display: none;"
+            +"Loading..."
+        }
     }
 }
