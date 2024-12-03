@@ -1,11 +1,17 @@
 package com.budgetai.utils
 
-import com.budgetai.models.UserPrincipal
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import java.security.Principal
 
 // Auth context
+data class UserPrincipal(val id: String, val email: String) : Principal {
+    override fun getName(): String {
+        TODO("Not yet implemented")
+    }
+}
+
 class AuthContext(
     val user: UserPrincipal? = null, val isAuthenticated: Boolean = false
 )
