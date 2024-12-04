@@ -15,7 +15,7 @@ data class BaseTemplateContext(
 )
 
 data class UserPrincipal(
-    val id: String, val email: String
+    val id: String, val email: String, val role: String
 )
 
 data class AuthContext(
@@ -35,7 +35,8 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
 
             if (validatedToken != null) {
                 userPrincipal = UserPrincipal(
-                    id = validatedToken.getClaim("id").asString(), email = validatedToken.getClaim("email").asString()
+                    id = validatedToken.getClaim("id").asString(), email = validatedToken.getClaim("email").asString(),
+                    role = validatedToken.getClaim("role").asString()
                 )
                 isAuthenticated = true
             }
