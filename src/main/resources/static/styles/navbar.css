@@ -65,3 +65,13 @@
     @apply text-gray-300;
     @apply hover:text-white hover:bg-gray-700;
 }
+
+.nav-item-inactive[hx-post] {
+    @apply cursor-pointer;
+}
+
+/* Style for the loading indicator */
+.loading-indicator {
+    @apply ml-2;
+    @apply inline-block;
+}
