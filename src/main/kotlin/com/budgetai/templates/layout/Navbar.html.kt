@@ -9,9 +9,7 @@ data class NavItem(val text: String, val href: String, val isActive: Boolean = f
 
 // default nav items for all pages
 val defaultNavItems = listOf(
-    NavItem("Dashboard", "/dashboard", true),
-    NavItem("Reports", "/reports"),
-    NavItem("Settings", "/settings")
+    NavItem("Dashboard", "/dashboard", true), NavItem("Reports", "/reports"), NavItem("Settings", "/settings")
 )
 
 // main navbar template
@@ -36,9 +34,9 @@ fun FlowContent.Navbar(context: BaseTemplateContext) {
                     // Add login/logout as the last item
                     li {
                         if (context.auth.isAuthenticated) {
-                                    div {  // Add this wrapper div
-            logoutButton("nav-item-inactive")
-        }
+                            div {  // Add this wrapper div
+                                logoutButton("nav-item-inactive")
+                            }
                         } else {
                             a(href = "/auth", classes = "nav-item-inactive") {
                                 +"Login"
