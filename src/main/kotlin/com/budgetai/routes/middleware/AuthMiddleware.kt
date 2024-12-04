@@ -6,9 +6,10 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-val logger = LoggerFactory.getLogger("AuthMiddleware")
+val logger: Logger = LoggerFactory.getLogger("AuthMiddleware")
 
 // Custom exception for auth failures
 // Helper function to handle auth failures
