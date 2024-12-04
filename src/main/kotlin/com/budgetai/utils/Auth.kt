@@ -38,8 +38,7 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
 
             if (validatedToken != null) {
                 userPrincipal = UserPrincipal(
-                    id = validatedToken.getClaim("id").asString(),
-                    email = validatedToken.getClaim("email").asString()
+                    id = validatedToken.getClaim("id").asString(), email = validatedToken.getClaim("email").asString()
                 )
                 isAuthenticated = true
                 logger.debug("User authenticated - ID: ${userPrincipal?.id}, Email: ${userPrincipal?.email}")
@@ -55,8 +54,7 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
 
     return BaseTemplateContext(
         auth = AuthContext(
-            user = userPrincipal,
-            isAuthenticated = isAuthenticated
+            user = userPrincipal, isAuthenticated = isAuthenticated
         )
     )
 }
@@ -68,11 +66,7 @@ fun Application.validateJwtToken(token: String, verifier: String): DecodedJWT? {
         val issuer = jwtConfig.property("issuer").getString()
         val audience = jwtConfig.property("audience").getString()
 
-        com.auth0.jwt.JWT.require(HMAC256(verifier))
-            .withIssuer(issuer)
-            .withAudience(audience)
-            .build()
-            .verify(token)
+        com.auth0.jwt.JWT.require(HMAC256(verifier)).withIssuer(issuer).withAudience(audience).build().verify(token)
     } catch (e: Exception) {
         logger.error("JWT validation failed: ${e.message}")
         null
