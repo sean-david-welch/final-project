@@ -22,23 +22,24 @@ fun FlowContent.Navbar(context: BaseTemplateContext) {
             }
             div(classes = "navbar-desktop-menu navbar-menu-container") {
                 ul(classes = "navbar-menu-list") {
-                    // Show nav items based on authentication status
-                    defaultNavItems.forEach { item ->
-                        li {
-                            a(href = item.href) {
-                                classes = if (item.isActive) setOf("nav-item-active") else setOf("nav-item-inactive")
-                                +item.text
+                    if (context.auth.isAuthenticated) {
+                        // Show nav items based on authentication status
+                        defaultNavItems.forEach { item ->
+                            li {
+                                a(href = item.href) {
+                                    classes = if (item.isActive) setOf("nav-item-active") else setOf("nav-item-inactive")
+                                    +item.text
+                                }
                             }
                         }
-                    }
-                    // Add login/logout as the last item
-                    li {
-                        if (context.auth.isAuthenticated) {
+                        // Add login/logout as the last item
+                        li {
                             logoutButton()
-                        } else {
-                            a(href = "/auth", classes = "nav-item-inactive") {
-                                +"Login"
-                            }
+
+                        }
+                    } else {
+                        a(href = "/auth", classes = "nav-item-inactive") {
+                            +"Login"
                         }
                     }
                 }
