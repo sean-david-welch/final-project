@@ -79,11 +79,10 @@ fun DIV.registerForm() {
 }
 
 fun FlowContent.logoutButton() {
-    a(classes = "nav-item-inactive") {
-        attributes["hx-post"] = "/auth/logout"
-        attributes["hx-boost"] = "false"
-        attributes["hx-indicator"] = "#logout-loading"
-        span { +"Logout" }
-        span(classes = "loading-indicator htmx-indicator") { id = "logout-loading" + "..." }
+    form(action = "/auth/logout", method = FormMethod.post) {
+        button(type = ButtonType.submit, classes = "nav-item-inactive") {
+            style = "background: none; border: none; padding: 0; cursor: pointer;"
+            +"Logout"
+        }
     }
 }
