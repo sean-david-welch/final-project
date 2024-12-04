@@ -9,9 +9,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.mainRoutes() {
-    get("{...}") {
-        call.respondText(text = create404Page(), contentType = ContentType.Text.Html)
-    }
     get("/") {
         call.respondText(text = createHomePage(), contentType = ContentType.Text.Html)
     }
@@ -22,5 +19,8 @@ fun Route.mainRoutes() {
         } else {
             call.respondText(text = createAuthPage(), contentType = ContentType.Text.Html)
         }
+    }
+    get("{...}") {
+        call.respondText(text = create404Page(), contentType = ContentType.Text.Html)
     }
 }
