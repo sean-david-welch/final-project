@@ -2,6 +2,7 @@ package com.budgetai
 
 import com.budgetai.lib.DataSeeder
 import com.budgetai.plugins.*
+import com.budgetai.utils.TemplateContext
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.application.*
 import io.ktor.server.config.*
@@ -35,6 +36,10 @@ fun Application.module() {
         log.info("Running in production mode - skipping database seeding")
     }
 
+    // custom plugins
+    install(TemplateContext)
+
+    // default plugin configurations
     configureSecurity(config)
     configureHTTP()
     configureSerialization()
