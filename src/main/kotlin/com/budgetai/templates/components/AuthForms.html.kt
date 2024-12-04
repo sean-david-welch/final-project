@@ -79,7 +79,7 @@ fun DIV.registerForm() {
 }
 
 fun FlowContent.logoutButton() {
-    button(classes = "save-button") {
+    a(classes = "nav-item-inactive") {
         attributes["hx-post"] = "/auth/logout"
         attributes["hx-redirect"] = "/auth"
         attributes["hx-indicator"] = "#logout-loading"
