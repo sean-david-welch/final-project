@@ -46,9 +46,7 @@ fun Application.configureSecurity(config: ApplicationConfig) {
             }
             challenge { _, _ ->
                 call.respondText(
-                    text = create403Page(),
-                    contentType = ContentType.Text.Html,
-                    status = HttpStatusCode.Forbidden
+                    text = create403Page(), contentType = ContentType.Text.Html, status = HttpStatusCode.Forbidden
                 )
             }
             authHeader { call ->
