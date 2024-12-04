@@ -1,9 +1,10 @@
 package com.budgetai.templates.pages
 
 import com.budgetai.templates.layout.BaseTemplate
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
-fun ReportsTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
+fun ReportsTemplate(title: String, context: BaseTemplateContext ,contentFn: DIV.() -> Unit) = BaseTemplate(context) {
     main(classes = "reports-layout") {
         div(classes = "reports-container") {
             h1(classes = "page-title") { +title }
@@ -12,7 +13,7 @@ fun ReportsTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
     }
 }
 
-fun createReportsPage() = ReportsTemplate("Financial Reports & Analytics") {
+fun createReportsPage(context: BaseTemplateContext) = ReportsTemplate("Financial Reports & Analytics", context) {
     // Reports Overview Section
     div(classes = "reports-overview") {
         div(classes = "overview-header") {
