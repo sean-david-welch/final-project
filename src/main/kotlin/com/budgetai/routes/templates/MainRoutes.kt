@@ -20,6 +20,9 @@ fun Route.mainRoutes() {
             call.respondText(text = createAuthPage(), contentType = ContentType.Text.Html)
         }
     }
+    get("/test-error") {
+        throw RuntimeException("Test error")
+    }
     get("{...}") {
         call.respondText(text = create404Page(), contentType = ContentType.Text.Html)
     }
