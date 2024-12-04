@@ -1,5 +1,8 @@
 package com.budgetai.utils
 
+import com.auth0.jwt.algorithms.Algorithm.HMAC256
+import com.auth0.jwt.interfaces.DecodedJWT
+import com.auth0.jwt.interfaces.Payload
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -21,32 +24,57 @@ data class AuthContext(
 )
 
 fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
-    val principal = principal<JWTPrincipal>()
+    // Try to validate the JWT token manually
     val jwtCookie = request.cookies["jwt_token"]
+    var userPrincipal: UserPrincipal? = null
+    var isAuthenticated = false
+
+    jwtCookie?.let { token ->
+        try {
+            // Get the JWT verifier from your auth config
+            val jwtVerifier = application.environment.config.property("jwt.verifier").getString()
+            // You'll need to implement this extension function
+            val validatedToken = application.validateJwtToken(token, jwtVerifier)
+
+            if (validatedToken != null) {
+                userPrincipal = UserPrincipal(
+                    id = validatedToken.getClaim("id").asString(),
+                    email = validatedToken.getClaim("email").asString()
+                )
+                isAuthenticated = true
+                logger.debug("User authenticated - ID: ${userPrincipal?.id}, Email: ${userPrincipal?.email}")
+            }
+        } catch (e: Exception) {
+            logger.error("Error validating JWT token: ${e.message}")
+        }
+    }
 
     logger.info("Creating template context for request: ${request.uri}")
     logger.info("JWT cookie present: ${jwtCookie != null}")
-    logger.info("JWT Principal present: ${principal != null}")
+    logger.info("Auth state: isAuthenticated=$isAuthenticated")
 
-    if (jwtCookie != null && principal == null) {
-        logger.warn("Cookie exists but JWT validation failed - token might be invalid or expired")
+    return BaseTemplateContext(
+        auth = AuthContext(
+            user = userPrincipal,
+            isAuthenticated = isAuthenticated
+        )
+    )
+}
+
+// Add this extension function to your Application class
+fun Application.validateJwtToken(token: String, verifier: String): DecodedJWT? {
+    return try {
+        val jwtConfig = environment.config.config("jwt")
+        val issuer = jwtConfig.property("issuer").getString()
+        val audience = jwtConfig.property("audience").getString()
+
+        com.auth0.jwt.JWT.require(HMAC256(verifier))
+            .withIssuer(issuer)
+            .withAudience(audience)
+            .build()
+            .verify(token)
+    } catch (e: Exception) {
+        logger.error("JWT validation failed: ${e.message}")
+        null
     }
-
-    return BaseTemplateContext(auth = AuthContext(
-        user = principal?.let { jwt ->
-            try {
-                UserPrincipal(
-                    id = jwt.payload.getClaim("id").asString(), email = jwt.payload.getClaim("email").asString()
-                ).also {
-                    logger.debug("User authenticated - ID: ${it.id}, Email: ${it.email}")
-                }
-            } catch (e: Exception) {
-                logger.error("Error extracting user data from JWT - Claims might be missing: ${e.message}")
-                logger.debug("Available claims: {}", jwt.payload.claims.keys)
-                null
-            }
-        }, isAuthenticated = principal != null
-    ).also {
-        logger.info("Auth state: isAuthenticated=${it.isAuthenticated}")
-    })
 }
