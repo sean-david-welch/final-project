@@ -1,10 +1,7 @@
 package com.budgetai.routes.templates
 
 import com.budgetai.models.UserRole
-import com.budgetai.templates.pages.create403Page
-import com.budgetai.templates.pages.create404Page
-import com.budgetai.templates.pages.createAuthPage
-import com.budgetai.templates.pages.createHomePage
+import com.budgetai.templates.pages.*
 import com.budgetai.utils.templateContext
 import io.ktor.http.*
 import io.ktor.server.response.*
@@ -30,7 +27,7 @@ fun Route.mainRoutes() {
             call.respondText(text = create403Page(call.templateContext), contentType = ContentType.Text.Html)
 
         } else {
-            call.respondText(text = "This is an admin route", contentType = ContentType.Text.Plain)
+            call.respondText(text = createAdminPage(call.templateContext), contentType = ContentType.Text.Html)
         }
     }
     get("{...}") {
