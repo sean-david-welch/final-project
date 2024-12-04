@@ -1,9 +1,10 @@
 package com.budgetai.templates.layout
 
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 
-fun BaseTemplate(bodyFn: BODY.() -> Unit) = "<!DOCTYPE html>" + createHTML().html {
+fun BaseTemplate(context: BaseTemplateContext, bodyFn: BODY.() -> Unit) = "<!DOCTYPE html>" + createHTML().html {
     lang = "en"
     head {
         meta { charset = "UTF-8" }
@@ -16,8 +17,8 @@ fun BaseTemplate(bodyFn: BODY.() -> Unit) = "<!DOCTYPE html>" + createHTML().htm
 
     }
     body(classes = "font-inter layout-base coontainer-base") {
-        Navbar()
+        Navbar(context)
         bodyFn()
-        Footer()
+        Footer(context)
     }
 }
