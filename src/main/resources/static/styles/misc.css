@@ -34,3 +34,33 @@
         @apply opacity-100 transform translate-y-0;
     }
 }
+
+/* 403 page */
+/* 404 Page Layout */
+.error-content {
+  @apply space-y-6;
+}
+
+.error-header {
+  @apply space-y-2;
+}
+
+.error-code {
+  @apply text-6xl font-bold text-gray-900 dark:text-white;
+}
+
+.error-title {
+  @apply text-xl text-gray-600 dark:text-gray-400;
+}
+
+.error-message {
+  @apply text-gray-500 dark:text-gray-300;
+}
+
+.error-button {
+  @apply inline-block mt-4 px-6 py-3 bg-gray-50 dark:bg-gray-800
+         text-gray-900 dark:text-white rounded-lg
+         hover:bg-gray-100 dark:hover:bg-gray-700
+         transition-colors duration-200
+         shadow-sm hover:shadow-md;
+}
