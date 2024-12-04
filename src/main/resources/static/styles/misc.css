@@ -1,3 +1,28 @@
+/* Buttons */
+.logout-button {
+    @apply px-4 py-2
+           bg-red-50 hover:bg-red-100
+           dark:bg-red-900 dark:hover:bg-red-800
+           text-red-600 dark:text-red-200
+           rounded-lg transition-colors duration-200
+           flex items-center justify-center gap-2
+           font-medium;
+}
+
+.logout-button .loading-indicator {
+    @apply opacity-0;
+}
+
+.logout-button .loading-indicator.htmx-request {
+    @apply opacity-100;
+}
+
+/* Optional: Add a disabled state during request */
+.logout-button.htmx-request {
+    @apply opacity-75 cursor-not-allowed;
+}
+
+
 /* Messages */
 .success-message {
     @apply p-4 mb-4 rounded-lg bg-green-50 dark:bg-green-900/30
