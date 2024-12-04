@@ -17,10 +17,8 @@ fun createAdminPage(context: BaseTemplateContext) = AdminTemplate("Admin Dashboa
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
-            Triple("Total Users", "12,453", "users-icon"),
-            Triple("System Alerts", "7", "alert-icon"),
-            Triple("Active Sessions", "2,145", "activity-icon"),
-            Triple("System Health", "98.2%", "settings-icon")
+            Triple("Total Users", "12,453", "users-icon"), Triple("System Alerts", "7", "alert-icon"),
+            Triple("Active Sessions", "2,145", "activity-icon"), Triple("System Health", "98.2%", "settings-icon")
         )
 
         stats.forEach { (label, value, iconClass) ->
@@ -69,9 +67,7 @@ fun createAdminPage(context: BaseTemplateContext) = AdminTemplate("Admin Dashboa
             h2(classes = "status-title") { +"System Status" }
             div(classes = "status-list") {
                 val statusItems = listOf(
-                    Pair("CPU Usage", "42%"),
-                    Pair("Memory Usage", "3.2 GB"),
-                    Pair("Storage", "67%")
+                    Pair("CPU Usage", "42%"), Pair("Memory Usage", "3.2 GB"), Pair("Storage", "67%")
                 )
 
                 statusItems.forEach { (label, value) ->
@@ -88,10 +84,7 @@ fun createAdminPage(context: BaseTemplateContext) = AdminTemplate("Admin Dashboa
             h2(classes = "status-title") { +"Quick Actions" }
             div(classes = "quick-actions") {
                 listOf(
-                    "User Management",
-                    "System Settings",
-                    "Audit Logs",
-                    "Backup"
+                    "User Management", "System Settings", "Audit Logs", "Backup"
                 ).forEach { action ->
                     button(classes = "action-button") {
                         +action
