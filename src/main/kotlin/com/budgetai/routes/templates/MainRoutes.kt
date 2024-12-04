@@ -29,8 +29,7 @@ fun Route.mainRoutes() {
         requireRole(UserRole.STAFF.toString()) {
             get {
                 call.respondText(
-                    text = "This is an admin route",
-                    contentType = ContentType.Text.Plain
+                    text = "This is an admin route", contentType = ContentType.Text.Plain
                 )
             }
         }
