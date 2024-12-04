@@ -1,3 +1,20 @@
+/* Admin button */
+.admin-access-section {
+    @apply mt-6 pt-6;
+    @apply border-t border-gray-200 dark:border-gray-700;
+}
+
+.admin-link-button {
+    @apply w-full py-2 px-4;
+    @apply flex items-center justify-center;
+    @apply text-sm font-medium;
+    @apply bg-gray-900 dark:bg-gray-100;
+    @apply text-white dark:text-gray-900;
+    @apply rounded-lg;
+    @apply hover:bg-gray-800 dark:hover:bg-gray-200;
+    @apply transition-colors;
+}
+
 /* Main Layout */
 .admin-dashboard {
     @apply min-h-screen py-6;
