@@ -3,9 +3,10 @@ package com.budgetai.templates.pages
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.templates.components.loginForm
 import com.budgetai.templates.components.registerForm
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
-fun AuthTemplate(contentFn: DIV.() -> Unit) = BaseTemplate {
+fun AuthTemplate(context: BaseTemplateContext, contentFn: DIV.() -> Unit) = BaseTemplate(context) {
     main(classes = "auth-layout") {
         div(classes = "auth-container") {
             div(classes = "auth-card") {
@@ -15,7 +16,7 @@ fun AuthTemplate(contentFn: DIV.() -> Unit) = BaseTemplate {
     }
 }
 
-fun createAuthPage() = AuthTemplate {
+fun createAuthPage(context: BaseTemplateContext) = AuthTemplate(context) {
     div(classes = "auth-header") {
         div(classes = "logo-container") {
             div(classes = "logo-placeholder")
