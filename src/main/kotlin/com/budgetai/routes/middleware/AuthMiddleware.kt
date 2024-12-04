@@ -6,9 +6,13 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.slf4j.LoggerFactory
+
+val logger = LoggerFactory.getLogger("AuthMiddleware")
 
 // Custom exception for auth failures
 // Helper function to handle auth failures
+
 class AuthenticationException(message: String) : Exception(message)
 private suspend fun ApplicationCall.handleAuthFailure(block: suspend () -> Unit) {
     try {
@@ -24,6 +28,7 @@ private suspend fun ApplicationCall.handleAuthFailure(block: suspend () -> Unit)
 // Custom middlware - Require role
 fun JWTPrincipal.requireRole(role: String) {
     val userRole = payload.getClaim("role")?.asString()
+    logger.info("Required role: $role, User role: $userRole")
     if (userRole != role) {
         throw AuthenticationException("Insufficient permissions")
     }
@@ -32,8 +37,12 @@ fun JWTPrincipal.requireRole(role: String) {
 // plugin for middleware
 fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
     onCall { call ->
-        call.handleAuthFailure {
+        try {
             call.principal<JWTPrincipal>()?.requireRole(role)
+                ?: throw AuthenticationException("No principal found")
+        } catch (e: AuthenticationException) {
+            call.respond(HttpStatusCode.Forbidden, "Access denied: ${e.message}")
+            throw e
         }
     }
 }
