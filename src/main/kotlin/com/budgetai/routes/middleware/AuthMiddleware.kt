@@ -30,13 +30,6 @@ private suspend fun ApplicationCall.handleAuthFailure(block: suspend () -> Unit)
     }
 }
 
-// Route extensions
-fun Route.requireAuth(build: Route.() -> Unit) {
-    authenticate {
-        build()
-    }
-}
-
 // Create plugins for role and token validation
 fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
     onCall { call ->
