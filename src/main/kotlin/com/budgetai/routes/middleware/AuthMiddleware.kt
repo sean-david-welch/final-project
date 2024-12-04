@@ -21,7 +21,7 @@ private suspend fun ApplicationCall.handleAuthFailure(block: suspend () -> Unit)
     }
 }
 
-/// Custom middlware - Require role
+// Custom middlware - Require role
 fun JWTPrincipal.requireRole(role: String) {
     val userRole = payload.getClaim("role")?.asString()
     if (userRole != role) {
