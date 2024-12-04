@@ -1,26 +1,31 @@
 /* Base Layout */
 .settings-layout {
-    @apply min-h-screen bg-gray-50 dark:bg-gray-800;
+    @apply min-h-screen;
+    @apply bg-gray-50 dark:bg-gray-800;
 }
 
 .settings-container {
-    @apply mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12;
+    @apply mx-auto max-w-4xl;
+    @apply px-4 py-12 sm:px-6 lg:px-8;
 }
 
 .settings-grid {
     @apply space-y-8;
 }
 
-/* Section Styling */
+/* Section */
 .settings-section {
-    @apply bg-white dark:bg-gray-900 rounded-lg shadow-sm p-6;
+    @apply p-6 rounded-lg shadow-sm;
+    @apply bg-white dark:bg-gray-900;
 }
 
 .section-title {
-    @apply text-xl font-semibold text-gray-900 dark:text-white mb-6;
+    @apply mb-6;
+    @apply text-xl font-semibold;
+    @apply text-gray-900 dark:text-white;
 }
 
-/* Form Elements */
+/* Forms */
 .settings-form {
     @apply space-y-4;
 }
@@ -30,72 +35,101 @@
 }
 
 .form-group label {
-    @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+    @apply block;
+    @apply text-sm font-medium;
+    @apply text-gray-700 dark:text-gray-300;
 }
 
 .input-field {
-    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600
-    rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-    focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+    @apply w-full px-3 py-2 rounded-lg;
+    @apply bg-white dark:bg-gray-700;
+    @apply text-gray-900 dark:text-white;
+    @apply border border-gray-300 dark:border-gray-600;
+    @apply focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+/* Buttons */
+.button-base {
+    @apply px-4 py-2 rounded-lg;
+    @apply text-sm;
+    @apply transition-colors duration-200;
 }
 
 .save-button {
-    @apply mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg
-    hover:bg-blue-700 transition-colors duration-200;
+    @apply button-base mt-4;
+    @apply bg-blue-600 hover:bg-blue-700;
+    @apply text-white;
 }
 
-/* Settings List */
+.add-button {
+    @apply button-base mt-4 w-full;
+    @apply bg-gray-100 dark:bg-gray-700;
+    @apply text-gray-700 dark:text-gray-300;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-600;
+}
+
+.edit-button {
+    @apply px-3 py-1 rounded-lg;
+    @apply text-sm;
+    @apply bg-gray-100 dark:bg-gray-700;
+    @apply text-gray-700 dark:text-gray-300;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-600;
+}
+
+.delete-button {
+    @apply px-3 py-1 rounded-lg;
+    @apply text-sm;
+    @apply bg-red-100 dark:bg-red-900;
+    @apply text-red-700 dark:text-red-300;
+    @apply hover:bg-red-200 dark:hover:bg-red-800;
+}
+
+/* Lists */
 .settings-list {
     @apply space-y-4;
 }
 
 .setting-item {
-    @apply flex justify-between items-center py-3;
+    @apply py-3;
+    @apply flex justify-between items-center;
 }
 
 .setting-title {
-    @apply text-sm font-medium text-gray-700 dark:text-gray-300;
+    @apply text-sm font-medium;
+    @apply text-gray-700 dark:text-gray-300;
 }
 
-/* Category Management */
+/* Categories */
 .category-list {
     @apply space-y-3;
 }
 
 .category-item {
-    @apply flex justify-between items-center py-2;
+    @apply py-2;
+    @apply flex justify-between items-center;
 }
 
 .category-name {
-    @apply text-sm text-gray-700 dark:text-gray-300;
+    @apply text-sm;
+    @apply text-gray-700 dark:text-gray-300;
 }
 
 .category-actions {
     @apply flex gap-2;
 }
 
-.edit-button {
-    @apply px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300
-    rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600;
-}
-
-.delete-button {
-    @apply px-3 py-1 text-sm bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300
-    rounded-lg hover:bg-red-200 dark:hover:bg-red-800;
-}
-
-.add-button {
-    @apply mt-4 w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300
-    rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 text-sm;
-}
-
-/* Toggle and Select */
+/* Form Controls */
 .toggle {
-    @apply h-5 w-10 rounded-full bg-gray-200 dark:bg-gray-700
-    checked:bg-blue-600 transition-colors duration-200;
+    @apply h-5 w-10 rounded-full;
+    @apply bg-gray-200 dark:bg-gray-700;
+    @apply checked:bg-blue-600;
+    @apply transition-colors duration-200;
 }
 
 .select-field {
-    @apply px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600
-    rounded-lg text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-blue-500;
+    @apply px-3 py-2 rounded-lg;
+    @apply bg-white dark:bg-gray-700;
+    @apply text-gray-700 dark:text-gray-300;
+    @apply border border-gray-300 dark:border-gray-600;
+    @apply focus:ring-2 focus:ring-blue-500;
 }
