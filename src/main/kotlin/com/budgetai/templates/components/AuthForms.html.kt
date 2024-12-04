@@ -77,3 +77,17 @@ fun DIV.registerForm() {
         }
     }
 }
+
+fun DIV.logoutButton(classes: String = "") {
+    button(classes = "logout-button $classes") {
+        attributes["hx-post"] = "/auth/logout"
+        attributes["hx-redirect"] = "/auth"
+        attributes["hx-indicator"] = "#logout-loading"
+        span {
+            +"Logout"
+        }
+        span(classes = "loading-indicator htmx-indicator") {
+            id = "logout-loading" +"..."
+        }
+    }
+}
