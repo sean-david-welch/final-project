@@ -1,5 +1,6 @@
 package com.budgetai.utils
 
+import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm.HMAC256
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.server.application.*
@@ -28,10 +29,8 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
 
     jwtCookie?.let { token ->
         try {
-            // Get the JWT verifier from your auth config
-            val jwtVerifier = application.environment.config.property("jwt.verifier").getString()
-            // You'll need to implement this extension function
-            val validatedToken = application.validateJwtToken(token, jwtVerifier)
+            val jwtSecret = application.environment.config.property("jwt.secret").getString()
+            val validatedToken = application.validateJwtToken(token, jwtSecret)
 
             if (validatedToken != null) {
                 userPrincipal = UserPrincipal(
@@ -57,13 +56,13 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
 }
 
 // Add this extension function to your Application class
-fun Application.validateJwtToken(token: String, verifier: String): DecodedJWT? {
+fun Application.validateJwtToken(token: String, secret: String): DecodedJWT? {
     return try {
         val jwtConfig = environment.config.config("jwt")
         val issuer = jwtConfig.property("issuer").getString()
         val audience = jwtConfig.property("audience").getString()
 
-        com.auth0.jwt.JWT.require(HMAC256(verifier)).withIssuer(issuer).withAudience(audience).build().verify(token)
+        JWT.require(HMAC256(secret)).withIssuer(issuer).withAudience(audience).build().verify(token)
     } catch (e: Exception) {
         logger.error("JWT validation failed: ${e.message}")
         null
