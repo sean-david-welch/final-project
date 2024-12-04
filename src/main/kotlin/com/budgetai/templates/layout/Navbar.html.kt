@@ -27,9 +27,8 @@ fun FlowContent.Navbar(context: BaseTemplateContext) {
                         defaultNavItems.forEach { item ->
                             li {
                                 a(href = item.href) {
-                                    classes = if (item.isActive) setOf("nav-item-active") else setOf(
-                                        "nav-item-inactive"
-                                    ) + item.text
+                                    classes = if (item.isActive) setOf("nav-item-active") else setOf("nav-item-inactive")
+                                    +item.text
                                 }
                             }
                         }
