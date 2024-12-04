@@ -13,6 +13,10 @@ fun Route.mainRoutes() {
     }
     get("/auth") {
         val context = call.createTemplateContext()
-        call.respondText(text = createAuthPage(context), contentType = ContentType.Text.Html)
+        if (context.auth.isAuthenticated) {
+            call.respondRedirect("/dashboard")
+        } else {
+            call.respondText(text = createAuthPage(context), contentType = ContentType.Text.Html)
+        }
     }
 }
