@@ -78,7 +78,7 @@ fun DIV.registerForm() {
     }
 }
 
-fun DIV.logoutButton(classes: String = "") {
+fun FlowContent.logoutButton(classes: String = "") {
     button(classes = "logout-button $classes") {
         attributes["hx-post"] = "/auth/logout"
         attributes["hx-redirect"] = "/auth"
@@ -87,7 +87,8 @@ fun DIV.logoutButton(classes: String = "") {
             +"Logout"
         }
         span(classes = "loading-indicator htmx-indicator") {
-            id = "logout-loading" + "..."
+            id = "logout-loading"
+            +"..."
         }
     }
 }
