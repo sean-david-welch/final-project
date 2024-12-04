@@ -130,7 +130,6 @@ fun Route.authRoutes(service: UserService) {
                         secure = cookieConfig.secure, httpOnly = cookieConfig.httpOnly
                     )
                 )
-                call.response.headers.append("HX-Refresh", "true")
                 call.response.headers.append(HttpHeaders.Location, "/auth")
                 call.respond(HttpStatusCode.Found)
             }
