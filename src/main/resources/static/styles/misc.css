@@ -1,13 +1,123 @@
+/* Base Message Styles */
+.message-base {
+    @apply p-4 mb-4 rounded-lg shadow-sm;
+    @apply flex items-center gap-3;
+    @apply text-sm font-medium;
+    @apply bg-gray-50 dark:bg-gray-800;
+    @apply text-gray-900 dark:text-white;
+    @apply border border-gray-200 dark:border-gray-700;
+    @apply animate-[fadeIn_0.3s_ease-in_forwards];
+}
+
+/* Message Icon Base */
+.message-icon-base {
+    @apply w-5 h-5;
+    @apply flex items-center justify-center;
+    @apply rounded-full;
+    @apply font-bold text-sm;
+}
+
+/* Success Message */
+.success-message {
+    @apply message-base;
+}
+
+.success-message::before {
+    @apply message-icon-base;
+    @apply content-['✓'];
+    @apply bg-emerald-100 dark:bg-emerald-900;
+    @apply text-emerald-700 dark:text-emerald-200;
+}
+
+/* Error Message */
+.error-message {
+    @apply message-base;
+}
+
+.error-message::before {
+    @apply message-icon-base;
+    @apply content-['✕'];
+    @apply bg-red-100 dark:bg-red-900;
+    @apply text-red-700 dark:text-red-200;
+}
+
+/* Message Dismissible Variant */
+.message-dismissible {
+    @apply pr-12 relative;
+}
+
+.message-close {
+    @apply absolute right-4 top-4;
+    @apply w-5 h-5 rounded-full;
+    @apply flex items-center justify-center;
+    @apply text-gray-500 dark:text-gray-400;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-700;
+    @apply transition-colors duration-200;
+}
+
+/* Error Pages Layout */
+.error-content {
+    @apply max-w-2xl mx-auto text-center;
+    @apply px-4 py-16 sm:px-6 sm:py-24;
+    @apply space-y-8;
+}
+
+.error-header {
+    @apply space-y-4;
+}
+
+.error-code {
+    @apply text-7xl font-bold tracking-tight;
+    @apply text-gray-900 dark:text-white;
+}
+
+.error-title {
+    @apply text-2xl sm:text-3xl font-semibold;
+    @apply text-gray-800 dark:text-gray-200;
+}
+
+.error-message {
+    @apply mt-6 mb-6 text-base leading-7;
+    @apply max-w-lg mx-auto;
+    @apply text-gray-600 dark:text-gray-400;
+}
+
+.error-buttons {
+    @apply mt-10 gap-4;
+    @apply flex flex-col sm:flex-row;
+    @apply justify-center items-center;
+}
+
+/* Error Button Base */
+.error-button {
+    @apply w-full sm:w-auto;
+    @apply px-6 py-3 rounded-lg;
+    @apply font-medium;
+    @apply bg-white dark:bg-gray-900;
+    @apply text-gray-900 dark:text-white;
+    @apply border border-gray-200 dark:border-gray-700;
+    @apply hover:bg-gray-50 dark:hover:bg-gray-800;
+    @apply shadow-sm hover:shadow;
+    @apply transition-all duration-200;
+}
+
+.error-button-primary {
+    @apply bg-gray-900 dark:bg-white;
+    @apply text-white dark:text-gray-900;
+    @apply border-transparent;
+    @apply hover:bg-gray-800 dark:hover:bg-gray-100;
+}
+
 /* Logout Button */
 .logout-button {
-    @apply px-4 py-2
-    bg-gray-50 hover:bg-gray-100
-    dark:bg-gray-800 dark:hover:bg-gray-700
-    text-gray-900 dark:text-white
-    rounded-lg transition-colors duration-200
-    flex items-center justify-center gap-2
-    font-medium
-    border border-gray-200 dark:border-gray-700;
+    @apply px-4 py-2 rounded-lg;
+    @apply flex items-center justify-center gap-2;
+    @apply font-medium;
+    @apply bg-gray-50 dark:bg-gray-800;
+    @apply text-gray-900 dark:text-white;
+    @apply border border-gray-200 dark:border-gray-700;
+    @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+    @apply transition-colors duration-200;
 }
 
 .logout-button .loading-indicator {
@@ -18,55 +128,8 @@
     @apply opacity-100;
 }
 
-/* Optional: Add a disabled state during request */
 .logout-button.htmx-request {
     @apply opacity-75 cursor-not-allowed;
-}
-
-
-/* Base Message Styles */
-.message-base {
-    @apply p-4 mb-4 rounded-lg
-    flex items-center gap-3
-    text-sm font-medium
-    animate-[fadeIn_0.3s_ease-in_forwards]
-    shadow-sm;
-}
-
-/* Success Message */
-.success-message {
-    @apply message-base
-    bg-gray-50 dark:bg-gray-800
-    text-gray-900 dark:text-white
-    border border-gray-200 dark:border-gray-700;
-}
-
-.success-message::before {
-    @apply content-['✓']
-    w-5 h-5
-    flex items-center justify-center
-    rounded-full
-    bg-emerald-100 dark:bg-emerald-900
-    text-emerald-700 dark:text-emerald-200
-    font-bold text-sm;
-}
-
-/* Error Message */
-.error-message {
-    @apply message-base
-    bg-gray-50 dark:bg-gray-800
-    text-gray-900 dark:text-white
-    border border-gray-200 dark:border-gray-700;
-}
-
-.error-message::before {
-    @apply content-['✕']
-    w-5 h-5
-    flex items-center justify-center
-    rounded-full
-    bg-red-100 dark:bg-red-900
-    text-red-700 dark:text-red-200
-    font-bold text-sm;
 }
 
 /* Animation */
@@ -77,74 +140,4 @@
     to {
         @apply opacity-100 translate-y-0;
     }
-}
-
-/* Optional: Dismissible message with close button */
-.message-dismissible {
-    @apply pr-12 relative;
-}
-
-.message-close {
-    @apply absolute right-4 top-4
-    w-5 h-5
-    flex items-center justify-center
-    rounded-full
-    hover:bg-gray-200 dark:hover:bg-gray-700
-    text-gray-500 dark:text-gray-400
-    transition-colors duration-200;
-}
-
-/* Error Pages Layout */
-.error-content {
-    @apply max-w-2xl mx-auto px-4 py-16 sm:px-6 sm:py-24 space-y-8
-    text-center;
-}
-
-.error-header {
-    @apply space-y-4;
-}
-
-.error-code {
-    @apply text-7xl font-bold
-    text-gray-900 dark:text-white
-    tracking-tight;
-}
-
-.error-title {
-    @apply text-2xl font-semibold
-    text-gray-800 dark:text-gray-200
-    sm:text-3xl;
-}
-
-.error-message {
-    @apply mt-6 text-base
-    text-gray-600 dark:text-gray-400
-    max-w-lg mx-auto
-    leading-7;
-}
-
-.error-buttons {
-    @apply mt-10 flex flex-col sm:flex-row
-    justify-center items-center gap-4;
-}
-
-.error-button {
-    @apply w-full sm:w-auto
-    px-6 py-3
-    bg-white dark:bg-gray-900
-    text-gray-900 dark:text-white
-    border border-gray-200 dark:border-gray-700
-    rounded-lg
-    hover:bg-gray-50 dark:hover:bg-gray-800
-    transition-all duration-200
-    shadow-sm hover:shadow
-    font-medium;
-}
-
-/* Primary action button variation */
-.error-button-primary {
-    @apply bg-gray-900 dark:bg-white
-    text-white dark:text-gray-900
-    border-transparent
-    hover:bg-gray-800 dark:hover:bg-gray-100;
 }
