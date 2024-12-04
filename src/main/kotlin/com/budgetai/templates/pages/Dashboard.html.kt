@@ -1,7 +1,8 @@
 package com.budgetai.templates.pages
 
+import com.budgetai.templates.layout.BaseTemplate
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
-import com.budgetai.templates.layout.*
 
 fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
     main(classes = "dashboard-layout") {
@@ -12,7 +13,8 @@ fun DashboardTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
     }
 }
 
-fun createDashboardPage() = DashboardTemplate("Dashboard Overview") {
+fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashboard Overview") {
+    if (context.auth.isAuthenticated) { h1 { +"Youre logged in!!!" } }
     div(classes = "stats-grid") {
         repeat(3) { index ->
             div(classes = "stat-card") {
