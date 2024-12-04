@@ -1,20 +1,20 @@
-/* Navbar container styles */
+/* Navbar Base */
 .navbar {
     @apply bg-gray-800;
 }
 
-.nav-logo {
-    @apply w-16;
-}
-
+/* Navbar Container */
 .navbar-container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-7xl;
+    @apply px-4 sm:px-6 lg:px-8;
 }
 
 .navbar-content {
-    @apply flex h-16 items-center justify-between;
+    @apply h-16;
+    @apply flex items-center justify-between;
 }
 
+/* Brand Section */
 .navbar-brand-container {
     @apply flex items-center justify-center;
 }
@@ -23,28 +23,45 @@
     @apply flex-shrink-0;
 }
 
-.navbar-brand-text {
-    @apply text-white text-xl font-bold;
+.nav-logo {
+    @apply w-16;
 }
 
-/* Navigation menu styles */
+.navbar-brand-text {
+    @apply text-xl font-bold;
+    @apply text-white;
+}
+
+/* Desktop Navigation */
 .navbar-desktop-menu {
-    @apply hidden md:block ml-10;
+    @apply hidden md:block;
+    @apply ml-10;
 }
 
 .navbar-menu-container {
-    @apply flex items-baseline space-x-4;
+    @apply flex items-baseline;
+    @apply space-x-4;
 }
 
 .navbar-menu-list {
-    @apply flex space-x-4;
+    @apply flex;
+    @apply space-x-4;
 }
 
-/* Navigation items */
+/* Navigation Items */
+.nav-item-base {
+    @apply px-3 py-2 rounded-md;
+    @apply text-sm font-medium;
+}
+
 .nav-item-active {
-    @apply px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-md;
+    @apply nav-item-base;
+    @apply bg-gray-900;
+    @apply text-white;
 }
 
 .nav-item-inactive {
-    @apply px-3 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-md;
+    @apply nav-item-base;
+    @apply text-gray-300;
+    @apply hover:text-white hover:bg-gray-700;
 }
