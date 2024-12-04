@@ -130,7 +130,8 @@ fun Route.authRoutes(service: UserService) {
                         secure = cookieConfig.secure, httpOnly = cookieConfig.httpOnly
                     )
                 )
-                call.respond(HttpStatusCode.OK, "Logged out successfully")
+                call.response.headers.append(HttpHeaders.Location, "/auth")
+                call.respond(HttpStatusCode.Found)
             }
         }
 
