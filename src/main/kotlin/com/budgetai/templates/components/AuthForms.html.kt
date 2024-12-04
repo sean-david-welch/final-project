@@ -83,12 +83,7 @@ fun FlowContent.logoutButton() {
         attributes["hx-post"] = "/auth/logout"
         attributes["hx-redirect"] = "/auth"
         attributes["hx-indicator"] = "#logout-loading"
-        span {
-            +"Logout"
-        }
-        span(classes = "loading-indicator htmx-indicator") {
-            id = "logout-loading"
-            +"..."
-        }
+        span { +"Logout" }
+        span(classes = "loading-indicator htmx-indicator") { id = "logout-loading" +"..."}
     }
 }
