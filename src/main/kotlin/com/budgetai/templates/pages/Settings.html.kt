@@ -73,5 +73,14 @@ fun createSettingsPage(context: BaseTemplateContext) = SettingsTemplate("Account
                 }
             }
         }
+
+        // Admin Panel Link - Only shown to admins
+        if (context.auth.isAdmin) {
+            div(classes = "admin-access-section") {
+                a(href = "/admin", classes = "admin-link-button") {
+                    +"Access Admin Panel"
+                }
+            }
+        }
     }
 }
