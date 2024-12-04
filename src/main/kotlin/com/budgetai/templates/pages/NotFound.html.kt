@@ -14,17 +14,17 @@ fun NotFoundTemplate(contentFn: DIV.() -> Unit) = BaseTemplate {
 }
 
 fun create404Page() = NotFoundTemplate {
-    div(classes = "space-y-6") {
-        div {
-            h1(classes = "text-6xl font-bold text-gray-900 dark:text-white") { +"404" }
-            p(classes = "mt-2 text-xl text-gray-600 dark:text-gray-400") { +"Page Not Found" }
+    div(classes = "error-content") {
+        div(classes = "error-header") {
+            h1(classes = "error-code") { +"404" }
+            p(classes = "error-title") { +"Page Not Found" }
         }
 
-        p(classes = "text-gray-500 dark:text-gray-300") {
+        p(classes = "error-message") {
             +"The page you're looking for doesn't exist or has been moved."
         }
 
-        a(href = "/", classes = "inline-block mt-4 px-4 py-2 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors") {
+        a(href = "/", classes = "error-button") {
             +"Return Home"
         }
     }
