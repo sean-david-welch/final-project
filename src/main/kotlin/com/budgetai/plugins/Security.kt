@@ -3,6 +3,7 @@ package com.budgetai.plugins
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.budgetai.templates.pages.create403Page
+import com.budgetai.utils.templateContext
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import io.ktor.server.application.*
@@ -46,7 +47,7 @@ fun Application.configureSecurity(config: ApplicationConfig) {
             }
             challenge { _, _ ->
                 call.respondText(
-                    text = create403Page(), contentType = ContentType.Text.Html, status = HttpStatusCode.Forbidden
+                    text = create403Page(call.templateContext), contentType = ContentType.Text.Html, status = HttpStatusCode.Forbidden
                 )
             }
             authHeader { call ->
