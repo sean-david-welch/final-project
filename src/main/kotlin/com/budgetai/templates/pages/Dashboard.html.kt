@@ -14,7 +14,6 @@ fun DashboardTemplate(title: String, context: BaseTemplateContext, contentFn: DI
 }
 
 fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashboard Overview", context) {
-    if (context.auth.isAuthenticated) { h1 { +"Youre logged in!!!" } }
     div(classes = "stats-grid") {
         repeat(3) { index ->
             div(classes = "stat-card") {
