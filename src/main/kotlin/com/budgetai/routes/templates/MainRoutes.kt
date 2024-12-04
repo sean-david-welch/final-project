@@ -8,6 +8,11 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.mainRoutes() {
+    get("{...}") {
+        call.respondText("Page not found", status = HttpStatusCode.NotFound)
+        // Or for HTML:
+        // call.respondText(create404Page(), contentType = ContentType.Text.Html)
+    }
     get("/") {
         call.respondText(text = createHomePage(), contentType = ContentType.Text.Html)
     }
