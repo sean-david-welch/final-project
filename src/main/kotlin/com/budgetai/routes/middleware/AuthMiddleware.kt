@@ -1,5 +1,7 @@
 package com.budgetai.routes.middleware
 
+import com.budgetai.templates.pages.create403Page
+import com.budgetai.utils.templateContext
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -15,6 +17,7 @@ val logger: Logger = LoggerFactory.getLogger("AuthMiddleware")
 // Helper function to handle auth failures
 
 class AuthenticationException(message: String) : Exception(message)
+
 private suspend fun ApplicationCall.handleAuthFailure(block: suspend () -> Unit) {
     try {
         block()
@@ -39,10 +42,11 @@ fun JWTPrincipal.requireRole(role: String) {
 fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
     onCall { call ->
         try {
-            call.principal<JWTPrincipal>()?.requireRole(role)
-                ?: throw AuthenticationException("No principal found")
+            call.principal<JWTPrincipal>()?.requireRole(role) ?: throw AuthenticationException("No principal found")
         } catch (e: AuthenticationException) {
-            call.respond(HttpStatusCode.Forbidden, "Access denied: ${e.message}")
+            call.respondText(
+                text = create403Page(call.templateContext), contentType = ContentType.Text.Html, status = HttpStatusCode.Forbidden
+            )
             throw e
         }
     }
