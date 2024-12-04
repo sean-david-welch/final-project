@@ -12,7 +12,8 @@ import io.ktor.server.routing.*
 
 fun Route.mainRoutes() {
     get("/") {
-        call.respondText(text = createHomePage(), contentType = ContentType.Text.Html)
+        val context = call.createTemplateContext()
+        call.respondText(text = createHomePage(context), contentType = ContentType.Text.Html)
     }
     get("/auth") {
         val context = call.createTemplateContext()
