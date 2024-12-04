@@ -2,11 +2,14 @@ package com.budgetai.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.budgetai.templates.pages.create403Page
+import io.ktor.http.*
 import io.ktor.http.auth.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.config.*
+import io.ktor.server.response.*
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("Security")
@@ -40,6 +43,13 @@ fun Application.configureSecurity(config: ApplicationConfig) {
                     logger.warn("JWT validation failed - Expected audience: $jwtAudience, Got: ${credential.payload.audience}")
                     null
                 }
+            }
+            challenge { _, _ ->
+                call.respondText(
+                    text = create403Page(),
+                    contentType = ContentType.Text.Html,
+                    status = HttpStatusCode.Forbidden
+                )
             }
             authHeader { call ->
                 val cookie = call.request.cookies["jwt_token"]
