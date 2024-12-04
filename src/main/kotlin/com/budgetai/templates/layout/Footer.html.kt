@@ -1,5 +1,6 @@
 package com.budgetai.templates.layout
 
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
 data class FooterLink(val text: String, val href: String)
@@ -8,7 +9,7 @@ val links = listOf(
     FooterLink("Privacy", "/privacy"), FooterLink("Terms", "/terms")
 )
 
-fun FlowContent.Footer() {
+fun FlowContent.Footer(context: BaseTemplateContext) {
     footer(classes = "footer") {
         div(classes = "footer-container") {
             div(classes = "footer-copyright") { +"© ${java.time.Year.now().value} BudgetAI" }
