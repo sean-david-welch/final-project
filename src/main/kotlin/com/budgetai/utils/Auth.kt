@@ -2,10 +2,7 @@ package com.budgetai.utils
 
 import com.auth0.jwt.algorithms.Algorithm.HMAC256
 import com.auth0.jwt.interfaces.DecodedJWT
-import com.auth0.jwt.interfaces.Payload
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import org.slf4j.LoggerFactory
 
