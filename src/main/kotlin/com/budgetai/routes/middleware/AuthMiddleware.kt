@@ -8,17 +8,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 // Custom exception for auth failures
-class AuthenticationException(message: String) : Exception(message)
-
-// Extension function for role validation
-fun JWTPrincipal.requireRole(role: String) {
-    val userRole = payload.getClaim("role")?.asString()
-    if (userRole != role) {
-        throw AuthenticationException("Insufficient permissions")
-    }
-}
-
 // Helper function to handle auth failures
+class AuthenticationException(message: String) : Exception(message)
 private suspend fun ApplicationCall.handleAuthFailure(block: suspend () -> Unit) {
     try {
         block()
@@ -30,7 +21,15 @@ private suspend fun ApplicationCall.handleAuthFailure(block: suspend () -> Unit)
     }
 }
 
-// Create plugins for role and token validation
+/// Custom middlware - Require role
+fun JWTPrincipal.requireRole(role: String) {
+    val userRole = payload.getClaim("role")?.asString()
+    if (userRole != role) {
+        throw AuthenticationException("Insufficient permissions")
+    }
+}
+
+// plugin for middleware
 fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
     onCall { call ->
         call.handleAuthFailure {
@@ -39,6 +38,7 @@ fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
     }
 }
 
+// call in route
 fun Route.requireRole(role: String, build: Route.() -> Unit) {
     authenticate {
         install(createRoleCheckPlugin(role))
