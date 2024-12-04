@@ -87,7 +87,7 @@ fun DIV.logoutButton(classes: String = "") {
             +"Logout"
         }
         span(classes = "loading-indicator htmx-indicator") {
-            id = "logout-loading" +"..."
+            id = "logout-loading" + "..."
         }
     }
 }
