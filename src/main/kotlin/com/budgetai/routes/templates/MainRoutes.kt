@@ -26,7 +26,7 @@ fun Route.mainRoutes() {
         throw RuntimeException("Test error")
     }
     route("/admin") {
-        requireRole(UserRole.STAFF.toString()) {
+        requireRole(UserRole.ADMIN.toString()) {
             get {
                 call.respondText(
                     text = "This is an admin route", contentType = ContentType.Text.Plain
