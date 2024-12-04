@@ -1,5 +1,6 @@
 package com.budgetai.templates.layout
 
+import com.budgetai.templates.components.logoutButton
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
@@ -17,6 +18,9 @@ fun FlowContent.Footer(context: BaseTemplateContext) {
                 links.forEach { link ->
                     a(href = link.href, classes = "footer-link") { +link.text }
                 }
+            }
+            if (context.auth.isAuthenticated) {
+                logoutButton("nav-item-inactive")
             }
         }
     }
