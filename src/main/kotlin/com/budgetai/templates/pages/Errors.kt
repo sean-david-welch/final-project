@@ -52,3 +52,26 @@ fun create404Page() = ErrorTemplate {
         }
     }
 }
+
+fun create500Page() = ErrorTemplate {
+    div(classes = "error-content") {
+        div(classes = "error-header") {
+            h1(classes = "error-code") { +"500" }
+            p(classes = "error-title") { +"Server Error" }
+        }
+
+        p(classes = "error-message") {
+            +"Something went wrong on our end. Please try again later or contact support if the problem persists."
+        }
+
+        div(classes = "error-buttons") {
+            a(href = "/", classes = "error-button mr-4") {
+                +"Return Home"
+            }
+            // Optional: Add a refresh button
+            a(href = "javascript:window.location.reload()", classes = "error-button") {
+                +"Try Again"
+            }
+        }
+    }
+}
