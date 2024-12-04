@@ -11,11 +11,8 @@ fun Route.dashboardRoutes() {
     route("/dashboard") {
         requireAuth {
             get("") {
-                        val context = call.createTemplateContext()
-
-                call.respondText(
-                    text = createDashboardPage(context), contentType = ContentType.Text.Html
-                )
+                val context = call.createTemplateContext()
+                call.respondText(text = createDashboardPage(context), contentType = ContentType.Text.Html)
             }
         }
     }
