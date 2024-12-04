@@ -1,7 +1,6 @@
 package com.budgetai.routes.templates
 
 import com.budgetai.models.UserRole
-import com.budgetai.routes.middleware.requireRole
 import com.budgetai.templates.pages.create404Page
 import com.budgetai.templates.pages.createAuthPage
 import com.budgetai.templates.pages.createHomePage
@@ -24,13 +23,13 @@ fun Route.mainRoutes() {
     get("/test-error") {
         throw RuntimeException("Test error")
     }
-    route("/admin") {
-        requireRole(UserRole.ADMIN.toString()) {
-            get {
-                call.respondText(
-                    text = "This is an admin route", contentType = ContentType.Text.Plain
-                )
-            }
+
+    get("/admin") {
+        if (!call.templateContext.auth.isAdmin) {
+            call.respondText(text = create404Page(call.templateContext), contentType = ContentType.Text.Html)
+
+        } else {
+            call.respondText(text = "This is an admin route", contentType = ContentType.Text.Plain)
         }
     }
     get("{...}") {
