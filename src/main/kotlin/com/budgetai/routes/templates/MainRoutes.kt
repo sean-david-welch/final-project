@@ -5,22 +5,20 @@ import com.budgetai.routes.middleware.requireRole
 import com.budgetai.templates.pages.create404Page
 import com.budgetai.templates.pages.createAuthPage
 import com.budgetai.templates.pages.createHomePage
-import com.budgetai.utils.createTemplateContext
+import com.budgetai.utils.templateContext
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.mainRoutes() {
     get("/") {
-        val context = call.createTemplateContext()
-        call.respondText(text = createHomePage(context), contentType = ContentType.Text.Html)
+        call.respondText(text = createHomePage(call.templateContext), contentType = ContentType.Text.Html)
     }
     get("/auth") {
-        val context = call.createTemplateContext()
-        if (context.auth.isAuthenticated) {
+        if (call.templateContext.auth.isAuthenticated) {
             call.respondRedirect("/dashboard")
         } else {
-            call.respondText(text = createAuthPage(context), contentType = ContentType.Text.Html)
+            call.respondText(text = createAuthPage(call.templateContext), contentType = ContentType.Text.Html)
         }
     }
     get("/test-error") {
