@@ -24,41 +24,74 @@
 }
 
 
-/* Messages */
+/* Base Message Styles */
+.message-base {
+    @apply p-4 mb-4 rounded-lg
+    flex items-center gap-3
+    text-sm font-medium
+    animate-[fadeIn_0.3s_ease-in_forwards]
+    shadow-sm;
+}
+
+/* Success Message */
 .success-message {
-    @apply p-4 mb-4 rounded-lg bg-green-50 dark:bg-green-900/30
-    text-green-700 dark:text-green-200
-    border border-green-200 dark:border-green-800
-    flex items-center;
+    @apply message-base
+    bg-gray-50 dark:bg-gray-800
+    text-gray-900 dark:text-white
+    border border-gray-200 dark:border-gray-700;
 }
 
-.error-message {
-    @apply p-4 mb-4 rounded-lg bg-red-50 dark:bg-red-900/30
-    text-red-700 dark:text-red-200
-    border border-red-200 dark:border-red-800
-    flex items-center;
-}
-
-/* Optional: Add icons to messages */
 .success-message::before {
-    @apply content-['✓'] mr-2 font-bold;
+    @apply content-['✓']
+    w-5 h-5
+    flex items-center justify-center
+    rounded-full
+    bg-emerald-100 dark:bg-emerald-900
+    text-emerald-700 dark:text-emerald-200
+    font-bold text-sm;
+}
+
+/* Error Message */
+.error-message {
+    @apply message-base
+    bg-gray-50 dark:bg-gray-800
+    text-gray-900 dark:text-white
+    border border-gray-200 dark:border-gray-700;
 }
 
 .error-message::before {
-    @apply content-['✕'] mr-2 font-bold;
+    @apply content-['✕']
+    w-5 h-5
+    flex items-center justify-center
+    rounded-full
+    bg-red-100 dark:bg-red-900
+    text-red-700 dark:text-red-200
+    font-bold text-sm;
 }
 
-.animate-fade-in {
-    @apply opacity-0 animate-[fadeIn_0.3s_ease-in_forwards];
-}
-
+/* Animation */
 @keyframes fadeIn {
     from {
-        @apply opacity-0 transform translate-y-1;
+        @apply opacity-0 translate-y-1;
     }
     to {
-        @apply opacity-100 transform translate-y-0;
+        @apply opacity-100 translate-y-0;
     }
+}
+
+/* Optional: Dismissible message with close button */
+.message-dismissible {
+    @apply pr-12 relative;
+}
+
+.message-close {
+    @apply absolute right-4 top-4
+    w-5 h-5
+    flex items-center justify-center
+    rounded-full
+    hover:bg-gray-200 dark:hover:bg-gray-700
+    text-gray-500 dark:text-gray-400
+    transition-colors duration-200;
 }
 
 /* Error Pages Layout */
