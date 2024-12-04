@@ -1,19 +1,24 @@
 /* Base Layout */
 .auth-layout {
-    @apply min-h-screen bg-gray-50 dark:bg-gray-800 flex items-center justify-center;
+    @apply min-h-screen;
+    @apply flex items-center justify-center;
+    @apply bg-gray-50 dark:bg-gray-800;
 }
 
 .auth-container {
-    @apply w-full max-w-md px-4 py-8;
+    @apply w-full max-w-md;
+    @apply px-4 py-8;
 }
 
 .auth-card {
-    @apply bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8;
+    @apply p-8 rounded-2xl shadow-lg;
+    @apply bg-white dark:bg-gray-900;
 }
 
 /* Header */
 .auth-header {
-    @apply text-center mb-8;
+    @apply mb-8;
+    @apply text-center;
 }
 
 .logo-container {
@@ -21,30 +26,37 @@
 }
 
 .logo-placeholder {
-    @apply w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-lg mx-auto;
+    @apply w-16 h-16 mx-auto rounded-lg;
+    @apply bg-blue-100 dark:bg-blue-900;
 }
 
 .welcome-text {
-    @apply text-2xl font-bold text-gray-900 dark:text-white mb-2;
+    @apply mb-2;
+    @apply text-2xl font-bold;
+    @apply text-gray-900 dark:text-white;
 }
 
 .subtitle {
-    @apply text-sm text-gray-600 dark:text-gray-400;
+    @apply text-sm;
+    @apply text-gray-600 dark:text-gray-400;
 }
 
 /* Tabs */
 .auth-tabs {
-    @apply flex space-x-4 mb-6;
+    @apply mb-6;
+    @apply flex space-x-4;
 }
 
 .tab-button {
-    @apply flex-1 py-2 text-sm font-medium rounded-lg
-    text-gray-500 dark:text-gray-400
-    hover:text-gray-700 dark:hover:text-gray-200;
+    @apply flex-1 py-2 rounded-lg;
+    @apply text-sm font-medium;
+    @apply text-gray-500 dark:text-gray-400;
+    @apply hover:text-gray-700 dark:hover:text-gray-200;
 }
 
 .tab-button.active {
-    @apply bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-200;
+    @apply bg-blue-50 dark:bg-blue-900;
+    @apply text-blue-600 dark:text-blue-200;
 }
 
 /* Forms */
@@ -57,15 +69,18 @@
 }
 
 .form-group label {
-    @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+    @apply block;
+    @apply text-sm font-medium;
+    @apply text-gray-700 dark:text-gray-300;
 }
 
 .input-field {
-    @apply w-full px-3 py-2 border border-gray-300 dark:border-gray-600
-    rounded-lg bg-white dark:bg-gray-700
-    text-gray-900 dark:text-white
-    focus:ring-2 focus:ring-blue-500 focus:border-transparent
-    placeholder-gray-400 dark:placeholder-gray-500;
+    @apply w-full px-3 py-2 rounded-lg;
+    @apply bg-white dark:bg-gray-700;
+    @apply text-gray-900 dark:text-white;
+    @apply border border-gray-300 dark:border-gray-600;
+    @apply placeholder-gray-400 dark:placeholder-gray-500;
+    @apply focus:ring-2 focus:ring-blue-500 focus:border-transparent;
 }
 
 .password-input-wrapper {
@@ -73,15 +88,18 @@
 }
 
 .show-password-button {
-    @apply absolute right-3 top-1/2 -translate-y-1/2
-    text-sm text-gray-500 dark:text-gray-400
-    hover:text-gray-700 dark:hover:text-gray-200;
+    @apply absolute right-3 top-1/2 -translate-y-1/2;
+    @apply text-sm;
+    @apply text-gray-500 dark:text-gray-400;
+    @apply hover:text-gray-700 dark:hover:text-gray-200;
 }
 
 .submit-button {
-    @apply w-full py-2 px-4 bg-blue-600 text-white rounded-lg
-    hover:bg-blue-700 transition-colors duration-200
-    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    @apply w-full px-4 py-2 rounded-lg;
+    @apply bg-blue-600 hover:bg-blue-700;
+    @apply text-white;
+    @apply transition-colors duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
 }
 
 /* Forms Container */
