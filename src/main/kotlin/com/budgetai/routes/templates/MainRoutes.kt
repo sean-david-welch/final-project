@@ -1,6 +1,7 @@
 package com.budgetai.routes.templates
 
 import com.budgetai.models.UserRole
+import com.budgetai.templates.pages.create403Page
 import com.budgetai.templates.pages.create404Page
 import com.budgetai.templates.pages.createAuthPage
 import com.budgetai.templates.pages.createHomePage
@@ -26,7 +27,7 @@ fun Route.mainRoutes() {
 
     get("/admin") {
         if (!call.templateContext.auth.isAdmin) {
-            call.respondText(text = create404Page(call.templateContext), contentType = ContentType.Text.Html)
+            call.respondText(text = create403Page(call.templateContext), contentType = ContentType.Text.Html)
 
         } else {
             call.respondText(text = "This is an admin route", contentType = ContentType.Text.Plain)
