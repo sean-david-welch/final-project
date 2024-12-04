@@ -10,7 +10,7 @@ import io.ktor.server.routing.*
 fun Route.dashboardRoutes() {
     route("/dashboard") {
         authenticate {
-            get("") {
+            get {
                 val context = call.createTemplateContext()
                 call.respondText(text = createDashboardPage(context), contentType = ContentType.Text.Html)
             }
