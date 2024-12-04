@@ -1,6 +1,5 @@
 package com.budgetai.routes.templates
 
-import com.budgetai.models.UserRole
 import com.budgetai.templates.pages.*
 import com.budgetai.utils.templateContext
 import io.ktor.http.*
