@@ -3,6 +3,7 @@ package com.budgetai.utils
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm.HMAC256
 import com.auth0.jwt.interfaces.DecodedJWT
+import com.budgetai.models.UserRole
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.application.*
 import io.ktor.server.config.*
@@ -19,13 +20,15 @@ data class UserPrincipal(
 )
 
 data class AuthContext(
-    val user: UserPrincipal? = null, val isAuthenticated: Boolean = false
+    val user: UserPrincipal? = null, val isAuthenticated: Boolean = false, val isAdmin: Boolean = false,
 )
 
 fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
     val jwtCookie = request.cookies["jwt_token"]
     var userPrincipal: UserPrincipal? = null
     var isAuthenticated = false
+    var isAdmin = false
+
 
     jwtCookie?.let { token ->
         try {
@@ -34,11 +37,13 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
             val validatedToken = validateJwtToken(token, secret, config)
 
             if (validatedToken != null) {
+                val role = validatedToken.getClaim("role").asString()
                 userPrincipal = UserPrincipal(
                     id = validatedToken.getClaim("id").asString(), email = validatedToken.getClaim("email").asString(),
                     role = validatedToken.getClaim("role").asString()
                 )
                 isAuthenticated = true
+                isAdmin = role == UserRole.ADMIN.toString()
             }
         } catch (e: Exception) {
             logger.error("Error validating JWT token: ${e.message}")
