@@ -63,33 +63,55 @@
 
 /* Error Pages Layout */
 .error-content {
-    @apply space-y-6;
+    @apply max-w-2xl mx-auto px-4 py-16 sm:px-6 sm:py-24 space-y-8
+    text-center;
 }
 
 .error-header {
-    @apply space-y-2;
+    @apply space-y-4;
 }
 
 .error-code {
-    @apply text-6xl font-bold text-gray-900 dark:text-white;
+    @apply text-7xl font-bold
+    text-gray-900 dark:text-white
+    tracking-tight;
 }
 
 .error-title {
-    @apply text-xl text-gray-600 dark:text-gray-400;
+    @apply text-2xl font-semibold
+    text-gray-800 dark:text-gray-200
+    sm:text-3xl;
 }
 
 .error-message {
-    @apply text-gray-500 dark:text-gray-300 max-w-md mx-auto;
+    @apply mt-6 text-base
+    text-gray-600 dark:text-gray-400
+    max-w-lg mx-auto
+    leading-7;
 }
 
 .error-buttons {
-    @apply flex justify-center space-x-4;
+    @apply mt-10 flex flex-col sm:flex-row
+    justify-center items-center gap-4;
 }
 
 .error-button {
-    @apply inline-block px-6 py-3 bg-gray-50 dark:bg-gray-800
-    text-gray-900 dark:text-white rounded-lg
-    hover:bg-gray-100 dark:hover:bg-gray-700
-    transition-colors duration-200
-    shadow-sm hover:shadow-md;
+    @apply w-full sm:w-auto
+    px-6 py-3
+    bg-white dark:bg-gray-900
+    text-gray-900 dark:text-white
+    border border-gray-200 dark:border-gray-700
+    rounded-lg
+    hover:bg-gray-50 dark:hover:bg-gray-800
+    transition-all duration-200
+    shadow-sm hover:shadow
+    font-medium;
+}
+
+/* Primary action button variation */
+.error-button-primary {
+    @apply bg-gray-900 dark:bg-white
+    text-white dark:text-gray-900
+    border-transparent
+    hover:bg-gray-800 dark:hover:bg-gray-100;
 }
