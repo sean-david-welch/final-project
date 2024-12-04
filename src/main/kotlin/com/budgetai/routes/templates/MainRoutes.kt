@@ -34,6 +34,6 @@ fun Route.mainRoutes() {
         }
     }
     get("{...}") {
-        call.respondText(text = create404Page(), contentType = ContentType.Text.Html)
+        call.respondText(text = create404Page(call.templateContext), contentType = ContentType.Text.Html)
     }
 }
