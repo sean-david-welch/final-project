@@ -1,5 +1,6 @@
 package com.budgetai.templates.layout
 
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
 // Navitem data class
@@ -11,7 +12,7 @@ val navItems = listOf(
 )
 
 // main navbar template
-fun FlowContent.Navbar() {
+fun FlowContent.Navbar(context: BaseTemplateContext) {
     nav(classes = "navbar") {
         div(classes = "navbar-container navbar-content") {
             a(classes = "navbar-brand-container", href = "/") {
