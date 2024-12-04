@@ -9,14 +9,16 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import org.jetbrains.exposed.sql.Database
+import org.slf4j.LoggerFactory
 
 fun Application.configureRouting(config: ApplicationConfig, database: Database? = null) {
+    val logger = LoggerFactory.getLogger("AuthContext")
 
     install(Resources)
     install(StatusPages) {
         // Handle specific exceptions
         exception<Throwable> { call, cause ->
-            log.error("Unhandled exception occurred", cause)
+            logger.error("Unhandled exception occurred", cause)
             call.respondText(
                 text = create500Page(),
                 contentType = ContentType.Text.Html,
