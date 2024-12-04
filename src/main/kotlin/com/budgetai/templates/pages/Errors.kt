@@ -1,10 +1,11 @@
 package com.budgetai.templates.pages
 
 import com.budgetai.templates.layout.BaseTemplate
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
 // Common error template for both 403 and 404
-fun ErrorTemplate(contentFn: DIV.() -> Unit) = BaseTemplate {
+fun ErrorTemplate(context: BaseTemplateContext,contentFn: DIV.() -> Unit) = BaseTemplate(context) {
     main(classes = "dashboard-layout") {
         div(classes = "dashboard-container flex items-center justify-center min-h-[80vh]") {
             div(classes = "content-wrapper text-center max-w-lg mx-auto") {
@@ -14,7 +15,7 @@ fun ErrorTemplate(contentFn: DIV.() -> Unit) = BaseTemplate {
     }
 }
 
-fun create403Page() = ErrorTemplate {
+fun create403Page(context: BaseTemplateContext) = ErrorTemplate(context) {
     div(classes = "error-content") {
         div(classes = "error-header") {
             h1(classes = "error-code") { +"403" }
@@ -36,7 +37,7 @@ fun create403Page() = ErrorTemplate {
     }
 }
 
-fun create404Page() = ErrorTemplate {
+fun create404Page(context: BaseTemplateContext) = ErrorTemplate(context) {
     div(classes = "error-content") {
         div(classes = "error-header") {
             h1(classes = "error-code") { +"404" }
@@ -53,7 +54,7 @@ fun create404Page() = ErrorTemplate {
     }
 }
 
-fun create500Page() = ErrorTemplate {
+fun create500Page(context: BaseTemplateContext) = ErrorTemplate(context) {
     div(classes = "error-content") {
         div(classes = "error-header") {
             h1(classes = "error-code") { +"500" }
