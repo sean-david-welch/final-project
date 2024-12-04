@@ -1,12 +1,13 @@
-/* Buttons */
+/* Logout Button */
 .logout-button {
     @apply px-4 py-2
-    bg-red-50 hover:bg-red-100
-    dark:bg-red-900 dark:hover:bg-red-800
-    text-red-600 dark:text-red-200
+    bg-gray-50 hover:bg-gray-100
+    dark:bg-gray-800 dark:hover:bg-gray-700
+    text-gray-900 dark:text-white
     rounded-lg transition-colors duration-200
     flex items-center justify-center gap-2
-    font-medium;
+    font-medium
+    border border-gray-200 dark:border-gray-700;
 }
 
 .logout-button .loading-indicator {
