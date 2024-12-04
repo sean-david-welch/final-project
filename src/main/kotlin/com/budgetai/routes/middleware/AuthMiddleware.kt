@@ -33,21 +33,33 @@ private suspend fun ApplicationCall.handleAuthFailure(block: suspend () -> Unit)
 fun JWTPrincipal.requireRole(role: String) {
     val userRole = payload.getClaim("role")?.asString()
     logger.info("Required role: $role, User role: $userRole")
+
+    if (userRole == null) {
+        throw AuthenticationException("Role claim not found in token")
+    }
+
     if (userRole != role) {
-        throw AuthenticationException("Insufficient permissions")
+        throw AuthenticationException("Insufficient permissions: required $role, found $userRole")
     }
 }
 
 // plugin for middleware
 fun createRoleCheckPlugin(role: String) = createRouteScopedPlugin("RoleCheck") {
     onCall { call ->
+        val principal = call.principal<JWTPrincipal>()
+        logger.info("Checking role: $role for principal: $principal")
+
         try {
-            call.principal<JWTPrincipal>()?.requireRole(role) ?: throw AuthenticationException("No principal found")
+            if (principal == null) {
+                logger.error("No principal found in call")
+                throw AuthenticationException("No principal found")
+            }
+            principal.requireRole(role)
         } catch (e: AuthenticationException) {
             call.respondText(
                 text = create403Page(call.templateContext), contentType = ContentType.Text.Html, status = HttpStatusCode.Forbidden
             )
-            throw e
+            return@onCall
         }
     }
 }
