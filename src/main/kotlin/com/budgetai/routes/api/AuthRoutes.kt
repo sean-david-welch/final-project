@@ -4,7 +4,6 @@ import com.budgetai.models.CookieConfig
 import com.budgetai.models.UserAuthenticationRequest
 import com.budgetai.models.UserCreationRequest
 import com.budgetai.plugins.TOKEN_EXPIRATION
-import com.budgetai.routes.middleware.requireAuth
 import com.budgetai.services.UserService
 import com.budgetai.templates.components.ResponseComponents
 import io.ktor.http.*
@@ -104,7 +103,7 @@ fun Route.authRoutes(service: UserService) {
             }
         }
 
-        requireAuth {
+        authenticate {
             // refresh token
             post("/refresh") {
                 val principal = call.principal<JWTPrincipal>()
