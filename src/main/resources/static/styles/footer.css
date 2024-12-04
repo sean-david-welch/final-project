@@ -1,28 +1,38 @@
-/* Footer styles */
+/* Footer Base */
 .footer {
-  @apply border-t bg-white dark:bg-gray-900;
+    @apply border-t;
+    @apply bg-white dark:bg-gray-900;
 }
 
 .footer-container {
-  @apply mx-auto max-w-7xl px-4 py-6 flex items-center justify-between;
+    @apply mx-auto max-w-7xl;
+    @apply px-4 py-6;
+    @apply flex items-center justify-between;
 }
 
+/* Footer Content */
 .footer-copyright {
-  @apply text-sm text-gray-600 dark:text-gray-400;
+    @apply text-sm;
+    @apply text-gray-600 dark:text-gray-400;
 }
 
 .footer-links-container {
-  @apply flex items-center space-x-6;
+    @apply flex items-center;
+    @apply space-x-6;
 }
 
 .footer-link {
-  @apply text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white;
+    @apply text-sm;
+    @apply text-gray-600 dark:text-gray-400;
+    @apply hover:text-gray-900 dark:hover:text-white;
 }
 
+/* Theme Toggle */
 .theme-toggle-button {
-  @apply text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white;
+    @apply text-gray-600 dark:text-gray-400;
+    @apply hover:text-gray-900 dark:hover:text-white;
 }
 
 .theme-toggle-icon {
-  @apply w-5 h-5;
+    @apply w-5 h-5;
 }
