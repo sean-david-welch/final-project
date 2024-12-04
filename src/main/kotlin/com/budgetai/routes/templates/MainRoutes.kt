@@ -1,5 +1,6 @@
 package com.budgetai.routes.templates
 
+import com.budgetai.templates.pages.create404Page
 import com.budgetai.templates.pages.createAuthPage
 import com.budgetai.templates.pages.createHomePage
 import com.budgetai.utils.createTemplateContext
@@ -9,9 +10,7 @@ import io.ktor.server.routing.*
 
 fun Route.mainRoutes() {
     get("{...}") {
-        call.respondText("Page not found", status = HttpStatusCode.NotFound)
-        // Or for HTML:
-        // call.respondText(create404Page(), contentType = ContentType.Text.Html)
+        call.respondText(text = create404Page(), contentType = ContentType.Text.Html)
     }
     get("/") {
         call.respondText(text = createHomePage(), contentType = ContentType.Text.Html)
