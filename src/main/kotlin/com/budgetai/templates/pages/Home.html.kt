@@ -1,12 +1,13 @@
 package com.budgetai.templates.pages
 
 import com.budgetai.templates.layout.BaseTemplate
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.h1
 import kotlinx.html.main
 
 import kotlinx.html.*
 
-fun HomeTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
+fun HomeTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.() -> Unit) = BaseTemplate(context) {
     main(classes = "home-layout") {
         div(classes = "home-container") {
             h1(classes = "page-title") { +title }
@@ -15,7 +16,7 @@ fun HomeTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
     }
 }
 
-fun createHomePage() = HomeTemplate("Welcome to BudgetAI") {
+fun createHomePage(context: BaseTemplateContext) = HomeTemplate("Welcome to BudgetAI", context) {
     // Hero Section
     div(classes = "hero-section") {
         div(classes = "hero-content") {
