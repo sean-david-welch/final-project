@@ -29,7 +29,6 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
     var isAuthenticated = false
     var isAdmin = false
 
-
     jwtCookie?.let { token ->
         try {
             val config = HoconApplicationConfig(ConfigFactory.load())
@@ -52,7 +51,7 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
 
     return BaseTemplateContext(
         auth = AuthContext(
-            user = userPrincipal, isAuthenticated = isAuthenticated
+            user = userPrincipal, isAuthenticated = isAuthenticated, isAdmin = isAdmin
         )
     )
 }
