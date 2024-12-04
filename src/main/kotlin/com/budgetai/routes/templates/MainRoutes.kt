@@ -17,17 +17,15 @@ fun Route.mainRoutes() {
             call.respondText(text = createAuthPage(call.templateContext), contentType = ContentType.Text.Html)
         }
     }
-    get("/test-error") {
-        throw RuntimeException("Test error")
-    }
-
     get("/admin") {
         if (!call.templateContext.auth.isAdmin) {
             call.respondText(text = create403Page(call.templateContext), contentType = ContentType.Text.Html)
-
         } else {
             call.respondText(text = createAdminPage(call.templateContext), contentType = ContentType.Text.Html)
         }
+    }
+    get("/test-error") {
+        throw RuntimeException("Test error")
     }
     get("{...}") {
         call.respondText(text = create404Page(call.templateContext), contentType = ContentType.Text.Html)
