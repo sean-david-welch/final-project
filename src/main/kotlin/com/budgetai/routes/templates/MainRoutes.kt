@@ -19,7 +19,7 @@ fun Route.mainRoutes() {
         if (context.auth.isAuthenticated) {
             call.respondRedirect("/dashboard")
         } else {
-            call.respondText(text = createAuthPage(), contentType = ContentType.Text.Html)
+            call.respondText(text = createAuthPage(context), contentType = ContentType.Text.Html)
         }
     }
     get("/test-error") {
