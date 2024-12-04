@@ -20,7 +20,7 @@ fun FlowContent.Footer(context: BaseTemplateContext) {
                 }
             }
             if (context.auth.isAuthenticated) {
-                logoutButton("nav-item-inactive")
+                logoutButton()
             }
         }
     }

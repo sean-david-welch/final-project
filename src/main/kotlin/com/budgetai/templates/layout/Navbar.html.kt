@@ -34,7 +34,7 @@ fun FlowContent.Navbar(context: BaseTemplateContext) {
                     // Add login/logout as the last item
                     li {
                         if (context.auth.isAuthenticated) {
-                            logoutButton("nav-item-inactive")
+                            logoutButton()
                         } else {
                             a(href = "/auth", classes = "nav-item-inactive") {
                                 +"Login"
