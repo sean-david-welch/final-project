@@ -20,18 +20,14 @@ fun Application.configureRouting(config: ApplicationConfig, database: Database? 
         exception<Throwable> { call, cause ->
             logger.error("Unhandled exception occurred", cause)
             call.respondText(
-                text = create500Page(),
-                contentType = ContentType.Text.Html,
-                status = HttpStatusCode.InternalServerError
+                text = create500Page(), contentType = ContentType.Text.Html, status = HttpStatusCode.InternalServerError
             )
         }
 
         // Handle specific status codes
         status(HttpStatusCode.InternalServerError) { call, status ->
             call.respondText(
-                text = create500Page(),
-                contentType = ContentType.Text.Html,
-                status = status
+                text = create500Page(), contentType = ContentType.Text.Html, status = status
             )
         }
     }
