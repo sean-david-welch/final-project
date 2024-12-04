@@ -1,9 +1,10 @@
 package com.budgetai.templates.pages
 
 import com.budgetai.templates.layout.BaseTemplate
+import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
-fun SettingsTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
+fun SettingsTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.() -> Unit) = BaseTemplate(context) {
     main(classes = "settings-layout") {
         div(classes = "settings-container") {
             h1(classes = "page-title") { +title }
@@ -12,7 +13,7 @@ fun SettingsTemplate(title: String, contentFn: DIV.() -> Unit) = BaseTemplate {
     }
 }
 
-fun createSettingsPage() = SettingsTemplate("Account Settings") {
+fun createSettingsPage(context: BaseTemplateContext) = SettingsTemplate("Account Settings", context) {
     div(classes = "settings-grid") {
         // Profile Settings
         div(classes = "settings-section") {
