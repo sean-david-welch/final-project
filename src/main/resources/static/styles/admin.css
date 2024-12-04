@@ -1,0 +1,183 @@
+/* Main Layout */
+.admin-dashboard {
+  @apply min-h-screen
+    py-6
+    bg-gray-50
+    dark:bg-gray-800;
+}
+
+.admin-container {
+  @apply mx-auto
+    max-w-7xl
+    px-4
+    sm:px-6
+    lg:px-8;
+}
+
+.admin-title {
+  @apply text-2xl
+    font-semibold
+    text-gray-900
+    dark:text-white
+    mb-6;
+}
+
+/* Stats Grid */
+.stats-grid {
+  @apply grid
+    gap-6
+    md:grid-cols-2
+    lg:grid-cols-4;
+}
+
+.stat-card {
+  @apply p-6
+    bg-white
+    dark:bg-gray-900;
+}
+
+.stat-content {
+  @apply flex
+    items-center
+    justify-between;
+}
+
+.stat-info {
+  @apply text-sm
+    font-medium
+    text-gray-600
+    dark:text-gray-400;
+}
+
+.stat-value {
+  @apply mt-2
+    text-3xl
+    font-semibold
+    text-gray-900
+    dark:text-white;
+}
+
+.stat-icon {
+  @apply h-8
+    w-8
+    text-gray-400
+    dark:text-gray-600;
+}
+
+/* Recent Actions */
+.actions-section {
+  @apply mt-6;
+}
+
+.actions-card {
+  @apply p-6
+    bg-white
+    dark:bg-gray-900;
+}
+
+.actions-title {
+  @apply text-lg
+    font-medium
+    text-gray-900
+    dark:text-white
+    mb-4;
+}
+
+.actions-list {
+  @apply divide-y
+    dark:divide-gray-700;
+}
+
+.action-item {
+  @apply py-4;
+}
+
+.action-content {
+  @apply flex
+    items-center
+    justify-between;
+}
+
+.action-details {
+  @apply text-sm
+    font-medium
+    text-gray-900
+    dark:text-white;
+}
+
+.action-user {
+  @apply text-sm
+    text-gray-500
+    dark:text-gray-400;
+}
+
+.action-time {
+  @apply text-sm
+    text-gray-500
+    dark:text-gray-400;
+}
+
+/* System Status */
+.status-grid {
+  @apply grid
+    gap-6
+    md:grid-cols-2
+    mt-6;
+}
+
+.status-card {
+  @apply p-6
+    bg-white
+    dark:bg-gray-900;
+}
+
+.status-title {
+  @apply text-lg
+    font-medium
+    text-gray-900
+    dark:text-white
+    mb-4;
+}
+
+.status-list {
+  @apply space-y-4;
+}
+
+.status-item {
+  @apply flex
+    justify-between
+    items-center;
+}
+
+.status-label {
+  @apply text-sm
+    text-gray-600
+    dark:text-gray-400;
+}
+
+.status-value {
+  @apply text-sm
+    font-medium
+    text-gray-900
+    dark:text-white;
+}
+
+/* Quick Actions */
+.quick-actions {
+  @apply grid
+    grid-cols-2
+    gap-4;
+}
+
+.action-button {
+  @apply p-4
+    text-sm
+    font-medium
+    text-center
+    rounded-lg
+    border
+    border-gray-200
+    dark:border-gray-700
+    hover:bg-gray-50
+    dark:hover:bg-gray-800;
+}
