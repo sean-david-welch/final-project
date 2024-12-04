@@ -3,9 +3,9 @@ package com.budgetai.routes.api
 import com.budgetai.models.BudgetCreationRequest
 import com.budgetai.models.UpdateBudgetRequest
 import com.budgetai.models.UpdateBudgetTotalsRequest
-import com.budgetai.routes.middleware.requireAuth
 import com.budgetai.services.BudgetService
 import io.ktor.http.*
+import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -13,7 +13,7 @@ import kotlinx.datetime.LocalDate
 import java.math.BigDecimal
 
 fun Route.budgetRoutes(service: BudgetService) {
-    requireAuth {
+    authenticate {
         route("/api/budgets") {
             // Create new budget
             post {
