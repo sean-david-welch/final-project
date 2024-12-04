@@ -35,8 +35,7 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
 
             if (validatedToken != null) {
                 userPrincipal = UserPrincipal(
-                    id = validatedToken.getClaim("id").asString(),
-                    email = validatedToken.getClaim("email").asString()
+                    id = validatedToken.getClaim("id").asString(), email = validatedToken.getClaim("email").asString()
                 )
                 isAuthenticated = true
             }
@@ -47,8 +46,7 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
 
     return BaseTemplateContext(
         auth = AuthContext(
-            user = userPrincipal,
-            isAuthenticated = isAuthenticated
+            user = userPrincipal, isAuthenticated = isAuthenticated
         )
     )
 }
@@ -58,11 +56,7 @@ fun validateJwtToken(token: String, secret: String, config: ApplicationConfig): 
         val issuer = config.property("jwt.issuer").getString()
         val audience = config.property("jwt.audience").getString()
 
-        JWT.require(HMAC256(secret))
-            .withIssuer(issuer)
-            .withAudience(audience)
-            .build()
-            .verify(token)
+        JWT.require(HMAC256(secret)).withIssuer(issuer).withAudience(audience).build().verify(token)
     } catch (e: Exception) {
         logger.error("JWT validation failed: ${e.message}")
         null
