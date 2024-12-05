@@ -11,10 +11,7 @@ const createSpreadsheetStore = () => {
         setHeaders: (headers) => {
             columnHeaders = headers;
             if (hotInstance) {
-                hotInstance.updateSettings({
-                    colHeaders: headers,
-                    nestedHeaders: [headers]
-                });
+                hotInstance.updateSettings({ colHeaders: headers });
             }
         }
     };
@@ -29,40 +26,49 @@ const DEFAULT_CONFIG = {
         ['', '', '', '', '']
     ],
     rowHeaders: true,
-    colHeaders: spreadsheetStore.getHeaders(),
+    colHeaders: true,
     height: 'auto',
     licenseKey: 'non-commercial-and-evaluation',
     contextMenu: true,
     minSpareRows: 1,
     minSpareCols: 1,
     stretchH: 'all',
-    manualColumnResize: true,
-    wordWrap: true,
-    comments: true,
-    allowInsertColumn: true,
-    allowInsertRow: true,
-    enterBeginsEditing: true,
-    outsideClickDeselects: false,
-    headerTooltips: {
-        rows: true,
-        columns: true
-    },
-    cells(row, col) {
-        const cellProperties = {};
-        if (row === -1) {
-            cellProperties.readOnly = false;
-            cellProperties.editor = 'text';
+    nestedHeaders: [
+        spreadsheetStore.getHeaders()
+    ],
+    afterGetColHeader: (col, TH) => {
+        if (col >= 0) {
+            TH.className += ' htEditable';
         }
-        return cellProperties;
     },
-    afterChange: (changes, source) => {
-        if (source === 'edit' && changes) {
-            const [row, col, oldVal, newVal] = changes[0];
-            if (row === -1) {
-                const headers = spreadsheetStore.getHeaders();
-                headers[col] = newVal;
-                spreadsheetStore.setHeaders(headers);
-            }
+    beforeOnCellMouseDown: (event, coords) => {
+        if (coords.row === -1 && coords.col >= 0) {
+            event.stopImmediatePropagation();
+            const headers = spreadsheetStore.getHeaders();
+
+            const input = document.createElement('input');
+            input.value = headers[coords.col] || '';
+            input.style.width = '100%';
+            input.style.height = '100%';
+            input.style.boxSizing = 'border-box';
+
+            const th = event.target.closest('th');
+            th.innerHTML = '';
+            th.appendChild(input);
+            input.focus();
+
+            input.onblur = () => {
+                const newHeaders = [...headers];
+                newHeaders[coords.col] = input.value;
+                spreadsheetStore.setHeaders(newHeaders);
+                th.innerHTML = input.value;
+            };
+
+            input.onkeydown = (e) => {
+                if (e.key === 'Enter') {
+                    input.blur();
+                }
+            };
         }
     }
 };
