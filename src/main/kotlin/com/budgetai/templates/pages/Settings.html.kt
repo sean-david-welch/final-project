@@ -35,14 +35,13 @@ fun createSettingsPage(context: BaseTemplateContext) = SettingsTemplate("Account
         div(classes = "settings-section") {
             h2(classes = "section-title") { +"Budget Categories" }
             div(classes = "category-list") {
-                    div(classes = "category-item") {
-                        span(classes = "category-name") {
-                        }
-                        div(classes = "category-actions") {
-                            button(classes = "edit-button") { +"Edit" }
-                            button(classes = "delete-button") { +"Delete" }
-                        }
+                div(classes = "category-item") {
+                    span(classes = "category-name") {}
+                    div(classes = "category-actions") {
+                        button(classes = "edit-button") { +"Edit" }
+                        button(classes = "delete-button") { +"Delete" }
                     }
+                }
                 button(classes = "add-button") { +"Add Category" }
             }
         }
