@@ -28,18 +28,6 @@ fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashb
         }
     }
 
-    div(classes = "activity-section") {
-        h2(classes = "activity-title") { +"Recent Activity" }
-        div(classes = "activity-list") {
-            repeat(3) {
-                div(classes = "activity-item") {
-                    div(classes = "activity-text") { +"User completed action ${it + 1}" }
-                    div(classes = "activity-time") { +"2 minutes ago" }
-                }
-            }
-        }
-    }
-
     div {
         SpreadsheetComponent()
     }
