@@ -7,7 +7,7 @@ import kotlinx.html.*
 data class FooterLink(val text: String, val href: String)
 
 val links = listOf(
-    FooterLink("Privacy", "/privacy"), FooterLink("Terms", "/terms")
+    FooterLink("Dashboard", "/dashboard"), FooterLink("Reports", "/reports"), FooterLink("Settings", "/settings")
 )
 
 fun FlowContent.Footer(context: BaseTemplateContext) {
