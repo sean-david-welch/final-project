@@ -33,24 +33,6 @@ fun createAdminPage(context: BaseTemplateContext) = AdminTemplate("Admin Dashboa
         }
     }
 
-    // Status Grid
-    div(classes = "status-grid") {
-        // System Status Card
-        div(classes = "status-card") {
-            h2(classes = "status-title") { +"System Status" }
-            div(classes = "status-list") {
-                val statusItems = listOf(
-                    Pair("CPU Usage", "42%"), Pair("Memory Usage", "3.2 GB"), Pair("Storage", "67%")
-                )
-
-                statusItems.forEach { (label, value) ->
-                    div(classes = "status-item") {
-                        span(classes = "status-label") { +label }
-                        span(classes = "status-value") { +value }
-                    }
-                }
-            }
-        }
 
         // Quick Actions Card
         div(classes = "status-card") {
@@ -65,5 +47,4 @@ fun createAdminPage(context: BaseTemplateContext) = AdminTemplate("Admin Dashboa
                 }
             }
         }
-    }
 }
