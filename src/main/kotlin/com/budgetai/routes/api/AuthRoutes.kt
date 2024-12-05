@@ -102,73 +102,74 @@ fun Route.authRoutes(service: UserService) {
         }
 
         // Create new user
-post("/register") {
-    try {
-        val request = when (call.request.contentType()) {
-            ContentType.Application.Json -> {
-                // Handle JSON request
-                val jsonRequest = call.receive<UserCreationRequest>()
-                service.createUser(jsonRequest)
-                val authRequest = UserAuthenticationRequest(jsonRequest.email, jsonRequest.password)
+        post("/register") {
+            try {
+                val request = when (call.request.contentType()) {
+                    ContentType.Application.Json -> {
+                        // Handle JSON request
+                        val jsonRequest = call.receive<UserCreationRequest>()
+                        service.createUser(jsonRequest)
+                        val authRequest = UserAuthenticationRequest(jsonRequest.email, jsonRequest.password)
+                        val result = service.authenticateUserWithToken(authRequest)
+                        if (result != null) {
+                            val (_, token) = result
+                            call.setAuthCookie(token, cookieConfig)
+                            call.respond(
+                                HttpStatusCode.OK, mapOf(
+                                    "message" to "Registration successful", "redirectUrl" to "/dashboard"
+                                )
+                            )
+                        }
+                        return@post
+                    }
+
+                    ContentType.Application.FormUrlEncoded -> {
+                        val parameters = call.receiveParameters()
+                        UserCreationRequest(
+                            name = parameters["name"] ?: throw IllegalArgumentException("Name is required"),
+                            email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
+                            password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
+                        )
+                    }
+
+                    else -> throw IllegalArgumentException("Unsupported content type")
+                }
+
+                // Process form-based registration
+                service.createUser(request)
+                val authRequest = UserAuthenticationRequest(request.email, request.password)
                 val result = service.authenticateUserWithToken(authRequest)
                 if (result != null) {
                     val (_, token) = result
                     call.setAuthCookie(token, cookieConfig)
-                    call.respond(HttpStatusCode.OK, mapOf(
-                        "message" to "Registration successful",
-                        "redirectUrl" to "/dashboard"
-                    ))
                 }
-                return@post
-            }
-            ContentType.Application.FormUrlEncoded -> {
-                val parameters = call.receiveParameters()
-                UserCreationRequest(
-                    name = parameters["name"] ?: throw IllegalArgumentException("Name is required"),
-                    email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
-                    password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
-                )
-            }
-            else -> throw IllegalArgumentException("Unsupported content type")
-        }
+                val response = ResponseComponents.success("Registration successful! Redirecting...")
+                call.respondText(response, ContentType.Text.Html)
 
-        // Process form-based registration
-        service.createUser(request)
-        val authRequest = UserAuthenticationRequest(request.email, request.password)
-        val result = service.authenticateUserWithToken(authRequest)
-        if (result != null) {
-            val (_, token) = result
-            call.setAuthCookie(token, cookieConfig)
-        }
-        val response = ResponseComponents.success("Registration successful! Redirecting...")
-        call.respondText(response, ContentType.Text.Html)
+            } catch (e: Exception) {
+                logger.error("Registration failed", e)
+                val errorMessage = when (e) {
+                    is IllegalArgumentException -> e.message
+                    else -> "Registration failed. Please try again."
+                }
 
-    } catch (e: Exception) {
-        logger.error("Registration failed", e)
-        val errorMessage = when (e) {
-            is IllegalArgumentException -> e.message
-            else -> "Registration failed. Please try again."
-        }
+                when (call.request.contentType()) {
+                    ContentType.Application.Json -> {
+                        call.respond(
+                            HttpStatusCode.BadRequest, mapOf("error" to (errorMessage ?: "An unknown error occurred"))
+                        )
+                    }
 
-        when (call.request.contentType()) {
-            ContentType.Application.Json -> {
-                call.respond(
-                    HttpStatusCode.BadRequest,
-                    mapOf("error" to (errorMessage ?: "An unknown error occurred"))
-                )
-            }
-            else -> {
-                val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
-                logger.debug("Generated error response: $errorResponse")
-                call.respondText(
-                    errorResponse,
-                    ContentType.Text.Html,
-                    HttpStatusCode.BadRequest
-                )
+                    else -> {
+                        val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
+                        logger.debug("Generated error response: $errorResponse")
+                        call.respondText(
+                            errorResponse, ContentType.Text.Html, HttpStatusCode.BadRequest
+                        )
+                    }
+                }
             }
         }
-    }
-}
 
         authenticate {
             // refresh token
