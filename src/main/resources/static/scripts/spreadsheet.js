@@ -21,16 +21,13 @@ const attachHeaderListeners = (headerSpan, col) => {
 
     headerSpan.setAttribute('contenteditable', 'true');
 
-    // Remove existing listeners to prevent duplicates
     const newHeaderSpan = headerSpan.cloneNode(true);
     headerSpan.parentNode.replaceChild(newHeaderSpan, headerSpan);
 
-    // Prevent default Handsontable header behavior
     newHeaderSpan.addEventListener('mousedown', (e) => {
         e.stopPropagation();
     });
 
-    // Handle header editing
     newHeaderSpan.addEventListener('blur', () => {
         const headers = spreadsheetStore.getHeaders();
         headers[col] = newHeaderSpan.textContent;
@@ -42,7 +39,6 @@ const attachHeaderListeners = (headerSpan, col) => {
         });
     });
 
-    // Prevent newlines in header
     newHeaderSpan.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -68,26 +64,6 @@ const DEFAULT_CONFIG = {
     afterGetColHeader: (col, TH) => {
         const headerSpan = TH.querySelector('.colHeader');
         attachHeaderListeners(headerSpan, col);
-    },
-    afterCreateCol: (index) => {
-        const hot = spreadsheetStore.getHot();
-        const headers = spreadsheetStore.getHeaders();
-        const newHeader = String.fromCharCode(65 + headers.length - 1); // Adjust for 0-based index
-        headers[index] = newHeader;
-        spreadsheetStore.setHeaders(headers);
-
-        hot.updateSettings({
-            nestedHeaders: getNestedHeaders(headers)
-        });
-
-        // Initialize the new header
-        setTimeout(() => {
-            const headerCells = hot.rootElement.querySelectorAll('.colHeader');
-            headerCells.forEach((headerSpan, idx) => {
-                attachHeaderListeners(headerSpan, idx);
-            });
-            hot.render();
-        }, 0);
     }
 };
 
@@ -121,30 +97,36 @@ const addRow = () => {
     hot.updateData(newData);
 };
 
-const addColumn = () => {
+const reinitializeHeaders = () => {
     const hot = spreadsheetStore.getHot();
-    if (!hot) return;
-
-    const currentData = hot.getData();
-    const newData = currentData.map(row => [...row, '']);
     const headers = spreadsheetStore.getHeaders();
-    const newHeader = String.fromCharCode(65 + headers.length);
-    headers.push(newHeader);
-    spreadsheetStore.setHeaders(headers);
 
     hot.updateSettings({
         nestedHeaders: getNestedHeaders(headers)
     });
-    hot.updateData(newData);
 
-    // Ensure all headers are properly initialized
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         const headerCells = hot.rootElement.querySelectorAll('.colHeader');
         headerCells.forEach((headerSpan, idx) => {
             attachHeaderListeners(headerSpan, idx);
         });
         hot.render();
-    }, 0);
+    });
+};
+
+const addColumn = () => {
+    const hot = spreadsheetStore.getHot();
+    if (!hot) return;
+
+    const currentData = hot.getData();
+    const headers = spreadsheetStore.getHeaders();
+    const newHeader = String.fromCharCode(65 + headers.length);
+    headers.push(newHeader);
+    spreadsheetStore.setHeaders(headers);
+
+    const newData = currentData.map(row => [...row, '']);
+    hot.loadData(newData);
+    reinitializeHeaders();
 };
 
 const getData = () => {
