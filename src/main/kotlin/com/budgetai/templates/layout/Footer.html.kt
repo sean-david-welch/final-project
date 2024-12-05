@@ -15,12 +15,14 @@ fun FlowContent.Footer(context: BaseTemplateContext) {
         div(classes = "footer-container") {
             div(classes = "footer-copyright") { +"© ${java.time.Year.now().value} BudgetAI" }
             div(classes = "footer-links-container") {
-                links.forEach { link ->
-                    a(href = link.href, classes = "footer-link") { +link.text }
+                if (context.auth.isAuthenticated) {
+                    links.forEach { link ->
+                        a(href = link.href, classes = "footer-link") { +link.text }
+                    }
+                    logoutButton()
+                } else {
+                    a(href = "/auth", classes = "footer-link") { +"Login" }
                 }
-            }
-            if (context.auth.isAuthenticated) {
-                logoutButton()
             }
         }
     }
