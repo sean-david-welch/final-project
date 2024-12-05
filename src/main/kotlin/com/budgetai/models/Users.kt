@@ -38,7 +38,7 @@ data class UpdateUserRequest(
 
 @Serializable
 data class UpdatePasswordRequest(
-    val currentPassword: String, val newPassword: String
+    val newPassword: String
 )
 
 // authetication classes
