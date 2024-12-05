@@ -221,7 +221,7 @@ class UserRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     UpdatePasswordRequest(
-                        currentPassword = "StrongPassword999", newPassword = "StongerPassword987"
+                        newPassword = "StongerPassword987"
                     )
                 )
             )
@@ -254,7 +254,7 @@ class UserRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     UpdatePasswordRequest(
-                        currentPassword = "wrongpassword", newPassword = "newpassword123"
+                        newPassword = "newpassword123"
                     )
                 )
             )
