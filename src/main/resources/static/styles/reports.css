@@ -30,19 +30,6 @@
     @apply text-gray-600 dark:text-gray-300;
 }
 
-/* Time Period Selector */
-.time-period-selector {
-    @apply relative;
-}
-
-.period-dropdown {
-    @apply px-4 py-2 rounded-lg;
-    @apply bg-white dark:bg-gray-700;
-    @apply text-gray-700 dark:text-gray-200;
-    @apply border border-gray-300 dark:border-gray-600;
-    @apply focus:outline-none focus:ring-2 focus:ring-blue-500;
-}
-
 /* Reports Grid */
 .reports-grid {
     @apply mb-12;

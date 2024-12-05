@@ -59,17 +59,31 @@ fun createHomePage(context: BaseTemplateContext) = HomeTemplate("Welcome to Budg
         }
     }
 
-    // Testimonials Section
-    div(classes = "testimonials-section") {
-        h2(classes = "section-title") { +"What Our Users Say" }
-        div(classes = "testimonials-grid") {
-            repeat(2) { index ->
-                div(classes = "testimonial-card") {
-                    p(classes = "testimonial-text") {
-                        +"BudgetAI has completely transformed how I manage my finances. The insights are incredibly helpful!"
+    // Insights Section
+    div(classes = "insights-section") {
+        h2(classes = "section-title") { +"AI-Powered Insights" }
+        div(classes = "insights-grid") {
+            repeat(3) { index ->
+                div(classes = "insight-card") {
+                    div(classes = "insight-icon") {
+                        // Icon placeholder
+                        div(classes = "icon-placeholder")
                     }
-                    div(classes = "testimonial-author") {
-                        +"Sarah ${index + 1}"
+                    div(classes = "insight-content") {
+                        h4(classes = "insight-title") {
+                            +when (index) {
+                                0 -> "Spending Patterns"
+                                1 -> "Budget Recommendations"
+                                else -> "Savings Opportunities"
+                            }
+                        }
+                        p(classes = "insight-description") {
+                            +when (index) {
+                                0 -> "Your restaurant spending has increased by 15% this month"
+                                1 -> "You could save $200 by adjusting your entertainment budget"
+                                else -> "Setting aside 5% more could help reach your goal faster"
+                            }
+                        }
                     }
                 }
             }
