@@ -2,7 +2,7 @@
 
 const createSpreadsheetStore = () => {
     let hotInstance = null;
-    let columnHeaders = ['A', 'B', 'C', 'D', 'E'];  // Default headers
+    let columnHeaders = ['A', 'B', 'C', 'D', 'E'];
 
     return {
         getHot: () => hotInstance,
@@ -11,7 +11,10 @@ const createSpreadsheetStore = () => {
         setHeaders: (headers) => {
             columnHeaders = headers;
             if (hotInstance) {
-                hotInstance.updateSettings({ colHeaders: headers });
+                hotInstance.updateSettings({
+                    colHeaders: headers,
+                    nestedHeaders: [headers]
+                });
             }
         }
     };
@@ -32,7 +35,36 @@ const DEFAULT_CONFIG = {
     contextMenu: true,
     minSpareRows: 1,
     minSpareCols: 1,
-    stretchH: 'all'
+    stretchH: 'all',
+    manualColumnResize: true,
+    wordWrap: true,
+    comments: true,
+    allowInsertColumn: true,
+    allowInsertRow: true,
+    enterBeginsEditing: true,
+    outsideClickDeselects: false,
+    headerTooltips: {
+        rows: true,
+        columns: true
+    },
+    cells(row, col) {
+        const cellProperties = {};
+        if (row === -1) {
+            cellProperties.readOnly = false;
+            cellProperties.editor = 'text';
+        }
+        return cellProperties;
+    },
+    afterChange: (changes, source) => {
+        if (source === 'edit' && changes) {
+            const [row, col, oldVal, newVal] = changes[0];
+            if (row === -1) {
+                const headers = spreadsheetStore.getHeaders();
+                headers[col] = newVal;
+                spreadsheetStore.setHeaders(headers);
+            }
+        }
+    }
 };
 
 const initializeSpreadsheet = (containerId = 'spreadsheet') => {
@@ -73,24 +105,8 @@ const addColumn = () => {
     const newData = currentData.map(row => [...row, '']);
     hot.updateData(newData);
 
-    // Add a new header for the new column
     const headers = spreadsheetStore.getHeaders();
-    const newHeader = prompt('Enter column header:', `Column ${headers.length + 1}`);
-    if (newHeader) {
-        spreadsheetStore.setHeaders([...headers, newHeader]);
-    }
-};
-
-const updateColumnHeader = (columnIndex) => {
-    const headers = spreadsheetStore.getHeaders();
-    const currentHeader = headers[columnIndex];
-    const newHeader = prompt('Enter new column header:', currentHeader);
-
-    if (newHeader && newHeader !== currentHeader) {
-        const updatedHeaders = [...headers];
-        updatedHeaders[columnIndex] = newHeader;
-        spreadsheetStore.setHeaders(updatedHeaders);
-    }
+    spreadsheetStore.setHeaders([...headers, `Column ${headers.length + 1}`]);
 };
 
 const getData = () => {
@@ -103,28 +119,11 @@ const handleDataChange = (changes) => {
     console.log('Data changed:', changes);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    initializeSpreadsheet();
-
-    // Add double-click event listener for header editing
-    const container = document.getElementById('spreadsheet');
-    if (container) {
-        container.addEventListener('dblclick', (event) => {
-            const headerElement = event.target.closest('.handsontable .ht_clone_top th');
-            if (headerElement) {
-                const columnIndex = headerElement.cellIndex - 1; // Adjust for row headers
-                if (columnIndex >= 0) {
-                    updateColumnHeader(columnIndex);
-                }
-            }
-        });
-    }
-});
+document.addEventListener('DOMContentLoaded', () => initializeSpreadsheet());
 
 window.spreadsheetManager = {
     addRow,
     addColumn,
     getData,
-    initialize: initializeSpreadsheet,
-    updateColumnHeader
+    initialize: initializeSpreadsheet
 };
