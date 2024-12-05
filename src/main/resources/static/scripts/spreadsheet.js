@@ -1,154 +1,145 @@
-const createSpreadsheetStore = () => {
-    let hotInstance = null;
-    let headerNames = ['A', 'B', 'C', 'D', 'E'];
+class Spreadsheet {
+    constructor(containerId = 'spreadsheet') {
+        this.containerId = containerId;
+        this.instance = null;
+        this.headerNames = ['A', 'B', 'C', 'D', 'E'];
 
-    return {
-        getHot: () => hotInstance,
-        setHot: (instance) => { hotInstance = instance },
-        getHeaders: () => headerNames,
-        setHeaders: (headers) => { headerNames = headers }
-    };
-};
-
-const spreadsheetStore = createSpreadsheetStore();
-
-const getNestedHeaders = (headers) => [[
-    ...headers.map(header => ({ label: header, colspan: 1 }))
-]];
-
-const attachHeaderListeners = (headerSpan, col) => {
-    if (!headerSpan) return;
-
-    headerSpan.setAttribute('contenteditable', 'true');
-
-    const newHeaderSpan = headerSpan.cloneNode(true);
-    headerSpan.parentNode.replaceChild(newHeaderSpan, headerSpan);
-
-    newHeaderSpan.addEventListener('mousedown', (e) => {
-        e.stopPropagation();
-    });
-
-    newHeaderSpan.addEventListener('blur', () => {
-        const headers = spreadsheetStore.getHeaders();
-        headers[col] = newHeaderSpan.textContent;
-        spreadsheetStore.setHeaders(headers);
-
-        const hot = spreadsheetStore.getHot();
-        hot.updateSettings({
-            nestedHeaders: getNestedHeaders(headers)
-        });
-    });
-
-    newHeaderSpan.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            newHeaderSpan.blur();
-        }
-    });
-};
-
-const DEFAULT_CONFIG = {
-    data: [
-        ['', '', '', '', ''],
-        ['', '', '', '', ''],
-        ['', '', '', '', '']
-    ],
-    rowHeaders: true,
-    height: 'auto',
-    licenseKey: 'non-commercial-and-evaluation',
-    contextMenu: true,
-    minSpareRows: 1,
-    minSpareCols: 1,
-    stretchH: 'all',
-    nestedHeaders: getNestedHeaders(spreadsheetStore.getHeaders()),
-    afterGetColHeader: (col, TH) => {
-        const headerSpan = TH.querySelector('.colHeader');
-        attachHeaderListeners(headerSpan, col);
+        this.initialize();
     }
-};
 
-const initializeSpreadsheet = (containerId = 'spreadsheet') => {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+    getNestedHeaders() {
+        return [[
+            ...this.headerNames.map(header => ({ label: header, colspan: 1 }))
+        ]];
+    }
 
-    const hot = new Handsontable(container, {
-        ...DEFAULT_CONFIG,
-        afterChange: handleDataChange
-    });
+    attachHeaderListeners(headerSpan, col) {
+        if (!headerSpan) return;
 
-    spreadsheetStore.setHot(hot);
-    setupEventListeners();
-};
+        headerSpan.setAttribute('contenteditable', 'true');
 
-const setupEventListeners = () => {
-    window.addEventListener('resize', () => {
-        const hot = spreadsheetStore.getHot();
-        if (hot) hot.render();
-    });
-};
+        const newHeaderSpan = headerSpan.cloneNode(true);
+        headerSpan.parentNode.replaceChild(newHeaderSpan, headerSpan);
 
-const addRow = () => {
-    const hot = spreadsheetStore.getHot();
-    if (!hot) return;
-
-    const currentData = hot.getData();
-    const newRowData = Array(currentData[0].length).fill('');
-    const newData = [...currentData, newRowData];
-    hot.updateData(newData);
-};
-
-const reinitializeHeaders = () => {
-    const hot = spreadsheetStore.getHot();
-    const headers = spreadsheetStore.getHeaders();
-
-    hot.updateSettings({
-        nestedHeaders: getNestedHeaders(headers)
-    });
-
-    requestAnimationFrame(() => {
-        const headerCells = hot.rootElement.querySelectorAll('.colHeader');
-        headerCells.forEach((headerSpan, idx) => {
-            attachHeaderListeners(headerSpan, idx);
+        newHeaderSpan.addEventListener('mousedown', (e) => {
+            e.stopPropagation();
         });
-        hot.render();
-    });
-};
 
-const addColumn = () => {
-    const hot = spreadsheetStore.getHot();
-    if (!hot) return;
+        newHeaderSpan.addEventListener('blur', () => {
+            this.headerNames[col] = newHeaderSpan.textContent;
+            this.instance.updateSettings({
+                nestedHeaders: this.getNestedHeaders()
+            });
+        });
 
-    const currentData = hot.getData();
-    const headers = spreadsheetStore.getHeaders();
-    const newHeader = String.fromCharCode(65 + headers.length);
-    headers.push(newHeader);
-    spreadsheetStore.setHeaders(headers);
+        newHeaderSpan.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                newHeaderSpan.blur();
+            }
+        });
+    }
 
-    const newData = currentData.map(row => [...row, '']);
-    hot.loadData(newData);
-    reinitializeHeaders();
-};
+    getDefaultConfig() {
+        return {
+            data: [
+                ['', '', '', '', ''],
+                ['', '', '', '', ''],
+                ['', '', '', '', '']
+            ],
+            rowHeaders: true,
+            height: 'auto',
+            licenseKey: 'non-commercial-and-evaluation',
+            contextMenu: true,
+            minSpareRows: 1,
+            minSpareCols: 1,
+            stretchH: 'all',
+            nestedHeaders: this.getNestedHeaders(),
+            afterGetColHeader: (col, TH) => {
+                const headerSpan = TH.querySelector('.colHeader');
+                this.attachHeaderListeners(headerSpan, col);
+            },
+            afterChange: this.handleDataChange
+        };
+    }
 
-const getData = () => {
-    const hot = spreadsheetStore.getHot();
-    return hot ? hot.getData() : null;
-};
+    initialize() {
+        const container = document.getElementById(this.containerId);
+        if (!container) return;
 
-const getHeaders = () => {
-    return spreadsheetStore.getHeaders();
-};
+        this.instance = new Handsontable(container, this.getDefaultConfig());
+        this.setupEventListeners();
+    }
 
-const handleDataChange = (changes) => {
-    if (!changes) return;
-    console.log('Data changed:', changes);
-};
+    setupEventListeners() {
+        window.addEventListener('resize', () => {
+            if (this.instance) this.instance.render();
+        });
+    }
 
-document.addEventListener('DOMContentLoaded', () => initializeSpreadsheet());
+    reinitializeHeaders() {
+        this.instance.updateSettings({
+            nestedHeaders: this.getNestedHeaders()
+        });
 
-window.spreadsheetManager = {
-    addRow,
-    addColumn,
-    getData,
-    getHeaders,
-    initialize: initializeSpreadsheet
-};
+        requestAnimationFrame(() => {
+            const headerCells = this.instance.rootElement.querySelectorAll('.colHeader');
+            headerCells.forEach((headerSpan, idx) => {
+                this.attachHeaderListeners(headerSpan, idx);
+            });
+            this.instance.render();
+        });
+    }
+
+    addRow() {
+        if (!this.instance) return;
+
+        const currentData = this.instance.getData();
+        const newRowData = Array(currentData[0].length).fill('');
+        const newData = [...currentData, newRowData];
+        this.instance.updateData(newData);
+    }
+
+    addColumn() {
+        if (!this.instance) return;
+
+        const currentData = this.instance.getData();
+        const newHeader = String.fromCharCode(65 + this.headerNames.length);
+        this.headerNames.push(newHeader);
+
+        const newData = currentData.map(row => [...row, '']);
+        this.instance.loadData(newData);
+        this.reinitializeHeaders();
+    }
+
+    getData() {
+        return this.instance ? this.instance.getData() : null;
+    }
+
+    getHeaders() {
+        return this.headerNames;
+    }
+
+    handleDataChange(changes) {
+        if (!changes) return;
+        console.log('Data changed:', changes);
+    }
+
+    static create(containerId) {
+        return new Spreadsheet(containerId);
+    }
+}
+
+// Usage
+document.addEventListener('DOMContentLoaded', () => {
+    const spreadsheet = Spreadsheet.create('spreadsheet');
+
+    // Expose methods globally if needed
+    window.spreadsheetManager = {
+        addRow: () => spreadsheet.addRow(),
+        addColumn: () => spreadsheet.addColumn(),
+        getData: () => spreadsheet.getData(),
+        getHeaders: () => spreadsheet.getHeaders(),
+        initialize: (containerId) => Spreadsheet.create(containerId)
+    };
+});
