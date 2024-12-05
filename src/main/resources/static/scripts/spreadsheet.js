@@ -1,23 +1,28 @@
 class Spreadsheet {
-    constructor(containerId = 'spreadsheet') {
+    constructor(containerId = 'spreadsheet', options = {}) {
         this.containerId = containerId;
         this.instance = null;
-        this.headerNames = ['A', 'B', 'C', 'D', 'E'];
+        this.headerNames = Array(options.columns || 5).fill().map((_, i) =>
+            String.fromCharCode(65 + i)
+        );
+        this.rows = options.rows || 20;
         this.initialize();
     }
 
     getNestedHeaders() {
-        return [[...this.headerNames.map(header => ({label: header, colspan: 1}))]];
+        return [[
+            ...this.headerNames.map(header => ({
+                label: header,
+                colspan: 1
+            }))
+        ]];
     }
 
     getDefaultConfig() {
         return {
-            data: [
-                ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''],
-                ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''],
-                ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''],
-                ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '', ['', '', '', '', ''], ['', '', '', '', '']]
-            ],
+            data: Array(this.rows).fill().map(() =>
+                Array(this.headerNames.length).fill('')
+            ),
             rowHeaders: true,
             height: 'auto',
             licenseKey: 'non-commercial-and-evaluation',
@@ -30,104 +35,88 @@ class Spreadsheet {
                 const headerSpan = TH.querySelector('.colHeader');
                 this.attachHeaderListeners(headerSpan, col);
             },
-            afterChange: this.handleDataChange,
+            afterChange: this.handleDataChange.bind(this),
             className: 'dark-theme'
         };
     }
 
     initialize() {
         const container = document.getElementById(this.containerId);
-        if (!container) return;
+        if (!container) {
+            console.error(`Container with id '${this.containerId}' not found`);
+            return;
+        }
 
-        const style = document.createElement('style');
-        style.textContent = `
-            .dark-theme.handsontable {
-                background: #1f2937;
-            }
-            
-            .dark-theme.handsontable th {
-                background-color: #1f2937;
-                color: #ffffff;
-                border-color: #374151;
-            }
-            
-            .dark-theme.handsontable td {
-                background-color: #111827;
-                color: #ffffff;
-                border-color: #374151;
-            }
-            
-            .dark-theme.handsontable .colHeader,
-            .dark-theme.handsontable .rowHeader {
-                background-color: #1f2937;
-                color: #ffffff;
-                font-weight: 600;
-            }
-            
-            .dark-theme.handsontable .htCore tbody tr td.current,
-            .dark-theme.handsontable .htCore tbody tr th.current {
-                background-color: #374151;
-            }
-            
-            .dark-theme.handsontable .htCore tbody tr td.area,
-            .dark-theme.handsontable .htCore tbody tr th.area {
-                background-color: #2563eb !important;
-                opacity: 0.1;
-            }
-            
-            .dark-theme.handsontable .htCore tbody tr td.highlight {
-                background-color: #374151;
-            }
-            
-            .dark-theme.handsontable .wtBorder {
-                background-color: #2563eb !important;
-            }
-            
-            .dark-theme.handsontable .wtBorder.current {
-                background-color: #2563eb !important;
-            }
-            
-            .dark-theme.handsontable tr:hover td {
-                background-color: #374151;
-            }
-            
-            .dark-theme.handsontable th:hover {
-                background-color: #374151;
-            }
-            
-            .dark-theme.handsontable .htNoFrame+td, 
-            .dark-theme.handsontable .htNoFrame+th, 
-            .dark-theme.handsontable td:first-of-type, 
-            .dark-theme.handsontable th:first-child, 
-            .dark-theme.handsontable th:nth-child(2), 
-            .dark-theme.handsontable.htRowHeaders thead tr th:nth-child(2) {
-                border-left: 1px solid #374151;
-            }
-        `;
-
-        document.head.appendChild(style);
+        this.applyStyles();
         this.instance = new Handsontable(container, this.getDefaultConfig());
-        this.setupEventListeners();
+        window.addEventListener('resize', () => {
+            if (this.instance) this.instance.render();
+        });
+    }
+
+    applyStyles() {
+        const styleId = 'spreadsheet-styles';
+        if (!document.getElementById(styleId)) {
+            const style = document.createElement('style');
+            style.id = styleId;
+            style.textContent = `
+                .dark-theme.handsontable {
+                    background: #1f2937;
+                }
+                
+                .dark-theme.handsontable th {
+                    background-color: #1f2937;
+                    color: #ffffff;
+                    border-color: #374151;
+                }
+                
+                .dark-theme.handsontable td {
+                    background-color: #111827;
+                    color: #ffffff;
+                    border-color: #374151;
+                }
+                
+                .dark-theme.handsontable .colHeader,
+                .dark-theme.handsontable .rowHeader {
+                    background-color: #1f2937;
+                    color: #ffffff;
+                    font-weight: 600;
+                }
+                
+                .dark-theme.handsontable .htCore tbody tr td.current,
+                .dark-theme.handsontable .htCore tbody tr th.current {
+                    background-color: #374151;
+                }
+                
+                .dark-theme.handsontable .htCore tbody tr td.area,
+                .dark-theme.handsontable .htCore tbody tr th.area {
+                    background-color: #2563eb !important;
+                    opacity: 0.1;
+                }
+                
+                .dark-theme.handsontable tr:hover td,
+                .dark-theme.handsontable th:hover {
+                    background-color: #374151;
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
 
     attachHeaderListeners(headerSpan, col) {
         if (!headerSpan) return;
 
-        headerSpan.setAttribute('contenteditable', 'true');
         const newHeaderSpan = headerSpan.cloneNode(true);
+        newHeaderSpan.setAttribute('contenteditable', 'true');
         headerSpan.parentNode.replaceChild(newHeaderSpan, headerSpan);
 
-        newHeaderSpan.addEventListener('mousedown', (e) => {
-            e.stopPropagation();
-        });
-
+        newHeaderSpan.addEventListener('mousedown', (e) => e.stopPropagation());
         newHeaderSpan.addEventListener('blur', () => {
             this.headerNames[col] = newHeaderSpan.textContent;
             this.instance.updateSettings({
                 nestedHeaders: this.getNestedHeaders()
             });
         });
-
         newHeaderSpan.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -136,17 +125,13 @@ class Spreadsheet {
         });
     }
 
-    setupEventListeners() {
-        window.addEventListener('resize', () => {
-            if (this.instance) this.instance.render();
-        });
-    }
-
     addRow() {
         if (!this.instance) return;
         const currentData = this.instance.getData();
-        const newRowData = Array(currentData[0].length).fill('');
-        const newData = [...currentData, newRowData];
+        const newData = [
+            ...currentData,
+            Array(this.headerNames.length).fill('')
+        ];
         this.instance.updateData(newData);
     }
 
@@ -155,50 +140,47 @@ class Spreadsheet {
         const currentData = this.instance.getData();
         const newHeader = String.fromCharCode(65 + this.headerNames.length);
         this.headerNames.push(newHeader);
+
         const newData = currentData.map(row => [...row, '']);
         this.instance.loadData(newData);
-        this.reinitializeHeaders();
-    }
-
-    reinitializeHeaders() {
         this.instance.updateSettings({
             nestedHeaders: this.getNestedHeaders()
-        });
-
-        requestAnimationFrame(() => {
-            const headerCells = this.instance.rootElement.querySelectorAll('.colHeader');
-            headerCells.forEach((headerSpan, idx) => {
-                this.attachHeaderListeners(headerSpan, idx);
-            });
-            this.instance.render();
         });
     }
 
     getData() {
-        return this.instance ? this.instance.getData() : null;
+        return this.instance?.getData() ?? null;
     }
 
     getHeaders() {
-        return this.headerNames;
+        return [...this.headerNames];
     }
 
     handleDataChange(changes) {
         if (!changes) return;
-        console.log('Data changed:', changes);
+        const event = new CustomEvent('spreadsheet-change', {
+            detail: { changes, headers: this.getHeaders() }
+        });
+        document.dispatchEvent(event);
     }
 
-    static create(containerId) {
-        return new Spreadsheet(containerId);
+    static create(containerId, options = {}) {
+        return new Spreadsheet(containerId, options);
     }
 }
 
+// Initialize spreadsheet when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    const spreadsheet = Spreadsheet.create('spreadsheet');
+    const spreadsheet = Spreadsheet.create('spreadsheet', {
+        rows: 20,
+        columns: 5
+    });
+
     window.spreadsheetManager = {
         addRow: () => spreadsheet.addRow(),
         addColumn: () => spreadsheet.addColumn(),
         getData: () => spreadsheet.getData(),
         getHeaders: () => spreadsheet.getHeaders(),
-        initialize: (containerId) => Spreadsheet.create(containerId)
+        initialize: (containerId, options) => Spreadsheet.create(containerId, options)
     };
 });
