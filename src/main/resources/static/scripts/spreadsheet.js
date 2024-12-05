@@ -8,9 +8,7 @@ class Spreadsheet {
     }
 
     getNestedHeaders() {
-        return [[
-            ...this.headerNames.map(header => ({ label: header, colspan: 1 }))
-        ]];
+        return [[...this.headerNames.map(header => ({label: header, colspan: 1}))]];
     }
 
     attachHeaderListeners(headerSpan, col) {
@@ -42,11 +40,7 @@ class Spreadsheet {
 
     getDefaultConfig() {
         return {
-            data: [
-                ['', '', '', '', ''],
-                ['', '', '', '', ''],
-                ['', '', '', '', '']
-            ],
+            data: [['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '']],
             rowHeaders: true,
             height: 'auto',
             licenseKey: 'non-commercial-and-evaluation',
