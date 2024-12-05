@@ -35,26 +35,17 @@ fun createSettingsPage(context: BaseTemplateContext) = SettingsTemplate("Account
         div(classes = "settings-section") {
             h2(classes = "section-title") { +"Budget Categories" }
             div(classes = "category-list") {
-                repeat(4) { index ->
                     div(classes = "category-item") {
                         span(classes = "category-name") {
-                            +when (index) {
-                                0 -> "Shopping"
-                                1 -> "Entertainment"
-                                2 -> "Travel"
-                                else -> "Dining"
-                            }
                         }
                         div(classes = "category-actions") {
                             button(classes = "edit-button") { +"Edit" }
                             button(classes = "delete-button") { +"Delete" }
                         }
                     }
-                }
                 button(classes = "add-button") { +"Add Category" }
             }
         }
-
         // Admin Panel Link - Only shown to admins
         if (context.auth.isAdmin) {
             div(classes = "admin-access-section") {
