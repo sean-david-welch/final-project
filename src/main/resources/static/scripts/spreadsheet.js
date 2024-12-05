@@ -1,6 +1,5 @@
 // spreadsheet.js
 
-// State management using a closure
 const createSpreadsheetStore = () => {
     let hotInstance = null;
 
@@ -12,7 +11,6 @@ const createSpreadsheetStore = () => {
 
 const spreadsheetStore = createSpreadsheetStore();
 
-// Configuration
 const DEFAULT_CONFIG = {
     data: [
         ['', '', '', '', ''],
@@ -29,7 +27,6 @@ const DEFAULT_CONFIG = {
     stretchH: 'all'
 };
 
-// Core functions
 const initializeSpreadsheet = (containerId = 'spreadsheet') => {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -50,14 +47,14 @@ const setupEventListeners = () => {
     });
 };
 
-// Action handlers
 const addRow = () => {
     const hot = spreadsheetStore.getHot();
     if (!hot) return;
 
     const currentData = hot.getData();
-    hot.alter('insert_row', currentData.length);
-    hot.render();
+    const newRowData = Array(currentData[0].length).fill('');
+    const newData = [...currentData, newRowData];
+    hot.updateData(newData);
 };
 
 const addColumn = () => {
@@ -65,8 +62,8 @@ const addColumn = () => {
     if (!hot) return;
 
     const currentData = hot.getData();
-    hot.alter('insert_col', currentData[0].length);
-    hot.render();
+    const newData = currentData.map(row => [...row, '']);
+    hot.updateData(newData);
 };
 
 const getData = () => {
@@ -77,13 +74,10 @@ const getData = () => {
 const handleDataChange = (changes) => {
     if (!changes) return;
     console.log('Data changed:', changes);
-    // Add any additional data change handling logic here
 };
 
-// Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => initializeSpreadsheet());
 
-// Export functions for external use
 window.spreadsheetManager = {
     addRow,
     addColumn,
