@@ -1,61 +1,92 @@
-class SpreadsheetManager {
-    constructor() {
-        this.hot = null;
-        this.initialize();
-    }
+// spreadsheet.js
 
-    initialize() {
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.getElementById('spreadsheet');
-            if (!container) return;
-            let Handsontable
-            this.hot = new Handsontable(container, {
-                data: [['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '']],
-                rowHeaders: true,
-                colHeaders: true,
-                height: 'auto',
-                licenseKey: 'non-commercial-and-evaluation',
-                contextMenu: true,
-                minSpareRows: 1,
-                minSpareCols: 1,
-                stretchH: 'all',
-                afterChange: (changes) => {
-                    if (changes) {
-                        this.handleDataChange(changes);
-                    }
-                }
-            });
+// State management using a closure
+const createSpreadsheetStore = () => {
+    let hotInstance = null;
 
-            window.addEventListener('resize', () => {
-                this.hot.render();
-            });
-        });
-    }
+    return {
+        getHot: () => hotInstance,
+        setHot: (instance) => { hotInstance = instance }
+    };
+};
 
-    addRow() {
-        if (!this.hot) return;
-        const currentData = this.hot.getData();
-        const newRow = new Array(currentData[0].length).fill('');
-        this.hot.alter('insert_row', currentData.length);
-        this.hot.render();
-    }
+const spreadsheetStore = createSpreadsheetStore();
 
-    addColumn() {
-        if (!this.hot) return;
-        const currentData = this.hot.getData();
-        this.hot.alter('insert_col', currentData[0].length);
-        this.hot.render();
-    }
+// Configuration
+const DEFAULT_CONFIG = {
+    data: [
+        ['', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', '', '']
+    ],
+    rowHeaders: true,
+    colHeaders: true,
+    height: 'auto',
+    licenseKey: 'non-commercial-and-evaluation',
+    contextMenu: true,
+    minSpareRows: 1,
+    minSpareCols: 1,
+    stretchH: 'all'
+};
 
-    getData() {
-        return this.hot ? this.hot.getData() : null;
-    }
+// Core functions
+const initializeSpreadsheet = (containerId = 'spreadsheet') => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
-    handleDataChange(changes) {
-        // Implement data change handling logic here
-        console.log('Data changed:', changes);
-    }
-}
+    const hot = new Handsontable(container, {
+        ...DEFAULT_CONFIG,
+        afterChange: handleDataChange
+    });
 
-// Initialize the spreadsheet manager globally
-new SpreadsheetManager();
+    spreadsheetStore.setHot(hot);
+    setupEventListeners();
+};
+
+const setupEventListeners = () => {
+    window.addEventListener('resize', () => {
+        const hot = spreadsheetStore.getHot();
+        if (hot) hot.render();
+    });
+};
+
+// Action handlers
+const addRow = () => {
+    const hot = spreadsheetStore.getHot();
+    if (!hot) return;
+
+    const currentData = hot.getData();
+    hot.alter('insert_row', currentData.length);
+    hot.render();
+};
+
+const addColumn = () => {
+    const hot = spreadsheetStore.getHot();
+    if (!hot) return;
+
+    const currentData = hot.getData();
+    hot.alter('insert_col', currentData[0].length);
+    hot.render();
+};
+
+const getData = () => {
+    const hot = spreadsheetStore.getHot();
+    return hot ? hot.getData() : null;
+};
+
+const handleDataChange = (changes) => {
+    if (!changes) return;
+    console.log('Data changed:', changes);
+    // Add any additional data change handling logic here
+};
+
+// Initialize on DOM load
+document.addEventListener('DOMContentLoaded', () => initializeSpreadsheet());
+
+// Export functions for external use
+window.spreadsheetManager = {
+    addRow,
+    addColumn,
+    getData,
+    initialize: initializeSpreadsheet
+};
