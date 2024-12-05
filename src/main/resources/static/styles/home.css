@@ -89,35 +89,47 @@
     @apply text-gray-600 dark:text-gray-400;
 }
 
-/* Testimonials */
-.testimonials-section {
-    @apply mb-16;
+/* Insights Section */
+.insights-section {
+    @apply mb-8;
 }
 
 .section-title {
-    @apply mb-8;
+    @apply mb-6;
     @apply text-2xl font-semibold;
     @apply text-gray-900 dark:text-white;
-    @apply text-center;
 }
 
-.testimonials-grid {
-    @apply grid gap-6;
-    @apply md:grid-cols-2;
+.insights-grid {
+    @apply grid gap-6 md:grid-cols-3;
 }
 
-.testimonial-card {
+.insight-card {
     @apply p-6 rounded-lg shadow-sm;
+    @apply flex gap-4;
     @apply bg-white dark:bg-gray-900;
 }
 
-.testimonial-text {
-    @apply mb-4;
-    @apply text-gray-600 dark:text-gray-300;
-    @apply italic;
+.insight-icon {
+    @apply flex-shrink-0;
 }
 
-.testimonial-author {
-    @apply text-sm font-medium;
+.icon-placeholder {
+    @apply w-10 h-10 rounded-lg;
+    @apply bg-blue-100 dark:bg-blue-900;
+}
+
+.insight-content {
+    @apply flex-grow;
+}
+
+.insight-title {
+    @apply mb-2;
+    @apply text-lg font-semibold;
     @apply text-gray-900 dark:text-white;
+}
+
+.insight-description {
+    @apply text-sm;
+    @apply text-gray-600 dark:text-gray-400;
 }
