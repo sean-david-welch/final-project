@@ -78,6 +78,41 @@ fun DIV.registerForm() {
     }
 }
 
+fun DIV.updateProfileForm() {
+    div {
+        form {
+            attributes["class"] = "auth-form profile-form"
+            attributes["hx-post"] = "/user/profile/update"
+            attributes["hx-trigger"] = "submit"
+            attributes["hx-target"] = "#profile-response-div"
+            attributes["hx-swap"] = "innerHTML"
+            attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
+
+            formField("Full Name", InputType.text, "John Doe") {
+                name = "name"
+                required = true
+            }
+
+            formField("Email", InputType.email, "your@email.com") {
+                name = "email"
+                required = true
+            }
+
+            formField("New Password", InputType.password, "••••••••") {
+                name = "password"
+                required = false
+                attributes["minlength"] = "8"
+            }
+
+            submitButton("Update Profile")
+        }
+
+        div {
+            attributes["id"] = "profile-response-div"
+        }
+    }
+}
+
 fun FlowContent.logoutButton() {
     form(action = "/auth/logout", method = FormMethod.post) {
         button(type = ButtonType.submit, classes = "nav-item-inactive") {
