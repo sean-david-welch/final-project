@@ -7,12 +7,14 @@ import com.budgetai.models.UserRole
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.application.*
 import io.ktor.server.config.*
+import io.ktor.server.request.*
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("AuthContext")
 
 data class BaseTemplateContext(
     val auth: AuthContext,
+    val request: ApplicationRequest
 )
 
 data class UserPrincipal(
@@ -52,7 +54,8 @@ fun ApplicationCall.createTemplateContext(): BaseTemplateContext {
     return BaseTemplateContext(
         auth = AuthContext(
             user = userPrincipal, isAuthenticated = isAuthenticated, isAdmin = isAdmin
-        )
+        ),
+        request = request
     )
 }
 
