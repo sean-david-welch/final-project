@@ -1,6 +1,3 @@
-// spreadsheet.js
-import Handsontable from "handsontable";
-
 class SpreadsheetManager {
     constructor() {
         this.hot = null;
@@ -11,7 +8,7 @@ class SpreadsheetManager {
         document.addEventListener('DOMContentLoaded', () => {
             const container = document.getElementById('spreadsheet');
             if (!container) return;
-
+            let Handsontable
             this.hot = new Handsontable(container, {
                 data: [['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '']],
                 rowHeaders: true,
