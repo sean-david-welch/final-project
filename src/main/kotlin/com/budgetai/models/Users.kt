@@ -33,7 +33,7 @@ data class UserAuthenticationRequest(
 // Data classes for requests
 @Serializable
 data class UpdateUserRequest(
-    val email: String, val name: String, val role: String = UserRole.USER.toString()
+    val email: String, val name: String, val password: String? = null, val role: String = UserRole.USER.toString()
 )
 
 @Serializable
