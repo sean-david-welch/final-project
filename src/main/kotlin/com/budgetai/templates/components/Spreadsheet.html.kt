@@ -3,7 +3,7 @@ package com.budgetai.templates.components
 import kotlinx.html.*
 
 fun FlowContent.SpreadsheetComponent(id: String = "spreadsheet") {
-    script(src = "/static/js/spreadsheet.js") {}
+    script(src = "/static/scripts/spreadsheet.js") {}
 
     div(classes = "spreadsheet-wrapper") {
         div(classes = "spreadsheet-controls") {
