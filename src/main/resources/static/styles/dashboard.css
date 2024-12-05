@@ -46,35 +46,3 @@
     @apply text-3xl font-semibold;
     @apply text-gray-900 dark:text-white;
 }
-
-/* Activity Section */
-.activity-section {
-    @apply mt-6;
-}
-
-.activity-title {
-    @apply mb-4;
-    @apply text-lg font-medium;
-    @apply text-gray-900 dark:text-white;
-}
-
-.activity-list {
-    @apply rounded-lg;
-    @apply border dark:border-gray-700;
-    @apply divide-y dark:divide-gray-700;
-}
-
-.activity-item {
-    @apply p-4;
-}
-
-.activity-text {
-    @apply text-sm;
-    @apply text-gray-900 dark:text-white;
-}
-
-.activity-time {
-    @apply mt-1;
-    @apply text-sm;
-    @apply text-gray-500 dark:text-gray-400;
-}
