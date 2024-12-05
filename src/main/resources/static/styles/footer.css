@@ -1,6 +1,6 @@
 /* Footer Base */
 .footer {
-    @apply border-t;
+    @apply border-t h-28 bottom-0;
     @apply bg-white dark:bg-gray-900;
 }
 
