@@ -143,14 +143,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
     }
 
     // Updates user's password
-    suspend fun updatePassword(id: Int, currentPassword: String, newPassword: String) {
-        val storedHash = repository.findPasswordHash(id) ?: throw IllegalStateException("Password hash not found")
-
-        val (salt, hash) = storedHash.split(":")
-        val saltBytes = Base64.getDecoder().decode(salt)
-        val calculatedHash = hashPassword(currentPassword, saltBytes)
-
-        require(hash == calculatedHash) { "Current password is incorrect" }
+    suspend fun updatePassword(id: Int, newPassword: String) {
         require(isValidPassword(newPassword)) { "New password doesn't meet security requirements" }
 
         val newSalt = generateSalt()
