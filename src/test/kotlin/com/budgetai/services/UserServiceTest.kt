@@ -200,7 +200,7 @@ class UserServiceTest {
         val newPassword = "NewPassword123!"
 
         // When
-        service.updatePassword(userId, validPassword, newPassword)
+        service.updatePassword(userId, newPassword)
 
         // Then
         val authRequest = UserAuthenticationRequest(
@@ -220,7 +220,7 @@ class UserServiceTest {
 
         // When/Then
         assertFailsWith<IllegalArgumentException> {
-            service.updatePassword(userId, "wrongpassword", "NewPassword123!")
+            service.updatePassword(userId, "NewPassword123!")
         }
     }
 
@@ -234,7 +234,7 @@ class UserServiceTest {
 
         // When/Then
         assertFailsWith<IllegalArgumentException> {
-            service.updatePassword(userId, validPassword, "weak")
+            service.updatePassword(userId, "weak")
         }
     }
 
