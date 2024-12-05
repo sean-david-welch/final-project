@@ -1,6 +1,6 @@
 const createSpreadsheetStore = () => {
     let hotInstance = null;
-    let headerNames = ['A', 'B', 'C', 'D', 'E']; // Store header names
+    let headerNames = ['A', 'B', 'C', 'D', 'E'];
 
     return {
         getHot: () => hotInstance,
@@ -19,16 +19,44 @@ const DEFAULT_CONFIG = {
         ['', '', '', '', '']
     ],
     rowHeaders: true,
-    colHeaders: spreadsheetStore.getHeaders(),
     height: 'auto',
     licenseKey: 'non-commercial-and-evaluation',
     contextMenu: true,
     minSpareRows: 1,
     minSpareCols: 1,
     stretchH: 'all',
+    nestedHeaders: [[
+        { label: 'A', colspan: 1 },
+        { label: 'B', colspan: 1 },
+        { label: 'C', colspan: 1 },
+        { label: 'D', colspan: 1 },
+        { label: 'E', colspan: 1 }
+    ]],
     afterGetColHeader: (col, TH) => {
-        // Make header cells clickable
-        TH.className += ' htClickable';
+        const headerSpan = TH.querySelector('.colHeader');
+        if (headerSpan) {
+            headerSpan.setAttribute('contenteditable', 'true');
+
+            // Prevent default Handsontable header behavior
+            headerSpan.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+            });
+
+            // Handle header editing
+            headerSpan.addEventListener('blur', () => {
+                const headers = spreadsheetStore.getHeaders();
+                headers[col] = headerSpan.textContent;
+                spreadsheetStore.setHeaders(headers);
+            });
+
+            // Prevent newlines in header
+            headerSpan.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    headerSpan.blur();
+                }
+            });
+        }
     }
 };
 
@@ -43,35 +71,12 @@ const initializeSpreadsheet = (containerId = 'spreadsheet') => {
 
     spreadsheetStore.setHot(hot);
     setupEventListeners();
-    setupHeaderListeners(container);
 };
 
 const setupEventListeners = () => {
     window.addEventListener('resize', () => {
         const hot = spreadsheetStore.getHot();
         if (hot) hot.render();
-    });
-};
-
-const setupHeaderListeners = (container) => {
-    container.addEventListener('mousedown', (event) => {
-        const headerCell = event.target.closest('.htClickable');
-        if (!headerCell) return;
-
-        const hot = spreadsheetStore.getHot();
-        const headers = spreadsheetStore.getHeaders();
-        const colIndex = headerCell.getAttribute('data-col');
-
-        if (colIndex === null) return;
-
-        const newHeader = prompt('Enter new header name:', headers[colIndex]);
-        if (newHeader === null) return;
-
-        headers[colIndex] = newHeader;
-        spreadsheetStore.setHeaders(headers);
-        hot.updateSettings({
-            colHeaders: headers
-        });
     });
 };
 
@@ -92,11 +97,14 @@ const addColumn = () => {
     const currentData = hot.getData();
     const newData = currentData.map(row => [...row, '']);
     const headers = spreadsheetStore.getHeaders();
-    headers.push(String.fromCharCode(65 + headers.length)); // Add next letter as header
+    const newHeader = String.fromCharCode(65 + headers.length);
+    headers.push(newHeader);
     spreadsheetStore.setHeaders(headers);
 
     hot.updateSettings({
-        colHeaders: headers
+        nestedHeaders: [[
+            ...headers.map(header => ({ label: header, colspan: 1 }))
+        ]]
     });
     hot.updateData(newData);
 };
