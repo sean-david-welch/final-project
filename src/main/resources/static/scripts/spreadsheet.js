@@ -12,6 +12,10 @@ const createSpreadsheetStore = () => {
 
 const spreadsheetStore = createSpreadsheetStore();
 
+const getNestedHeaders = (headers) => [[
+    ...headers.map(header => ({ label: header, colspan: 1 }))
+]];
+
 const DEFAULT_CONFIG = {
     data: [
         ['', '', '', '', ''],
@@ -25,13 +29,7 @@ const DEFAULT_CONFIG = {
     minSpareRows: 1,
     minSpareCols: 1,
     stretchH: 'all',
-    nestedHeaders: [[
-        { label: 'A', colspan: 1 },
-        { label: 'B', colspan: 1 },
-        { label: 'C', colspan: 1 },
-        { label: 'D', colspan: 1 },
-        { label: 'E', colspan: 1 }
-    ]],
+    nestedHeaders: getNestedHeaders(spreadsheetStore.getHeaders()),
     afterGetColHeader: (col, TH) => {
         const headerSpan = TH.querySelector('.colHeader');
         if (headerSpan) {
@@ -47,6 +45,11 @@ const DEFAULT_CONFIG = {
                 const headers = spreadsheetStore.getHeaders();
                 headers[col] = headerSpan.textContent;
                 spreadsheetStore.setHeaders(headers);
+
+                const hot = spreadsheetStore.getHot();
+                hot.updateSettings({
+                    nestedHeaders: getNestedHeaders(headers)
+                });
             });
 
             // Prevent newlines in header
@@ -101,12 +104,12 @@ const addColumn = () => {
     headers.push(newHeader);
     spreadsheetStore.setHeaders(headers);
 
+    // Force a complete refresh of the headers
     hot.updateSettings({
-        nestedHeaders: [[
-            ...headers.map(header => ({ label: header, colspan: 1 }))
-        ]]
+        nestedHeaders: getNestedHeaders(headers)
     });
     hot.updateData(newData);
+    hot.render(); // Ensure the new header is rendered properly
 };
 
 const getData = () => {
