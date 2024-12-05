@@ -1,5 +1,6 @@
 package com.budgetai.templates.pages
 
+import com.budgetai.templates.components.SpreadsheetComponent
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
@@ -45,5 +46,9 @@ fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashb
                 }
             }
         }
+    }
+
+    div {
+        SpreadsheetComponent()
     }
 }
