@@ -22,14 +22,6 @@ fun createReportsPage(context: BaseTemplateContext) = ReportsTemplate("Financial
                 +"Comprehensive insights into your spending patterns and financial health."
             }
         }
-        div(classes = "time-period-selector") {
-            select(classes = "period-dropdown") {
-                option { +"Last 30 Days" }
-                option { +"Last 3 Months" }
-                option { +"Last 6 Months" }
-                option { +"Year to Date" }
-            }
-        }
     }
 
     // Reports Grid
@@ -84,37 +76,6 @@ fun createReportsPage(context: BaseTemplateContext) = ReportsTemplate("Financial
             }
             div(classes = "report-content") {
                 div(classes = "chart-placeholder")
-            }
-        }
-    }
-
-    // Insights Section
-    div(classes = "insights-section") {
-        h2(classes = "section-title") { +"AI-Powered Insights" }
-        div(classes = "insights-grid") {
-            repeat(3) { index ->
-                div(classes = "insight-card") {
-                    div(classes = "insight-icon") {
-                        // Icon placeholder
-                        div(classes = "icon-placeholder")
-                    }
-                    div(classes = "insight-content") {
-                        h4(classes = "insight-title") {
-                            +when (index) {
-                                0 -> "Spending Patterns"
-                                1 -> "Budget Recommendations"
-                                else -> "Savings Opportunities"
-                            }
-                        }
-                        p(classes = "insight-description") {
-                            +when (index) {
-                                0 -> "Your restaurant spending has increased by 15% this month"
-                                1 -> "You could save $200 by adjusting your entertainment budget"
-                                else -> "Setting aside 5% more could help reach your goal faster"
-                            }
-                        }
-                    }
-                }
             }
         }
     }
