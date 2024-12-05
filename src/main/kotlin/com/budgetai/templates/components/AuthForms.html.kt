@@ -1,5 +1,6 @@
 package com.budgetai.templates.components
 
+import com.budgetai.models.UserDTO
 import kotlinx.html.*
 
 private fun FORM.formField(
@@ -78,11 +79,11 @@ fun DIV.registerForm() {
     }
 }
 
-fun DIV.updateProfileForm() {
+fun DIV.updateProfileForm(user: UserDTO) {
     div {
         form {
-            attributes["class"] = "auth-form profile-form"
-            attributes["hx-post"] = "/user/profile/update"
+            attributes["class"] = "settings-form"
+            attributes["hx-post"] = "/api/users/${user.id}"
             attributes["hx-trigger"] = "submit"
             attributes["hx-target"] = "#profile-response-div"
             attributes["hx-swap"] = "innerHTML"
