@@ -61,48 +61,6 @@
     @apply text-gray-400 dark:text-gray-600;
 }
 
-/* Recent Actions */
-.actions-section {
-    @apply mt-6;
-}
-
-.actions-card {
-    @apply p-6;
-    @apply bg-white dark:bg-gray-900;
-}
-
-.actions-title {
-    @apply text-lg font-medium mb-4;
-    @apply text-gray-900 dark:text-white;
-}
-
-.actions-list {
-    @apply divide-y dark:divide-gray-700;
-}
-
-.action-item {
-    @apply py-4;
-}
-
-.action-content {
-    @apply flex items-center justify-between;
-}
-
-.action-details {
-    @apply text-sm font-medium;
-    @apply text-gray-900 dark:text-white;
-}
-
-.action-user {
-    @apply text-sm;
-    @apply text-gray-500 dark:text-gray-400;
-}
-
-.action-time {
-    @apply text-sm;
-    @apply text-gray-500 dark:text-gray-400;
-}
-
 /* System Status */
 .status-grid {
     @apply grid gap-6 mt-6;
