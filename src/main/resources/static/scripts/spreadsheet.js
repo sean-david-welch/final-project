@@ -157,6 +157,56 @@ class Spreadsheet {
     static create(containerId, options = {}) {
         return new Spreadsheet(containerId, options);
     }
+
+        exportToCSV(filename = 'spreadsheet.csv') {
+        if (!this.instance) {
+            console.error('Spreadsheet instance not initialized');
+            return;
+        }
+
+        // Get the current data and headers
+        const data = this.getData();
+        const headers = this.getHeaders();
+
+        // Create CSV content
+        const csvContent = [
+            // Add headers as first row
+            headers.join(','),
+            // Convert each data row to CSV format
+            ...data.map(row =>
+                row.map(cell => {
+                    // Handle special characters and ensure proper CSV formatting
+                    if (cell === null || cell === undefined) {
+                        return '';
+                    }
+                    const cellStr = String(cell);
+                    // Escape quotes and wrap in quotes if necessary
+                    if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+                        return `"${cellStr.replace(/"/g, '""')}"`;
+                    }
+                    return cellStr;
+                }).join(',')
+            )
+        ].join('\n');
+
+        // Create blob and download link
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+
+        // Handle different browser implementations
+        if (navigator.msSaveBlob) {
+            // IE10+
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            // Other browsers
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+
 }
 
 // Initialize spreadsheet when DOM is ready
