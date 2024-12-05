@@ -5,11 +5,6 @@ import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
 fun SpreadsheetTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.() -> Unit) = BaseTemplate(context) {
-    head {
-        link(rel = "stylesheet", href = "https://cdn.jsdelivr.net/npm/handsontable@latest/dist/handsontable.full.min.css")
-        script(src = "https://cdn.jsdelivr.net/npm/handsontable@latest/dist/handsontable.full.min.js") {}
-    }
-
     main(classes = "dashboard-layout") {
         div(classes = "dashboard-container") {
             h1(classes = "page-title") { +title }
