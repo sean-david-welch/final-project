@@ -27,6 +27,10 @@ fun createSettingsPage(context: BaseTemplateContext) = SettingsTemplate("Account
                     label { +"Email" }
                     input(type = InputType.email, classes = "input-field")
                 }
+                div(classes = "form-group") {
+                    label { +"Email" }
+                    input(type = InputType.email, classes = "input-field")
+                }
                 button(classes = "save-button") { +"Update Profile" }
             }
         }
