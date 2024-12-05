@@ -62,37 +62,9 @@
 }
 
 /* System Status */
-.status-grid {
-    @apply grid gap-6 mt-6;
-    @apply md:grid-cols-2;
-}
-
 .status-card {
     @apply p-6;
     @apply bg-white dark:bg-gray-900;
-}
-
-.status-title {
-    @apply text-lg font-medium mb-4;
-    @apply text-gray-900 dark:text-white;
-}
-
-.status-list {
-    @apply space-y-4;
-}
-
-.status-item {
-    @apply flex items-center justify-between;
-}
-
-.status-label {
-    @apply text-sm;
-    @apply text-gray-600 dark:text-gray-400;
-}
-
-.status-value {
-    @apply text-sm font-medium;
-    @apply text-gray-900 dark:text-white;
 }
 
 /* Quick Actions */
