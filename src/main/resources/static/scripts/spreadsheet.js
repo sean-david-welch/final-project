@@ -68,6 +68,26 @@ const DEFAULT_CONFIG = {
     afterGetColHeader: (col, TH) => {
         const headerSpan = TH.querySelector('.colHeader');
         attachHeaderListeners(headerSpan, col);
+    },
+    afterCreateCol: (index) => {
+        const hot = spreadsheetStore.getHot();
+        const headers = spreadsheetStore.getHeaders();
+        const newHeader = String.fromCharCode(65 + headers.length - 1); // Adjust for 0-based index
+        headers[index] = newHeader;
+        spreadsheetStore.setHeaders(headers);
+
+        hot.updateSettings({
+            nestedHeaders: getNestedHeaders(headers)
+        });
+
+        // Initialize the new header
+        setTimeout(() => {
+            const headerCells = hot.rootElement.querySelectorAll('.colHeader');
+            headerCells.forEach((headerSpan, idx) => {
+                attachHeaderListeners(headerSpan, idx);
+            });
+            hot.render();
+        }, 0);
     }
 };
 
@@ -105,27 +125,7 @@ const addColumn = () => {
     const hot = spreadsheetStore.getHot();
     if (!hot) return;
 
-    const currentData = hot.getData();
-    const newData = currentData.map(row => [...row, '']);
-    const headers = spreadsheetStore.getHeaders();
-    const newHeader = String.fromCharCode(65 + headers.length);
-    headers.push(newHeader);
-    spreadsheetStore.setHeaders(headers);
-
-    // Force a complete refresh of the headers and data
-    hot.updateSettings({
-        nestedHeaders: getNestedHeaders(headers)
-    });
-    hot.updateData(newData);
-
-    // Ensure all headers are properly initialized
-    setTimeout(() => {
-        const headerCells = hot.rootElement.querySelectorAll('.colHeader');
-        headerCells.forEach((headerSpan, index) => {
-            attachHeaderListeners(headerSpan, index);
-        });
-        hot.render();
-    }, 0);
+    hot.alter('insert_col', hot.countCols());
 };
 
 const getData = () => {
