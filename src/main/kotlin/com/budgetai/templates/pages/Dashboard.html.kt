@@ -19,18 +19,10 @@ fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashb
         repeat(3) { index ->
             div(classes = "stat-card") {
                 div(classes = "stat-label") {
-                    +when (index) {
-                        0 -> "Total Revenue"
-                        1 -> "Active Users"
-                        else -> "Growth Rate"
-                    }
+
                 }
                 div(classes = "stat-value") {
-                    +when (index) {
-                        0 -> "$24,500"
-                        1 -> "2,345"
-                        else -> "+12.3%"
-                    }
+
                 }
             }
         }
