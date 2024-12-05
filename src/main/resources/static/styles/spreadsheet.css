@@ -1,0 +1,51 @@
+/* Spreadsheet Layout */
+.spreadsheet-container {
+    @apply mt-6 w-full;
+    @apply bg-white dark:bg-gray-900;
+    @apply rounded-lg shadow-sm;
+    min-height: 400px;
+}
+
+/* Control Buttons */
+.spreadsheet-controls {
+    @apply mb-4 flex gap-4;
+}
+
+.control-button {
+    @apply px-4 py-2 rounded-md;
+    @apply bg-blue-600 text-white;
+    @apply hover:bg-blue-700;
+    @apply dark:bg-blue-500 dark:hover:bg-blue-600;
+    @apply transition-colors duration-200;
+}
+
+/* Handsontable Theme Overrides */
+.handsontable {
+    @apply font-sans;
+}
+
+.handsontable .htCore {
+    @apply bg-white dark:bg-gray-900;
+}
+
+.handsontable th {
+    @apply bg-gray-100 dark:bg-gray-800;
+    @apply text-gray-700 dark:text-gray-300;
+}
+
+.handsontable td {
+    @apply text-gray-900 dark:text-gray-100;
+    @apply border-gray-200 dark:border-gray-700;
+}
+
+.handsontable .htDimmed {
+    @apply text-gray-500 dark:text-gray-400;
+}
+
+.handsontable .current {
+    @apply bg-blue-50 dark:bg-blue-900/30;
+}
+
+.handsontable .area {
+    @apply bg-blue-100 dark:bg-blue-900/50;
+}
