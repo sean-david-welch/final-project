@@ -2,6 +2,7 @@ package com.budgetai.templates.layout
 
 import com.budgetai.utils.BaseTemplateContext
 import com.budgetai.templates.components.logoutButton
+import io.ktor.server.request.*
 import kotlinx.html.*
 
 // Navitem data class
@@ -18,7 +19,7 @@ fun getNavItems(currentPath: String): List<NavItem> {
 
 // main navbar template
 fun FlowContent.Navbar(context: BaseTemplateContext) {
-    val currentPath = context.request.path
+    val currentPath = context.request.path()
 
     nav(classes = "navbar") {
         div(classes = "navbar-container navbar-content") {
