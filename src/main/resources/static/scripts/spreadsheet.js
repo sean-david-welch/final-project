@@ -41,66 +41,66 @@ class Spreadsheet {
 
         const style = document.createElement('style');
         style.textContent = `
-            .handsontable {
+            .dark-theme.handsontable {
                 background: #1f2937;
             }
             
-            .handsontable th {
+            .dark-theme.handsontable th {
                 background-color: #1f2937;
                 color: #ffffff;
                 border-color: #374151;
             }
             
-            .handsontable td {
+            .dark-theme.handsontable td {
                 background-color: #111827;
                 color: #ffffff;
                 border-color: #374151;
             }
             
-            .handsontable .colHeader,
-            .handsontable .rowHeader {
+            .dark-theme.handsontable .colHeader,
+            .dark-theme.handsontable .rowHeader {
                 background-color: #1f2937;
                 color: #ffffff;
                 font-weight: 600;
             }
             
-            .handsontable .htCore tbody tr td.current,
-            .handsontable .htCore tbody tr th.current {
+            .dark-theme.handsontable .htCore tbody tr td.current,
+            .dark-theme.handsontable .htCore tbody tr th.current {
                 background-color: #374151;
             }
             
-            .handsontable .htCore tbody tr td.area,
-            .handsontable .htCore tbody tr th.area {
+            .dark-theme.handsontable .htCore tbody tr td.area,
+            .dark-theme.handsontable .htCore tbody tr th.area {
                 background-color: #2563eb !important;
                 opacity: 0.1;
             }
             
-            .handsontable .htCore tbody tr td.highlight {
+            .dark-theme.handsontable .htCore tbody tr td.highlight {
                 background-color: #374151;
             }
             
-            .handsontable .wtBorder {
+            .dark-theme.handsontable .wtBorder {
                 background-color: #2563eb !important;
             }
             
-            .handsontable .wtBorder.current {
+            .dark-theme.handsontable .wtBorder.current {
                 background-color: #2563eb !important;
             }
             
-            .handsontable tr:hover td {
+            .dark-theme.handsontable tr:hover td {
                 background-color: #374151;
             }
             
-            .handsontable th:hover {
+            .dark-theme.handsontable th:hover {
                 background-color: #374151;
             }
             
-            .handsontable .htNoFrame+td, 
-            .handsontable .htNoFrame+th, 
-            .handsontable td:first-of-type, 
-            .handsontable th:first-child, 
-            .handsontable th:nth-child(2), 
-            .handsontable.htRowHeaders thead tr th:nth-child(2) {
+            .dark-theme.handsontable .htNoFrame+td, 
+            .dark-theme.handsontable .htNoFrame+th, 
+            .dark-theme.handsontable td:first-of-type, 
+            .dark-theme.handsontable th:first-child, 
+            .dark-theme.handsontable th:nth-child(2), 
+            .dark-theme.handsontable.htRowHeaders thead tr th:nth-child(2) {
                 border-left: 1px solid #374151;
             }
         `;
