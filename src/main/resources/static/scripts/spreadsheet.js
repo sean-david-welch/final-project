@@ -2,27 +2,20 @@ class Spreadsheet {
     constructor(containerId = 'spreadsheet', options = {}) {
         this.containerId = containerId;
         this.instance = null;
-        this.headerNames = Array(options.columns || 5).fill().map((_, i) =>
-            String.fromCharCode(65 + i)
-        );
+        this.headerNames = Array(options.columns || 5).fill().map((_, i) => String.fromCharCode(65 + i));
         this.rows = options.rows || 20;
         this.initialize();
     }
 
     getNestedHeaders() {
-        return [[
-            ...this.headerNames.map(header => ({
-                label: header,
-                colspan: 1
-            }))
-        ]];
+        return [[...this.headerNames.map(header => ({
+            label: header, colspan: 1
+        }))]];
     }
 
     getDefaultConfig() {
         return {
-            data: Array(this.rows).fill().map(() =>
-                Array(this.headerNames.length).fill('')
-            ),
+            data: Array(this.rows).fill().map(() => Array(this.headerNames.length).fill('')),
             rowHeaders: true,
             height: 'auto',
             licenseKey: 'non-commercial-and-evaluation',
@@ -128,10 +121,7 @@ class Spreadsheet {
     addRow() {
         if (!this.instance) return;
         const currentData = this.instance.getData();
-        const newData = [
-            ...currentData,
-            Array(this.headerNames.length).fill('')
-        ];
+        const newData = [...currentData, Array(this.headerNames.length).fill('')];
         this.instance.updateData(newData);
     }
 
@@ -159,7 +149,7 @@ class Spreadsheet {
     handleDataChange(changes) {
         if (!changes) return;
         const event = new CustomEvent('spreadsheet-change', {
-            detail: { changes, headers: this.getHeaders() }
+            detail: {changes, headers: this.getHeaders()}
         });
         document.dispatchEvent(event);
     }
@@ -172,8 +162,7 @@ class Spreadsheet {
 // Initialize spreadsheet when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     const spreadsheet = Spreadsheet.create('spreadsheet', {
-        rows: 20,
-        columns: 5
+        rows: 20, columns: 5
     });
 
     window.spreadsheetManager = {
