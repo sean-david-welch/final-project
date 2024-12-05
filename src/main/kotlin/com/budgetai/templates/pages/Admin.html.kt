@@ -39,7 +39,7 @@ fun createAdminPage(context: BaseTemplateContext) = AdminTemplate("Admin Dashboa
         h2(classes = "status-title") { +"Quick Actions" }
         div(classes = "quick-actions") {
             listOf(
-                "User Management", "System Settings", "Audit Logs", "Backup"
+                "User Management", "Manage Reports",
             ).forEach { action ->
                 button(classes = "action-button") {
                     +action
