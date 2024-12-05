@@ -1,4 +1,6 @@
 // spreadsheet.js
+import Handsontable from "handsontable";
+
 class SpreadsheetManager {
     constructor() {
         this.hot = null;
@@ -59,4 +61,4 @@ class SpreadsheetManager {
 }
 
 // Initialize the spreadsheet manager globally
-const spreadsheetManager = new SpreadsheetManager();
+new SpreadsheetManager();
