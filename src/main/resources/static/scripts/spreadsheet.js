@@ -158,7 +158,7 @@ class Spreadsheet {
         return new Spreadsheet(containerId, options);
     }
 
-        exportToCSV(filename = 'spreadsheet.csv') {
+    exportToCSV(filename = 'spreadsheet.csv') {
         if (!this.instance) {
             console.error('Spreadsheet instance not initialized');
             return;
@@ -169,28 +169,23 @@ class Spreadsheet {
         const headers = this.getHeaders();
 
         // Create CSV content
-        const csvContent = [
-            // Add headers as first row
-            headers.join(','),
-            // Convert each data row to CSV format
-            ...data.map(row =>
-                row.map(cell => {
-                    // Handle special characters and ensure proper CSV formatting
-                    if (cell === null || cell === undefined) {
-                        return '';
-                    }
-                    const cellStr = String(cell);
-                    // Escape quotes and wrap in quotes if necessary
-                    if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
-                        return `"${cellStr.replace(/"/g, '""')}"`;
-                    }
-                    return cellStr;
-                }).join(',')
-            )
-        ].join('\n');
+        const csvContent = [// Add headers as first row
+            headers.join(','), // Convert each data row to CSV format
+            ...data.map(row => row.map(cell => {
+                // Handle special characters and ensure proper CSV formatting
+                if (cell === null || cell === undefined) {
+                    return '';
+                }
+                const cellStr = String(cell);
+                // Escape quotes and wrap in quotes if necessary
+                if (cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')) {
+                    return `"${cellStr.replace(/"/g, '""')}"`;
+                }
+                return cellStr;
+            }).join(','))].join('\n');
 
         // Create blob and download link
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const blob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
         const link = document.createElement('a');
 
         // Handle different browser implementations
@@ -220,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         addColumn: () => spreadsheet.addColumn(),
         getData: () => spreadsheet.getData(),
         getHeaders: () => spreadsheet.getHeaders(),
-        initialize: (containerId, options) => Spreadsheet.create(containerId, options)
+        initialize: (containerId, options) => Spreadsheet.create(containerId, options),
+        exportToCSV: (filename) => spreadsheet.exportToCSV(filename)
     };
 });
