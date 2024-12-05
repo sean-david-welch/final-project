@@ -25,8 +25,7 @@ fun createHomePage(context: BaseTemplateContext) = HomeTemplate("Welcome to Budg
                 +"Smart budgeting powered by artificial intelligence to help you achieve your financial goals."
             }
             div(classes = "hero-actions") {
-                a(href = "/dashboard", classes = "primary-button") { +"Get Started" }
-                a(href = "/learn-more", classes = "secondary-button") { +"Learn More" }
+                a(href = "/login", classes = "primary-button") { +"Get Started" }
             }
         }
     }
