@@ -8,6 +8,7 @@
 @import "auth.css";
 @import "misc.css";
 @import "admin.css";
+@import "spreadsheet.css";
 
 /* Tailwind Directives */
 @tailwind base;
