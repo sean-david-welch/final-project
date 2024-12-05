@@ -34,72 +34,72 @@ fun Route.authRoutes(service: UserService) {
     )
     route("/auth") {
         // login
-post("/login") {
-    try {
-        val request = when (call.request.contentType()) {
-            ContentType.Application.Json -> {
-                // Handle JSON request
-                val jsonRequest = call.receive<UserAuthenticationRequest>()
-                // Return JSON response for API clients
-                val result = service.authenticateUserWithToken(jsonRequest)
+        post("/login") {
+            try {
+                val request = when (call.request.contentType()) {
+                    ContentType.Application.Json -> {
+                        // Handle JSON request
+                        val jsonRequest = call.receive<UserAuthenticationRequest>()
+                        // Return JSON response for API clients
+                        val result = service.authenticateUserWithToken(jsonRequest)
+                        if (result != null) {
+                            val (_, token) = result
+                            call.setAuthCookie(token, cookieConfig)
+                            call.respond(HttpStatusCode.OK, mapOf("message" to "Login successful", "redirectUrl" to "/dashboard"))
+                        }
+                        return@post
+                    }
+
+                    ContentType.Application.FormUrlEncoded -> {
+                        // Handle form data
+                        val parameters = call.receiveParameters()
+                        UserAuthenticationRequest(
+                            email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
+                            password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
+                        )
+                    }
+
+                    else -> throw IllegalArgumentException("Unsupported content type")
+                }
+
+                // Process form-based authentication
+                val result = service.authenticateUserWithToken(request)
                 if (result != null) {
                     val (_, token) = result
                     call.setAuthCookie(token, cookieConfig)
-                    call.respond(HttpStatusCode.OK, mapOf("message" to "Login successful", "redirectUrl" to "/dashboard"))
+
+                    val response = ResponseComponents.success(
+                        "Login successful! Redirecting..."
+                    ) + """<script>window.location.href = '/dashboard';</script>""".trimIndent()
+
+                    call.respondText(response, ContentType.Text.Html)
                 }
-                return@post
-            }
-            ContentType.Application.FormUrlEncoded -> {
-                // Handle form data
-                val parameters = call.receiveParameters()
-                UserAuthenticationRequest(
-                    email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
-                    password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
-                )
-            }
-            else -> throw IllegalArgumentException("Unsupported content type")
-        }
 
-        // Process form-based authentication
-        val result = service.authenticateUserWithToken(request)
-        if (result != null) {
-            val (_, token) = result
-            call.setAuthCookie(token, cookieConfig)
+            } catch (e: Exception) {
+                logger.error("Login failed", e)
+                val errorMessage = when (e) {
+                    is IllegalArgumentException -> e.message
+                    else -> "Invalid login credentials"
+                }
 
-            val response = ResponseComponents.success(
-                "Login successful! Redirecting..."
-            ) + """<script>window.location.href = '/dashboard';</script>""".trimIndent()
+                // Return appropriate error format based on content type
+                when (call.request.contentType()) {
+                    ContentType.Application.Json -> {
+                        call.respond(
+                            HttpStatusCode.BadRequest, mapOf("error" to (errorMessage ?: "An unknown error occurred"))
+                        )
+                    }
 
-            call.respondText(response, ContentType.Text.Html)
-        }
-
-    } catch (e: Exception) {
-        logger.error("Login failed", e)
-        val errorMessage = when (e) {
-            is IllegalArgumentException -> e.message
-            else -> "Invalid login credentials"
-        }
-
-        // Return appropriate error format based on content type
-        when (call.request.contentType()) {
-            ContentType.Application.Json -> {
-                call.respond(
-                    HttpStatusCode.BadRequest,
-                    mapOf("error" to (errorMessage ?: "An unknown error occurred"))
-                )
-            }
-            else -> {
-                val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
-                logger.debug("Generated error response: $errorResponse")
-                call.respondText(
-                    errorResponse,
-                    ContentType.Text.Html,
-                    HttpStatusCode.BadRequest
-                )
+                    else -> {
+                        val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
+                        logger.debug("Generated error response: $errorResponse")
+                        call.respondText(
+                            errorResponse, ContentType.Text.Html, HttpStatusCode.BadRequest
+                        )
+                    }
+                }
             }
         }
-    }
-}
 
         // Create new user
         post("/register") {
