@@ -3,6 +3,7 @@ package com.budgetai.routes.api
 import com.budgetai.models.UpdatePasswordRequest
 import com.budgetai.models.UpdateUserRequest
 import com.budgetai.models.UserDTO
+import com.budgetai.models.UserRole
 import com.budgetai.services.UserService
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -12,7 +13,7 @@ import io.ktor.server.routing.*
 
 fun Route.userRoutes(service: UserService) {
     // proteted routes
-     authenticate {
+    authenticate {
         route("/api/users") {
             // Get user by ID
             get("/{id}") {
@@ -55,9 +56,11 @@ fun Route.userRoutes(service: UserService) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
+                    val existingUser = service.getUser(id) ?: throw IllegalArgumentException("User not found")
                     val request = call.receive<UpdateUserRequest>()
+                    val role = if (existingUser.role == UserRole.ADMIN.toString()) UserRole.ADMIN.toString() else request.role
                     val userDTO = UserDTO(
-                        id = id, email = request.email, name = request.name, role = request.role
+                        id = id, email = request.email, name = request.name, role = role
                     )
 
                     service.updateUser(id, userDTO)
