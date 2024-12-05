@@ -83,7 +83,7 @@ fun DIV.updateProfileForm(user: UserDTO) {
     div {
         form {
             attributes["class"] = "settings-form"
-            attributes["hx-post"] = "/api/users/${user.id}"
+            attributes["hx-put"] = "/api/users/${user.id}"
             attributes["hx-trigger"] = "submit"
             attributes["hx-target"] = "#profile-response-div"
             attributes["hx-swap"] = "innerHTML"
