@@ -1,9 +1,6 @@
 package com.budgetai.routes.api
 
-import com.budgetai.models.UpdatePasswordRequest
-import com.budgetai.models.UpdateUserRequest
-import com.budgetai.models.UserDTO
-import com.budgetai.models.UserRole
+import com.budgetai.models.*
 import com.budgetai.services.UserService
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -57,12 +54,18 @@ fun Route.userRoutes(service: UserService) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                     val existingUser = service.getUser(id) ?: throw IllegalArgumentException("User not found")
-                    val request = call.receive<UpdateUserRequest>()
-                    val role = if (existingUser.role == UserRole.ADMIN.toString()) UserRole.ADMIN.toString() else request.role
+                    val parameters = call.receiveParameters()
+                    val request = UpdateUserRequest(
+                        name = parameters["name"] ?: throw IllegalArgumentException("Email is required"),
+                        email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
+                        password = parameters["password"],
+                    )
+                    val role = if (existingUser.role == UserRole.ADMIN.toString()) UserRole.ADMIN.toString() else UserRole.USER.toString()
                     val userDTO = UserDTO(
                         id = id, email = request.email, name = request.name, role = role
                     )
 
+                    if (!request.password.isNullOrEmpty()) request.password.let { service.updatePassword(id, it) }
                     service.updateUser(id, userDTO)
                     call.respond(HttpStatusCode.OK, "User updated successfully")
                 } catch (e: IllegalArgumentException) {
@@ -78,7 +81,7 @@ fun Route.userRoutes(service: UserService) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                     val request = call.receive<UpdatePasswordRequest>()
-                    service.updatePassword(id, request.currentPassword, request.newPassword)
+                    service.updatePassword(id, request.newPassword)
                     call.respond(HttpStatusCode.OK, "Password updated successfully")
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
