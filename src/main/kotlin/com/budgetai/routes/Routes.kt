@@ -43,7 +43,7 @@ fun Application.configureRoutes(config: ApplicationConfig, database: Database? =
         mainRoutes()
         dashboardRoutes()
         reportRoutes()
-        settingsRoutes()
+        settingsRoutes(userService)
 
         // API routes
         userRoutes(userService)
