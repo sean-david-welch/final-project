@@ -11,11 +11,7 @@ class SpreadsheetManager {
             if (!container) return;
 
             this.hot = new Handsontable(container, {
-                data: [
-                    ['', '', '', '', ''],
-                    ['', '', '', '', ''],
-                    ['', '', '', '', '']
-                ],
+                data: [['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', '']],
                 rowHeaders: true,
                 colHeaders: true,
                 height: 'auto',
