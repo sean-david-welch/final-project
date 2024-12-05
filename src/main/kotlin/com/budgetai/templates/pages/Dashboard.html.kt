@@ -27,8 +27,5 @@ fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashb
             }
         }
     }
-
-    div {
-        SpreadsheetComponent()
-    }
+    SpreadsheetComponent()
 }
