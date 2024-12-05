@@ -1,5 +1,7 @@
 package com.budgetai.templates.pages
 
+import com.budgetai.models.UserDTO
+import com.budgetai.templates.components.updateProfileForm
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
@@ -13,26 +15,12 @@ fun SettingsTemplate(title: String, context: BaseTemplateContext, contentFn: DIV
     }
 }
 
-fun createSettingsPage(context: BaseTemplateContext) = SettingsTemplate("Account Settings", context) {
+fun createSettingsPage(context: BaseTemplateContext, user: UserDTO) = SettingsTemplate("Account Settings", context) {
     div(classes = "settings-grid") {
         // Profile Settings
         div(classes = "settings-section") {
             h2(classes = "section-title") { +"Profile Settings" }
-            div(classes = "settings-form") {
-                div(classes = "form-group") {
-                    label { +"Name" }
-                    input(type = InputType.text, classes = "input-field")
-                }
-                div(classes = "form-group") {
-                    label { +"Email" }
-                    input(type = InputType.email, classes = "input-field")
-                }
-                div(classes = "form-group") {
-                    label { +"Password" }
-                    input(type = InputType.password, classes = "input-field")
-                }
-                button(classes = "save-button") { +"Update Profile" }
-            }
+            updateProfileForm(user)
         }
 
         // Budget Categories
