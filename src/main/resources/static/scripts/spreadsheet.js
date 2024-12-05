@@ -125,7 +125,26 @@ const addColumn = () => {
     const hot = spreadsheetStore.getHot();
     if (!hot) return;
 
-    hot.alter('insert_col', hot.countCols());
+    const currentData = hot.getData();
+    const newData = currentData.map(row => [...row, '']);
+    const headers = spreadsheetStore.getHeaders();
+    const newHeader = String.fromCharCode(65 + headers.length);
+    headers.push(newHeader);
+    spreadsheetStore.setHeaders(headers);
+
+    hot.updateSettings({
+        nestedHeaders: getNestedHeaders(headers)
+    });
+    hot.updateData(newData);
+
+    // Ensure all headers are properly initialized
+    setTimeout(() => {
+        const headerCells = hot.rootElement.querySelectorAll('.colHeader');
+        headerCells.forEach((headerSpan, idx) => {
+            attachHeaderListeners(headerSpan, idx);
+        });
+        hot.render();
+    }, 0);
 };
 
 const getData = () => {
