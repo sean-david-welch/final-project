@@ -55,25 +55,6 @@ fun createSettingsPage(context: BaseTemplateContext) = SettingsTemplate("Account
             }
         }
 
-        // Advanced Settings
-        div(classes = "settings-section") {
-            h2(classes = "section-title") { +"Advanced Settings" }
-            div(classes = "settings-list") {
-                div(classes = "setting-item") {
-                    div(classes = "setting-content") {
-                        h3(classes = "setting-title") { +"Currency" }
-                    }
-                    div(classes = "setting-control") {
-                        select(classes = "select-field") {
-                            option { +"USD" }
-                            option { +"EUR" }
-                            option { +"GBP" }
-                        }
-                    }
-                }
-            }
-        }
-
         // Admin Panel Link - Only shown to admins
         if (context.auth.isAdmin) {
             div(classes = "admin-access-section") {
