@@ -23,6 +23,11 @@ class CategoryService(private val repository: CategoryRepository) {
 
     // Read Methods
     // Retrieves a single category by ID
+    suspend fun getCategories(): List<CategoryDTO> {
+        return repository.findAll()
+    }
+
+
     suspend fun getCategory(id: Int): CategoryDTO? {
         return repository.findById(id)
     }
