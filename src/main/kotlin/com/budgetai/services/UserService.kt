@@ -86,6 +86,11 @@ class UserService(private val repository: UserRepository, private val config: Ap
     }
 
     // Read Methods
+    // find all users
+    suspend fun getUsers(): List<UserDTO> {
+        return repository.findAll()
+    }
+
     // Retrieves a user by their ID
     suspend fun getUser(id: Int): UserDTO? {
         return repository.findById(id)
