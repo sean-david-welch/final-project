@@ -15,17 +15,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Layout Components */
-.layout-base {
-    @apply min-h-screen py-6;
-    @apply bg-gray-50 dark:bg-gray-800;
-}
-
-.container-base {
-    @apply mx-auto max-w-7xl;
-    @apply px-4 sm:px-6 lg:px-8;
-}
-
 /* Content Components */
 .content-section {
     @apply p-6 rounded-lg shadow;
