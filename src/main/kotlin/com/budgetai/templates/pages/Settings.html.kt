@@ -25,7 +25,7 @@ fun createSettingsPage(context: BaseTemplateContext, user: UserDTO) = SettingsTe
         // Admin Panel Link - Only shown to admins
         if (context.auth.isAdmin) {
             div(classes = "admin-access-section") {
-                a(href = "/admin", classes = "admin-link-button") {
+                a(href = "/admin", classes = "submit-button") {
                     +"Access Admin Panel"
                 }
             }
