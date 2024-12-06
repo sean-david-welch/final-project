@@ -3,7 +3,6 @@ package com.budgetai.templates.pages
 import com.budgetai.models.BudgetDTO
 import com.budgetai.models.BudgetItemDTO
 import com.budgetai.models.CategoryDTO
-import com.budgetai.models.UserDTO
 import com.budgetai.templates.components.SpreadsheetComponent
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
