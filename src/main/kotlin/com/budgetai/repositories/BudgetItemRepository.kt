@@ -25,12 +25,8 @@ class BudgetItemRepository(private val database: Database) {
 
     // Maps database row to BudgetItemDTO
     private fun toBudgetItem(row: ResultRow) = BudgetItemDTO(
-        id = row[BudgetItems.id].value,
-        budgetId = row[BudgetItems.budgetId].value,
-        categoryId = row[BudgetItems.categoryId].value,
-        name = row[BudgetItems.name],
-        amount = row[BudgetItems.amount].toDouble(),
-        createdAt = row[BudgetItems.createdAt].toString()
+        id = row[BudgetItems.id].value, budgetId = row[BudgetItems.budgetId].value, categoryId = row[BudgetItems.categoryId].value,
+        name = row[BudgetItems.name], amount = row[BudgetItems.amount].toDouble(), createdAt = row[BudgetItems.createdAt].toString()
     )
 
     // Read Methods
@@ -46,14 +42,9 @@ class BudgetItemRepository(private val database: Database) {
 
     // Retrieves all budget items for a budget with a user id
     suspend fun findByUserId(userId: Int, budgetId: Int): List<BudgetItemDTO> = dbQuery {
-        BudgetItems
-            .join(Budgets, JoinType.INNER, BudgetItems.budgetId, Budgets.id)
-            .selectAll()
-            .where {
-                (BudgetItems.budgetId eq budgetId) and
-                        (Budgets.userId eq userId)
-            }
-            .map(::toBudgetItem)
+        BudgetItems.join(Budgets, JoinType.INNER, BudgetItems.budgetId, Budgets.id).selectAll().where {
+                (BudgetItems.budgetId eq budgetId) and (Budgets.userId eq userId)
+            }.map(::toBudgetItem)
     }
 
     // Retrieves all budget items for a given category ID
