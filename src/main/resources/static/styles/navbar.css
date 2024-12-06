@@ -27,6 +27,10 @@
     @apply w-16;
 }
 
+.nav-logo-lg {
+    @apply w-28;
+}
+
 .navbar-brand-text {
     @apply text-xl font-bold;
     @apply text-white;
