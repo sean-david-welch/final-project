@@ -9,9 +9,9 @@
     @apply flex items-center justify-center;
     @apply text-sm font-medium;
     @apply bg-gray-900 dark:bg-blue-600;
-    @apply text-white dark:text-gray-900;
+    @apply text-white;
     @apply rounded-lg;
-    @apply hover:bg-gray-800 dark:hover:bg-gray-200;
+    @apply hover:bg-blue-900
     @apply transition-all duration-700 ease-in-out;
     @apply hover:transform hover:scale-105 ease-in-out;
 }
