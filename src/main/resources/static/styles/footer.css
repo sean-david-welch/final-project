@@ -12,7 +12,7 @@
 
 /* Footer Content */
 .footer-copyright {
-    @apply text-sm;
+    @apply text-base;
     @apply text-gray-600 dark:text-gray-400;
 }
 
