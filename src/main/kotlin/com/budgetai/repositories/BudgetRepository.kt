@@ -49,6 +49,8 @@ class BudgetRepository(private val database: Database) {
 
     // Read Methods
     // Retrieves a budget by its ID
+    suspend fun findAll(): List<BudgetDTO> = dbQuery { Budgets.selectAll().map { toBudget(it) } }
+
     suspend fun findById(id: Int): BudgetDTO? = dbQuery {
         Budgets.selectAll().where { Budgets.id eq id }.map(::toBudget).singleOrNull()
     }
