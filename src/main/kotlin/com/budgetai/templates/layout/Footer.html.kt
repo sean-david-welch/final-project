@@ -14,7 +14,7 @@ fun FlowContent.Footer(context: BaseTemplateContext) {
     footer(classes = "footer") {
         div(classes = "footer-container") {
             a(classes = "navbar-brand-container", href = "/") {
-                img(src = "/static/images/logo.png", alt = "logo-image", classes = "nav-logo")
+                img(src = "/static/images/logo.png", alt = "logo-image", classes = "nav-logo-lg")
                 span(classes = "navbar-brand-text") { +"BudgetAI" }
             }
             div(classes = "footer-copyright") { +"© ${java.time.Year.now().value} BudgetAI" }
@@ -25,7 +25,7 @@ fun FlowContent.Footer(context: BaseTemplateContext) {
                     }
                     logoutButton()
                 } else {
-                    a(href = "/auth", classes = "footer-link") { +"Login" }
+                    a(href = "/auth", classes = "nav-item-inactive login") { +"Login" }
                 }
             }
         }
