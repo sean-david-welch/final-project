@@ -1,5 +1,8 @@
 package com.budgetai.templates.pages
 
+import com.budgetai.models.BudgetDTO
+import com.budgetai.models.Categories
+import com.budgetai.models.CategoryDTO
 import com.budgetai.models.UserDTO
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
@@ -14,12 +17,12 @@ fun AdminTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.()
     }
 }
 
-fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTemplate("Admin Dashboard", context) {
+fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets: List<BudgetDTO>, categories: List<CategoryDTO>) = AdminTemplate("Admin Dashboard", context) {
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
-            Triple("Total Users", users.count().toString(), "users-icon"), Triple("Total Budgets", "12,453", "users-icon"),
-            Triple("Total Categories", "12,453", "users-icon")
+            Triple("Total Users", users.count().toString(), "users-icon"), Triple("Total Budgets", budgets.count().toString(), "users-icon"),
+            Triple("Total Categories", categories.count().toString(), "users-icon")
         )
 
         stats.forEach { (label, value, iconClass) ->
