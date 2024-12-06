@@ -44,6 +44,18 @@ class BudgetItemRepository(private val database: Database) {
         BudgetItems.selectAll().where { BudgetItems.budgetId eq budgetId }.map(::toBudgetItem)
     }
 
+    // Retrieves all budget items for a budget with a user id
+    suspend fun findByUserId(userId: Int, budgetId: Int): List<BudgetItemDTO> = dbQuery {
+        BudgetItems
+            .join(Budgets, JoinType.INNER, BudgetItems.budgetId, Budgets.id)
+            .selectAll()
+            .where {
+                (BudgetItems.budgetId eq budgetId) and
+                        (Budgets.userId eq userId)
+            }
+            .map(::toBudgetItem)
+    }
+
     // Retrieves all budget items for a given category ID
     suspend fun findByCategoryId(categoryId: Int): List<BudgetItemDTO> = dbQuery {
         BudgetItems.selectAll().where { BudgetItems.categoryId eq categoryId }.map(::toBudgetItem)
