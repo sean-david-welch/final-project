@@ -27,7 +27,7 @@ fun Route.mainRoutes(userService: UserService, budgetService: BudgetService, cat
             val users = userService.getUsers()
             val budgets = budgetService.getBudgets()
             val categories = categoryService.getCategories()
-            call.respondText(text = createAdminPage(call.templateContext, users), contentType = ContentType.Text.Html)
+            call.respondText(text = createAdminPage(call.templateContext, users, budgets, categories), contentType = ContentType.Text.Html)
         }
     }
     get("/test-error") {
