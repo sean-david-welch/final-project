@@ -16,7 +16,7 @@ fun BaseTemplate(context: BaseTemplateContext, bodyFn: BODY.() -> Unit) = "<!DOC
         link { href = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"; rel = "stylesheet" }
 
     }
-    body(classes = "font-inter layout-base coontainer-base") {
+    body(classes = "font-inter min-h-screen py-6 bg-gray-50 dark:bg-gray-800") {
         Navbar(context)
         bodyFn()
         Footer(context)
