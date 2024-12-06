@@ -116,7 +116,7 @@ fun DIV.updateProfileForm(user: UserDTO) {
 
 fun FlowContent.logoutButton() {
     form(action = "/auth/logout", method = FormMethod.post) {
-        button(type = ButtonType.submit, classes = "nav-item-inactive") {
+        button(type = ButtonType.submit, classes = "nav-item-inactive login") {
             style = "background: none; border: none; padding: 0; cursor: pointer;"
             +"Logout"
         }
