@@ -16,16 +16,13 @@ fun DashboardTemplate(title: String, context: BaseTemplateContext, contentFn: DI
 
 fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashboard Overview", context) {
     div(classes = "stats-grid") {
-        repeat(3) { index ->
+        repeat(3) {
             div(classes = "stat-card") {
-                div(classes = "stat-label") {
-
-                }
-                div(classes = "stat-value") {
-
-                }
+                div(classes = "stat-label") {}
+                div(classes = "stat-value") {}
             }
         }
     }
+    h2(classes = "section-title") { +"Budget Form" }
     SpreadsheetComponent()
 }
