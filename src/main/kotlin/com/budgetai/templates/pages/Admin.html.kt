@@ -21,8 +21,8 @@ fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets:
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
-            Triple("Total Users", users.count().toString(), "users-icon"), Triple("Total Budgets", budgets.count().toString(), "users-icon"),
-            Triple("Total Categories", categories.count().toString(), "users-icon")
+            Pair("Total Users", users.count().toString()), Pair("Total Budgets", budgets.count().toString()),
+            Pair("Total Categories", categories.count().toString())
         )
 
         stats.forEach { (label, value, iconClass) ->
