@@ -25,6 +25,10 @@ class BudgetItemService(private val repository: BudgetItemRepository) {
         return repository.findByBudgetId(budgetId)
     }
 
+    suspend fun getBudgetItemsForUser(userId: Int): List<BudgetItemDTO> {
+        return repository.findByUserId(userId)
+    }
+
     suspend fun getCategoryItems(categoryId: Int): List<BudgetItemDTO> {
         return repository.findByCategoryId(categoryId)
     }
