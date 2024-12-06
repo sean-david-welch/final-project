@@ -11,15 +11,17 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.dashboardRoutes(budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService) {
+fun Route.dashboardRoutes(userService: UserService, budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService) {
     authenticate {
         route("/dashboard") {
 
             get {
-                val users = budgetItemService.getUsers()
-                val budgets = budgetService.getBudgets()
+                val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
+
+                val budgetItems = budgetItemService.getBudgetItems()
+                val budgets = budgetService.getUserBudgets(user.id)
                 val categories = categoryService.getCategories()
-                call.respondText(text = createDashboardPage(call.templateContext), contentType = ContentType.Text.Html)
+                call.respondText(text = createDashboardPage(call.templateContext, budgetItems, budgets, categories), contentType = ContentType.Text.Html)
             }
         }
     }
