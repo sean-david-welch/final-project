@@ -40,6 +40,8 @@ class UserRepository(private val database: Database) {
 
     // Read Methods
     // Retrieves a user by their ID
+    suspend fun findAll(): List<UserDTO> = dbQuery { Users.selectAll().map { toUser(it) } }
+
     suspend fun findById(id: Int): UserDTO? = dbQuery {
         Users.selectAll().where { Users.id eq id }.map(::toUser).singleOrNull()
     }
