@@ -51,11 +51,6 @@ class UserRepository(private val database: Database) {
         Users.selectAll().where { Users.email eq email }.map(::toUser).singleOrNull()
     }
 
-    // Retrieves users by role
-    suspend fun findByRole(role: UserRole): List<UserDTO> = dbQuery {
-        Users.selectAll().where { Users.role eq role.name }.map(::toUser)
-    }
-
     // Retrieves password hash for a user by ID
     suspend fun findPasswordHash(id: Int): String? = dbQuery {
         Users.select(Users.passwordHash).where { Users.id eq id }.map { it[Users.passwordHash] }.singleOrNull()
