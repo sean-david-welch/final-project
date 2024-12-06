@@ -25,6 +25,8 @@
 
 .nav-logo {
     @apply w-16;
+    @apply transition-transform duration-700;
+    @apply hover:transform hover:scale-101 ease-in-out;
 }
 
 .navbar-brand-text {
