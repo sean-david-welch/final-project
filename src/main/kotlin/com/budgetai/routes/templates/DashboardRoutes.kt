@@ -18,7 +18,7 @@ fun Route.dashboardRoutes(userService: UserService, budgetItemService: BudgetIte
             get {
                 val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
 
-                val budgetItems = budgetItemService.getBudgetItems()
+                val budgetItems = budgetItemService.getBudgetItemsForUser(user.id)
                 val budgets = budgetService.getUserBudgets(user.id)
                 val categories = categoryService.getCategories()
                 call.respondText(text = createDashboardPage(call.templateContext, budgetItems, budgets, categories), contentType = ContentType.Text.Html)
