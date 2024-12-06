@@ -11,7 +11,7 @@
     @apply bg-gray-900 dark:bg-blue-600;
     @apply text-white;
     @apply rounded-lg;
-    @apply hover:bg-blue-900
+    @apply hover:bg-blue-900;
     @apply transition-all duration-700 ease-in-out;
     @apply hover:transform hover:scale-105 ease-in-out;
 }
