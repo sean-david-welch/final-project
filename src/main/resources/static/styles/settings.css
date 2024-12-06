@@ -99,25 +99,6 @@
     @apply text-gray-700 dark:text-gray-300;
 }
 
-/* Categories */
-.category-list {
-    @apply space-y-3;
-}
-
-.category-item {
-    @apply py-2;
-    @apply flex justify-between items-center;
-}
-
-.category-name {
-    @apply text-sm;
-    @apply text-gray-700 dark:text-gray-300;
-}
-
-.category-actions {
-    @apply flex gap-2;
-}
-
 /* Form Controls */
 .toggle {
     @apply h-5 w-10 rounded-full;
