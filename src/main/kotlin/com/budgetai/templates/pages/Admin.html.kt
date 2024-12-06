@@ -1,7 +1,6 @@
 package com.budgetai.templates.pages
 
 import com.budgetai.models.BudgetDTO
-import com.budgetai.models.Categories
 import com.budgetai.models.CategoryDTO
 import com.budgetai.models.UserDTO
 import com.budgetai.templates.layout.BaseTemplate
