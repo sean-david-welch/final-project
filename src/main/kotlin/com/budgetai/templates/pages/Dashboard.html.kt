@@ -15,14 +15,25 @@ fun DashboardTemplate(title: String, context: BaseTemplateContext, contentFn: DI
 }
 
 fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashboard Overview", context) {
+    // Stats Grid
     div(classes = "stats-grid") {
-        repeat(3) {
+        val stats = listOf(
+            Pair("Total Budget Items", budgetItems.count().toString()), Pair("Total Budgets", budgets.count().toString()),
+            Pair("Total Categories", categories.count().toString())
+        )
+
+        stats.forEach { (label, value) ->
             div(classes = "stat-card") {
-                div(classes = "stat-label") {}
-                div(classes = "stat-value") {}
+                div(classes = "stat-content") {
+                    div {
+                        p(classes = "stat-info") { +label }
+                        p(classes = "stat-value") { +value }
+                    }
+                }
             }
         }
     }
+
     h2(classes = "section-title") { +"Budget Form" }
     SpreadsheetComponent()
 }
