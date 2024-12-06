@@ -98,8 +98,9 @@
     @apply w-full px-4 py-2 rounded-lg;
     @apply bg-blue-600 hover:bg-blue-700;
     @apply text-white;
-    @apply transition-colors duration-200;
+    @apply transition-all duration-700 ease-in-out;
     @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    @apply hover:transform hover:scale-105 ease-in-out;
 }
 
 /* Forms Container */
