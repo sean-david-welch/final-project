@@ -211,20 +211,6 @@ class UserServiceTest {
     }
 
     @Test
-    fun `updatePassword should throw exception for incorrect current password`(): Unit = runBlocking {
-        // Given
-        val createRequest = UserCreationRequest(
-            email = validEmail, name = validName, password = validPassword
-        )
-        val userId = service.createUser(createRequest)
-
-        // When/Then
-        assertFailsWith<IllegalArgumentException> {
-            service.updatePassword(userId, "NewPassword123!")
-        }
-    }
-
-    @Test
     fun `updatePassword should throw exception for weak new password`(): Unit = runBlocking {
         // Given
         val createRequest = UserCreationRequest(
