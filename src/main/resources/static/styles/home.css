@@ -1,18 +1,29 @@
 /* Base Layout */
 .home-layout {
-    @apply min-h-screen;
-    @apply bg-gray-50 dark:bg-gray-800;
+    @apply min-h-screen bg-gray-50 dark:bg-gray-800;
 }
 
 .home-container {
-    @apply mx-auto max-w-7xl;
-    @apply px-4 py-12 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8;
+}
+
+/* Typography Base Classes */
+.title-base {
+    @apply text-gray-900 dark:text-white font-semibold;
+}
+
+.description-base {
+    @apply text-gray-600 dark:text-gray-300;
+}
+
+/* Card Base */
+.card-base {
+    @apply p-6 rounded-lg shadow-sm bg-white dark:bg-gray-900;
 }
 
 /* Hero Section */
 .hero-section {
-    @apply mb-16;
-    @apply text-center;
+    @apply mb-16 text-center;
 }
 
 .hero-content {
@@ -20,15 +31,11 @@
 }
 
 .hero-title {
-    @apply mb-4;
-    @apply text-4xl font-bold;
-    @apply text-gray-900 dark:text-white;
+    @apply title-base mb-4 text-4xl font-bold;
 }
 
 .hero-description {
-    @apply mb-8;
-    @apply text-xl;
-    @apply text-gray-600 dark:text-gray-300;
+    @apply description-base mb-8 text-xl;
 }
 
 .hero-actions {
@@ -37,33 +44,24 @@
 
 /* Buttons */
 .button-base {
-    @apply px-6 py-3 rounded-lg;
-    @apply transition-colors duration-200;
+    @apply px-6 py-3 rounded-lg transition-colors duration-200;
 }
 
 .primary-button {
-    @apply button-base;
-    @apply bg-blue-600 hover:bg-blue-700;
-    @apply text-white;
+    @apply button-base bg-blue-600 hover:bg-blue-700 text-white;
 }
 
 .secondary-button {
-    @apply button-base;
-    @apply bg-gray-200 hover:bg-gray-300;
-    @apply dark:bg-gray-700 dark:hover:bg-gray-600;
-    @apply text-gray-900 dark:text-white;
+    @apply button-base bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white;
 }
 
 /* Features */
 .features-grid {
-    @apply mb-16;
-    @apply grid gap-8;
-    @apply md:grid-cols-2 lg:grid-cols-3;
+    @apply mb-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3;
 }
 
 .feature-card {
-    @apply p-6 rounded-lg shadow-sm;
-    @apply bg-white dark:bg-gray-900;
+    @apply card-base;
 }
 
 .feature-icon {
@@ -71,8 +69,7 @@
 }
 
 .icon-placeholder {
-    @apply w-12 h-12 rounded-lg;
-    @apply bg-blue-100 dark:bg-blue-900;
+    @apply w-14 h-14 rounded-lg bg-blue-100 dark:bg-blue-500;
 }
 
 .feature-content {
@@ -80,13 +77,11 @@
 }
 
 .feature-title {
-    @apply text-lg font-semibold;
-    @apply text-gray-900 dark:text-white;
+    @apply title-base text-lg;
 }
 
 .feature-description {
-    @apply text-sm;
-    @apply text-gray-600 dark:text-gray-400;
+    @apply description-base text-sm dark:text-gray-400;
 }
 
 /* Insights Section */
@@ -95,9 +90,7 @@
 }
 
 .section-title {
-    @apply mb-6;
-    @apply text-2xl font-semibold;
-    @apply text-gray-900 dark:text-white;
+    @apply title-base mb-6 text-2xl;
 }
 
 .insights-grid {
@@ -105,18 +98,11 @@
 }
 
 .insight-card {
-    @apply p-6 rounded-lg shadow-sm;
-    @apply flex gap-4;
-    @apply bg-white dark:bg-gray-900;
+    @apply card-base flex gap-4;
 }
 
 .insight-icon {
     @apply flex-shrink-0;
-}
-
-.icon-placeholder {
-    @apply w-10 h-10 rounded-lg;
-    @apply bg-blue-100 dark:bg-blue-900;
 }
 
 .insight-content {
@@ -124,12 +110,9 @@
 }
 
 .insight-title {
-    @apply mb-2;
-    @apply text-lg font-semibold;
-    @apply text-gray-900 dark:text-white;
+    @apply title-base text-lg mb-2;
 }
 
 .insight-description {
-    @apply text-sm;
-    @apply text-gray-600 dark:text-gray-400;
+    @apply description-base text-sm dark:text-gray-400;
 }
