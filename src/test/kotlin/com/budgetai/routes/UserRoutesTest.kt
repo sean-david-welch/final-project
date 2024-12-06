@@ -55,7 +55,7 @@ class UserRoutesTest : AuthenticatedTest() {
 
         assertEquals(HttpStatusCode.Created, response.status)
         val responseBody = Json.decodeFromString<Map<String, Int>>(response.bodyAsText())
-        assertNotNull(responseBody["userId"])
+        assertNotNull(responseBody["userid"])
     }
 
     @Test
