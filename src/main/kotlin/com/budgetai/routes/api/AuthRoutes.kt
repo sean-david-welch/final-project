@@ -115,7 +115,7 @@ fun Route.authRoutes(service: UserService) {
                             val (_, token) = result
                             call.setAuthCookie(token, cookieConfig)
                             call.respond(
-                                HttpStatusCode.OK, mapOf(
+                                HttpStatusCode.Created, mapOf(
                                     "userid" to userId
                                 )
                             )
