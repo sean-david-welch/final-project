@@ -15,7 +15,8 @@
 }
 
 .page-title {
-    @apply text-2xl font-semibold;
+    @apply text-4xl font-semibold;
+    @apply my-4 mx-auto;
     @apply text-gray-900 dark:text-white;
 }
 
