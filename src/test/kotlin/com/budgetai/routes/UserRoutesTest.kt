@@ -54,8 +54,8 @@ class UserRoutesTest : AuthenticatedTest() {
         }
 
         assertEquals(HttpStatusCode.Created, response.status)
-        val responseBody = Json.decodeFromString<Map<String, UserDTO>>(response.bodyAsText())
-        assertNotNull(responseBody["user"]?.id)
+        val responseBody = Json.decodeFromString<Map<String, Int>>(response.bodyAsText())
+        assertNotNull(responseBody["userId"])
     }
 
     @Test
@@ -137,8 +137,8 @@ class UserRoutesTest : AuthenticatedTest() {
                 )
             )
         }
-        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
-        val userId = responseData["user"]?.id
+        val responseData = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())
+        val userId = responseData["userid"]
 
         val response = client.get("/api/users/$userId") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
@@ -179,8 +179,8 @@ class UserRoutesTest : AuthenticatedTest() {
                 )
             )
         }
-        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
-        val userId = responseData["user"]?.id
+        val responseData = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())
+        val userId = responseData["userid"]
 
         val response = client.put("/api/users/$userId") {
             contentType(ContentType.Application.Json)
@@ -212,8 +212,8 @@ class UserRoutesTest : AuthenticatedTest() {
                 )
             )
         }
-        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
-        val userId = responseData["user"]?.id
+        val responseData = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())
+        val userId = responseData["userid"]
 
         val response = client.put("/api/users/$userId/password") {
             contentType(ContentType.Application.Json)
@@ -248,8 +248,8 @@ class UserRoutesTest : AuthenticatedTest() {
         }
 
         // Parse the nested response structure
-        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
-        val userId = responseData["user"]?.id
+        val responseData = Json.decodeFromString<Map<String, Int>>(createResponse.bodyAsText())
+        val userId = responseData["userid"]
 
         val deleteResponse = client.delete("/api/users/$userId") { withAuth() }
         assertEquals(HttpStatusCode.OK, deleteResponse.status)
