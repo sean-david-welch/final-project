@@ -1,12 +1,12 @@
 /* Base Layout */
 .auth-layout {
     @apply min-h-screen;
-    @apply flex items-center justify-center;
+    @apply flex justify-center;
     @apply bg-gray-50 dark:bg-gray-800;
 }
 
 .auth-container {
-    @apply w-full max-w-md;
+    @apply w-full max-w-screen-lg;
     @apply px-4 py-8;
 }
 
