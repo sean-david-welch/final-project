@@ -40,7 +40,7 @@ fun Application.configureRoutes(config: ApplicationConfig, database: Database? =
 
         // Template routes
         authRoutes(userService)
-        mainRoutes()
+        mainRoutes(userService)
         dashboardRoutes()
         reportRoutes()
         settingsRoutes(userService)
