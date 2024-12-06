@@ -13,6 +13,10 @@ val links = listOf(
 fun FlowContent.Footer(context: BaseTemplateContext) {
     footer(classes = "footer") {
         div(classes = "footer-container") {
+            a(classes = "navbar-brand-container", href = "/") {
+                img(src = "/static/images/logo.png", alt = "logo-image", classes = "nav-logo")
+                span(classes = "navbar-brand-text") { +"BudgetAI" }
+            }
             div(classes = "footer-copyright") { +"© ${java.time.Year.now().value} BudgetAI" }
             div(classes = "footer-links-container") {
                 if (context.auth.isAuthenticated) {
