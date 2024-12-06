@@ -26,6 +26,7 @@ fun Route.mainRoutes(userService: UserService, budgetService: BudgetService, cat
         } else {
             val users = userService.getUsers()
             val budgets = budgetService.getBudgets()
+            val categories = categoryService.getCategories()
             call.respondText(text = createAdminPage(call.templateContext, users), contentType = ContentType.Text.Html)
         }
     }
