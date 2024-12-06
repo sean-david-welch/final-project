@@ -31,8 +31,8 @@ fun createHomePage(context: BaseTemplateContext) = HomeTemplate("Welcome to Budg
     }
 
     // Features Grid
+    h2(classes = "section-title") { +"Manage your spending" }
     div(classes = "features-grid") {
-        h2(classes = "section-title") { +"Manage your spending" }
         repeat(3) { index ->
             div(classes = "feature-card") {
                 div(classes = "feature-icon") {
