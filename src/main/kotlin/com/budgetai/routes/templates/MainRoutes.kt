@@ -1,5 +1,7 @@
 package com.budgetai.routes.templates
 
+import com.budgetai.services.BudgetService
+import com.budgetai.services.CategoryService
 import com.budgetai.services.UserService
 import com.budgetai.templates.pages.*
 import com.budgetai.utils.templateContext
@@ -7,7 +9,7 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.mainRoutes(userService: UserService) {
+fun Route.mainRoutes(userService: UserService, budgetService: BudgetService, categoryService: CategoryService) {
     get("/") {
         call.respondText(text = createHomePage(call.templateContext), contentType = ContentType.Text.Html)
     }
