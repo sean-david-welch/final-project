@@ -52,6 +52,7 @@
 .nav-item-base {
     @apply px-3 py-2 rounded-md;
     @apply text-sm font-medium;
+    @apply transition-all duration-700 ease-in-out hover:scale-105;
 }
 
 .nav-item-active {
