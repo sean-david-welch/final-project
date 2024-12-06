@@ -1,5 +1,9 @@
 package com.budgetai.templates.pages
 
+import com.budgetai.models.BudgetDTO
+import com.budgetai.models.BudgetItemDTO
+import com.budgetai.models.CategoryDTO
+import com.budgetai.models.UserDTO
 import com.budgetai.templates.components.SpreadsheetComponent
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
@@ -14,7 +18,7 @@ fun DashboardTemplate(title: String, context: BaseTemplateContext, contentFn: DI
     }
 }
 
-fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashboard Overview", context) {
+fun createDashboardPage(context: BaseTemplateContext, budgetItems: List<BudgetItemDTO>, budgets: List<BudgetDTO>, categories: List<CategoryDTO>) = DashboardTemplate("Dashboard Overview", context) {
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
