@@ -1,6 +1,6 @@
 /* Navbar Base */
 .navbar {
-    @apply bg-gray-800;
+    @apply bg-gray-800 py-6;
 }
 
 /* Navbar Container */
