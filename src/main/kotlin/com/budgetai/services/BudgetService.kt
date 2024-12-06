@@ -23,6 +23,10 @@ class BudgetService(private val repository: BudgetRepository) {
 
     // Read Methods
     // Retrieves a single budget by ID
+    suspend fun getBudgets(): List<BudgetDTO> {
+        return repository.fina
+    }
+
     suspend fun getBudget(id: Int): BudgetDTO? {
         return repository.findById(id)
     }
