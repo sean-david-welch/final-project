@@ -54,12 +54,19 @@ fun Route.userRoutes(service: UserService) {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
                     val existingUser = service.getUser(id) ?: throw IllegalArgumentException("User not found")
-                    val parameters = call.receiveParameters()
-                    val request = UpdateUserRequest(
-                        name = parameters["name"] ?: throw IllegalArgumentException("Email is required"),
-                        email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
-                        password = parameters["password"],
-                    )
+                    val request = when (call.request.contentType()) {
+                        ContentType.Application.Json -> call.receive<UpdateUserRequest>()
+                        ContentType.Application.FormUrlEncoded -> {
+                            val parameters = call.receiveParameters()
+                            UpdateUserRequest(
+                                name = parameters["name"] ?: throw IllegalArgumentException("Name is required"),
+                                email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
+                                password = parameters["password"]
+                            )
+                        }
+
+                        else -> throw IllegalArgumentException("Unsupported content type")
+                    }
                     val role = if (existingUser.role == UserRole.ADMIN.toString()) UserRole.ADMIN.toString() else UserRole.USER.toString()
                     val userDTO = UserDTO(
                         id = id, email = request.email, name = request.name, role = role

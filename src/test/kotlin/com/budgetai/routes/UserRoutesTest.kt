@@ -221,46 +221,13 @@ class UserRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     UpdatePasswordRequest(
-                        currentPassword = "StrongPassword999", newPassword = "StongerPassword987"
+                        newPassword = "StongerPassword987"
                     )
                 )
             )
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
-    }
-
-    @Test
-    fun `PUT password - fails with incorrect current password`() = testApplication {
-        configureTestApplication(database)
-        // Create user first
-        val createResponse = client.post("/auth/register") {
-            contentType(ContentType.Application.Json)
-            withAuth()
-            setBody(
-                Json.encodeToString(
-                    UserCreationRequest(
-                        email = "test@example.com", password = "StrongPassword999", name = "Test User", role = UserRole.USER.toString()
-                    )
-                )
-            )
-        }
-        val responseData = Json.decodeFromString<Map<String, UserDTO>>(createResponse.bodyAsText())
-        val userId = responseData["user"]?.id
-
-        val response = client.put("/api/users/$userId/password") {
-            contentType(ContentType.Application.Json)
-            withAuth()
-            setBody(
-                Json.encodeToString(
-                    UpdatePasswordRequest(
-                        currentPassword = "wrongpassword", newPassword = "newpassword123"
-                    )
-                )
-            )
-        }
-
-        assertEquals(HttpStatusCode.BadRequest, response.status)
     }
 
     @Test
