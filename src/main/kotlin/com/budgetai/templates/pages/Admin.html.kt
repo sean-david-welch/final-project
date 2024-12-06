@@ -25,14 +25,13 @@ fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets:
             Pair("Total Categories", categories.count().toString())
         )
 
-        stats.forEach { (label, value, iconClass) ->
+        stats.forEach { (label, value) ->
             div(classes = "stat-card") {
                 div(classes = "stat-content") {
                     div {
                         p(classes = "stat-info") { +label }
                         p(classes = "stat-value") { +value }
                     }
-                    div(classes = "stat-icon $iconClass") {}
                 }
             }
         }
