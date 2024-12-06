@@ -108,7 +108,7 @@ fun Route.authRoutes(service: UserService) {
                     ContentType.Application.Json -> {
                         // Handle JSON request
                         val jsonRequest = call.receive<UserCreationRequest>()
-                        service.createUser(jsonRequest)
+                        val userId= service.createUser(jsonRequest)
                         val authRequest = UserAuthenticationRequest(jsonRequest.email, jsonRequest.password)
                         val result = service.authenticateUserWithToken(authRequest)
                         if (result != null) {
@@ -116,7 +116,7 @@ fun Route.authRoutes(service: UserService) {
                             call.setAuthCookie(token, cookieConfig)
                             call.respond(
                                 HttpStatusCode.OK, mapOf(
-                                    "message" to "Registration successful", "redirectUrl" to "/dashboard"
+                                    "userid" to userId
                                 )
                             )
                         }
