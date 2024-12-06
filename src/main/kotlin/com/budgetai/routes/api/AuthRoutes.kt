@@ -137,15 +137,19 @@ fun Route.authRoutes(service: UserService) {
 
                 // Process form-based registration
                 service.createUser(request)
+                // Process form-based authentication
                 val authRequest = UserAuthenticationRequest(request.email, request.password)
                 val result = service.authenticateUserWithToken(authRequest)
                 if (result != null) {
                     val (_, token) = result
                     call.setAuthCookie(token, cookieConfig)
-                }
-                val response = ResponseComponents.success("Registration successful! Redirecting...")
-                call.respondText(response, ContentType.Text.Html)
 
+                    val response = ResponseComponents.success(
+                        "Login successful! Redirecting..."
+                    ) + """<script>window.location.href = '/dashboard';</script>""".trimIndent()
+
+                    call.respondText(response, ContentType.Text.Html)
+                }
             } catch (e: Exception) {
                 logger.error("Registration failed", e)
                 val errorMessage = when (e) {
