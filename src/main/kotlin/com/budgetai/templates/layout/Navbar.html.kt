@@ -40,7 +40,7 @@ fun FlowContent.Navbar(context: BaseTemplateContext) {
                         }
                         li { logoutButton() }
                     } else {
-                        a(href = "/auth", classes = "nav-item-inactive") {
+                        a(href = "/auth", classes = "nav-item-inactive login") {
                             +"Login"
                         }
                     }
