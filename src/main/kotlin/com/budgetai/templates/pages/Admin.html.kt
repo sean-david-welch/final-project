@@ -1,5 +1,6 @@
 package com.budgetai.templates.pages
 
+import com.budgetai.models.UserDTO
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
@@ -13,11 +14,11 @@ fun AdminTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.()
     }
 }
 
-fun createAdminPage(context: BaseTemplateContext) = AdminTemplate("Admin Dashboard", context) {
+fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTemplate("Admin Dashboard", context) {
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
-            Triple("Total Users", "12,453", "users-icon"), Triple("Total Budgets", "12,453", "users-icon"),
+            Triple("Total Users", users.count().toString(), "users-icon"), Triple("Total Budgets", "12,453", "users-icon"),
             Triple("Total Categories", "12,453", "users-icon")
         )
 
