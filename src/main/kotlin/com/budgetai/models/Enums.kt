@@ -1,5 +1,8 @@
 package com.budgetai.models
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 enum class CategoryType {
     EXPENSE, INCOME
 }
@@ -12,6 +15,9 @@ enum class Sentiment {
     POSITIVE, NEGATIVE, NEUTRAL
 }
 
+@Serializable
 enum class UserRole {
-    USER, ADMIN, STAFF
+    @SerialName("ADMIN") ADMIN,
+    @SerialName("USER") USER,
+    @SerialName("GUEST") GUEST,
 }
