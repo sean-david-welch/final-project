@@ -53,6 +53,8 @@ class BudgetService(private val repository: BudgetRepository) {
             userId = request.userId,
             name = request.name,
             description = request.description,
+            totalIncome = request.totalIncome,
+            totalExpenses = request.totalExpenses,
             startDate = request.startDate?.toString(),
             endDate = request.endDate?.toString()
         )
