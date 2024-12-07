@@ -1,5 +1,7 @@
 package com.budgetai.utils
 
+import com.budgetai.models.BudgetItemDTO
+
 object BudgetParser {
     data class ParseResult(
         val items: List<BudgetItemDTO>,
