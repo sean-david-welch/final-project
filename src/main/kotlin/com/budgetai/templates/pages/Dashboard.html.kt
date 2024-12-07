@@ -27,6 +27,16 @@ fun createDashboardPage(
         }
     }
 
+    div(classes = "quick-actions") {
+        listOf(
+            Pair("Manage Budgets", "/admin/budget-management")
+        ).forEach { (label, href) ->
+            a(href = href, classes = "action-button") {
+                +label
+            }
+        }
+    }
+
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
