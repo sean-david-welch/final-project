@@ -122,7 +122,9 @@ class SpreadsheetTable {
     }
 }
 
-// Initialize the spreadsheet
+// Initialize the spreadsheet and expose it globally
+let spreadsheetInstance;
 document.addEventListener('DOMContentLoaded', () => {
-    new SpreadsheetTable('.spreadsheet-table', 15);
+    spreadsheetInstance = new SpreadsheetTable('.spreadsheet-table', 15);
+    window.spreadsheetTable = spreadsheetInstance;
 });
