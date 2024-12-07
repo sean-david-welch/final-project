@@ -29,31 +29,29 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             val request = call.receive<BudgetCreationRequest>()
                             service.createBudget(request)
                         }
+
                         else -> {
                             val parameters = call.receiveParameters()
-                            val userId = parameters["userId"] ?: throw  IllegalArgumentException("User id is required")
-                            val totalIncome = parameters["totalIncome"]?.toDoubleOrNull() ?: throw IllegalArgumentException("Total income is required")
+                            val userId = parameters["userId"] ?: throw IllegalArgumentException("User id is required")
+                            val totalIncome = parameters["totalIncome"]?.toDoubleOrNull() ?: throw IllegalArgumentException(
+                                "Total income is required"
+                            )
                             val spreadsheetData = parameters["spreadsheetData"] ?: ""
 
                             val parseResult = BudgetParser.parseSpreadsheetData(
-                                spreadsheetData = spreadsheetData,
-                                budgetId = 0
+                                spreadsheetData = spreadsheetData, budgetId = 0
                             )
 
                             if (parseResult.errors.isNotEmpty()) {
                                 return@post call.respondText(
-                                    ResponseComponents.error(parseResult.errors.joinToString("<br>")),
-                                    ContentType.Text.Html,
+                                    ResponseComponents.error(parseResult.errors.joinToString("<br>")), ContentType.Text.Html,
                                     HttpStatusCode.OK
                                 )
                             }
 
                             // Create budget request from form data
                             val request = BudgetCreationRequest(
-                                userId = userId.toInt(),
-                                name = "",
-                                totalIncome = totalIncome,
-                                totalExpenses = parseResult.totalAmount
+                                userId = userId.toInt(), name = "", totalIncome = totalIncome, totalExpenses = parseResult.totalAmount
                             )
 
                             service.createBudget(request)
@@ -65,11 +63,10 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.OK, mapOf("id" to budgetId))
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.success("Budget Created"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.success("Budget Created"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -79,11 +76,10 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -92,11 +88,10 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.InternalServerError, "Error creating budget")
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Error creating budget"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error("Error creating budget"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
