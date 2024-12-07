@@ -56,31 +56,26 @@ fun Route.authRoutes(service: UserService) {
                         when {
                             parameters["email"].isNullOrBlank() -> {
                                 call.respondText(
-                                    ResponseComponents.error("Email is required"),
-                                    ContentType.Text.Html,
-                                    HttpStatusCode.BadRequest
+                                    ResponseComponents.error("Email is required"), ContentType.Text.Html, HttpStatusCode.BadRequest
                                 )
                                 return@post
                             }
+
                             parameters["password"].isNullOrBlank() -> {
                                 call.respondText(
-                                    ResponseComponents.error("Password is required"),
-                                    ContentType.Text.Html,
-                                    HttpStatusCode.BadRequest
+                                    ResponseComponents.error("Password is required"), ContentType.Text.Html, HttpStatusCode.BadRequest
                                 )
                                 return@post
                             }
                         }
                         UserAuthenticationRequest(
-                            email = parameters["email"]!!,
-                            password = parameters["password"]!!
+                            email = parameters["email"]!!, password = parameters["password"]!!
                         )
                     }
+
                     else -> {
                         call.respondText(
-                            ResponseComponents.error("Unsupported request format"),
-                            ContentType.Text.Html,
-                            HttpStatusCode.BadRequest
+                            ResponseComponents.error("Unsupported request format"), ContentType.Text.Html, HttpStatusCode.BadRequest
                         )
                         return@post
                     }
@@ -92,19 +87,13 @@ fun Route.authRoutes(service: UserService) {
                     call.setAuthCookie(token, cookieConfig)
 
                     val response = ResponseComponents.success(
-                        "Login successful! Redirecting..."
-                    ) + """<script>
-                setTimeout(function() {
-                    window.location.href = '/dashboard';
-                }, 500);
-            </script>""".trimIndent()
-
+                        "Login successful! Redirecting...",
+                        redirectUrl = "/dashboard"
+                    )
                     call.respondText(response, ContentType.Text.Html)
                 } else {
                     call.respondText(
-                        ResponseComponents.error("Invalid email or password"),
-                        ContentType.Text.Html,
-                        HttpStatusCode.BadRequest
+                        ResponseComponents.error("Invalid email or password"), ContentType.Text.Html, HttpStatusCode.BadRequest
                     )
                 }
 
@@ -121,6 +110,7 @@ fun Route.authRoutes(service: UserService) {
                     ContentType.Application.Json -> {
                         call.respond(HttpStatusCode.BadRequest, mapOf("error" to errorMessage))
                     }
+
                     else -> {
                         val errorResponse = ResponseComponents.error(errorMessage)
                         logger.debug("Generated error response: $errorResponse")
@@ -137,7 +127,7 @@ fun Route.authRoutes(service: UserService) {
                     ContentType.Application.Json -> {
                         // Handle JSON request
                         val jsonRequest = call.receive<UserCreationRequest>()
-                        val userId= service.createUser(jsonRequest)
+                        val userId = service.createUser(jsonRequest)
                         val authRequest = UserAuthenticationRequest(jsonRequest.email, jsonRequest.password)
                         val result = service.authenticateUserWithToken(authRequest)
                         if (result != null) {
