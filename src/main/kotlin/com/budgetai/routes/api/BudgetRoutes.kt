@@ -51,10 +51,6 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             logger.debug("Parsing spreadsheet data: ${spreadsheetData.take(100)}...")
                             val (items, errors, totalAmount, csv) = BudgetParser.parseSpreadsheetData(spreadsheetData = spreadsheetData)
 
-                            if (csv != null) {
-                                s3Handler.uploadFile(csv, "${budgetName}-${userId}.csv")
-                            }
-
                             if (errors.isNotEmpty()) {
                                 logger.warn("Budget parsing errors encountered: $errors")
                                 return@post call.respondText(
@@ -70,6 +66,10 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
 
                             val newBudgetId = service.createBudget(request)
                             logger.info("Created budget with ID: $newBudgetId")
+
+                            if (csv != null) {
+                                s3Handler.uploadFile(csv, "${budgetName}-${userId}.csv")
+                            }
 
                             val updatedItems = items.map { item -> item.copy(budgetId = newBudgetId) }
                             logger.debug("Creating ${updatedItems.size} budget items")
