@@ -134,6 +134,13 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
 
 fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<BudgetDTO>) = AdminTemplate("Budget Management", context) {
     div(classes = "management-container") {
+        div(classes = "overview-header") {
+            h2(classes = "overview-title") { +"Admin Dashboard" }
+            p(classes = "overview-description") {
+                +"View user profiles and budget data"
+            }
+        }
+
         // Header with total count and add button
         div(classes = "management-header") {
             h2(classes = "management-title") { +"Budgets (${budgets.count()})" }
