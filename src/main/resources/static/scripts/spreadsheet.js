@@ -6,52 +6,57 @@ class SpreadsheetTable {
     }
 
     init() {
+        this.bindAddButton();
+        this.bindTableInputs();
+        this.ensureMinimumRows();
+    }
+
+    bindAddButton() {
         const addButton = document.querySelector('[data-action="add-row"]');
         addButton?.addEventListener('click', () => this.addRow());
         this.updateAddButtonState();
+    }
 
-        // Add input handlers to update hidden field on cell changes
+    bindTableInputs() {
         this.table.querySelector('tbody').addEventListener('input', (e) => {
-            // If it's the amount column, ensure only numbers
             if (e.target.cellIndex === 1) {
-                const value = e.target.textContent.trim();
-                if (value && isNaN(value)) {
-                    e.target.textContent = value.replace(/[^\d.]/g, '');
-                }
+                this.sanitizeAmountInput(e.target);
             }
             this.updateHiddenField();
         });
     }
 
+    sanitizeAmountInput(cell) {
+        const value = cell.textContent.trim();
+        if (value && isNaN(value)) {
+            cell.textContent = value.replace(/[^\d.]/g, '');
+        }
+    }
+
+    createCell(isAmount = false) {
+        const cell = document.createElement('td');
+        cell.contentEditable = "true";
+        cell.className = `spreadsheet-cell${isAmount ? ' amount-cell' : ''}`;
+        return cell;
+    }
+
+    createRow() {
+        const row = document.createElement('tr');
+        row.appendChild(this.createCell()); // name cell
+        row.appendChild(this.createCell(true)); // amount cell
+        return row;
+    }
+
     clear() {
         const tbody = this.table.querySelector('tbody');
-        // Clear all existing rows
         tbody.innerHTML = '';
+        this.ensureMinimumRows();
+    }
 
-        // Add one empty row
-        const row = document.createElement('tr');
-
-        // Add name cell
-        const nameCell = document.createElement('td');
-        nameCell.contentEditable = "true";
-        nameCell.className = 'spreadsheet-cell';
-        nameCell.addEventListener('input', () => this.updateHiddenField());
-        row.appendChild(nameCell);
-
-        // Add amount cell
-        const amountCell = document.createElement('td');
-        amountCell.contentEditable = "true";
-        amountCell.className = 'spreadsheet-cell amount-cell';
-        amountCell.addEventListener('input', () => this.updateHiddenField());
-        row.appendChild(amountCell);
-
-        tbody.appendChild(row);
-
-        // Update the hidden field
-        this.updateHiddenField();
-
-        // Reset the add button state
-        this.updateAddButtonState();
+    ensureMinimumRows() {
+        if (this.getCurrentRowCount() === 0) {
+            this.addRow();
+        }
     }
 
     getCurrentRowCount() {
@@ -63,15 +68,11 @@ class SpreadsheetTable {
         if (!addButton) return;
 
         const currentRows = this.getCurrentRowCount();
-        if (currentRows >= this.maxRows) {
-            addButton.disabled = true;
-            addButton.title = `Maximum of ${this.maxRows} rows reached`;
-            addButton.classList.add('hidden');
-        } else {
-            addButton.disabled = false;
-            addButton.title = 'Add new row';
-            addButton.classList.remove('disabled');
-        }
+        const isMaxed = currentRows >= this.maxRows;
+
+        addButton.disabled = isMaxed;
+        addButton.title = isMaxed ? `Maximum of ${this.maxRows} rows reached` : 'Add new row';
+        addButton.classList.toggle('hidden', isMaxed);
     }
 
     addRow() {
@@ -80,37 +81,22 @@ class SpreadsheetTable {
             return;
         }
 
-        const row = document.createElement('tr');
-
-        // Add name cell
-        const nameCell = document.createElement('td');
-        nameCell.contentEditable = "true";
-        nameCell.className = 'spreadsheet-cell';
-        nameCell.addEventListener('input', () => this.updateHiddenField());
-        row.appendChild(nameCell);
-
-        // Add amount cell
-        const amountCell = document.createElement('td');
-        amountCell.contentEditable = "true";
-        amountCell.className = 'spreadsheet-cell amount-cell';
-        amountCell.addEventListener('input', () => this.updateHiddenField());
-        row.appendChild(amountCell);
-
-        this.table.querySelector('tbody').appendChild(row);
+        this.table.querySelector('tbody').appendChild(this.createRow());
         this.updateAddButtonState();
         this.updateHiddenField();
     }
 
     collectTableData() {
-        const rows = Array.from(this.table.querySelectorAll('tbody tr'));
-        return rows.map(row => {
-            const name = row.cells[0].textContent.trim();
-            const amount = row.cells[1].textContent.trim();
-            return `${name},${amount}`;
-        }).filter(row => {
-            const [name, amount] = row.split(',');
-            return name || (amount && !isNaN(amount));
-        });
+        return Array.from(this.table.querySelectorAll('tbody tr'))
+            .map(row => {
+                const name = row.cells[0].textContent.trim();
+                const amount = row.cells[1].textContent.trim();
+                return `${name},${amount}`;
+            })
+            .filter(row => {
+                const [name, amount] = row.split(',');
+                return name || (amount && !isNaN(amount));
+            });
     }
 
     updateHiddenField() {
@@ -123,8 +109,6 @@ class SpreadsheetTable {
 }
 
 // Initialize the spreadsheet and expose it globally
-let spreadsheetInstance;
 document.addEventListener('DOMContentLoaded', () => {
-    spreadsheetInstance = new SpreadsheetTable('.spreadsheet-table', 15);
-    window.spreadsheetTable = spreadsheetInstance;
+    window.spreadsheetTable = new SpreadsheetTable('.spreadsheet-table', 15);
 });
