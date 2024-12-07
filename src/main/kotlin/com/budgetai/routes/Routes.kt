@@ -47,7 +47,7 @@ fun Application.configureRoutes(config: ApplicationConfig, database: Database? =
         authRoutes(userService)
         mainRoutes(userService, budgetService, categoryService)
         dashboardRoutes(userService, budgetService)
-        reportRoutes()
+        reportRoutes(userService, budgetItemService, budgetService, categoryService)
         settingsRoutes(userService)
 
         // API routes
