@@ -13,7 +13,7 @@
     @apply rounded-lg;
     @apply hover:bg-blue-900;
     @apply transition-all duration-700 ease-in-out;
-    @apply hover:transform hover:scale-105 ease-in-out;
+    @apply hover:transform hover:scale-[1.01] ease-in-out;
 }
 
 /* Main Layout */
