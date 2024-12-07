@@ -41,10 +41,21 @@ class BudgetItemRepository(private val database: Database) {
     }
 
     // Retrieves all budget items for a budget with a user id
+// Retrieves all budget items for a budget with a user id
     suspend fun findByUserId(userId: Int): List<BudgetItemDTO> = dbQuery {
-        BudgetItems.join(Budgets, JoinType.INNER, BudgetItems.budgetId, Budgets.id).selectAll().where { Budgets.userId eq userId }
+        (BudgetItems innerJoin Budgets)
+            .select(
+                BudgetItems.id,
+                BudgetItems.budgetId,
+                BudgetItems.categoryId,
+                BudgetItems.name,
+                BudgetItems.amount,
+                BudgetItems.createdAt
+            )
+            .where { Budgets.userId eq userId }
             .map(::toBudgetItem)
     }
+
     // Retrieves all budget items for a given category ID
     suspend fun findByCategoryId(categoryId: Int): List<BudgetItemDTO> = dbQuery {
         BudgetItems.selectAll().where { BudgetItems.categoryId eq categoryId }.map(::toBudgetItem)
