@@ -1,5 +1,8 @@
 package com.budgetai.lib
 
+import com.budgetai.models.ChatResponse
+import com.budgetai.models.ChatRequest
+import com.budgetai.models.ChatMessage
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -8,8 +11,6 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.config.*
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 class OpenAi(config: ApplicationConfig) {
     private val apiKey: String = config.property("api-keys.openai").getString()
@@ -18,26 +19,6 @@ class OpenAi(config: ApplicationConfig) {
         install(ContentNegotiation) {
             json()
         }
-    }
-
-    @Serializable
-    private data class ChatMessage(
-        val role: String, val content: String
-    )
-
-    @Serializable
-    private data class ChatRequest(
-        val model: String, val messages: List<ChatMessage>
-    )
-
-    @Serializable
-    private data class ChatResponse(
-        val choices: List<Choice>
-    ) {
-        @Serializable
-        data class Choice(
-            val message: ChatMessage, @SerialName("finish_reason") val finishReason: String
-        )
     }
 
     // Send a single message and get response
