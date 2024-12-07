@@ -88,8 +88,9 @@ class DataSeeder(database: Database) {
             "Education" to CategoryType.EXPENSE
         )
 
-        val categories = categoryMap.map { (name, type) ->
-            name to (categoryRepository.findByName(name) ?: categoryRepository.create(
+        // Store category IDs instead of DTOs
+        val categoryIds = categoryMap.map { (name, type) ->
+            name to (categoryRepository.findByName(name)?.id ?: categoryRepository.create(
                 CategoryDTO(
                     name = name,
                     type = type,
@@ -146,9 +147,9 @@ class DataSeeder(database: Database) {
                     )
                 )
 
-                // Create budget items
+                // Create budget items using categoryIds instead of categories
                 itemAmounts.forEach { (itemTemplate, amount) ->
-                    val categoryId = categories[itemTemplate.caawegoryName]
+                    val categoryId = categoryIds[itemTemplate.categoryName]
                         ?: throw IllegalStateException("Category ${itemTemplate.categoryName} not found")
 
                     budgetItemRepository.create(
