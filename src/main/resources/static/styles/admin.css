@@ -1,11 +1,11 @@
 /* Admin button */
 .admin-access-section {
-    @apply mt-6 pt-6;
+    @apply my-6 py-6;
     @apply border-t border-gray-200 dark:border-gray-700;
 }
 
 .admin-link-button {
-    @apply w-full py-2 px-4;
+    @apply w-full py-2 px-4 my-4;
     @apply flex items-center justify-center;
     @apply text-sm font-medium;
     @apply bg-gray-900 dark:bg-blue-600;
@@ -14,6 +14,11 @@
     @apply hover:bg-blue-900;
     @apply transition-all duration-700 ease-in-out;
     @apply hover:transform hover:scale-[1.01] ease-in-out;
+}
+
+.admin-link-button-sm {
+    @apply admin-link-button;
+    @apply w-[60vw] mx-auto;
 }
 
 /* Main Layout */
