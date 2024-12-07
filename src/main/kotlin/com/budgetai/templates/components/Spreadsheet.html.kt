@@ -13,7 +13,7 @@ fun FlowContent.SpreadsheetComponent() {
     }
 
     form(classes = "auth-form") {
-        attributes["hx-post"] = "/budget/save"
+        attributes["hx-post"] = "api/budgets"
         attributes["hx-target"] = "#income-response-div"
 
         div(classes = "spreadsheet-wrapper") {
