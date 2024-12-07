@@ -21,7 +21,7 @@ object BudgetItems : IntIdTable("budget_items") {
 data class BudgetItemDTO(
     val id: Int = 0,
     val budgetId: Int,
-    val categoryId: Int,
+    val categoryId: Int? = null,
     val name: String,
     val amount: Double,
     val createdAt: String? = null
@@ -30,7 +30,7 @@ data class BudgetItemDTO(
 // Serializers
 @Serializable
 data class BudgetItemCreationRequest(
-    val budgetId: Int, val categoryId: Int, val name: String, val amount: Double
+    val budgetId: Int, val categoryId: Int? = null, val name: String, val amount: Double
 )
 
 @Serializable
