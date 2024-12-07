@@ -53,9 +53,10 @@ dependencies {
     implementation("org.jetbrains:kotlin-css-jvm:1.0.0-pre.129-kotlin-1.4.20")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.625")
 
-    // Ktor HTTP Client Dependencies
+// Ktor HTTP Client Dependencies
+    implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
     // Database
@@ -73,7 +74,7 @@ dependencies {
     implementation("aws.sdk.kotlin:aws-core:1.0.30")
 
     // OpenAI SDK
-    implementation("com.aallam.openai:openai-client:3.6.2")
+    implementation("com.aallam.openai:openai-client:3.7.0")  // Latest version
 
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
