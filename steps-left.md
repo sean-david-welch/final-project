@@ -1,9 +1,5 @@
 # Steps left to do
 
-# Dashboard
-* Submit budget form and parse on backend
-* store as csv in s3
-
 # Reports 
 * Spending Summary
 * Category Breakdown
