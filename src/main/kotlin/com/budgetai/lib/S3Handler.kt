@@ -5,6 +5,7 @@ import aws.sdk.kotlin.services.s3.model.PutObjectRequest
 import aws.sdk.kotlin.services.s3.model.GetObjectRequest
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.fromFile
+import aws.smithy.kotlin.runtime.content.toByteArray
 import java.io.File
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -53,9 +54,9 @@ class S3Handler(private val s3Client: S3Client, private val bucketName: String) 
                 this.key = key
             }
 
-            val response = s3Client.getObject(request) { resp ->
-                resp.body?.collect { chunk ->
-                    emit(chunk)
+            s3Client.getObject(request) { response ->
+                response.body?.toByteArray()?.let { bytes ->
+                    emit(bytes)
                 }
             }
         } catch (e: Exception) {
