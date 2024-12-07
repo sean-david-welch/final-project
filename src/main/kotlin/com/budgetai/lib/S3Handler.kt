@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class S3Handler(config: ApplicationConfig) {
-    private val bucketName: String = "budgetai"
+    private val bucketName: String = "budgetai.ie"
     private val s3Client = S3Client {
         region = "eu-west-1"
         credentialsProvider = StaticCredentialsProvider {
