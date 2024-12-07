@@ -4,21 +4,21 @@
             <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
+
     <!-- Set specific loggers to higher levels to reduce noise -->
     <logger name="org.sqlite" level="WARN"/>
     <logger name="Exposed" level="INFO"/>
     <logger name="org.eclipse.jetty" level="INFO"/>
     <logger name="io.netty" level="INFO"/>
 
-    <!-- Your application logs -->
-    <logger name="com.budgetai.utils.AuthContext" level="DEBUG"/>
-    <logger name="com.budgetai.routes.AuthRoutes" level="DEBUG"/>
-    <logger name="com.budgetai.plugins.Security" level="DEBUG"/>
-    <logger name="com.budgetai.services.UserService" level="DEBUG"/>
-    <logger name="Security" level="DEBUG"/>  <!-- Add this -->
+    <!-- Application loggers -->
+    <logger name="Security" level="DEBUG"/>
     <logger name="AuthContext" level="DEBUG"/>
-    <logger name="AuthRoutes" level="DEBUG"/>
+    <logger name="BudgetRoutes" level="DEBUG"/>
     <logger name="UserService" level="DEBUG"/>
+    <logger name="UserRoutes" level="DEBUG"/>
+    <logger name="AuthRoutes" level="DEBUG"/>
+    <logger name="BudgetParser" level="DEBUG"/>
 
     <!-- Root logger -->
     <root level="INFO">
