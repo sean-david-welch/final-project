@@ -147,11 +147,10 @@ fun Route.userRoutes(service: UserService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.OK, "User deleted successfully")
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.success("User deleted successfully"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.success("User deleted successfully"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -160,11 +159,10 @@ fun Route.userRoutes(service: UserService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -173,11 +171,10 @@ fun Route.userRoutes(service: UserService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.InternalServerError, "Error deleting user")
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Error deleting user"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error("Error deleting user"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
