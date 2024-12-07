@@ -17,7 +17,9 @@ fun DashboardTemplate(title: String, context: BaseTemplateContext, contentFn: DI
     }
 }
 
-fun createDashboardPage(context: BaseTemplateContext, budgetItems: List<BudgetItemDTO>, budgets: List<BudgetDTO>, categories: List<CategoryDTO>) = DashboardTemplate("Dashboard Overview", context) {
+fun createDashboardPage(
+    context: BaseTemplateContext, budgetItems: List<BudgetItemDTO>, budgets: List<BudgetDTO>, categories: List<CategoryDTO>
+) = DashboardTemplate("Dashboard Overview", context) {
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
@@ -38,5 +40,9 @@ fun createDashboardPage(context: BaseTemplateContext, budgetItems: List<BudgetIt
     }
 
     h2(classes = "section-title") { +"Budget Form" }
+    div {
+        attributes["id"] = "income-response-div"
+        attributes["class"] = "response-div"
+    }
     SpreadsheetComponent()
 }
