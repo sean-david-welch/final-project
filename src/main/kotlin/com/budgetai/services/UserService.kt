@@ -136,7 +136,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
     }
 
     // Updates user's basic information
-    suspend fun updateUser(id: Int, user: UserDTO) {
+    suspend fun updateUser(id: Int, user: UserDTO): Int {
         val existingUser = repository.findById(id) ?: throw IllegalArgumentException("User not found")
 
         if (user.email != existingUser.email) {
@@ -144,7 +144,7 @@ class UserService(private val repository: UserRepository, private val config: Ap
             validateEmailUnique(user.email, id)
         }
 
-        repository.update(id, user)
+        return repository.update(id, user)
     }
 
     // Updates user's password
