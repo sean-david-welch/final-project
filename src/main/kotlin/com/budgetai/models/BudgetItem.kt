@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
 // Model
 object BudgetItems : IntIdTable("budget_items") {
     val budgetId = reference("budget_id", Budgets, onDelete = ReferenceOption.CASCADE)
-    val categoryId = reference("category_id", Categories, onDelete = ReferenceOption.RESTRICT)
+    val categoryId = optReference("category_id", Categories, onDelete = ReferenceOption.RESTRICT)
     val name = varchar("name", 100)
     val amount = decimal("amount", 10, 2)
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
