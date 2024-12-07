@@ -65,7 +65,7 @@
 }
 
 .form-group {
-    @apply space-y-1;
+    @apply space-y-1 my-4;
 }
 
 .form-group label {
