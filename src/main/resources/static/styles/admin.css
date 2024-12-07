@@ -205,3 +205,21 @@
     @apply hover:bg-red-200 dark:hover:bg-red-800;
     @apply transition-colors duration-200;
 }
+
+.role-select {
+    @apply px-3 py-1;
+    @apply bg-gray-100 dark:bg-gray-700;
+    @apply text-gray-700 dark:text-gray-300;
+    @apply rounded-md;
+    @apply text-sm;
+    @apply hover:bg-gray-200 dark:hover:bg-gray-600;
+    @apply transition-colors duration-200;
+    @apply cursor-pointer;
+    @apply outline-none;
+    @apply border-none;
+}
+
+.role-select option {
+    @apply bg-white dark:bg-gray-800;
+    @apply text-gray-700 dark:text-gray-300;
+}
