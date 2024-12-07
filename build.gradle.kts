@@ -53,6 +53,11 @@ dependencies {
     implementation("org.jetbrains:kotlin-css-jvm:1.0.0-pre.129-kotlin-1.4.20")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.625")
 
+    // Ktor HTTP Client Dependencies
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+
     // Database
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
@@ -63,13 +68,12 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:3.47.0.0")
     implementation("org.flywaydb:flyway-core:10.21.0")
 
-    // aws
+    // AWS SDK
     implementation("aws.sdk.kotlin:s3:1.0.30")
     implementation("aws.sdk.kotlin:aws-core:1.0.30")
 
-    // open ai
+    // OpenAI SDK
     implementation("com.aallam.openai:openai-client:3.6.2")
-    implementation("io.ktor:ktor-client-cio:$ktor_version")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
