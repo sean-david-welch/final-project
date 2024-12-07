@@ -1,5 +1,4 @@
 /* Spreadsheet Layout */
-/* spreadsheet.css */
 .spreadsheet-container {
     @apply w-full border-collapse bg-white dark:bg-gray-800 rounded-lg overflow-hidden;
 }
