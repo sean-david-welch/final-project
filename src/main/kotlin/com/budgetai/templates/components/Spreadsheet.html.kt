@@ -6,7 +6,10 @@ private val columns = listOf("Name", "Amount", "Category")
 
 fun FlowContent.SpreadsheetComponent() {
     script { src = "/static/scripts/spreadsheet.js"; defer = true }
-
+    div {
+        attributes["id"] = "income-response-div"
+        attributes["class"] = "response-div"
+    }
     form(classes = "auth-form") {
         div(classes = "spreadsheet-wrapper") {
             div(classes = "form-group") {
