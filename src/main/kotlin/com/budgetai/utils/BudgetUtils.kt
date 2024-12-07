@@ -4,15 +4,18 @@ import com.budgetai.models.BudgetItemDTO
 
 object BudgetParser {
     data class ParseResult(
-        val items: List<BudgetItemDTO>, val errors: List<String>
+        val items: List<BudgetItemDTO>,
+        val errors: List<String>,
+        val totalAmount: Double
     )
 
     fun parseSpreadsheetData(spreadsheetData: String, budgetId: Int): ParseResult {
         val errors = mutableListOf<String>()
         val items = mutableListOf<BudgetItemDTO>()
+        var totalAmount = 0.0
 
         if (spreadsheetData.isBlank()) {
-            return ParseResult(emptyList(), listOf("No spreadsheet data provided"))
+            return ParseResult(emptyList(), listOf("No spreadsheet data provided"), 0.0)
         }
 
         spreadsheetData.split(";").forEachIndexed { index, row ->
@@ -26,17 +29,18 @@ object BudgetParser {
                     name.isBlank() -> {
                         errors.add("Row ${index + 1}: Name is required")
                     }
-
                     amount == null || amount <= 0 -> {
                         errors.add("Row ${index + 1}: Invalid amount - must be a positive number")
                     }
-
                     else -> {
                         items.add(
                             BudgetItemDTO(
-                                budgetId = budgetId, name = name, amount = amount
+                                budgetId = budgetId,
+                                name = name,
+                                amount = amount
                             )
                         )
+                        totalAmount += amount
                     }
                 }
             } catch (e: Exception) {
@@ -44,6 +48,10 @@ object BudgetParser {
             }
         }
 
-        return ParseResult(items, errors)
+        return ParseResult(
+            items = items,
+            errors = errors,
+            totalAmount = totalAmount
+        )
     }
 }
