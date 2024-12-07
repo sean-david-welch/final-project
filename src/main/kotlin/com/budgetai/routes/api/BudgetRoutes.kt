@@ -47,7 +47,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             }
 
                             val request = BudgetCreationRequest(
-                                userId = userId.toInt(), name = budgetName, totalIncome = totalIncome, totalExpenses = totalAmount
+                                userId = userId, name = budgetName, totalIncome = totalIncome, totalExpenses = totalAmount
                             )
 
                             val newBudgetId = service.createBudget(request)
@@ -59,7 +59,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
 
                     when (call.request.contentType()) {
                         ContentType.Application.Json -> {
-                            call.respond(HttpStatusCode.OK, mapOf("id" to budgetId))
+                            call.respond(HttpStatusCode.Created, mapOf("id" to budgetId))
                         }
 
                         else -> {
