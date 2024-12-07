@@ -1,9 +1,5 @@
 # Steps left to do
 
-# Admin
-* User Management - Update Roles / Delete
-* Budget Management - View / Delete 
-
 # Dashboard
 * Submit budget form and parse on backend
 * store as csv in s3
