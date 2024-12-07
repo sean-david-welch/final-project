@@ -137,6 +137,20 @@ fun Route.userRoutes(service: UserService) {
                 }
             }
 
+            // Delete user
+            delete("/{id}") {
+                try {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+
+                    service.deleteUser(id)
+                    call.respond(HttpStatusCode.OK, "User deleted successfully")
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.InternalServerError, "Error deleting user")
+                }
+            }
+
             // Update password
             put("/{id}/password") {
                 try {
@@ -152,19 +166,6 @@ fun Route.userRoutes(service: UserService) {
                 }
             }
 
-            // Delete user
-            delete("/{id}") {
-                try {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
-
-                    service.deleteUser(id)
-                    call.respond(HttpStatusCode.OK, "User deleted successfully")
-                } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
-                } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Error deleting user")
-                }
-            }
         }
     }
 }
