@@ -17,6 +17,11 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
         attributes["hx-post"] = "api/budgets"
         attributes["hx-target"] = "#income-response-div"
 
+        input(type = InputType.hidden) {
+            name = "userId"
+            value = context.auth.user?.id!!
+        }
+
         div(classes = "spreadsheet-wrapper") {
             div(classes = "form-group") {
                 label { +"Total Income" }
