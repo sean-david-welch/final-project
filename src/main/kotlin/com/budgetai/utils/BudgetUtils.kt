@@ -7,7 +7,7 @@ object BudgetParser {
         val items: List<BudgetItemDTO>, val errors: List<String>, val totalAmount: Double
     )
 
-    fun parseSpreadsheetData(spreadsheetData: String, budgetId: Int): ParseResult {
+    fun parseSpreadsheetData(spreadsheetData: String): ParseResult {
         val errors = mutableListOf<String>()
         val items = mutableListOf<BudgetItemDTO>()
         var totalAmount = 0.0
@@ -35,7 +35,7 @@ object BudgetParser {
                     else -> {
                         items.add(
                             BudgetItemDTO(
-                                budgetId = budgetId, name = name, amount = amount
+                                budgetId = 0, name = name, amount = amount
                             )
                         )
                         totalAmount += amount
