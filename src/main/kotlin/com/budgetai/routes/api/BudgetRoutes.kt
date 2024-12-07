@@ -1,12 +1,14 @@
 package com.budgetai.routes.api
 
 import com.budgetai.models.BudgetCreationRequest
+import com.budgetai.models.BudgetItemDTO
 import com.budgetai.models.UpdateBudgetRequest
 import com.budgetai.models.UpdateBudgetTotalsRequest
 import com.budgetai.services.BudgetItemService
 import com.budgetai.services.BudgetService
 import com.budgetai.services.CategoryService
 import com.budgetai.templates.components.ResponseComponents
+import com.budgetai.utils.BudgetParser
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -21,28 +23,72 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
             // Create new budget
             post {
                 try {
-                    val request = call.receive<BudgetCreationRequest>()
-                    val budgetId = service.createBudget(request)
+                    val budgetId = when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            val request = call.receive<BudgetCreationRequest>()
+                            service.createBudget(request)
+                        }
+                        else -> {
+                            // Handle form submission
+                            val parameters = call.receiveParameters()
+                            val totalIncome = parameters["totalIncome"]?.toDoubleOrNull()
+                                ?: throw IllegalArgumentException("Total income is required")
+                            val spreadsheetData = parameters["spreadsheetData"] ?: ""
+
+                            // Parse the spreadsheet data
+                            val parseResult = BudgetParser.parseSpreadsheetData(
+                                spreadsheetData = spreadsheetData,
+                                budgetId = 0  // Temporary ID, will be replaced with real one
+                            )
+
+                            if (parseResult.errors.isNotEmpty()) {
+                                return@post call.respondText(
+                                    ResponseComponents.error(parseResult.errors.joinToString("<br>")),
+                                    ContentType.Text.Html,
+                                    HttpStatusCode.OK
+                                )
+                            }
+
+                            // Create budget request from form data
+                            val request = BudgetCreationRequest(
+                                totalIncome = totalIncome,
+                                items = parseResult.items.map { item ->
+                                    BudgetItemDTO(
+                                        name = item.name,
+                                        amount = item.amount,
+                                        budgetId = 0  // Will be set by service
+                                    )
+                                }
+                            )
+
+                            service.createBudget(request)
+                        }
+                    }
+
+                    // Response handling
                     when (call.request.contentType()) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.OK, mapOf("id" to budgetId))
                         }
-
                         else -> {
                             call.respondText(
-                                ResponseComponents.success("Budget Created"), ContentType.Text.Html, HttpStatusCode.OK
+                                ResponseComponents.success("Budget Created"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
                             )
                         }
                     }
+
                 } catch (e: IllegalArgumentException) {
                     when (call.request.contentType()) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
                         }
-
                         else -> {
                             call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
+                                ResponseComponents.error(e.message ?: "Invalid request"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
                             )
                         }
                     }
@@ -51,10 +97,11 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.InternalServerError, "Error creating budget")
                         }
-
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Error creating budget"), ContentType.Text.Html, HttpStatusCode.OK
+                                ResponseComponents.error("Error creating budget"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
                             )
                         }
                     }
