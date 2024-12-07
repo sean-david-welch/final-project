@@ -154,7 +154,22 @@ fun Route.authRoutes(service: UserService) {
                 }
 
                 // Process form-based registration
-                service.createUser(request)
+                val userId = service.createUser(request)
+                if (userId <= 0) {
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Failed to create user"))
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error("Failed to create user. Please try again."),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
+                    return@post
+                }
                 // Process form-based authentication
                 val authRequest = UserAuthenticationRequest(request.email, request.password)
                 val result = service.authenticateUserWithToken(authRequest)
@@ -180,16 +195,13 @@ fun Route.authRoutes(service: UserService) {
 
                 when (call.request.contentType()) {
                     ContentType.Application.Json -> {
-                        call.respond(
-                            HttpStatusCode.BadRequest, mapOf("error" to (errorMessage ?: "An unknown error occurred"))
-                        )
+                        call.respond(HttpStatusCode.BadRequest, mapOf("error" to (errorMessage ?: "An unknown error occurred")))
                     }
-
                     else -> {
                         val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
                         logger.debug("Generated error response: $errorResponse")
                         call.respondText(
-                            errorResponse, ContentType.Text.Html, HttpStatusCode.BadRequest
+                            errorResponse, ContentType.Text.Html, HttpStatusCode.OK
                         )
                     }
                 }
