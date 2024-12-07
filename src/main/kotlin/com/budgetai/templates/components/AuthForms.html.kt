@@ -24,15 +24,13 @@ private fun FORM.submitButton(text: String) {
 
 fun DIV.loginForm() {
     div {
-        div(classes = "error-container") {
-            attributes["id"] = "login-error-container"
-        }
         form {
             attributes["class"] = "auth-form login-form"
             attributes["hx-post"] = "/auth/login"
             attributes["hx-trigger"] = "submit"
             attributes["hx-target"] = "#login-response-div"
             attributes["hx-swap"] = "innerHTML"
+            attributes["hx-indicator"] = "#login-response-div"
             attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
 
             formField("Email", InputType.email, "your@email.com") {
@@ -59,6 +57,7 @@ fun DIV.registerForm() {
             attributes["hx-trigger"] = "submit"
             attributes["hx-target"] = "#register-repsponse-div"
             attributes["hx-swap"] = "innerHTML"
+            attributes["hx-indicator"] = "#register-response-div"
             attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
 
             formField("Full Name", InputType.text, "John Doe") {
