@@ -6,11 +6,16 @@ private val columns = listOf("Name", "Amount", "Category")
 
 fun FlowContent.SpreadsheetComponent() {
     script { src = "/static/scripts/spreadsheet.js"; defer = true }
+
     div {
         attributes["id"] = "income-response-div"
         attributes["class"] = "response-div"
     }
+
     form(classes = "auth-form") {
+        attributes["hx-post"] = "/budget/save"
+        attributes["hx-target"] = "#income-response-div"
+
         div(classes = "spreadsheet-wrapper") {
             div(classes = "form-group") {
                 label { +"Total Income" }
@@ -20,6 +25,13 @@ fun FlowContent.SpreadsheetComponent() {
                     id = "totalIncome"
                     required = true
                 }
+            }
+
+            // Hidden input for spreadsheet data
+            input(type = InputType.hidden) {
+                name = "spreadsheetData"
+                id = "spreadsheetData"
+                value = ""
             }
 
             // Add row button
@@ -52,7 +64,6 @@ fun FlowContent.SpreadsheetComponent() {
             }
         }
 
-        // Submit button at the bottom
         button(type = ButtonType.submit, classes = "submit-button") {
             +"Save Budget"
         }
