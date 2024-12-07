@@ -4,6 +4,7 @@ import com.budgetai.models.BudgetCreationRequest
 import com.budgetai.models.UpdateBudgetRequest
 import com.budgetai.models.UpdateBudgetTotalsRequest
 import com.budgetai.services.BudgetService
+import com.budgetai.templates.components.ResponseComponents
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -118,17 +119,53 @@ fun Route.budgetRoutes(service: BudgetService) {
                 }
             }
 
-            // Delete budget
+// Delete budget
             delete("/{id}") {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
-
                     service.deleteBudget(id)
-                    call.respond(HttpStatusCode.OK, "Budget deleted successfully")
+
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.OK, "Budget deleted successfully")
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.success("Budget deleted successfully"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error(e.message ?: "Invalid request"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Error deleting budget")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.InternalServerError, "Error deleting budget")
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error("Error deleting budget"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 }
             }
 
