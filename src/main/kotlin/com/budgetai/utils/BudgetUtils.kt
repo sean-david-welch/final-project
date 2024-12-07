@@ -11,10 +11,7 @@ object BudgetParser {
     private val logger: Logger = LoggerFactory.getLogger("BudgetParser")
 
     data class ParseResult(
-        val items: List<BudgetItemDTO>,
-        val errors: List<String>,
-        val totalAmount: Double,
-        val csvContent: String = "" // Added CSV content
+        val items: List<BudgetItemDTO>, val errors: List<String>, val totalAmount: Double, val csvContent: String = ""
     )
 
     private fun generateCsv(items: List<BudgetItemDTO>, totalAmount: Double): String {
@@ -93,10 +90,7 @@ object BudgetParser {
         logger.debug("Generated CSV content: $csvContent")
 
         return ParseResult(
-            items = items,
-            errors = errors,
-            totalAmount = totalAmount,
-            csvContent = csvContent
+            items = items, errors = errors, totalAmount = totalAmount, csvContent = csvContent
         )
     }
 }
