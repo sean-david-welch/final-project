@@ -162,16 +162,19 @@ fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<Budge
                 tbody {
                     budgets.forEach { budget ->
                         tr {
+                            attributes["id"] = "budget-row-${budget.id}"
                             td(classes = "table-cell") { +budget.name }
                             td(classes = "table-cell") { +budget.userId.toString() }
                             td(classes = "table-cell description") { +(budget.description ?: "-") }
                             td(classes = "table-cell money") { +"$${budget.totalIncome}" }
                             td(classes = "table-cell money") { +"$${budget.totalExpenses}" }
                             td(classes = "table-actions") {
-                                button(classes = "edit-button") {
-                                    +"Edit"
-                                }
                                 button(classes = "delete-button") {
+                                    attributes["hx-delete"] = "/api/users/${budget.id}"
+                                    attributes["hx-target"] = "#response-message"
+                                    attributes["hx-swap"] = "innerHTML"
+                                    attributes["hx-confirm"] = "Are you sure you want to delete this budget?"
+                                    attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('budget-row-${budget.id}').remove()"
                                     +"Delete"
                                 }
                             }
