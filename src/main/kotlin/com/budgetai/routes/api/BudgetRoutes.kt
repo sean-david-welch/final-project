@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory
 import java.math.BigDecimal
 
 fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemService) {
-    val logger = LoggerFactory.getLogger("Budget routes")
+    val logger = LoggerFactory.getLogger("BudgetRoutes")
 
     authenticate {
         route("/api/budgets") {
