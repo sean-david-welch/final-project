@@ -70,6 +70,3 @@ class EditableTable {
         document.head.appendChild(style);
     }
 }
-
-// Usage:
-// new EditableTable('container-id');
