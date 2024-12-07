@@ -55,7 +55,7 @@ dependencies {
 
     // Ktor HTTP Client Dependencies
     implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-netty:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
@@ -74,7 +74,7 @@ dependencies {
     implementation("aws.sdk.kotlin:aws-core:1.0.30")
 
     // OpenAI SDK
-    implementation("com.aallam.openai:openai-client:3.7.0")  // Latest version
+    implementation("com.aallam.openai:openai-client:3.8.2")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
