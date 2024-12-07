@@ -22,14 +22,12 @@ class OpenAi(config: ApplicationConfig) {
 
     @Serializable
     private data class ChatMessage(
-        val role: String,
-        val content: String
+        val role: String, val content: String
     )
 
     @Serializable
     private data class ChatRequest(
-        val model: String,
-        val messages: List<ChatMessage>
+        val model: String, val messages: List<ChatMessage>
     )
 
     @Serializable
@@ -38,9 +36,7 @@ class OpenAi(config: ApplicationConfig) {
     ) {
         @Serializable
         data class Choice(
-            val message: ChatMessage,
-            @SerialName("finish_reason")
-            val finishReason: String
+            val message: ChatMessage, @SerialName("finish_reason") val finishReason: String
         )
     }
 
@@ -50,10 +46,11 @@ class OpenAi(config: ApplicationConfig) {
             val response = client.post("https://api.openai.com/v1/chat/completions") {
                 contentType(ContentType.Application.Json)
                 header("Authorization", "Bearer $apiKey")
-                setBody(ChatRequest(
-                    model = model,
-                    messages = listOf(ChatMessage(role = "user", content = prompt))
-                ))
+                setBody(
+                    ChatRequest(
+                        model = model, messages = listOf(ChatMessage(role = "user", content = prompt))
+                    )
+                )
             }
 
             val chatResponse = response.body<ChatResponse>()
@@ -68,18 +65,18 @@ class OpenAi(config: ApplicationConfig) {
         try {
             val chatMessages = messages.map { (content, isUser) ->
                 ChatMessage(
-                    role = if (isUser) "user" else "assistant",
-                    content = content
+                    role = if (isUser) "user" else "assistant", content = content
                 )
             }
 
             val response = client.post("https://api.openai.com/v1/chat/completions") {
                 contentType(ContentType.Application.Json)
                 header("Authorization", "Bearer $apiKey")
-                setBody(ChatRequest(
-                    model = model,
-                    messages = chatMessages
-                ))
+                setBody(
+                    ChatRequest(
+                        model = model, messages = chatMessages
+                    )
+                )
             }
 
             val chatResponse = response.body<ChatResponse>()
