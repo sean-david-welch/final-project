@@ -33,24 +33,5 @@ fun createDashboardPage(
         }
     }
 
-    // Stats Grid
-    div(classes = "stats-grid") {
-        val stats = listOf(
-            Pair("Total Budget Items", budgetItems.count().toString()), Pair("Total Budgets", budgets.count().toString()),
-            Pair("Total Categories", categories.count().toString())
-        )
-
-        stats.forEach { (label, value) ->
-            div(classes = "stat-card") {
-                div(classes = "stat-content") {
-                    div {
-                        p(classes = "stat-info") { +label }
-                        p(classes = "stat-value") { +value }
-                    }
-                }
-            }
-        }
-    }
-
     SpreadsheetComponent(context)
 }
