@@ -97,7 +97,6 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
                                     attributes["hx-target"] = "#response-message"
                                     attributes["hx-swap"] = "innerHTML"
                                     attributes["hx-confirm"] = "Are you sure you want to delete this user?"
-                                    // Add a trigger on successful response
                                     attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('user-row-${user.id}').remove()"
                                     +"Delete"
                                 }
