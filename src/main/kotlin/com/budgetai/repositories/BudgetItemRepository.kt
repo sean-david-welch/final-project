@@ -67,7 +67,9 @@ class BudgetItemRepository(private val database: Database) {
     suspend fun create(budgetItem: BudgetItemDTO): Int = dbQuery {
         BudgetItems.insertAndGetId { row ->
             row[budgetId] = EntityID(budgetItem.budgetId, Budgets)
-            row[categoryId] = EntityID(budgetItem.categoryId, Categories)
+            budgetItem.categoryId?.let {
+                row[categoryId] = EntityID(it, Categories)
+            }
             row[name] = budgetItem.name
             row[amount] = BigDecimal(budgetItem.amount)
         }.value
@@ -77,7 +79,9 @@ class BudgetItemRepository(private val database: Database) {
     suspend fun update(id: Int, budgetItem: BudgetItemDTO) = dbQuery {
         BudgetItems.update({ BudgetItems.id eq id }) { stmt ->
             stmt[budgetId] = EntityID(budgetItem.budgetId, Budgets)
-            stmt[categoryId] = EntityID(budgetItem.categoryId, Categories)
+            budgetItem.categoryId?.let {
+                stmt[categoryId] = EntityID(it, Categories)
+            }
             stmt[name] = budgetItem.name
             stmt[amount] = BigDecimal(budgetItem.amount)
         }
@@ -110,9 +114,12 @@ class BudgetItemRepository(private val database: Database) {
     suspend fun createBatch(budgetItems: List<BudgetItemDTO>): List<Int> = dbQuery {
         BudgetItems.batchInsert(budgetItems) { item ->
             this[BudgetItems.budgetId] = EntityID(item.budgetId, Budgets)
-            this[BudgetItems.categoryId] = EntityID(item.categoryId, Categories)
+            item.categoryId?.let {
+                this[BudgetItems.categoryId] = EntityID(it, Categories)
+            }
             this[BudgetItems.name] = item.name
             this[BudgetItems.amount] = BigDecimal(item.amount)
         }.map { it[BudgetItems.id].value }
     }
+
 }
