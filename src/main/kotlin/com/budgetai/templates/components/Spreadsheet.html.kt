@@ -5,23 +5,30 @@ import kotlinx.html.*
 private val columns = listOf("Name", "Amount", "Category")
 
 fun FlowContent.SpreadsheetComponent() {
-    form {
-        script { src = "/static/scripts/spreadsheet.js"; defer = true }
+    script { src = "/static/scripts/spreadsheet.js"; defer = true }
 
-        div(classes = "add-row") {
-            button(classes = "spreadsheet-add-row") {
-                attributes["data-action"] = "add-row"
-                +"Add Row"
-            }
-        }
+    form(classes = "auth-form") {
         div(classes = "spreadsheet-wrapper") {
-            form(classes = "auth-form") {
-                formField("Total Income", InputType.number, "Enter your total income") {
+            // Income input section
+            div(classes = "form-group") {
+                label { +"Total Income" }
+                input(type = InputType.number, classes = "input-field") {
+                    placeholder = "Enter your total income"
                     name = "totalIncome"
                     id = "totalIncome"
                     required = true
                 }
             }
+
+            // Add row button
+            div(classes = "add-row") {
+                button(type = ButtonType.button, classes = "spreadsheet-add-row") {
+                    attributes["data-action"] = "add-row"
+                    +"Add Row"
+                }
+            }
+
+            // Spreadsheet table
             table(classes = "spreadsheet-table") {
                 thead {
                     tr {
@@ -42,6 +49,10 @@ fun FlowContent.SpreadsheetComponent() {
                 }
             }
         }
-        submitButton("Save Budget")
+
+        // Submit button at the bottom
+        button(type = ButtonType.submit, classes = "submit-button") {
+            +"Save Budget"
+        }
     }
 }
