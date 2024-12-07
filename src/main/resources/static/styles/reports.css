@@ -16,7 +16,7 @@
 }
 
 .overview-header {
-    @apply max-w-2xl;
+    @apply max-w-2xl py-2;
 }
 
 .overview-title {

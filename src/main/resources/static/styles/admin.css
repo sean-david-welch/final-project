@@ -34,7 +34,7 @@
 
 /* Stats Grid */
 .stats-grid {
-    @apply grid gap-6 border-b-2;
+    @apply grid gap-6 border-b-2 border-t-2;
     @apply md:grid-cols-2 lg:grid-cols-4;
 }
 
