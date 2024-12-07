@@ -89,8 +89,23 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
                             td(classes = "table-cell") { +user.email }
                             td(classes = "table-cell") { +user.role }
                             td(classes = "table-actions") {
-                                button(classes = "edit-button") {
-                                    +"Edit"
+                                select(classes = "role-select") {
+                                    attributes["hx-put"] = "/api/users/${user.id}/role"
+                                    attributes["hx-target"] = "#response-message"
+                                    attributes["hx-swap"] = "innerHTML"
+                                    attributes["hx-trigger"] = "change"
+                                    attributes["name"] = "role"
+
+                                    option {
+                                        attributes["value"] = "USER"
+                                        attributes["selected"] = (user.role == "USER").toString()
+                                        +"User"
+                                    }
+                                    option {
+                                        attributes["value"] = "ADMIN"
+                                        attributes["selected"] = (user.role == "ADMIN").toString()
+                                        +"Admin"
+                                    }
                                 }
                                 button(classes = "delete-button") {
                                     attributes["hx-delete"] = "/api/users/${user.id}"
