@@ -71,21 +71,10 @@ class DataSeeder(database: Database) {
     )
 
     suspend fun seed() {
-        // Create users
+        // Check if data already exists
         userRepository.findByEmail("user1@example.com")?.let { return }
-        val userIds = (1..5).map { index ->
-            userRepository.create(
-                UserDTO(
-                    email = "user$index@example.com",
-                    name = "Test User $index",
-                    role = UserRole.USER.toString()
-                )
-            ).also { userId ->
-                userRepository.updatePassword(userId, "hashed_password_$index")
-            }
-        }
 
-        // Create categories
+        // Create or get categories
         val categoryMap = mapOf(
             "Salary" to CategoryType.INCOME,
             "Freelance" to CategoryType.INCOME,
@@ -100,14 +89,27 @@ class DataSeeder(database: Database) {
         )
 
         val categories = categoryMap.map { (name, type) ->
-            name to categoryRepository.create(
+            name to (categoryRepository.findByName(name) ?: categoryRepository.create(
                 CategoryDTO(
                     name = name,
                     type = type,
                     description = "Description for $name category"
                 )
-            )
+            ))
         }.toMap()
+
+        // Create users
+        val userIds = (1..5).map { index ->
+            userRepository.create(
+                UserDTO(
+                    email = "user$index@example.com",
+                    name = "Test User $index",
+                    role = UserRole.USER.toString()
+                )
+            ).also { userId ->
+                userRepository.updatePassword(userId, "hashed_password_$index")
+            }
+        }
 
         // Create budgets and items for each user
         userIds.forEach { userId ->
@@ -146,7 +148,7 @@ class DataSeeder(database: Database) {
 
                 // Create budget items
                 itemAmounts.forEach { (itemTemplate, amount) ->
-                    val categoryId = categories[itemTemplate.categoryName]
+                    val categoryId = categories[itemTemplate.caawegoryName]
                         ?: throw IllegalStateException("Category ${itemTemplate.categoryName} not found")
 
                     budgetItemRepository.create(
