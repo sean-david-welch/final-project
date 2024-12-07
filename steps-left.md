@@ -1,8 +1,5 @@
 # Steps left to do
 
-# Form feedback
-* provide feedback on user update, register and login forms
-
 # Admin
 * User Management - Update Roles / Delete
 * Budget Management - View / Delete 
