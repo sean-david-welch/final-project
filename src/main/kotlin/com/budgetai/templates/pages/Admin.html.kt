@@ -121,8 +121,10 @@ fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<Budge
                     budgets.forEach { budget ->
                         tr {
                             td(classes = "budget-cell") { +budget.name }
-                            td(classes = "budget-cell") { +budget.userId }
-                            td(classes = "budget-cell description") { +budget.description }
+                            td(classes = "budget-cell") { +budget.userId.toString() }
+                            if (budget.description != null) {
+                                td(classes = "budget-cell description") { +budget.description }
+                            }
                             td(classes = "budget-cell money") { +"$${budget.totalIncome}" }
                             td(classes = "budget-cell money") { +"$${budget.totalExpenses}" }
                             td(classes = "budget-actions") {
