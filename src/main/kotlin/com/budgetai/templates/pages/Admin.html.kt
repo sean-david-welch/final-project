@@ -170,7 +170,7 @@ fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<Budge
                             td(classes = "table-cell money") { +"$${budget.totalExpenses}" }
                             td(classes = "table-actions") {
                                 button(classes = "delete-button") {
-                                    attributes["hx-delete"] = "/api/users/${budget.id}"
+                                    attributes["hx-delete"] = "/api/budgets/${budget.id}"
                                     attributes["hx-target"] = "#response-message"
                                     attributes["hx-swap"] = "innerHTML"
                                     attributes["hx-confirm"] = "Are you sure you want to delete this budget?"
