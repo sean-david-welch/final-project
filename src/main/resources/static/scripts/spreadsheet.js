@@ -1,43 +1,30 @@
-class EditableTable {
-    constructor(containerId) {
-        this.container = document.getElementById(containerId);
+class SpreadsheetTable {
+    constructor(selector = '.spreadsheet-table') {
+        this.table = document.querySelector(selector);
         this.init();
     }
 
     init() {
-        const table = document.createElement('table');
-        table.innerHTML = `
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Category</th>
-            </tr>
-            <tr>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-                <td contenteditable="true"></td>
-            </tr>`;
-
-        table.className = 'editable-table';
-        this.container.appendChild(table);
-
-        // Add new row button
-        const addRowBtn = document.createElement('button');
-        addRowBtn.textContent = 'Add Row';
-        addRowBtn.onclick = () => this.addRow();
-        this.container.appendChild(addRowBtn);
+        document.querySelector('[data-action="add-row"]')
+            ?.addEventListener('click', () => this.addRow());
     }
 
     addRow() {
+        const columnCount = this.table.querySelector('tr').children.length;
         const row = document.createElement('tr');
-        const columnCount = this.container.querySelector('tr').children.length;
 
         for (let i = 0; i < columnCount; i++) {
             const cell = document.createElement('td');
             cell.contentEditable = true;
+            cell.className = 'spreadsheet-cell';
             row.appendChild(cell);
         }
 
-        this.container.querySelector('table').appendChild(row);
+        this.table.querySelector('tbody').appendChild(row);
     }
 }
+
+// Initialize the spreadsheet
+document.addEventListener('DOMContentLoaded', () => {
+    new SpreadsheetTable();
+});
