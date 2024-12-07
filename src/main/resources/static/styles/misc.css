@@ -1,4 +1,8 @@
 /* Base Message Styles */
+.response-div {
+    @apply my-4;
+}
+
 .message-base {
     @apply p-4 mb-4 rounded-lg shadow-sm;
     @apply flex items-center gap-3;
