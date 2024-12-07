@@ -5,63 +5,47 @@ import kotlinx.html.*
 private val columns = listOf("Name", "Amount", "Category")
 
 fun FlowContent.SpreadsheetComponent() {
-    script { src = "/static/scripts/spreadsheet.js"; defer = true }
+    form {
+        script { src = "/static/scripts/spreadsheet.js"; defer = true }
 
-    // Add form section before spreadsheet
-    div(classes = "income-form-wrapper") {
-        form {
-            attributes["onSubmit"] = "handleFormSubmit(event)"
-
-            div(classes = "form-group") {
-                label {
-                    htmlFor = "totalIncome"
-                    +"Total Income:"
-                }
-                input(type = InputType.number) {
-                    id = "totalIncome"
+        div(classes = "add-row") {
+            button(classes = "spreadsheet-add-row") {
+                attributes["data-action"] = "add-row"
+                +"Add Row"
+            }
+        }
+        div(classes = "spreadsheet-wrapper") {
+            form(classes = "auth-form") {
+                formField("Total Income", InputType.number, "Enter your total income") {
                     name = "totalIncome"
-                    classes = setOf("income-input")
+                    id = "totalIncome"
                     required = true
-                    placeholder = "Enter your total income"
                 }
             }
+            div {
+                h2(classes = "spreadsheet-title") { +"Data Entry" }
+            }
 
-
-        }
-    }
-
-    div(classes = "add-row") {
-        button(classes = "spreadsheet-add-row") {
-            attributes["data-action"] = "add-row"
-            +"Add Row"
-        }
-    }
-    div(classes = "spreadsheet-wrapper") {
-        div {
-            h2(classes = "spreadsheet-title") { +"Data Entry" }
-        }
-
-        table(classes = "spreadsheet-table") {
-            thead {
-                tr {
-                    columns.forEach { columnName ->
-                        th(classes = "spreadsheet-header") { +columnName }
+            table(classes = "spreadsheet-table") {
+                thead {
+                    tr {
+                        columns.forEach { columnName ->
+                            th(classes = "spreadsheet-header") { +columnName }
+                        }
                     }
                 }
-            }
-            tbody {
-                tr {
-                    columns.forEach { _ ->
-                        td(classes = "spreadsheet-cell") {
-                            contentEditable = true
-                            +""
+                tbody {
+                    tr {
+                        columns.forEach { _ ->
+                            td(classes = "spreadsheet-cell") {
+                                contentEditable = true
+                                +""
+                            }
                         }
                     }
                 }
             }
         }
-    }
-    button(type = ButtonType.submit, classes = "submit-button") {
-        +"Submit Budget"
+        submitButton("Save Budget")
     }
 }
