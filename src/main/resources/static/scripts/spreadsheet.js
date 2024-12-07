@@ -25,7 +25,7 @@ class SpreadsheetTable {
         if (currentRows >= this.maxRows) {
             addButton.disabled = true;
             addButton.title = `Maximum of ${this.maxRows} rows reached`;
-            addButton.classList.add('disabled');
+            addButton.classList.add('hidden');
         } else {
             addButton.disabled = false;
             addButton.title = 'Add new row';
