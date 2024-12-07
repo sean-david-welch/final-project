@@ -95,16 +95,20 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
                                     attributes["hx-swap"] = "innerHTML"
                                     attributes["hx-trigger"] = "change"
                                     attributes["name"] = "role"
-
-                                    option {
-                                        attributes["value"] = "USER"
-                                        attributes["selected"] = (user.role == "USER").toString()
-                                        +"User"
+                                    attributes["value"] = user.role
+                                    val roles = if (user.role == "ADMIN") {
+                                        listOf("ADMIN" to "Admin", "USER" to "User")
+                                    } else {
+                                        listOf("USER" to "User", "ADMIN" to "Admin")
                                     }
-                                    option {
-                                        attributes["value"] = "ADMIN"
-                                        attributes["selected"] = (user.role == "ADMIN").toString()
-                                        +"Admin"
+                                    roles.forEach { (value, label) ->
+                                        option {
+                                            attributes["value"] = value
+                                            if (value == user.role) {
+                                                attributes["selected"] = "selected"
+                                            }
+                                            +label
+                                        }
                                     }
                                 }
                                 button(classes = "delete-button") {
