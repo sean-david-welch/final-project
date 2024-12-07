@@ -56,7 +56,7 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
     div(classes = "management-container") {
         // Header with total count
         div(classes = "management-header") {
-            h2(classes = "user-title") { +"Users (${users.count()})" }
+            h2(classes = "management-title") { +"Users (${users.count()})" }
             button(classes = "add-button") {
                 +"Add New User"
             }
@@ -99,7 +99,7 @@ fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<Budge
     div(classes = "management-container") {
         // Header with total count and add button
         div(classes = "management-header") {
-            h2(classes = "budget-title") { +"Budgets (${budgets.count()})" }
+            h2(classes = "management-title") { +"Budgets (${budgets.count()})" }
             button(classes = "add-button") {
                 +"Create New Budget"
             }
