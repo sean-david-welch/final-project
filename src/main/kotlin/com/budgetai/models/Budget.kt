@@ -30,8 +30,8 @@ data class BudgetDTO(
     val description: String? = null,
     val startDate: String? = null,
     val endDate: String? = null,
-    val totalIncome: Double = 0.0,
-    val totalExpenses: Double = 0.0,
+    val totalIncome: Double,
+    val totalExpenses: Double,
     val createdAt: String? = null
 )
 
@@ -42,8 +42,8 @@ data class BudgetCreationRequest(
     val name: String,
     val description: String? = null,
     val startDate: LocalDate? = null,
-    val totalIncome: Double = 0.0,
-    val totalExpenses: Double = 0.0,
+    val totalIncome: Double,
+    val totalExpenses: Double,
     val endDate: LocalDate? = null
 )
 
