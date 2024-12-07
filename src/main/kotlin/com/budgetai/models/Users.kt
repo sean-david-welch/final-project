@@ -41,6 +41,11 @@ data class UpdatePasswordRequest(
     val newPassword: String
 )
 
+@Serializable
+data class UpdateRoleRequest(
+    val role: UserRole
+)
+
 // authetication classes
 data class CookieConfig(
     val name: String, val maxAgeInSeconds: Int, val path: String, val secure: Boolean, val httpOnly: Boolean
