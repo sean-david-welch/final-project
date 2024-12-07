@@ -93,12 +93,12 @@ fun DIV.updateProfileForm(user: UserDTO) {
             attributes["hx-swap"] = "innerHTML"
             attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
 
-            formField("Full Name", InputType.text, "John Doe") {
+            formField("Full Name", InputType.text, user.name) {
                 name = "name"
                 required = true
             }
 
-            formField("Email", InputType.email, "your@email.com") {
+            formField("Email", InputType.email, user.email) {
                 name = "email"
                 required = true
             }
