@@ -27,13 +27,9 @@ fun createDashboardPage(
         }
     }
 
-    div(classes = "quick-actions") {
-        listOf(
-            Pair("Manage Budgets", "/admin/budget-management")
-        ).forEach { (label, href) ->
-            a(href = href, classes = "action-button") {
-                +label
-            }
+    div(classes = "admin-access-section") {
+        a(href = "/dashboard/budget-management", classes = "admin-link-button") {
+            +"Budgets Overview"
         }
     }
 
