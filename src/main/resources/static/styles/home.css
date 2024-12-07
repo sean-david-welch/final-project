@@ -20,7 +20,7 @@
 .card-base {
     @apply p-6 rounded-lg shadow-sm bg-white dark:bg-gray-900;
     @apply transition-transform duration-700;
-    @apply hover:transform hover:scale-105 ease-in-out;
+    @apply hover:transform hover:scale-[1.01] ease-in-out;
 }
 
 /* Hero Section */
