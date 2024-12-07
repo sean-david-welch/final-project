@@ -20,6 +20,13 @@ fun DashboardTemplate(title: String, context: BaseTemplateContext, contentFn: DI
 fun createDashboardPage(
     context: BaseTemplateContext, budgetItems: List<BudgetItemDTO>, budgets: List<BudgetDTO>, categories: List<CategoryDTO>
 ) = DashboardTemplate("Dashboard Overview", context) {
+    div(classes = "overview-header") {
+        h2(classes = "overview-title") { +"Your Personal Dashboard" }
+        p(classes = "overview-description") {
+            +"View usage stats and create new budgets"
+        }
+    }
+
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
