@@ -25,18 +25,13 @@
 .success-message::before {
     @apply message-icon-base;
     @apply content-['✓'];
-    @apply bg-emerald-100 dark:bg-emerald-900;
-    @apply text-emerald-700 dark:text-emerald-200;
+    @apply bg-blue-700 dark:bg-blue-900;
+    @apply text-blue-700 dark:text-blue-200;
 }
 
 /* Error Message */
 .error-message {
     @apply message-base;
-}
-
-.error-message::before {
-    @apply message-icon-base;
-    @apply content-['✕'];
 }
 
 /* Message Dismissible Variant */
