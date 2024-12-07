@@ -2,13 +2,17 @@ package com.budgetai.routes.api
 
 import com.budgetai.models.*
 import com.budgetai.services.UserService
+import com.budgetai.templates.components.ResponseComponents
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.slf4j.LoggerFactory
 
 fun Route.userRoutes(service: UserService) {
+    val logger = LoggerFactory.getLogger("UserRoutes")
+
     // proteted routes
     authenticate {
         route("/api/users") {
@@ -52,8 +56,8 @@ fun Route.userRoutes(service: UserService) {
             put("/{id}") {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
-
                     val existingUser = service.getUser(id) ?: throw IllegalArgumentException("User not found")
+
                     val request = when (call.request.contentType()) {
                         ContentType.Application.Json -> call.receive<UpdateUserRequest>()
                         ContentType.Application.FormUrlEncoded -> {
@@ -64,21 +68,75 @@ fun Route.userRoutes(service: UserService) {
                                 password = parameters["password"]
                             )
                         }
-
                         else -> throw IllegalArgumentException("Unsupported content type")
                     }
+
+                    if (!request.password.isNullOrEmpty()) {
+                        try {
+                            service.updatePassword(id, request.password)
+                        } catch (e: IllegalArgumentException) {
+                            when (call.request.contentType()) {
+                                ContentType.Application.Json -> {
+                                    call.respond(HttpStatusCode.BadRequest, mapOf("error" to e.message))
+                                }
+                                else -> {
+                                    call.respondText(
+                                        ResponseComponents.error(e.message ?: "Invalid password"),
+                                        ContentType.Text.Html,
+                                        HttpStatusCode.OK
+                                    )
+                                }
+                            }
+                            return@put
+                        }
+                    }
+
                     val role = if (existingUser.role == UserRole.ADMIN.toString()) UserRole.ADMIN.toString() else UserRole.USER.toString()
                     val userDTO = UserDTO(
                         id = id, email = request.email, name = request.name, role = role
                     )
 
-                    if (!request.password.isNullOrEmpty()) request.password.let { service.updatePassword(id, it) }
                     service.updateUser(id, userDTO)
-                    call.respond(HttpStatusCode.OK, "User updated successfully")
+
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.OK, mapOf("message" to "User updated successfully"))
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.success("User updated successfully"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Invalid request")))
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error(e.message ?: "Invalid request"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Error updating user")
+                    logger.error("Error updating user", e)
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error updating user"))
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error("Error updating user"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 }
             }
 
