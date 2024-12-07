@@ -57,22 +57,31 @@ class BudgetItemService(private val repository: BudgetItemRepository) {
         return repository.create(budgetItemDTO)
     }
 
-    suspend fun createBulkBudgetItems(requests: List<BudgetItemCreationRequest>): List<Int> {
-        requests.forEach { validateAmount(it.amount) }
-
-        val budgetItems = requests.map { request ->
-            BudgetItemDTO(
-                id = 0,
-                budgetId = request.budgetId,
-                categoryId = request.categoryId,
-                name = request.name,
-                amount = request.amount,
-                createdAt = null
-            )
+    suspend fun createBulkBudgetItems(
+        requests: List<BudgetItemCreationRequest>? = null,
+        budgetItems: List<BudgetItemDTO>? = null
+    ): List<Int> {
+        val itemsToProcess = when {
+            requests != null -> {
+                requests.forEach { validateAmount(it.amount) }
+                requests.map { request ->
+                    BudgetItemDTO(
+                        id = 0,
+                        budgetId = request.budgetId,
+                        categoryId = request.categoryId,
+                        name = request.name,
+                        amount = request.amount,
+                        createdAt = null
+                    )
+                }
+            }
+            budgetItems != null -> budgetItems
+            else -> throw IllegalArgumentException("At least one of 'requests' or 'budgetItems' must be provided")
         }
 
-        return repository.createBatch(budgetItems)
+        return repository.createBatch(itemsToProcess)
     }
+
 
     suspend fun updateBudgetItem(id: Int, request: BudgetItemUpdateRequest) {
         val existingItem = validateBudgetItemExists(id)
