@@ -33,6 +33,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                         else -> {
                             val parameters = call.receiveParameters()
                             val userId = parameters["userId"] ?: throw IllegalArgumentException("User id is required")
+                            val budgetName = parameters["budgetName"] ?: throw IllegalArgumentException("Budget name is required")
                             val totalIncome = parameters["totalIncome"]?.toDoubleOrNull() ?: throw IllegalArgumentException(
                                 "Total income is required"
                             )
@@ -49,7 +50,6 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                                 )
                             }
 
-                            // Create budget request from form data
                             val request = BudgetCreationRequest(
                                 userId = userId.toInt(), name = "", totalIncome = totalIncome, totalExpenses = parseResult.totalAmount
                             )
