@@ -5,7 +5,7 @@ import kotlinx.html.stream.createHTML
 
 // Component for rendering messages
 fun DIV.messageComponent(message: String, type: String) {
-    div {
+    div(classes = "response-div") {
         attributes["x-data"] = "{show: true}"
         attributes["x-show"] = "show"
         attributes["x-transition.opacity.duration.500ms"] = ""
