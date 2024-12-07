@@ -53,7 +53,7 @@ dependencies {
     implementation("org.jetbrains:kotlin-css-jvm:1.0.0-pre.129-kotlin-1.4.20")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.625")
 
-// Ktor HTTP Client Dependencies
+    // Ktor HTTP Client Dependencies
     implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktor_version")
