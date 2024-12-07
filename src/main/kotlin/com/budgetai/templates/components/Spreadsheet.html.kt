@@ -6,6 +6,30 @@ private val columns = listOf("Name", "Amount", "Category")
 
 fun FlowContent.SpreadsheetComponent() {
     script { src = "/static/scripts/spreadsheet.js"; defer = true }
+
+    // Add form section before spreadsheet
+    div(classes = "income-form-wrapper") {
+        form {
+            attributes["onSubmit"] = "handleFormSubmit(event)"
+
+            div(classes = "form-group") {
+                label {
+                    htmlFor = "totalIncome"
+                    +"Total Income:"
+                }
+                input(type = InputType.number) {
+                    id = "totalIncome"
+                    name = "totalIncome"
+                    classes = setOf("income-input")
+                    required = true
+                    placeholder = "Enter your total income"
+                }
+            }
+
+
+        }
+    }
+
     div(classes = "add-row") {
         button(classes = "spreadsheet-add-row") {
             attributes["data-action"] = "add-row"
@@ -36,5 +60,8 @@ fun FlowContent.SpreadsheetComponent() {
                 }
             }
         }
+    }
+    button(type = ButtonType.submit, classes = "submit-button") {
+        +"Submit Budget"
     }
 }
