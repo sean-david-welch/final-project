@@ -1,6 +1,7 @@
 /* Spreadsheet Layout */
 .spreadsheet-table {
-    @apply w-full border-collapse bg-white dark:bg-gray-800 rounded-lg overflow-hidden;
+    @apply w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden;
+    @apply border-slate-600 border-4 rounded-lg;
 }
 
 .spreadsheet-header, .spreadsheet-cell {
