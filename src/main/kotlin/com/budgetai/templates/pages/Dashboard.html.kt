@@ -40,5 +40,5 @@ fun createDashboardPage(
     }
 
     h2(classes = "section-title") { +"Budget Form" }
-    SpreadsheetComponent()
+    SpreadsheetComponent(context)
 }
