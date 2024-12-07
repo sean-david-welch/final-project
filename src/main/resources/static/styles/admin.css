@@ -103,28 +103,26 @@
     @apply hover:bg-gray-50 dark:hover:bg-gray-800;
 }
 
-/* User Management */
-/* User Management Container */
-.user-management-container {
+/* Shared Management Styles */
+.management-container {
     @apply w-full;
     @apply bg-white dark:bg-gray-900;
     @apply rounded-lg;
     @apply shadow-sm;
 }
 
-/* Header Section */
-.user-header {
+.management-header {
     @apply flex items-center justify-between;
     @apply p-6;
     @apply border-b border-gray-200 dark:border-gray-700;
 }
 
-.user-title {
+.management-title {
     @apply text-xl font-semibold;
     @apply text-gray-900 dark:text-white;
 }
 
-.add-user-button {
+.add-button {
     @apply px-4 py-2;
     @apply bg-blue-600;
     @apply text-white;
@@ -134,144 +132,53 @@
     @apply transition-colors duration-200;
 }
 
-/* Table Styles */
-.user-table-container {
+/* Shared Table Styles */
+.table-container {
     @apply p-6;
     @apply overflow-x-auto;
 }
 
-.user-table {
+.data-table {
     @apply min-w-full;
     @apply divide-y divide-gray-200 dark:divide-gray-700;
 }
 
-.user-table thead {
+.data-table thead {
     @apply bg-gray-50 dark:bg-gray-800;
 }
 
-.user-table th {
+.data-table th {
     @apply px-6 py-3;
     @apply text-left text-xs font-medium;
     @apply text-gray-500 dark:text-gray-400;
     @apply uppercase tracking-wider;
 }
 
-.user-table tbody {
+.data-table tbody {
     @apply bg-white dark:bg-gray-900;
     @apply divide-y divide-gray-200 dark:divide-gray-700;
 }
 
-.user-cell {
+.table-cell {
     @apply px-6 py-4;
     @apply text-sm;
     @apply text-gray-900 dark:text-white;
     @apply whitespace-nowrap;
 }
 
-.user-actions {
-    @apply px-6 py-4;
-    @apply text-sm;
-    @apply space-x-3;
-}
-
-/* Action Buttons */
-.edit-button {
-    @apply px-3 py-1;
-    @apply bg-gray-100 dark:bg-gray-700;
-    @apply text-gray-700 dark:text-gray-300;
-    @apply rounded-md;
-    @apply text-sm;
-    @apply hover:bg-gray-200 dark:hover:bg-gray-600;
-    @apply transition-colors duration-200;
-}
-
-.delete-button {
-    @apply px-3 py-1;
-    @apply bg-red-100 dark:bg-red-900;
-    @apply text-red-700 dark:text-red-300;
-    @apply rounded-md;
-    @apply text-sm;
-    @apply hover:bg-red-200 dark:hover:bg-red-800;
-    @apply transition-colors duration-200;
-}
-
-/* Budget Management Container */
-.budget-management-container {
-    @apply w-full;
-    @apply bg-white dark:bg-gray-900;
-    @apply rounded-lg;
-    @apply shadow-sm;
-}
-
-/* Header Section */
-.budget-header {
-    @apply flex items-center justify-between;
-    @apply p-6;
-    @apply border-b border-gray-200 dark:border-gray-700;
-}
-
-.budget-title {
-    @apply text-xl font-semibold;
-    @apply text-gray-900 dark:text-white;
-}
-
-.add-budget-button {
-    @apply px-4 py-2;
-    @apply bg-blue-600;
-    @apply text-white;
-    @apply rounded-lg;
-    @apply text-sm font-medium;
-    @apply hover:bg-blue-700;
-    @apply transition-colors duration-200;
-}
-
-/* Table Styles */
-.budget-table-container {
-    @apply p-6;
-    @apply overflow-x-auto;
-}
-
-.budget-table {
-    @apply min-w-full;
-    @apply divide-y divide-gray-200 dark:divide-gray-700;
-}
-
-.budget-table thead {
-    @apply bg-gray-50 dark:bg-gray-800;
-}
-
-.budget-table th {
-    @apply px-6 py-3;
-    @apply text-left text-xs font-medium;
-    @apply text-gray-500 dark:text-gray-400;
-    @apply uppercase tracking-wider;
-}
-
-.budget-table tbody {
-    @apply bg-white dark:bg-gray-900;
-    @apply divide-y divide-gray-200 dark:divide-gray-700;
-}
-
-.budget-cell {
-    @apply px-6 py-4;
-    @apply text-sm;
-    @apply text-gray-900 dark:text-white;
-    @apply whitespace-nowrap;
-}
-
-.budget-cell.description {
+.table-cell.description {
     @apply max-w-xs;
     @apply truncate;
     @apply whitespace-normal;
 }
 
-.budget-cell.money {
+.table-cell.money {
     @apply text-right;
     @apply font-medium;
     @apply tabular-nums;
 }
 
-.budget-actions {
+.table-actions {
     @apply px-6 py-4;
     @apply text-sm;
     @apply space-x-3;
