@@ -1,5 +1,6 @@
 package com.budgetai.routes
 
+import com.budgetai.lib.S3Handler
 import com.budgetai.plugins.DatabaseConfig
 import com.budgetai.repositories.*
 import com.budgetai.routes.api.*
@@ -34,6 +35,8 @@ fun Application.configureRoutes(config: ApplicationConfig, database: Database? =
     val savingsGoalService = SavingsGoalService(savingsGoalRepository)
     val aiInsightService = AiInsightService(aiInsightsRepository)
 
+    // other clients
+    val s3Handler = S3Handler()
 
     routing {
         staticResources("/static", "static")
