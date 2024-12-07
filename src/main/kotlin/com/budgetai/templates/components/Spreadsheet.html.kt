@@ -25,7 +25,7 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
         div(classes = "spreadsheet-wrapper") {
             div(classes = "form-group") {
                 label { +"Budget Name" }
-                input(type = InputType.number, classes = "input-field") {
+                input(type = InputType.text, classes = "input-field") {
                     placeholder = "Enter the name for your budget"
                     name = "budgetName"
                     id = "budgetName"
