@@ -67,24 +67,16 @@ class DataSeeder(database: Database) {
 
         // Create or get categories
         val categoryMap = mapOf(
-            "Salary" to CategoryType.INCOME,
-            "Freelance" to CategoryType.INCOME,
-            "Investment" to CategoryType.INCOME,
-            "Housing" to CategoryType.EXPENSE,
-            "Utilities" to CategoryType.EXPENSE,
-            "Groceries" to CategoryType.EXPENSE,
-            "Transportation" to CategoryType.EXPENSE,
-            "Healthcare" to CategoryType.EXPENSE,
-            "Entertainment" to CategoryType.EXPENSE,
+            "Salary" to CategoryType.INCOME, "Freelance" to CategoryType.INCOME, "Investment" to CategoryType.INCOME,
+            "Housing" to CategoryType.EXPENSE, "Utilities" to CategoryType.EXPENSE, "Groceries" to CategoryType.EXPENSE,
+            "Transportation" to CategoryType.EXPENSE, "Healthcare" to CategoryType.EXPENSE, "Entertainment" to CategoryType.EXPENSE,
             "Education" to CategoryType.EXPENSE
         )
 
         val categoryIds = categoryMap.map { (name, type) ->
             name to (categoryRepository.findByName(name)?.id ?: categoryRepository.create(
                 CategoryDTO(
-                    name = name,
-                    type = type,
-                    description = "Description for $name category"
+                    name = name, type = type, description = "Description for $name category"
                 )
             ))
         }.toMap()
@@ -93,9 +85,7 @@ class DataSeeder(database: Database) {
         val userIds = (1..5).map { index ->
             userRepository.create(
                 UserDTO(
-                    email = "user$index@example.com",
-                    name = "Test User $index",
-                    role = UserRole.USER.toString()
+                    email = "user$index@example.com", name = "Test User $index", role = UserRole.USER.toString()
                 )
             ).also { userId ->
                 userRepository.updatePassword(userId, "hashed_password_$index")
@@ -122,8 +112,7 @@ class DataSeeder(database: Database) {
                 var totalExpenses = 0.0
                 val itemAmounts = template.items.map { itemTemplate ->
                     val amount = random.nextDouble(
-                        itemTemplate.amountRange.start,
-                        itemTemplate.amountRange.endInclusive
+                        itemTemplate.amountRange.start, itemTemplate.amountRange.endInclusive
                     )
                     if (categoryMap[itemTemplate.categoryName] == CategoryType.INCOME) {
                         totalIncome += amount
@@ -135,27 +124,21 @@ class DataSeeder(database: Database) {
 
                 val budgetId = budgetRepository.create(
                     BudgetDTO(
-                        userId = userId,
-                        name = "${template.name} - ${now.month}",
-                        description = template.description,
-                        startDate = startDate.toString(),
-                        endDate = endDate.toString(),
-                        totalIncome = totalIncome,
+                        userId = userId, name = "${template.name} - ${now.month}", description = template.description,
+                        startDate = startDate.toString(), endDate = endDate.toString(), totalIncome = totalIncome,
                         totalExpenses = totalExpenses
                     )
                 )
 
                 // Create budget items
                 itemAmounts.forEach { (itemTemplate, amount) ->
-                    val categoryId = categoryIds[itemTemplate.categoryName]
-                        ?: throw IllegalStateException("Category ${itemTemplate.categoryName} not found")
+                    val categoryId = categoryIds[itemTemplate.categoryName] ?: throw IllegalStateException(
+                        "Category ${itemTemplate.categoryName} not found"
+                    )
 
                     budgetItemRepository.create(
                         BudgetItemDTO(
-                            budgetId = budgetId,
-                            categoryId = categoryId,
-                            name = itemTemplate.itemName,
-                            amount = amount
+                            budgetId = budgetId, categoryId = categoryId, name = itemTemplate.itemName, amount = amount
                         )
                     )
                 }
