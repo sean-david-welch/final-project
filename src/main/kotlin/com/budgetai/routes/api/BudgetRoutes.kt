@@ -1,12 +1,10 @@
 package com.budgetai.routes.api
 
 import com.budgetai.models.BudgetCreationRequest
-import com.budgetai.models.BudgetItemDTO
 import com.budgetai.models.UpdateBudgetRequest
 import com.budgetai.models.UpdateBudgetTotalsRequest
 import com.budgetai.services.BudgetItemService
 import com.budgetai.services.BudgetService
-import com.budgetai.services.CategoryService
 import com.budgetai.templates.components.ResponseComponents
 import com.budgetai.utils.BudgetParser
 import io.ktor.http.*
@@ -14,11 +12,10 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.css.th
 import kotlinx.datetime.LocalDate
 import java.math.BigDecimal
 
-fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemService, categoryService: CategoryService) {
+fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemService) {
     authenticate {
         route("/api/budgets") {
             // Create new budget
@@ -58,7 +55,6 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                         }
                     }
 
-                    // Response handling
                     when (call.request.contentType()) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.OK, mapOf("id" to budgetId))
