@@ -12,16 +12,13 @@ fun FlowContent.SpreadsheetComponent() {
             thead {
                 tr {
                     th(classes = "spreadsheet-header") {
-                        contentEditable = true
-                        +"Header 1"
+                        +"Name"
                     }
                     th(classes = "spreadsheet-header") {
-                        contentEditable = true
-                        +"Header 2"
+                        +"Amount"
                     }
                     th(classes = "spreadsheet-header") {
-                        contentEditable = true
-                        +"Header 3"
+                        +"Category"
                     }
                 }
             }
