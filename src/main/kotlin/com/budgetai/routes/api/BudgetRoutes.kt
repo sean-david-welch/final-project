@@ -36,22 +36,30 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             )
                             val spreadsheetData = parameters["spreadsheetData"] ?: ""
 
-                            val parseResult = BudgetParser.parseSpreadsheetData(
-                                spreadsheetData = spreadsheetData, budgetId = 0
+                            val (items, errors, totalAmount) = BudgetParser.parseSpreadsheetData(
+                                spreadsheetData = spreadsheetData,
+                                budgetId = 0
                             )
 
-                            if (parseResult.errors.isNotEmpty()) {
-                                return@post call.respondText(
-                                    ResponseComponents.error(parseResult.errors.joinToString("<br>")), ContentType.Text.Html,
-                                    HttpStatusCode.OK
-                                )
-                            }
+//                            if (errors.isNotEmpty()) {
+//                                return@post call.respondText(
+//                                    ResponseComponents.error(errors.joinToString("<br>")), ContentType.Text.Html,
+//                                    HttpStatusCode.OK
+//                                )
+//                            }
 
                             val request = BudgetCreationRequest(
-                                userId = userId.toInt(), name = budgetName, totalIncome = totalIncome, totalExpenses = parseResult.totalAmount
+                                userId = userId.toInt(), name = budgetName, totalIncome = totalIncome, totalExpenses = totalAmount
                             )
 
-                            service.createBudget(request)
+//                            val newBudgetId = service.createBudget(request)
+
+                            // Then create all budget items with the correct budget ID
+//                            items.forEach { item ->
+//                                budgetItemService.createBudgetItem(
+//                                    item.copy(budgetId = newBudgetId)
+//                                )
+//                            }
                         }
                     }
 
