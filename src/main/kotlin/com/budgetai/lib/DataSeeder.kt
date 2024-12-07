@@ -21,13 +21,64 @@ class DataSeeder(database: Database) {
 
     private val random = Random(System.currentTimeMillis())
 
+    // Predefined budget templates for more realistic data
+    private data class BudgetTemplate(
+        val name: String,
+        val description: String,
+        val items: List<BudgetItemTemplate>
+    )
+
+    private data class BudgetItemTemplate(
+        val categoryName: String,
+        val itemName: String,
+        val amountRange: ClosedRange<Double>
+    )
+
+    private val budgetTemplates = listOf(
+        BudgetTemplate(
+            name = "Monthly Household Budget",
+            description = "Standard monthly household expenses and income",
+            items = listOf(
+                BudgetItemTemplate("Salary", "Primary Job Income", 4000.0..8000.0),
+                BudgetItemTemplate("Freelance", "Side Gig Income", 500.0..2000.0),
+                BudgetItemTemplate("Housing", "Rent/Mortgage", 1200.0..3000.0),
+                BudgetItemTemplate("Utilities", "Electricity Bill", 80.0..200.0),
+                BudgetItemTemplate("Utilities", "Water Bill", 40.0..100.0),
+                BudgetItemTemplate("Utilities", "Internet Service", 50.0..120.0),
+                BudgetItemTemplate("Groceries", "Weekly Groceries", 400.0..800.0),
+                BudgetItemTemplate("Transportation", "Car Payment", 200.0..500.0),
+                BudgetItemTemplate("Transportation", "Fuel", 100.0..300.0),
+                BudgetItemTemplate("Healthcare", "Health Insurance", 200.0..600.0),
+                BudgetItemTemplate("Entertainment", "Streaming Services", 30.0..100.0),
+                BudgetItemTemplate("Entertainment", "Dining Out", 100.0..400.0)
+            )
+        ),
+        BudgetTemplate(
+            name = "Student Budget",
+            description = "Budget tailored for college students",
+            items = listOf(
+                BudgetItemTemplate("Salary", "Part-time Job", 800.0..2000.0),
+                BudgetItemTemplate("Investment", "Family Support", 500.0..1500.0),
+                BudgetItemTemplate("Housing", "Student Housing", 500.0..1200.0),
+                BudgetItemTemplate("Utilities", "Combined Utilities", 100.0..250.0),
+                BudgetItemTemplate("Groceries", "Food and Supplies", 200.0..400.0),
+                BudgetItemTemplate("Education", "Textbooks", 100.0..400.0),
+                BudgetItemTemplate("Education", "Course Materials", 50.0..200.0),
+                BudgetItemTemplate("Transportation", "Public Transit Pass", 50.0..150.0),
+                BudgetItemTemplate("Entertainment", "Student Activities", 50.0..200.0)
+            )
+        )
+    )
+
     suspend fun seed() {
-        // create users
+        // Create users
         userRepository.findByEmail("user1@example.com")?.let { return }
         val userIds = (1..5).map { index ->
             userRepository.create(
                 UserDTO(
-                    email = "user$index@example.com", name = "Test User $index", role = UserRole.USER.toString()
+                    email = "user$index@example.com",
+                    name = "Test User $index",
+                    role = UserRole.USER.toString()
                 )
             ).also { userId ->
                 userRepository.updatePassword(userId, "hashed_password_$index")
@@ -48,41 +99,62 @@ class DataSeeder(database: Database) {
             "Education" to CategoryType.EXPENSE
         )
 
-        val categoryIds = categoryMap.map { (name, type) ->
-            categoryRepository.create(
+        val categories = categoryMap.map { (name, type) ->
+            name to categoryRepository.create(
                 CategoryDTO(
-                    name = name, type = type, description = "Description for $name category"
+                    name = name,
+                    type = type,
+                    description = "Description for $name category"
                 )
             )
-        }
+        }.toMap()
 
         // Create budgets and items for each user
         userIds.forEach { userId ->
-            repeat(2) { budgetNum ->
+            budgetTemplates.forEach { template ->
                 val now = Clock.System.now().toLocalDateTime(TimeZone.UTC)
                 val startDate = LocalDate(now.year, now.monthNumber, 1).toString()
                 val endDate = LocalDate(now.year, now.monthNumber + 1, 1).toString()
 
+                // Calculate totals based on random amounts within ranges
+                var totalIncome = 0.0
+                var totalExpenses = 0.0
+                val itemAmounts = template.items.map { itemTemplate ->
+                    val amount = random.nextDouble(
+                        itemTemplate.amountRange.start,
+                        itemTemplate.amountRange.endInclusive
+                    )
+                    if (categoryMap[itemTemplate.categoryName] == CategoryType.INCOME) {
+                        totalIncome += amount
+                    } else {
+                        totalExpenses += amount
+                    }
+                    itemTemplate to amount
+                }
+
                 val budgetId = budgetRepository.create(
                     BudgetDTO(
                         userId = userId,
-                        name = "Budget ${budgetNum + 1} for User $userId",
-                        description = "Monthly budget for ${now.month}",
+                        name = "${template.name} - ${now.month}",
+                        description = template.description,
                         startDate = startDate,
                         endDate = endDate,
-                        totalIncome = random.nextInt(5000, 10000).toDouble(),
-                        totalExpenses = random.nextInt(3000, 7000).toDouble()
+                        totalIncome = totalIncome,
+                        totalExpenses = totalExpenses
                     )
                 )
 
                 // Create budget items
-                categoryIds.forEach { categoryId ->
+                itemAmounts.forEach { (itemTemplate, amount) ->
+                    val categoryId = categories[itemTemplate.categoryName]
+                        ?: throw IllegalStateException("Category ${itemTemplate.categoryName} not found")
+
                     budgetItemRepository.create(
                         BudgetItemDTO(
                             budgetId = budgetId,
                             categoryId = categoryId,
-                            name = "Budget Item for Category $categoryId",
-                            amount = random.nextInt(100, 2000).toDouble()
+                            name = itemTemplate.itemName,
+                            amount = amount
                         )
                     )
                 }
