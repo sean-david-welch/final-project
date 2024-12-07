@@ -7,9 +7,7 @@ object BudgetParser {
     private val logger = LoggerFactory.getLogger(BudgetParser::class.java)
 
     data class ParseResult(
-        val items: List<BudgetItemDTO>,
-        val errors: List<String>,
-        val totalAmount: Double
+        val items: List<BudgetItemDTO>, val errors: List<String>, val totalAmount: Double
     )
 
     fun parseSpreadsheetData(spreadsheetData: String): ParseResult {
@@ -51,9 +49,7 @@ object BudgetParser {
                         logger.debug("Row ${index + 1}: Adding budget item - name: $name, amount: $amount")
                         items.add(
                             BudgetItemDTO(
-                                budgetId = 0,
-                                name = name,
-                                amount = amount
+                                budgetId = 0, name = name, amount = amount
                             )
                         )
                         totalAmount += amount
@@ -72,9 +68,7 @@ object BudgetParser {
         }
 
         return ParseResult(
-            items = items,
-            errors = errors,
-            totalAmount = totalAmount
+            items = items, errors = errors, totalAmount = totalAmount
         )
     }
 }
