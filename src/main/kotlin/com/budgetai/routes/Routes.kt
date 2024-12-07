@@ -52,7 +52,7 @@ fun Application.configureRoutes(config: ApplicationConfig, database: Database? =
 
         // API routes
         userRoutes(userService)
-        budgetRoutes(budgetService)
+        budgetRoutes(budgetService, budgetItemService, categoryService)
         categoryRoutes(categoryService)
         budgetItemRoutes(budgetItemService)
         savingsGoalRoutes(savingsGoalService)
