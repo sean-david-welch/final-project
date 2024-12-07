@@ -46,18 +46,18 @@ dependencies {
     implementation("io.ktor:ktor-serialization-jackson-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlin_serialization_version")
+    // clients
+    implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
+    implementation("io.ktor:ktor-client-cio-jvm:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktor_version")
+    implementation("io.ktor:ktor-client-json-jvm:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization-jvm:$ktor_version")
 
     // Ktor Templates & Frontend
     implementation("io.ktor:ktor-server-html-builder-jvm:$ktor_version")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinx_html_version")
     implementation("org.jetbrains:kotlin-css-jvm:1.0.0-pre.129-kotlin-1.4.20")
     implementation("org.jetbrains.kotlin-wrappers:kotlin-css:1.0.0-pre.625")
-
-    // Ktor HTTP Client Dependencies
-    implementation("io.ktor:ktor-client-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-client-netty:$ktor_version")
-    implementation("io.ktor:ktor-client-content-negotiation-jvm:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
     // Database
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
@@ -72,9 +72,6 @@ dependencies {
     // AWS SDK
     implementation("aws.sdk.kotlin:s3:1.0.30")
     implementation("aws.sdk.kotlin:aws-core:1.0.30")
-
-    // OpenAI SDK
-    implementation("com.aallam.openai:openai-client:3.8.2")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
