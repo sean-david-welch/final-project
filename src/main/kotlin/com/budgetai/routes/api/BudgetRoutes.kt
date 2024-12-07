@@ -29,12 +29,13 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
 
                         else -> {
                             val parameters = call.receiveParameters()
-                            val userId = parameters["userId"] ?: throw IllegalArgumentException("User id is required")
-                            val budgetName = parameters["budgetName"] ?: throw IllegalArgumentException("Budget name is required")
-                            val totalIncome = parameters["totalIncome"]?.toDoubleOrNull() ?: throw IllegalArgumentException(
-                                "Total income is required"
-                            )
-                            val spreadsheetData = parameters["spreadsheetData"] ?: ""
+                            val userId = parameters["userId"]?.toIntOrNull()
+                                ?: throw IllegalArgumentException("Valid user id is required")
+                            val budgetName = parameters["budgetName"]?.takeIf { it.isNotBlank() }
+                                ?: throw IllegalArgumentException("Budget name is required")
+                            val totalIncome = parameters["totalIncome"]?.toDoubleOrNull()
+                                ?: throw IllegalArgumentException("Valid total income is required")
+                            val spreadsheetData = parameters["spreadsheetData"].orEmpty()
 
                             val (items, errors, totalAmount) = BudgetParser.parseSpreadsheetData(spreadsheetData = spreadsheetData)
 
