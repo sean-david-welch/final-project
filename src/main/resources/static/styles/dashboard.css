@@ -9,6 +9,11 @@
     @apply px-4 sm:px-6 lg:px-8;
 }
 
+.dashboard-container .section-title,
+.dashboard-container .add-row {
+    @apply pl-4;
+}
+
 /* Page Header */
 .page-header {
     @apply mb-6;
