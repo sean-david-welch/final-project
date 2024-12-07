@@ -36,10 +36,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             )
                             val spreadsheetData = parameters["spreadsheetData"] ?: ""
 
-                            val (items, errors, totalAmount) = BudgetParser.parseSpreadsheetData(
-                                spreadsheetData = spreadsheetData,
-                                budgetId = 0
-                            )
+                            val (items, errors, totalAmount) = BudgetParser.parseSpreadsheetData(spreadsheetData = spreadsheetData)
 
                             if (errors.isNotEmpty()) {
                                 return@post call.respondText(
