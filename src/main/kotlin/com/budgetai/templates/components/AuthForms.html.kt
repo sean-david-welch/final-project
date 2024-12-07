@@ -24,6 +24,9 @@ private fun FORM.submitButton(text: String) {
 
 fun DIV.loginForm() {
     div {
+        div(classes = "error-container") {
+            attributes["id"] = "login-error-container"
+        }
         form {
             attributes["class"] = "auth-form login-form"
             attributes["hx-post"] = "/auth/login"
