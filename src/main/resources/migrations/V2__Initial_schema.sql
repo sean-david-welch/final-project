@@ -36,7 +36,7 @@ CREATE TABLE budget_items
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     budget_id   INTEGER        NOT NULL,
-    category_id INTEGER        NOT NULL,
+    category_id INTEGER,
     name        VARCHAR(100)   NOT NULL,
     amount      DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
