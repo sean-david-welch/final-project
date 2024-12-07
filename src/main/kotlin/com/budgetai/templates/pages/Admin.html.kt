@@ -80,6 +80,7 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
                 tbody {
                     users.forEach { user ->
                         tr {
+                            attributes["id"] = "user-row-${user.id}"
                             td(classes = "table-cell") { +user.name }
                             td(classes = "table-cell") { +user.email }
                             td(classes = "table-cell") { +user.role }
@@ -88,6 +89,10 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
                                     +"Edit"
                                 }
                                 button(classes = "delete-button") {
+                                    attributes["hx-delete"] = "/api/users/${user.id}"
+                                    attributes["hx-target"] = "#user-row-${user.id}"
+                                    attributes["hx-swap"] = "outerHTML"
+                                    attributes["hx-confirm"] = "Are you sure you want to delete this user?"
                                     +"Delete"
                                 }
                             }
