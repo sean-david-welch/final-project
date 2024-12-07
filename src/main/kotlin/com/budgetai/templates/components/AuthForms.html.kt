@@ -57,8 +57,8 @@ fun DIV.registerForm() {
             attributes["hx-post"] = "/auth/register"
             attributes["hx-trigger"] = "submit"
             attributes["hx-target"] = "#register-response-div"
-            attributes["hx-swap"] = "innerHTML"
             attributes["hx-indicator"] = "#register-response-div"
+            attributes["hx-swap"] = "innerHTML"
             attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
 
             formField("Full Name", InputType.text, "John Doe") {
