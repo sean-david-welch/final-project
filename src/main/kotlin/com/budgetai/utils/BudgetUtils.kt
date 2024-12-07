@@ -3,28 +3,32 @@ package com.budgetai.utils
 import com.budgetai.models.BudgetItemDTO
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.StringWriter
+import java.io.File
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object BudgetParser {
     private val logger: Logger = LoggerFactory.getLogger("BudgetParser")
 
     data class ParseResult(
-        val items: List<BudgetItemDTO>, val errors: List<String>, val totalAmount: Double, val csvContent: String = ""
+        val items: List<BudgetItemDTO>,
+        val errors: List<String>,
+        val totalAmount: Double,
+        val csvFile: File?
     )
 
-    private fun generateCsv(items: List<BudgetItemDTO>, totalAmount: Double): String {
-        return StringWriter().apply {
-            // Write header
-            appendLine("Name,Amount")
+    private fun generateCsvFile(items: List<BudgetItemDTO>, totalAmount: Double): File {
+        val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"))
+        val tempFile = File.createTempFile("budget-$timestamp", ".csv")
 
-            // Write items
+        tempFile.bufferedWriter().use { writer ->
+            writer.appendLine("Name,Amount")
             items.forEach { item ->
-                appendLine("${item.name},${item.amount}")
+                writer.appendLine("${item.name},${item.amount}")
             }
-
-            // Write total
-            appendLine("Total,${totalAmount}")
-        }.toString()
+            writer.appendLine("Total,${totalAmount}")
+        }
+        return tempFile
     }
 
     fun parseSpreadsheetData(spreadsheetData: String): ParseResult {
@@ -37,7 +41,7 @@ object BudgetParser {
 
         if (spreadsheetData.isBlank()) {
             logger.warn("Empty spreadsheet data provided")
-            return ParseResult(emptyList(), listOf("No spreadsheet data provided"), 0.0)
+            return ParseResult(emptyList(), listOf("No spreadsheet data provided"), 0.0, null)
         }
 
         val rows = spreadsheetData.split(";")
@@ -84,11 +88,11 @@ object BudgetParser {
             logger.warn("Parsing errors encountered: $errors")
         }
 
-        val csvContent = generateCsv(items, totalAmount)
-        logger.debug("Generated CSV content: $csvContent")
+        val csvFile = generateCsvFile(items, totalAmount)
+        logger.debug("Generated CSV content: {}", csvFile)
 
         return ParseResult(
-            items = items, errors = errors, totalAmount = totalAmount, csvContent = csvContent
+            items = items, errors = errors, totalAmount = totalAmount, csvFile = csvFile
         )
     }
 }
