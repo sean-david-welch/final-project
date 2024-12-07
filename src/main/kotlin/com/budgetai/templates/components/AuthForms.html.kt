@@ -45,6 +45,7 @@ fun DIV.loginForm() {
         }
         div {
             attributes["id"] = "login-response-div"
+            attributes["class"] = "response-div"
         }
     }
 }
@@ -55,7 +56,7 @@ fun DIV.registerForm() {
             attributes["class"] = "auth-form register-form"
             attributes["hx-post"] = "/auth/register"
             attributes["hx-trigger"] = "submit"
-            attributes["hx-target"] = "#register-repsponse-div"
+            attributes["hx-target"] = "#register-response-div"
             attributes["hx-swap"] = "innerHTML"
             attributes["hx-indicator"] = "#register-response-div"
             attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
@@ -76,7 +77,8 @@ fun DIV.registerForm() {
             submitButton("Create Account")
         }
         div {
-            attributes["id"] = "register-repsponse-div"
+            attributes["id"] = "register-response-div"
+            attributes["class"] = "response-div"
         }
     }
 }
@@ -112,6 +114,7 @@ fun DIV.updateProfileForm(user: UserDTO) {
 
         div {
             attributes["id"] = "profile-response-div"
+            attributes["class"] = "response-div"
         }
     }
 }
