@@ -3,7 +3,7 @@ package com.budgetai.templates.components
 import com.budgetai.models.UserDTO
 import kotlinx.html.*
 
-private fun FORM.formField(
+fun FORM.formField(
     label: String, type: InputType, placeholder: String, inputConfig: INPUT.() -> Unit = {}
 ) {
     div(classes = "form-group") {
