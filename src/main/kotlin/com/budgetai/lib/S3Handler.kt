@@ -1,18 +1,26 @@
 package com.budgetai.lib
 
+import aws.sdk.kotlin.runtime.auth.credentials.StaticCredentialsProvider
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.model.PutObjectRequest
 import aws.sdk.kotlin.services.s3.model.GetObjectRequest
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.fromFile
 import aws.smithy.kotlin.runtime.content.toByteArray
+import io.ktor.server.config.*
 import java.io.File
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class S3Handler() {
+class S3Handler(config: ApplicationConfig) {
     private val bucketName: String = "budgetai"
-    private val s3Client = S3Client { region = "eu-west-1" }
+    private val s3Client = S3Client {
+        region = "eu-west-1"
+        credentialsProvider = StaticCredentialsProvider {
+            accessKeyId = config.property("aws.accessKeyId").getString()
+            secretAccessKey = config.property("aws.secretAccessKey").getString()
+        }
+    }
 
     // upload file to s3
     suspend fun uploadFile(file: File, key: String): Boolean {
