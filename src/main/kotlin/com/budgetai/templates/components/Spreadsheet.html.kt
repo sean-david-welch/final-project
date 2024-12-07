@@ -9,7 +9,6 @@ fun FlowContent.SpreadsheetComponent() {
 
     form(classes = "auth-form") {
         div(classes = "spreadsheet-wrapper") {
-            // Income input section
             div(classes = "form-group") {
                 label { +"Total Income" }
                 input(type = InputType.number, classes = "input-field") {
