@@ -47,10 +47,7 @@ class BudgetItemService(private val repository: BudgetItemRepository) {
 
         val budgetItemDTO = BudgetItemDTO(
             id = 0, // Will be set by the database
-            budgetId = request.budgetId,
-            categoryId = request.categoryId,
-            name = request.name,
-            amount = request.amount,
+            budgetId = request.budgetId, categoryId = request.categoryId, name = request.name, amount = request.amount,
             createdAt = null // Will be set by the database
         )
 
@@ -58,23 +55,19 @@ class BudgetItemService(private val repository: BudgetItemRepository) {
     }
 
     suspend fun createBulkBudgetItems(
-        requests: List<BudgetItemCreationRequest>? = null,
-        budgetItems: List<BudgetItemDTO>? = null
+        requests: List<BudgetItemCreationRequest>? = null, budgetItems: List<BudgetItemDTO>? = null
     ): List<Int> {
         val itemsToProcess = when {
             requests != null -> {
                 requests.forEach { validateAmount(it.amount) }
                 requests.map { request ->
                     BudgetItemDTO(
-                        id = 0,
-                        budgetId = request.budgetId,
-                        categoryId = request.categoryId,
-                        name = request.name,
-                        amount = request.amount,
+                        id = 0, budgetId = request.budgetId, categoryId = request.categoryId, name = request.name, amount = request.amount,
                         createdAt = null
                     )
                 }
             }
+
             budgetItems != null -> budgetItems
             else -> throw IllegalArgumentException("At least one of 'requests' or 'budgetItems' must be provided")
         }
@@ -82,15 +75,13 @@ class BudgetItemService(private val repository: BudgetItemRepository) {
         return repository.createBatch(itemsToProcess)
     }
 
-
     suspend fun updateBudgetItem(id: Int, request: BudgetItemUpdateRequest) {
         val existingItem = validateBudgetItemExists(id)
 
         request.amount?.let { validateAmount(it) }
 
         val updatedItem = existingItem.copy(
-            name = request.name ?: existingItem.name,
-            categoryId = request.categoryId ?: existingItem.categoryId,
+            name = request.name ?: existingItem.name, categoryId = request.categoryId ?: existingItem.categoryId,
             amount = request.amount ?: existingItem.amount
         )
 
