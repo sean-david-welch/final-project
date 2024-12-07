@@ -87,8 +87,7 @@ fun Route.authRoutes(service: UserService) {
                     call.setAuthCookie(token, cookieConfig)
 
                     val response = ResponseComponents.success(
-                        "Login successful! Redirecting...",
-                        redirectUrl = "/dashboard"
+                        "Login successful! Redirecting...", redirectUrl = "/dashboard"
                     )
                     call.respondText(response, ContentType.Text.Html)
                 } else {
