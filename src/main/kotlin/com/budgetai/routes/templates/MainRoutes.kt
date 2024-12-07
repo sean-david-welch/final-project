@@ -38,6 +38,14 @@ fun Route.mainRoutes(userService: UserService, budgetService: BudgetService, cat
             call.respondText(text = createUserPage(call.templateContext, users), contentType = ContentType.Text.Html)
         }
     }
+    get("/admin/budget-management") {
+        if (!call.templateContext.auth.isAdmin) {
+            call.respondText(text = create403Page(call.templateContext), contentType = ContentType.Text.Html)
+        } else {
+            val budgets = budgetService.getBudgets()
+            call.respondText(text = createBudgetManagementPage(call.templateContext, budgets), contentType = ContentType.Text.Html)
+        }
+    }
     get("/test-error") {
         throw RuntimeException("Test error")
     }
