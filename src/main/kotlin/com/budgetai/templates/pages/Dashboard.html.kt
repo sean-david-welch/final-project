@@ -28,7 +28,7 @@ fun createDashboardPage(
     }
 
     div(classes = "admin-access-section") {
-        a(href = "/dashboard/budget-management", classes = "admin-link-button") {
+        a(href = "/dashboard/budget-management", classes = "admin-link-button-sm") {
             +"Budgets Overview"
         }
     }
