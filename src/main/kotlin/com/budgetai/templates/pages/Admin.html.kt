@@ -51,7 +51,7 @@ fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets:
     }
 }
 
-fun UserManagementTemplate(context: BaseTemplateContext, users: List<UserDTO>) = AdminTemplate("User Management", context) {
+fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTemplate("User Management", context) {
     div(classes = "user-management-container") {
         // Header with total count
         div(classes = "user-header") {
