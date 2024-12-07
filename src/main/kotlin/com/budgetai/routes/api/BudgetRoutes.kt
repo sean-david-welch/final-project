@@ -14,6 +14,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.css.th
 import kotlinx.datetime.LocalDate
 import java.math.BigDecimal
 
@@ -29,16 +30,14 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             service.createBudget(request)
                         }
                         else -> {
-                            // Handle form submission
                             val parameters = call.receiveParameters()
-                            val totalIncome = parameters["totalIncome"]?.toDoubleOrNull()
-                                ?: throw IllegalArgumentException("Total income is required")
+                            val userId = parameters["userId"] ?: throw  IllegalArgumentException("User id is required")
+                            val totalIncome = parameters["totalIncome"]?.toDoubleOrNull() ?: throw IllegalArgumentException("Total income is required")
                             val spreadsheetData = parameters["spreadsheetData"] ?: ""
 
-                            // Parse the spreadsheet data
                             val parseResult = BudgetParser.parseSpreadsheetData(
                                 spreadsheetData = spreadsheetData,
-                                budgetId = 0  // Temporary ID, will be replaced with real one
+                                budgetId = 0
                             )
 
                             if (parseResult.errors.isNotEmpty()) {
@@ -51,14 +50,10 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
 
                             // Create budget request from form data
                             val request = BudgetCreationRequest(
+                                userId = userId.toInt(),
+                                name = "",
                                 totalIncome = totalIncome,
-                                items = parseResult.items.map { item ->
-                                    BudgetItemDTO(
-                                        name = item.name,
-                                        amount = item.amount,
-                                        budgetId = 0  // Will be set by service
-                                    )
-                                }
+                                totalExpenses = parseResult.totalAmount
                             )
 
                             service.createBudget(request)
