@@ -17,8 +17,8 @@ class S3Handler(config: ApplicationConfig) {
     private val s3Client = S3Client {
         region = "eu-west-1"
         credentialsProvider = StaticCredentialsProvider {
-            accessKeyId = config.property("aws.accessKeyId").getString()
-            secretAccessKey = config.property("aws.secretAccessKey").getString()
+            accessKeyId = config.property("api-keys.aws_access").getString()
+            secretAccessKey = config.property("api-keys.aws_secret").getString()
         }
     }
 
