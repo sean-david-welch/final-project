@@ -119,7 +119,7 @@ fun Route.budgetRoutes(service: BudgetService) {
                 }
             }
 
-// Delete budget
+            // Delete budget
             delete("/{id}") {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
@@ -132,9 +132,7 @@ fun Route.budgetRoutes(service: BudgetService) {
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.success("Budget deleted successfully"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.success("Budget deleted successfully"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -146,9 +144,7 @@ fun Route.budgetRoutes(service: BudgetService) {
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -160,9 +156,7 @@ fun Route.budgetRoutes(service: BudgetService) {
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Error deleting budget"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error("Error deleting budget"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
