@@ -1,19 +1,17 @@
 package com.budgetai.lib
 
+import aws.sdk.kotlin.services.s3.S3Client
+import aws.sdk.kotlin.services.s3.model.PutObjectRequest
+import aws.sdk.kotlin.services.s3.model.GetObjectRequest
+import aws.smithy.kotlin.runtime.content.ByteStream
+import aws.smithy.kotlin.runtime.content.fromFile
 import java.io.File
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class S3Handler(
-    private val s3Client: S3Client,
-    private val bucketName: String
-) {
-    /**
-     * Uploads a file to S3 bucket
-     * @param file The file to upload
-     * @param key The key (path) where the file will be stored in S3
-     * @return Boolean indicating if upload was successful
-     */
+class S3Handler(private val s3Client: S3Client, private val bucketName: String) {
+
+    // upload file to s3
     suspend fun uploadFile(file: File, key: String): Boolean {
         return try {
             val request = PutObjectRequest {
@@ -29,12 +27,8 @@ class S3Handler(
         }
     }
 
-    /**
-     * Uploads a ByteArray (like an image) to S3 bucket
-     * @param bytes The ByteArray to upload
-     * @param key The key (path) where the file will be stored in S3
-     * @return Boolean indicating if upload was successful
-     */
+
+    // upload byte array / image to s3
     suspend fun uploadBytes(bytes: ByteArray, key: String): Boolean {
         return try {
             val request = PutObjectRequest {
@@ -50,11 +44,8 @@ class S3Handler(
         }
     }
 
-    /**
-     * Downloads a file from S3 by its key
-     * @param key The key (path) of the file in S3
-     * @return Flow<ByteArray> of the file content
-     */
+
+    // get file by key
     suspend fun downloadFile(key: String): Flow<ByteArray> = flow {
         try {
             val request = GetObjectRequest {
