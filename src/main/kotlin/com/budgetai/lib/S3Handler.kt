@@ -45,7 +45,7 @@ class S3Handler(private val s3Client: S3Client, private val bucketName: String) 
     }
 
     // get file by key
-    suspend fun downloadFile(key: String): Flow<ByteArray> = flow {
+    fun downloadFile(key: String): Flow<ByteArray> = flow {
         try {
             val request = GetObjectRequest {
                 bucket = bucketName
