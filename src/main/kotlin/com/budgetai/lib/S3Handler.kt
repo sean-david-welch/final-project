@@ -1,3 +1,5 @@
+package com.budgetai.lib
+
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.model.GetObjectRequest
 import aws.sdk.kotlin.services.s3.model.PutObjectRequest
@@ -6,7 +8,7 @@ import aws.smithy.kotlin.runtime.content.ByteStream
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class S3FileHandler(
+class S3Handler(
     private val s3Client: S3Client,
     private val bucketName: String
 ) {
