@@ -36,7 +36,5 @@ fun FlowContent.SpreadsheetComponent() {
                 }
             }
         }
-
-
     }
 }
