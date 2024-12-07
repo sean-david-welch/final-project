@@ -23,11 +23,41 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                 try {
                     val request = call.receive<BudgetCreationRequest>()
                     val budgetId = service.createBudget(request)
-                    call.respond(HttpStatusCode.Created, mapOf("id" to budgetId))
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.OK, mapOf("id" to budgetId))
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.success("Budget Created"), ContentType.Text.Html, HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Error creating budget")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.InternalServerError, "Error creating budget")
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error("Error creating budget"), ContentType.Text.Html, HttpStatusCode.OK
+                            )
+                        }
+                    }
                 }
             }
 
