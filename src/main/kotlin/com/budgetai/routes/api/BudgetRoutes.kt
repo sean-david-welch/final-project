@@ -13,22 +13,30 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.datetime.LocalDate
+import org.slf4j.LoggerFactory
 import java.math.BigDecimal
 
 fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemService) {
+    val logger = LoggerFactory.getLogger("UserService")
+
     authenticate {
         route("/api/budgets") {
             // Create new budget
             post {
                 try {
+                    logger.info("Received budget creation request with content type: ${call.request.contentType()}")
+
                     val budgetId = when (call.request.contentType()) {
                         ContentType.Application.Json -> {
                             val request = call.receive<BudgetCreationRequest>()
+                            logger.info("Processing JSON request: userId=${request.userId}, name=${request.name}")
                             service.createBudget(request)
                         }
 
                         else -> {
                             val parameters = call.receiveParameters()
+                            logger.info("Processing form request with parameters: ${parameters.names()}")
+
                             val userId = parameters["userId"]?.toIntOrNull()
                                 ?: throw IllegalArgumentException("Valid user id is required")
                             val budgetName = parameters["budgetName"]?.takeIf { it.isNotBlank() }
@@ -37,32 +45,41 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                                 ?: throw IllegalArgumentException("Valid total income is required")
                             val spreadsheetData = parameters["spreadsheetData"].orEmpty()
 
+                            logger.debug("Parsing spreadsheet data: ${spreadsheetData.take(100)}...")
                             val (items, errors, totalAmount) = BudgetParser.parseSpreadsheetData(spreadsheetData = spreadsheetData)
 
                             if (errors.isNotEmpty()) {
+                                logger.warn("Budget parsing errors encountered: $errors")
                                 return@post call.respondText(
                                     ResponseComponents.error(errors.joinToString("<br>")), ContentType.Text.Html,
                                     HttpStatusCode.OK
                                 )
                             }
 
+                            logger.info("Creating budget for user $userId with ${items.size} items, total amount: $totalAmount")
                             val request = BudgetCreationRequest(
                                 userId = userId, name = budgetName, totalIncome = totalIncome, totalExpenses = totalAmount
                             )
 
                             val newBudgetId = service.createBudget(request)
+                            logger.info("Created budget with ID: $newBudgetId")
+
                             val updatedItems = items.map { item -> item.copy(budgetId = newBudgetId) }
+                            logger.debug("Creating ${updatedItems.size} budget items")
                             budgetItemService.createBulkBudgetItems(budgetItems = updatedItems)
+                            logger.info("Successfully created budget items for budget $newBudgetId")
                             newBudgetId
                         }
                     }
 
                     when (call.request.contentType()) {
                         ContentType.Application.Json -> {
+                            logger.info("Sending JSON response for budget $budgetId")
                             call.respond(HttpStatusCode.Created, mapOf("id" to budgetId))
                         }
 
                         else -> {
+                            logger.info("Sending HTML response for budget $budgetId")
                             call.respondText(
                                 ResponseComponents.success("Budget Created"), ContentType.Text.Html, HttpStatusCode.OK
                             )
@@ -70,6 +87,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                     }
 
                 } catch (e: IllegalArgumentException) {
+                    logger.warn("Validation error during budget creation: ${e.message}", e)
                     when (call.request.contentType()) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
@@ -82,6 +100,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                         }
                     }
                 } catch (e: Exception) {
+                    logger.error("Unexpected error during budget creation", e)
                     when (call.request.contentType()) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.InternalServerError, "Error creating budget")
