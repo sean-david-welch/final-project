@@ -19,24 +19,22 @@ fun DIV.messageComponent(message: String, type: String) {
     }
 }
 
-
 // Reusable response components
 object ResponseComponents {
-    fun success(message: String, redirectUrl: String? = null, redirectDelay: Int = 500) =
-        createHTML().div {
-            messageComponent(message, "success")
-            redirectUrl?.let {
-                unsafe {
-                    +"""
+    fun success(message: String, redirectUrl: String? = null, redirectDelay: Int = 500) = createHTML().div {
+        messageComponent(message, "success")
+        redirectUrl?.let {
+            unsafe {
+                +"""
                     <script>
                         setTimeout(function() {
                             window.location.href = '$it';
                         }, $redirectDelay);
                     </script>
                     """.trimIndent()
-                }
             }
         }
+    }
 
     fun error(message: String) = createHTML().div {
         messageComponent(message, "error")
