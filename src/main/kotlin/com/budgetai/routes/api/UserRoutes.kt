@@ -137,6 +137,72 @@ fun Route.userRoutes(service: UserService) {
                 }
             }
 
+            // update user role
+            put("/{id}/role") {
+                try {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                    val existingUser = service.getUser(id) ?: throw IllegalArgumentException("User not found")
+
+                    val request = when (call.request.contentType()) {
+                        ContentType.Application.Json -> call.receive<UpdateRoleRequest>()
+                        ContentType.Application.FormUrlEncoded -> {
+                            val parameters = call.receiveParameters()
+                            UpdateRoleRequest(
+                                role = parameters["role"] ?: throw IllegalArgumentException("Role is required")
+                            )
+                        }
+
+                        else -> throw IllegalArgumentException("Unsupported content type")
+                    }
+
+                    val userDTO = UserDTO(
+                        id = existingUser.id,
+                        email = existingUser.email,
+                        name = existingUser.name,
+                        role = request.role,
+                    )
+
+                    service.updateUser(id, userDTO)
+
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.OK, mapOf("message" to "User role updated successfully"))
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.success("User role updated successfully"), ContentType.Text.Html, HttpStatusCode.OK
+                            )
+                        }
+                    }
+                } catch (e: IllegalArgumentException) {
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Invalid request")))
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
+                            )
+                        }
+                    }
+                } catch (e: Exception) {
+                    logger.error("Error updating user role", e)
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error updating user role"))
+                        }
+
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error("Error updating user role"), ContentType.Text.Html, HttpStatusCode.OK
+                            )
+                        }
+                    }
+                }
+            }
+
             // Delete user
             delete("/{id}") {
                 try {
