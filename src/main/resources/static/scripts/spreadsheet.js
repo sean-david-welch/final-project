@@ -101,44 +101,6 @@ class SpreadsheetTable {
         this.updateHiddenField();
     }
 
-    clearRow(rowIndex) {
-        const tbody = this.table.querySelector('tbody');
-        const rows = tbody.children;
-
-        // Check if row exists
-        if (rowIndex < 0 || rowIndex >= rows.length) {
-            console.warn(`Row index ${rowIndex} is out of bounds`);
-            return;
-        }
-
-        // Get the row
-        const row = rows[rowIndex];
-
-        // Clear the content of each cell while preserving the cell structure
-        Array.from(row.cells).forEach(cell => {
-            cell.textContent = '';
-        });
-
-        // Update the hidden field to reflect the changes
-        this.updateHiddenField();
-    }
-
-    // Alternative method that takes the row element directly
-    clearRowElement(rowElement) {
-        if (!rowElement || !this.table.contains(rowElement)) {
-            console.warn('Invalid row element');
-            return;
-        }
-
-        // Clear the content of each cell while preserving the cell structure
-        Array.from(rowElement.cells).forEach(cell => {
-            cell.textContent = '';
-        });
-
-        // Update the hidden field to reflect the changes
-        this.updateHiddenField();
-    }
-
     collectTableData() {
         const rows = Array.from(this.table.querySelectorAll('tbody tr'));
         return rows.map(row => {
