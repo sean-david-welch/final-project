@@ -41,25 +41,21 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                                 budgetId = 0
                             )
 
-//                            if (errors.isNotEmpty()) {
-//                                return@post call.respondText(
-//                                    ResponseComponents.error(errors.joinToString("<br>")), ContentType.Text.Html,
-//                                    HttpStatusCode.OK
-//                                )
-//                            }
+                            if (errors.isNotEmpty()) {
+                                return@post call.respondText(
+                                    ResponseComponents.error(errors.joinToString("<br>")), ContentType.Text.Html,
+                                    HttpStatusCode.OK
+                                )
+                            }
 
                             val request = BudgetCreationRequest(
                                 userId = userId.toInt(), name = budgetName, totalIncome = totalIncome, totalExpenses = totalAmount
                             )
 
-//                            val newBudgetId = service.createBudget(request)
-
-                            // Then create all budget items with the correct budget ID
-//                            items.forEach { item ->
-//                                budgetItemService.createBudgetItem(
-//                                    item.copy(budgetId = newBudgetId)
-//                                )
-//                            }
+                            val newBudgetId = service.createBudget(request)
+                            val updatedItems = items.map { item -> item.copy(budgetId = newBudgetId) }
+                            budgetItemService.createBulkBudgetItems(budgetItems = updatedItems)
+                            newBudgetId
                         }
                     }
 
