@@ -2,46 +2,36 @@ package com.budgetai.templates.components
 
 import kotlinx.html.*
 
+private val columns = listOf("Name", "Amount", "Category")
+
 fun FlowContent.SpreadsheetComponent() {
     div(classes = "spreadsheet-wrapper") {
         div {
             h2(classes = "spreadsheet-title") { +"Data Entry" }
         }
 
-        table(classes = "spreadsheet-container") {
+        table(classes = "spreadsheet-table") {
             thead {
                 tr {
-                    th(classes = "spreadsheet-header") {
-                        +"Name"
-                    }
-                    th(classes = "spreadsheet-header") {
-                        +"Amount"
-                    }
-                    th(classes = "spreadsheet-header") {
-                        +"Category"
+                    columns.forEach { columnName ->
+                        th(classes = "spreadsheet-header") { +columnName }
                     }
                 }
             }
             tbody {
                 tr {
-                    td(classes = "spreadsheet-cell") {
-                        contentEditable = true
-                        +""
-                    }
-                    td(classes = "spreadsheet-cell") {
-                        contentEditable = true
-                        +""
-                    }
-                    td(classes = "spreadsheet-cell") {
-                        contentEditable = true
-                        +""
+                    columns.forEach { _ ->
+                        td(classes = "spreadsheet-cell") {
+                            contentEditable = true
+                            +""
+                        }
                     }
                 }
             }
         }
 
         button(classes = "spreadsheet-add-row") {
-            onClick = "new EditableTable('spreadsheet-container')"
+            attributes["data-action"] = "add-row"
             +"Add Row"
         }
     }
