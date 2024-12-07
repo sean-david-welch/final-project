@@ -11,7 +11,14 @@ class SpreadsheetTable {
         this.updateAddButtonState();
 
         // Add input handlers to update hidden field on cell changes
-        this.table.querySelector('tbody').addEventListener('input', () => {
+        this.table.querySelector('tbody').addEventListener('input', (e) => {
+            // If it's the amount column, ensure only numbers
+            if (e.target.cellIndex === 1) {
+                const value = e.target.textContent.trim();
+                if (value && isNaN(value)) {
+                    e.target.textContent = value.replace(/[^\d.]/g, '');
+                }
+            }
             this.updateHiddenField();
         });
     }
@@ -42,16 +49,21 @@ class SpreadsheetTable {
             return;
         }
 
-        const columnCount = this.table.querySelector('tr').children.length;
         const row = document.createElement('tr');
 
-        for (let i = 0; i < columnCount; i++) {
-            const cell = document.createElement('td');
-            cell.contentEditable = "true";
-            cell.className = 'spreadsheet-cell';
-            cell.addEventListener('input', () => this.updateHiddenField());
-            row.appendChild(cell);
-        }
+        // Add name cell
+        const nameCell = document.createElement('td');
+        nameCell.contentEditable = "true";
+        nameCell.className = 'spreadsheet-cell';
+        nameCell.addEventListener('input', () => this.updateHiddenField());
+        row.appendChild(nameCell);
+
+        // Add amount cell
+        const amountCell = document.createElement('td');
+        amountCell.contentEditable = "true";
+        amountCell.className = 'spreadsheet-cell amount-cell';
+        amountCell.addEventListener('input', () => this.updateHiddenField());
+        row.appendChild(amountCell);
 
         this.table.querySelector('tbody').appendChild(row);
         this.updateAddButtonState();
@@ -61,9 +73,13 @@ class SpreadsheetTable {
     collectTableData() {
         const rows = Array.from(this.table.querySelectorAll('tbody tr'));
         return rows.map(row => {
-            const cells = Array.from(row.children);
-            return cells.map(cell => cell.textContent.trim()).join(',');
-        }).filter(row => row && !row.split(',').every(cell => cell === '')); // Filter out empty rows
+            const name = row.cells[0].textContent.trim();
+            const amount = row.cells[1].textContent.trim();
+            return `${name},${amount}`;
+        }).filter(row => {
+            const [name, amount] = row.split(',');
+            return name || (amount && !isNaN(amount));
+        });
     }
 
     updateHiddenField() {
