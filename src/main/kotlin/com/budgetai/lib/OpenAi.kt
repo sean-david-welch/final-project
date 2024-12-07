@@ -1,8 +1,8 @@
 package com.budgetai.lib
 
-import com.budgetai.models.ChatResponse
-import com.budgetai.models.ChatRequest
 import com.budgetai.models.ChatMessage
+import com.budgetai.models.ChatRequest
+import com.budgetai.models.ChatResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
