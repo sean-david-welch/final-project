@@ -69,6 +69,7 @@ dependencies {
 
     // open ai
     implementation("com.aallam.openai:openai-client:3.6.2")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
 
     // Logging
     implementation("ch.qos.logback:logback-classic:$logback_version")
