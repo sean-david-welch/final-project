@@ -50,3 +50,46 @@ fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets:
         }
     }
 }
+
+fun UserManagementTemplate(context: BaseTemplateContext, users: List<UserDTO>) = AdminTemplate("User Management", context) {
+    div(classes = "user-management-container") {
+        // Header with total count
+        div(classes = "user-header") {
+            h2(classes = "user-title") { +"Users (${users.count()})" }
+            button(classes = "add-user-button") {
+                +"Add New User"
+            }
+        }
+
+        // User table
+        div(classes = "user-table-container") {
+            table(classes = "user-table") {
+                thead {
+                    tr {
+                        th { +"Name" }
+                        th { +"Email" }
+                        th { +"Role" }
+                        th { +"Actions" }
+                    }
+                }
+                tbody {
+                    users.forEach { user ->
+                        tr {
+                            td(classes = "user-cell") { +user.name }
+                            td(classes = "user-cell") { +user.email }
+                            td(classes = "user-cell") { +user.role }
+                            td(classes = "user-actions") {
+                                button(classes = "edit-button") {
+                                    +"Edit"
+                                }
+                                button(classes = "delete-button") {
+                                    +"Delete"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
