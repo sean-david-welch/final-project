@@ -4,7 +4,6 @@ import com.budgetai.services.BudgetItemService
 import com.budgetai.services.BudgetService
 import com.budgetai.services.CategoryService
 import com.budgetai.services.UserService
-import com.budgetai.templates.pages.create403Page
 import com.budgetai.templates.pages.createBudgetManagementPage
 import com.budgetai.templates.pages.createDashboardPage
 import com.budgetai.utils.templateContext
@@ -22,7 +21,7 @@ fun Route.dashboardRoutes(userService: UserService, budgetItemService: BudgetIte
                 val budgetItems = budgetItemService.getBudgetItemsForUser(user.id)
                 val budgets = budgetService.getUserBudgets(user.id)
                 val categories = categoryService.getCategories()
-                call.respondText(text = createDashboardPage(call.templateContext, budgetItems, budgets, categories), contentType = ContentType.Text.Html)
+                call.respondText(text = createDashboardPage(call.templateContext), contentType = ContentType.Text.Html)
             }
             get("/budget-management") {
                 val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
