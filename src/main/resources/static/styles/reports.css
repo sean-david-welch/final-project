@@ -33,7 +33,7 @@
 /* Reports Grid */
 .reports-grid {
     @apply mb-12;
-    @apply grid gap-6 md:grid-cols-2;
+    @apply grid md:grid-cols-2;
 }
 
 .report-card {
@@ -65,11 +65,11 @@
 }
 
 .report-content {
-    @apply min-h-[300px];
+    @apply min-h-[100px];
 }
 
 .chart-placeholder {
-    @apply w-full h-64 rounded-lg;
+    @apply w-full h-28 rounded-lg;
     @apply bg-gray-100 dark:bg-gray-800;
 }
 
