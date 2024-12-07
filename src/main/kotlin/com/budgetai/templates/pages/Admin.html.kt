@@ -66,6 +66,10 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
             }
         }
 
+        div {
+            attributes["id"] = "response-message"
+        }
+
         // User table
         div(classes = "table-container") {
             table(classes = "data-table") {
@@ -90,9 +94,10 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
                                 }
                                 button(classes = "delete-button") {
                                     attributes["hx-delete"] = "/api/users/${user.id}"
-                                    attributes["hx-target"] = "#user-row-${user.id}"
-                                    attributes["hx-swap"] = "outerHTML"
+                                    attributes["hx-target"] = "#response-message"
+                                    attributes["hx-swap"] = "innerHTML"
                                     attributes["hx-confirm"] = "Are you sure you want to delete this user?"
+                                    attributes["hx-after-delete"] = "if(event.detail.successful) document.getElementById('user-row-${user.id}').remove()"
                                     +"Delete"
                                 }
                             }
