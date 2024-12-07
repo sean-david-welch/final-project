@@ -23,6 +23,37 @@ class SpreadsheetTable {
         });
     }
 
+    clear() {
+        const tbody = this.table.querySelector('tbody');
+        // Clear all existing rows
+        tbody.innerHTML = '';
+
+        // Add one empty row
+        const row = document.createElement('tr');
+
+        // Add name cell
+        const nameCell = document.createElement('td');
+        nameCell.contentEditable = "true";
+        nameCell.className = 'spreadsheet-cell';
+        nameCell.addEventListener('input', () => this.updateHiddenField());
+        row.appendChild(nameCell);
+
+        // Add amount cell
+        const amountCell = document.createElement('td');
+        amountCell.contentEditable = "true";
+        amountCell.className = 'spreadsheet-cell amount-cell';
+        amountCell.addEventListener('input', () => this.updateHiddenField());
+        row.appendChild(amountCell);
+
+        tbody.appendChild(row);
+
+        // Update the hidden field
+        this.updateHiddenField();
+
+        // Reset the add button state
+        this.updateAddButtonState();
+    }
+
     getCurrentRowCount() {
         return this.table.querySelector('tbody').children.length;
     }
