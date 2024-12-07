@@ -16,7 +16,7 @@
 
 /* Brand Section */
 .navbar-brand-container {
-    @apply flex items-center justify-center transition-all duration-700 ease-in-out hover:scale-105;
+    @apply flex items-center justify-center transition-all duration-700 ease-in-out hover:scale-[1.01];
 }
 
 .navbar-brand-logo {
@@ -56,7 +56,7 @@
 .nav-item-base {
     @apply px-3 py-2 rounded-md;
     @apply text-sm font-medium;
-    @apply transition-all duration-700 ease-in-out hover:scale-105;
+    @apply transition-all duration-700 ease-in-out hover:scale-[1.01];
 }
 
 .nav-item-active {
