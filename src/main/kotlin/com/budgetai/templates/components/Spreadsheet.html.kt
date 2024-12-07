@@ -16,6 +16,8 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
     form(classes = "auth-form") {
         attributes["hx-post"] = "api/budgets"
         attributes["hx-target"] = "#income-response-div"
+        attributes["hx-on::after-request"] = "if(event.detail.successful) this.reset()"
+
 
         input(type = InputType.hidden) {
             name = "userId"
