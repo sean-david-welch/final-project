@@ -42,10 +42,10 @@ fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets:
             h2(classes = "status-title") { +"Quick Actions" }
             div(classes = "quick-actions") {
                 listOf(
-                    "User Management", "Manage Reports",
-                ).forEach { action ->
-                    button(classes = "action-button") {
-                        +action
+                    Pair("User Management", "/admin/user-management"), Pair("Manage Reports", "/admin/budget-management")
+                ).forEach { (label, href) ->
+                    a(href = href, classes = "action-button") {
+                        +label
                     }
                 }
             }
