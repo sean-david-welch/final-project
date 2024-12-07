@@ -15,7 +15,7 @@ class SpreadsheetTable {
 
         for (let i = 0; i < columnCount; i++) {
             const cell = document.createElement('td');
-            cell.contentEditable = true;
+            cell.contentEditable = "true";
             cell.className = 'spreadsheet-cell';
             row.appendChild(cell);
         }
