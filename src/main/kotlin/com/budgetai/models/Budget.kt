@@ -42,6 +42,8 @@ data class BudgetCreationRequest(
     val name: String,
     val description: String? = null,
     val startDate: LocalDate? = null,
+    val totalIncome: Double = 0.0,
+    val totalExpenses: Double = 0.0,
     val endDate: LocalDate? = null
 )
 
