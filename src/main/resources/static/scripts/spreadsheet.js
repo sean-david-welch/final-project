@@ -27,4 +27,9 @@ class SpreadsheetTable {
 // Initialize the spreadsheet
 document.addEventListener('DOMContentLoaded', () => {
     new SpreadsheetTable();
+    document.querySelector('.spreadsheet-add-row').addEventListener('click', function() {
+        const lastRow = document.querySelector('.spreadsheet-table tbody tr:last-child');
+        const newRow = lastRow.cloneNode(true);
+        lastRow.parentNode.appendChild(newRow);
+    });
 });
