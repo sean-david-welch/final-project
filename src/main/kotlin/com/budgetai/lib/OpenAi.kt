@@ -6,8 +6,11 @@ import com.aallam.openai.api.chat.ChatMessage
 import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
+import io.ktor.server.config.*
+import io.ktor.server.engine.*
 
-class OpenAi(apiKey: String) {
+class OpenAi(config: ApplicationConfig) {
+    private val apiKey: String = config.property("api-keys.openai").getString()
     private val client = OpenAI(apiKey)
     private val defaultModel = ModelId("gpt-4o-mini")
 
