@@ -87,7 +87,10 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
                             attributes["id"] = "user-row-${user.id}"
                             td(classes = "table-cell") { +user.name }
                             td(classes = "table-cell") { +user.email }
-                            td(classes = "table-cell") { attributes["id"] = "role-cell-${user.id}" +user.role}
+                            td(classes = "table-cell") {
+                                attributes["id"] = "role-cell-${user.id}"
+                                +user.role
+                            }
                             td(classes = "table-actions") {
                                 select(classes = "role-select") {
                                     attributes["hx-put"] = "/api/users/${user.id}/role"
