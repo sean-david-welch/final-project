@@ -51,7 +51,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             }
 
                             val request = BudgetCreationRequest(
-                                userId = userId.toInt(), name = "", totalIncome = totalIncome, totalExpenses = parseResult.totalAmount
+                                userId = userId.toInt(), name = budgetName, totalIncome = totalIncome, totalExpenses = parseResult.totalAmount
                             )
 
                             service.createBudget(request)
