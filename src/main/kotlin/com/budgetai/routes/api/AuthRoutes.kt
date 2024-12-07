@@ -15,6 +15,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.date.*
 import org.slf4j.LoggerFactory
+import javax.security.sasl.AuthenticationException
 
 private fun ApplicationCall.setAuthCookie(token: String, cookieConfig: CookieConfig) {
     response.cookies.append(
@@ -38,31 +39,53 @@ fun Route.authRoutes(service: UserService) {
             try {
                 val request = when (call.request.contentType()) {
                     ContentType.Application.Json -> {
-                        // Handle JSON request
                         val jsonRequest = call.receive<UserAuthenticationRequest>()
-                        // Return JSON response for API clients
                         val result = service.authenticateUserWithToken(jsonRequest)
                         if (result != null) {
                             val (_, token) = result
                             call.setAuthCookie(token, cookieConfig)
-                            call.respond(HttpStatusCode.OK, mapOf("message" to "Login successful", "redirectUrl" to "/dashboard"))
+                            call.respond(HttpStatusCode.OK, mapOf("message" to "Login successful"))
+                        } else {
+                            call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Invalid login credentials"))
                         }
                         return@post
                     }
 
                     ContentType.Application.FormUrlEncoded -> {
-                        // Handle form data
                         val parameters = call.receiveParameters()
+                        when {
+                            parameters["email"].isNullOrBlank() -> {
+                                call.respondText(
+                                    ResponseComponents.error("Email is required"),
+                                    ContentType.Text.Html,
+                                    HttpStatusCode.BadRequest
+                                )
+                                return@post
+                            }
+                            parameters["password"].isNullOrBlank() -> {
+                                call.respondText(
+                                    ResponseComponents.error("Password is required"),
+                                    ContentType.Text.Html,
+                                    HttpStatusCode.BadRequest
+                                )
+                                return@post
+                            }
+                        }
                         UserAuthenticationRequest(
-                            email = parameters["email"] ?: throw IllegalArgumentException("Email is required"),
-                            password = parameters["password"] ?: throw IllegalArgumentException("Password is required")
+                            email = parameters["email"]!!,
+                            password = parameters["password"]!!
                         )
                     }
-
-                    else -> throw IllegalArgumentException("Unsupported content type")
+                    else -> {
+                        call.respondText(
+                            ResponseComponents.error("Unsupported request format"),
+                            ContentType.Text.Html,
+                            HttpStatusCode.BadRequest
+                        )
+                        return@post
+                    }
                 }
 
-                // Process form-based authentication
                 val result = service.authenticateUserWithToken(request)
                 if (result != null) {
                     val (_, token) = result
@@ -70,32 +93,38 @@ fun Route.authRoutes(service: UserService) {
 
                     val response = ResponseComponents.success(
                         "Login successful! Redirecting..."
-                    ) + """<script>window.location.href = '/dashboard';</script>""".trimIndent()
+                    ) + """<script>
+                setTimeout(function() {
+                    window.location.href = '/dashboard';
+                }, 500);
+            </script>""".trimIndent()
 
                     call.respondText(response, ContentType.Text.Html)
+                } else {
+                    call.respondText(
+                        ResponseComponents.error("Invalid email or password"),
+                        ContentType.Text.Html,
+                        HttpStatusCode.BadRequest
+                    )
                 }
 
             } catch (e: Exception) {
                 logger.error("Login failed", e)
+
                 val errorMessage = when (e) {
-                    is IllegalArgumentException -> e.message
-                    else -> "Invalid login credentials"
+                    is IllegalArgumentException -> e.message ?: "Invalid input provided"
+                    is AuthenticationException -> "Invalid login credentials"
+                    else -> "An unexpected error occurred. Please try again."
                 }
 
-                // Return appropriate error format based on content type
                 when (call.request.contentType()) {
                     ContentType.Application.Json -> {
-                        call.respond(
-                            HttpStatusCode.BadRequest, mapOf("error" to (errorMessage ?: "An unknown error occurred"))
-                        )
+                        call.respond(HttpStatusCode.BadRequest, mapOf("error" to errorMessage))
                     }
-
                     else -> {
-                        val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
+                        val errorResponse = ResponseComponents.error(errorMessage)
                         logger.debug("Generated error response: $errorResponse")
-                        call.respondText(
-                            errorResponse, ContentType.Text.Html, HttpStatusCode.BadRequest
-                        )
+                        call.respondText(errorResponse, ContentType.Text.Html, HttpStatusCode.BadRequest)
                     }
                 }
             }
