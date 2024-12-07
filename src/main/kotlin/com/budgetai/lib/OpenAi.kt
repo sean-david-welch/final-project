@@ -1,48 +1,89 @@
 package com.budgetai.lib
 
-import com.aallam.openai.api.chat.ChatCompletion
-import com.aallam.openai.api.chat.ChatCompletionRequest
-import com.aallam.openai.api.chat.ChatMessage
-import com.aallam.openai.api.chat.ChatRole
-import com.aallam.openai.api.model.ModelId
-import com.aallam.openai.client.OpenAI
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.config.*
-import io.ktor.server.engine.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 class OpenAi(config: ApplicationConfig) {
     private val apiKey: String = config.property("api-keys.openai").getString()
-    private val client = OpenAI(apiKey)
-    private val defaultModel = ModelId("gpt-4o-mini")
+    private val defaultModel = "gpt-4o-mini"
+    private val client = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            json()
+        }
+    }
+
+    @Serializable
+    private data class ChatMessage(
+        val role: String,
+        val content: String
+    )
+
+    @Serializable
+    private data class ChatRequest(
+        val model: String,
+        val messages: List<ChatMessage>
+    )
+
+    @Serializable
+    private data class ChatResponse(
+        val choices: List<Choice>
+    ) {
+        @Serializable
+        data class Choice(
+            val message: ChatMessage,
+            @SerialName("finish_reason")
+            val finishReason: String
+        )
+    }
 
     // Send a single message and get response
-    suspend fun sendMessage(prompt: String, model: ModelId = defaultModel): String {
+    suspend fun sendMessage(prompt: String, model: String = defaultModel): String {
         try {
-            val request = ChatCompletionRequest(
-                model = model, messages = listOf(ChatMessage(role = ChatRole.User, content = prompt))
-            )
+            val response = client.post("https://api.openai.com/v1/chat/completions") {
+                contentType(ContentType.Application.Json)
+                header("Authorization", "Bearer $apiKey")
+                setBody(ChatRequest(
+                    model = model,
+                    messages = listOf(ChatMessage(role = "user", content = prompt))
+                ))
+            }
 
-            val response: ChatCompletion = client.chatCompletion(request)
-            return response.choices.firstOrNull()?.message?.content ?: "No response received"
+            val chatResponse = response.body<ChatResponse>()
+            return chatResponse.choices.firstOrNull()?.message?.content ?: "No response received"
         } catch (e: Exception) {
             throw OpenAiException("Failed to get response from OpenAI: ${e.message}", e)
         }
     }
 
     // Send conversation history and get response
-    suspend fun sendConversation(messages: List<Pair<String, Boolean>>, model: ModelId = defaultModel): String {
+    suspend fun sendConversation(messages: List<Pair<String, Boolean>>, model: String = defaultModel): String {
         try {
             val chatMessages = messages.map { (content, isUser) ->
                 ChatMessage(
-                    role = if (isUser) ChatRole.User else ChatRole.Assistant, content = content
+                    role = if (isUser) "user" else "assistant",
+                    content = content
                 )
             }
 
-            val request = ChatCompletionRequest(
-                model = model, messages = chatMessages
-            )
+            val response = client.post("https://api.openai.com/v1/chat/completions") {
+                contentType(ContentType.Application.Json)
+                header("Authorization", "Bearer $apiKey")
+                setBody(ChatRequest(
+                    model = model,
+                    messages = chatMessages
+                ))
+            }
 
-            val response: ChatCompletion = client.chatCompletion(request)
-            return response.choices.firstOrNull()?.message?.content ?: "No response received"
+            val chatResponse = response.body<ChatResponse>()
+            return chatResponse.choices.firstOrNull()?.message?.content ?: "No response received"
         } catch (e: Exception) {
             throw OpenAiException("Failed to get response from OpenAI: ${e.message}", e)
         }
