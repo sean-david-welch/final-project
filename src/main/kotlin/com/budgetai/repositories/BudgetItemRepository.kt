@@ -25,7 +25,7 @@ class BudgetItemRepository(private val database: Database) {
 
     // Maps database row to BudgetItemDTO
     private fun toBudgetItem(row: ResultRow) = BudgetItemDTO(
-        id = row[BudgetItems.id].value, budgetId = row[BudgetItems.budgetId].value, categoryId = row[BudgetItems.categoryId].value,
+        id = row[BudgetItems.id].value, budgetId = row[BudgetItems.budgetId].value, categoryId = row[BudgetItems.categoryId]?.value,
         name = row[BudgetItems.name], amount = row[BudgetItems.amount].toDouble(), createdAt = row[BudgetItems.createdAt].toString()
     )
 
