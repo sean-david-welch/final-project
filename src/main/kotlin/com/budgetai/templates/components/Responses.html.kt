@@ -21,8 +21,8 @@ fun DIV.messageComponent(message: String, type: String) {
         }
 
         button {
-            attributes["class"] = "absolute top-2 right-2 text-sm opacity-75 hover:opacity-100"
-            attributes["@click"] = "show = false"
+            attributes["class"] = "absolute w-10 right-2 text-sm opacity-75 hover:opacity-100"
+            attributes["onclick"] = "this.parentElement.remove()"
             attributes["type"] = "button"
             attributes["aria-label"] = "Dismiss message"
             +"×"
