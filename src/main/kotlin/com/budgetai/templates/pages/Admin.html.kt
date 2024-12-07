@@ -16,40 +16,41 @@ fun AdminTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.()
     }
 }
 
-fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets: List<BudgetDTO>, categories: List<CategoryDTO>) = AdminTemplate("Admin Dashboard", context) {
-    // Stats Grid
-    div(classes = "stats-grid") {
-        val stats = listOf(
-            Pair("Total Users", users.count().toString()), Pair("Total Budgets", budgets.count().toString()),
-            Pair("Total Categories", categories.count().toString())
-        )
+fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets: List<BudgetDTO>, categories: List<CategoryDTO>) =
+    AdminTemplate("Admin Dashboard", context) {
+        // Stats Grid
+        div(classes = "stats-grid") {
+            val stats = listOf(
+                Pair("Total Users", users.count().toString()), Pair("Total Budgets", budgets.count().toString()),
+                Pair("Total Categories", categories.count().toString())
+            )
 
-        stats.forEach { (label, value) ->
-            div(classes = "stat-card") {
-                div(classes = "stat-content") {
-                    div {
-                        p(classes = "stat-info") { +label }
-                        p(classes = "stat-value") { +value }
+            stats.forEach { (label, value) ->
+                div(classes = "stat-card") {
+                    div(classes = "stat-content") {
+                        div {
+                            p(classes = "stat-info") { +label }
+                            p(classes = "stat-value") { +value }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Quick Actions Card
+        div(classes = "status-card") {
+            h2(classes = "status-title") { +"Quick Actions" }
+            div(classes = "quick-actions") {
+                listOf(
+                    "User Management", "Manage Reports",
+                ).forEach { action ->
+                    button(classes = "action-button") {
+                        +action
                     }
                 }
             }
         }
     }
-
-    // Quick Actions Card
-    div(classes = "status-card") {
-        h2(classes = "status-title") { +"Quick Actions" }
-        div(classes = "quick-actions") {
-            listOf(
-                "User Management", "Manage Reports",
-            ).forEach { action ->
-                button(classes = "action-button") {
-                    +action
-                }
-            }
-        }
-    }
-}
 
 fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTemplate("User Management", context) {
     div(classes = "user-management-container") {
