@@ -163,10 +163,13 @@ fun Route.authRoutes(service: UserService) {
                     call.setAuthCookie(token, cookieConfig)
 
                     val response = ResponseComponents.success(
-                        "Login successful! Redirecting..."
-                    ) + """<script>window.location.href = '/dashboard';</script>""".trimIndent()
-
-                    call.respondText(response, ContentType.Text.Html)
+                        "Login successful! Redirecting...", redirectUrl = "/dashboard"
+                    )
+                    call.respondText(response, ContentType.Text.Html, HttpStatusCode.OK)
+                } else {
+                    call.respondText(
+                        ResponseComponents.error("Invalid password"), ContentType.Text.Html, HttpStatusCode.OK
+                    )
                 }
             } catch (e: Exception) {
                 logger.error("Registration failed", e)
