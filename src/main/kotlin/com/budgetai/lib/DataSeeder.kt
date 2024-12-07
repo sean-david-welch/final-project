@@ -23,22 +23,16 @@ class DataSeeder(database: Database) {
 
     // Predefined budget templates for more realistic data
     private data class BudgetTemplate(
-        val name: String,
-        val description: String,
-        val items: List<BudgetItemTemplate>
+        val name: String, val description: String, val items: List<BudgetItemTemplate>
     )
 
     private data class BudgetItemTemplate(
-        val categoryName: String,
-        val itemName: String,
-        val amountRange: ClosedRange<Double>
+        val categoryName: String, val itemName: String, val amountRange: ClosedRange<Double>
     )
 
     private val budgetTemplates = listOf(
         BudgetTemplate(
-            name = "Monthly Household Budget",
-            description = "Standard monthly household expenses and income",
-            items = listOf(
+            name = "Monthly Household Budget", description = "Standard monthly household expenses and income", items = listOf(
                 BudgetItemTemplate("Salary", "Primary Job Income", 4000.0..8000.0),
                 BudgetItemTemplate("Freelance", "Side Gig Income", 500.0..2000.0),
                 BudgetItemTemplate("Housing", "Rent/Mortgage", 1200.0..3000.0),
@@ -52,11 +46,8 @@ class DataSeeder(database: Database) {
                 BudgetItemTemplate("Entertainment", "Streaming Services", 30.0..100.0),
                 BudgetItemTemplate("Entertainment", "Dining Out", 100.0..400.0)
             )
-        ),
-        BudgetTemplate(
-            name = "Student Budget",
-            description = "Budget tailored for college students",
-            items = listOf(
+        ), BudgetTemplate(
+            name = "Student Budget", description = "Budget tailored for college students", items = listOf(
                 BudgetItemTemplate("Salary", "Part-time Job", 800.0..2000.0),
                 BudgetItemTemplate("Investment", "Family Support", 500.0..1500.0),
                 BudgetItemTemplate("Housing", "Student Housing", 500.0..1200.0),
@@ -76,15 +67,9 @@ class DataSeeder(database: Database) {
 
         // Create or get categories
         val categoryMap = mapOf(
-            "Salary" to CategoryType.INCOME,
-            "Freelance" to CategoryType.INCOME,
-            "Investment" to CategoryType.INCOME,
-            "Housing" to CategoryType.EXPENSE,
-            "Utilities" to CategoryType.EXPENSE,
-            "Groceries" to CategoryType.EXPENSE,
-            "Transportation" to CategoryType.EXPENSE,
-            "Healthcare" to CategoryType.EXPENSE,
-            "Entertainment" to CategoryType.EXPENSE,
+            "Salary" to CategoryType.INCOME, "Freelance" to CategoryType.INCOME, "Investment" to CategoryType.INCOME,
+            "Housing" to CategoryType.EXPENSE, "Utilities" to CategoryType.EXPENSE, "Groceries" to CategoryType.EXPENSE,
+            "Transportation" to CategoryType.EXPENSE, "Healthcare" to CategoryType.EXPENSE, "Entertainment" to CategoryType.EXPENSE,
             "Education" to CategoryType.EXPENSE
         )
 
@@ -92,9 +77,7 @@ class DataSeeder(database: Database) {
         val categoryIds = categoryMap.map { (name, type) ->
             name to (categoryRepository.findByName(name)?.id ?: categoryRepository.create(
                 CategoryDTO(
-                    name = name,
-                    type = type,
-                    description = "Description for $name category"
+                    name = name, type = type, description = "Description for $name category"
                 )
             ))
         }.toMap()
@@ -103,9 +86,7 @@ class DataSeeder(database: Database) {
         val userIds = (1..5).map { index ->
             userRepository.create(
                 UserDTO(
-                    email = "user$index@example.com",
-                    name = "Test User $index",
-                    role = UserRole.USER.toString()
+                    email = "user$index@example.com", name = "Test User $index", role = UserRole.USER.toString()
                 )
             ).also { userId ->
                 userRepository.updatePassword(userId, "hashed_password_$index")
@@ -124,8 +105,7 @@ class DataSeeder(database: Database) {
                 var totalExpenses = 0.0
                 val itemAmounts = template.items.map { itemTemplate ->
                     val amount = random.nextDouble(
-                        itemTemplate.amountRange.start,
-                        itemTemplate.amountRange.endInclusive
+                        itemTemplate.amountRange.start, itemTemplate.amountRange.endInclusive
                     )
                     if (categoryMap[itemTemplate.categoryName] == CategoryType.INCOME) {
                         totalIncome += amount
@@ -137,27 +117,20 @@ class DataSeeder(database: Database) {
 
                 val budgetId = budgetRepository.create(
                     BudgetDTO(
-                        userId = userId,
-                        name = "${template.name} - ${now.month}",
-                        description = template.description,
-                        startDate = startDate,
-                        endDate = endDate,
-                        totalIncome = totalIncome,
-                        totalExpenses = totalExpenses
+                        userId = userId, name = "${template.name} - ${now.month}", description = template.description,
+                        startDate = startDate, endDate = endDate, totalIncome = totalIncome, totalExpenses = totalExpenses
                     )
                 )
 
                 // Create budget items using categoryIds instead of categories
                 itemAmounts.forEach { (itemTemplate, amount) ->
-                    val categoryId = categoryIds[itemTemplate.categoryName]
-                        ?: throw IllegalStateException("Category ${itemTemplate.categoryName} not found")
+                    val categoryId = categoryIds[itemTemplate.categoryName] ?: throw IllegalStateException(
+                        "Category ${itemTemplate.categoryName} not found"
+                    )
 
                     budgetItemRepository.create(
                         BudgetItemDTO(
-                            budgetId = budgetId,
-                            categoryId = categoryId,
-                            name = itemTemplate.itemName,
-                            amount = amount
+                            budgetId = budgetId, categoryId = categoryId, name = itemTemplate.itemName, amount = amount
                         )
                     )
                 }
@@ -182,12 +155,8 @@ class DataSeeder(database: Database) {
 
             savingsGoalRepository.create(
                 SavingsGoalDTO(
-                    userId = userId,
-                    name = goalName,
-                    description = "Saving up for $goalName",
-                    targetAmount = targetAmount,
-                    currentAmount = currentAmount,
-                    targetDate = targetDate
+                    userId = userId, name = goalName, description = "Saving up for $goalName", targetAmount = targetAmount,
+                    currentAmount = currentAmount, targetDate = targetDate
                 )
             )
         }
@@ -205,13 +174,9 @@ class DataSeeder(database: Database) {
 
             aiInsightRepository.create(
                 AiInsightDTO(
-                    userId = userId,
-                    budgetId = budgetId,
-                    prompt = "Analysis request ${index + 1}",
-                    response = "AI generated insight ${index + 1}",
-                    type = insightTypes[random.nextInt(insightTypes.size)],
-                    sentiment = sentiments[random.nextInt(sentiments.size)],
-                    metadata = metadata
+                    userId = userId, budgetId = budgetId, prompt = "Analysis request ${index + 1}",
+                    response = "AI generated insight ${index + 1}", type = insightTypes[random.nextInt(insightTypes.size)],
+                    sentiment = sentiments[random.nextInt(sentiments.size)], metadata = metadata
                 )
             )
         }
