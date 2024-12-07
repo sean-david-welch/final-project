@@ -7,9 +7,7 @@ object BudgetParser {
         val items: List<BudgetItemDTO>, val errors: List<String>
     )
 
-    fun parseSpreadsheetData(
-        spreadsheetData: String, budgetId: Int
-    ): ParseResult {
+    fun parseSpreadsheetData(spreadsheetData: String, budgetId: Int): ParseResult {
         val errors = mutableListOf<String>()
         val items = mutableListOf<BudgetItemDTO>()
 
