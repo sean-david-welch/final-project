@@ -93,3 +93,50 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
         }
     }
 }
+
+fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<BudgetDTO>) = AdminTemplate("Budget Management", context) {
+    div(classes = "budget-management-container") {
+        // Header with total count and add button
+        div(classes = "budget-header") {
+            h2(classes = "budget-title") { +"Budgets (${budgets.count()})" }
+            button(classes = "add-budget-button") {
+                +"Create New Budget"
+            }
+        }
+
+        // Budget table
+        div(classes = "budget-table-container") {
+            table(classes = "budget-table") {
+                thead {
+                    tr {
+                        th { +"Name" }
+                        th { +"User ID" }
+                        th { +"Description" }
+                        th { +"Total Income" }
+                        th { +"Total Expenses" }
+                        th { +"Actions" }
+                    }
+                }
+                tbody {
+                    budgets.forEach { budget ->
+                        tr {
+                            td(classes = "budget-cell") { +budget.name }
+                            td(classes = "budget-cell") { +budget.userId }
+                            td(classes = "budget-cell description") { +budget.description }
+                            td(classes = "budget-cell money") { +"$${budget.totalIncome}" }
+                            td(classes = "budget-cell money") { +"$${budget.totalExpenses}" }
+                            td(classes = "budget-actions") {
+                                button(classes = "edit-button") {
+                                    +"Edit"
+                                }
+                                button(classes = "delete-button") {
+                                    +"Delete"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
