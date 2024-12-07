@@ -40,9 +40,6 @@ fun createDashboardPage(
     }
 
     h2(classes = "section-title") { +"Budget Form" }
-    div {
-        attributes["id"] = "income-response-div"
-        attributes["class"] = "response-div"
-    }
+
     SpreadsheetComponent()
 }
