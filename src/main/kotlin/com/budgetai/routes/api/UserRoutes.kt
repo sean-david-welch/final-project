@@ -141,13 +141,46 @@ fun Route.userRoutes(service: UserService) {
             delete("/{id}") {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
-
                     service.deleteUser(id)
-                    call.respond(HttpStatusCode.OK, "User deleted successfully")
+
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.OK, "User deleted successfully")
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.success("User deleted successfully"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error(e.message ?: "Invalid request"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Error deleting user")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.InternalServerError, "Error deleting user")
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error("Error deleting user"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 }
             }
 
