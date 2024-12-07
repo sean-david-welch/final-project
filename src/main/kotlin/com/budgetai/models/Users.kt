@@ -43,7 +43,7 @@ data class UpdatePasswordRequest(
 
 @Serializable
 data class UpdateRoleRequest(
-    val role: UserRole
+    val role: String
 )
 
 // authetication classes
