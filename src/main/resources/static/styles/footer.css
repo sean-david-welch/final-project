@@ -25,7 +25,7 @@
     @apply text-base;
     @apply text-gray-600 dark:text-gray-400;
     @apply hover:text-gray-900 dark:hover:text-white;
-    @apply transition-all duration-700 ease-in-out hover:scale-105;
+    @apply transition-all duration-700 ease-in-out hover:scale-[1.01];
 }
 
 /* Theme Toggle */
