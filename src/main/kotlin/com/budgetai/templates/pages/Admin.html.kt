@@ -53,18 +53,18 @@ fun createAdminPage(context: BaseTemplateContext, users: List<UserDTO>, budgets:
     }
 
 fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTemplate("User Management", context) {
-    div(classes = "user-management-container") {
+    div(classes = "management-container") {
         // Header with total count
-        div(classes = "user-header") {
+        div(classes = "management-header") {
             h2(classes = "user-title") { +"Users (${users.count()})" }
-            button(classes = "add-user-button") {
+            button(classes = "add-button") {
                 +"Add New User"
             }
         }
 
         // User table
-        div(classes = "user-table-container") {
-            table(classes = "user-table") {
+        div(classes = "table-container") {
+            table(classes = "data-table") {
                 thead {
                     tr {
                         th { +"Name" }
@@ -76,10 +76,10 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
                 tbody {
                     users.forEach { user ->
                         tr {
-                            td(classes = "user-cell") { +user.name }
-                            td(classes = "user-cell") { +user.email }
-                            td(classes = "user-cell") { +user.role }
-                            td(classes = "user-actions") {
+                            td(classes = "table-cell") { +user.name }
+                            td(classes = "table-cell") { +user.email }
+                            td(classes = "table-cell") { +user.role }
+                            td(classes = "table-actions") {
                                 button(classes = "edit-button") {
                                     +"Edit"
                                 }
@@ -96,18 +96,18 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
 }
 
 fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<BudgetDTO>) = AdminTemplate("Budget Management", context) {
-    div(classes = "budget-management-container") {
+    div(classes = "management-container") {
         // Header with total count and add button
-        div(classes = "budget-header") {
+        div(classes = "management-header") {
             h2(classes = "budget-title") { +"Budgets (${budgets.count()})" }
-            button(classes = "add-budget-button") {
+            button(classes = "add-button") {
                 +"Create New Budget"
             }
         }
 
         // Budget table
-        div(classes = "budget-table-container") {
-            table(classes = "budget-table") {
+        div(classes = "table-container") {
+            table(classes = "data-table") {
                 thead {
                     tr {
                         th { +"Name" }
@@ -121,14 +121,14 @@ fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<Budge
                 tbody {
                     budgets.forEach { budget ->
                         tr {
-                            td(classes = "budget-cell") { +budget.name }
-                            td(classes = "budget-cell") { +budget.userId.toString() }
+                            td(classes = "table-cell") { +budget.name }
+                            td(classes = "table-cell") { +budget.userId.toString() }
                             if (budget.description != null) {
-                                td(classes = "budget-cell description") { +budget.description }
+                                td(classes = "table-cell description") { +budget.description }
                             }
-                            td(classes = "budget-cell money") { +"$${budget.totalIncome}" }
-                            td(classes = "budget-cell money") { +"$${budget.totalExpenses}" }
-                            td(classes = "budget-actions") {
+                            td(classes = "table-cell money") { +"$${budget.totalIncome}" }
+                            td(classes = "table-cell money") { +"$${budget.totalExpenses}" }
+                            td(classes = "table-actions") {
                                 button(classes = "edit-button") {
                                     +"Edit"
                                 }
