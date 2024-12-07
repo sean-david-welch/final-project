@@ -100,7 +100,7 @@
     @apply text-white;
     @apply transition-all duration-700 ease-in-out;
     @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
-    @apply hover:transform hover:scale-105 ease-in-out;
+    @apply hover:transform hover:scale-[1.01] ease-in-out;
 }
 
 /* Forms Container */
