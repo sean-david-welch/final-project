@@ -64,7 +64,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
 
                             logger.info("Creating budget for user $userId with ${items.size} items, total amount: $totalAmount")
                             val request = BudgetCreationRequest(
-                                userId = userId, name = budgetName, totalIncome = totalIncome, totalExpenses = totalAmount
+                                userId = userId, name = budgetName, description = description, totalIncome = totalIncome, totalExpenses = totalAmount
                             )
 
                             val newBudgetId = service.createBudget(request)
