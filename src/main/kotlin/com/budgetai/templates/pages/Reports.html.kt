@@ -43,9 +43,9 @@ fun createReportsPage(context: BaseTemplateContext) = ReportsTemplate("Financial
         // Budget Analysis Card
         div(classes = "report-card") {
             div(classes = "report-header") {
-                h3(classes = "report-title") { +"Budget Analysis" }
+                h3(classes = "report-title") { +"Ai Insights" }
                 div(classes = "report-actions") {
-                    button(classes = "action-button") { +"Export Data" }
+                    button(classes = "action-button") { +"Consult AI advisor" }
                 }
             }
             div(classes = "report-content") {
