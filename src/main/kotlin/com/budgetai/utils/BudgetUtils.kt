@@ -3,13 +3,34 @@ package com.budgetai.utils
 import com.budgetai.models.BudgetItemDTO
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.io.StringWriter
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object BudgetParser {
     private val logger: Logger = LoggerFactory.getLogger("BudgetParser")
 
     data class ParseResult(
-        val items: List<BudgetItemDTO>, val errors: List<String>, val totalAmount: Double
+        val items: List<BudgetItemDTO>,
+        val errors: List<String>,
+        val totalAmount: Double,
+        val csvContent: String = "" // Added CSV content
     )
+
+    private fun generateCsv(items: List<BudgetItemDTO>, totalAmount: Double): String {
+        return StringWriter().apply {
+            // Write header
+            appendLine("Name,Amount")
+
+            // Write items
+            items.forEach { item ->
+                appendLine("${item.name},${item.amount}")
+            }
+
+            // Write total
+            appendLine("Total,${totalAmount}")
+        }.toString()
+    }
 
     fun parseSpreadsheetData(spreadsheetData: String): ParseResult {
         logger.info("Starting to parse spreadsheet data")
@@ -68,8 +89,14 @@ object BudgetParser {
             logger.warn("Parsing errors encountered: $errors")
         }
 
+        val csvContent = generateCsv(items, totalAmount)
+        logger.debug("Generated CSV content: $csvContent")
+
         return ParseResult(
-            items = items, errors = errors, totalAmount = totalAmount
+            items = items,
+            errors = errors,
+            totalAmount = totalAmount,
+            csvContent = csvContent
         )
     }
 }
