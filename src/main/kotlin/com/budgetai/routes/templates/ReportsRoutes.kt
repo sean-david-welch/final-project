@@ -25,5 +25,11 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
                 )
             }
         }
+        route("/api/reports") {
+            get("/spending-summary") {  }
+            get("/ai-insights") {  }
+            get("/category-breakdown") {  }
+            get("/savings-tracking") {  }
+        }
     }
 }
