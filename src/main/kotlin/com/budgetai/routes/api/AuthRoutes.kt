@@ -160,10 +160,10 @@ fun Route.authRoutes(service: UserService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.BadRequest, mapOf("error" to "Failed to create user"))
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Failed to create user. Please try again."),
-                                ContentType.Text.Html,
+                                ResponseComponents.error("Failed to create user. Please try again."), ContentType.Text.Html,
                                 HttpStatusCode.OK
                             )
                         }
@@ -197,6 +197,7 @@ fun Route.authRoutes(service: UserService) {
                     ContentType.Application.Json -> {
                         call.respond(HttpStatusCode.BadRequest, mapOf("error" to (errorMessage ?: "An unknown error occurred")))
                     }
+
                     else -> {
                         val errorResponse = ResponseComponents.error(errorMessage ?: "An unknown error occurred")
                         logger.debug("Generated error response: $errorResponse")
