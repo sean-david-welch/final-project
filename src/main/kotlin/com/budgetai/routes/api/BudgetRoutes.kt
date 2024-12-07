@@ -50,6 +50,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
 
                             logger.debug("Parsing spreadsheet data: ${spreadsheetData.take(100)}...")
                             val (items, errors, totalAmount, csv) = BudgetParser.parseSpreadsheetData(spreadsheetData = spreadsheetData)
+
                             if (csv != null) {
                                 s3Handler.uploadFile(csv, "${budgetName}-${userId}.csv")
                             }
