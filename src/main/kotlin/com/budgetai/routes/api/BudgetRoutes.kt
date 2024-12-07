@@ -1,5 +1,6 @@
 package com.budgetai.routes.api
 
+import com.budgetai.lib.S3Handler
 import com.budgetai.models.BudgetCreationRequest
 import com.budgetai.models.UpdateBudgetRequest
 import com.budgetai.models.UpdateBudgetTotalsRequest
@@ -16,7 +17,7 @@ import kotlinx.datetime.LocalDate
 import org.slf4j.LoggerFactory
 import java.math.BigDecimal
 
-fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemService) {
+fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemService, s3Handler: S3Handler) {
     val logger = LoggerFactory.getLogger("BudgetRoutes")
 
     authenticate {
@@ -46,7 +47,10 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             val spreadsheetData = parameters["spreadsheetData"].orEmpty()
 
                             logger.debug("Parsing spreadsheet data: ${spreadsheetData.take(100)}...")
-                            val (items, errors, totalAmount) = BudgetParser.parseSpreadsheetData(spreadsheetData = spreadsheetData)
+                            val (items, errors, totalAmount, csv) = BudgetParser.parseSpreadsheetData(spreadsheetData = spreadsheetData)
+                            if (csv != null) {
+                                s3Handler.uploadFile(csv, budgetName)
+                            }
 
                             if (errors.isNotEmpty()) {
                                 logger.warn("Budget parsing errors encountered: $errors")
