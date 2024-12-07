@@ -22,10 +22,6 @@ fun FlowContent.SpreadsheetComponent() {
                     required = true
                 }
             }
-            div {
-                h2(classes = "spreadsheet-title") { +"Data Entry" }
-            }
-
             table(classes = "spreadsheet-table") {
                 thead {
                     tr {
