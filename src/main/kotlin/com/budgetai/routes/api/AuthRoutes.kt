@@ -89,10 +89,10 @@ fun Route.authRoutes(service: UserService) {
                     val response = ResponseComponents.success(
                         "Login successful! Redirecting...", redirectUrl = "/dashboard"
                     )
-                    call.respondText(response, ContentType.Text.Html)
+                    call.respondText(response, ContentType.Text.Html, HttpStatusCode.OK)
                 } else {
                     call.respondText(
-                        ResponseComponents.error("Invalid email or password"), ContentType.Text.Html, HttpStatusCode.BadRequest
+                        ResponseComponents.error("Invalid email or password"), ContentType.Text.Html, HttpStatusCode.OK
                     )
                 }
 
