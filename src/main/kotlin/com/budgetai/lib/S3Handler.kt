@@ -28,7 +28,6 @@ class S3Handler(private val s3Client: S3Client, private val bucketName: String) 
         }
     }
 
-
     // upload byte array / image to s3
     suspend fun uploadBytes(bytes: ByteArray, key: String): Boolean {
         return try {
@@ -44,7 +43,6 @@ class S3Handler(private val s3Client: S3Client, private val bucketName: String) 
             false
         }
     }
-
 
     // get file by key
     suspend fun downloadFile(key: String): Flow<ByteArray> = flow {
