@@ -21,7 +21,7 @@
 }
 
 .spreadsheet-wrapper {
-    @apply content-section;
+    @apply content-section p-2;
 }
 
 .spreadsheet-title {
