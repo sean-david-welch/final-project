@@ -10,7 +10,9 @@ import java.io.File
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class S3Handler(private val s3Client: S3Client, private val bucketName: String) {
+class S3Handler() {
+    private val bucketName: String = "budgetai"
+    private val s3Client = S3Client { region = "eu-west-1" }
 
     // upload file to s3
     suspend fun uploadFile(file: File, key: String): Boolean {
