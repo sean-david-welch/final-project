@@ -1,10 +1,11 @@
 package com.budgetai.utils
 
 import com.budgetai.models.BudgetItemDTO
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 object BudgetParser {
-    private val logger = LoggerFactory.getLogger(BudgetParser::class.java)
+    private val logger: Logger = LoggerFactory.getLogger("BudgetParser")
 
     data class ParseResult(
         val items: List<BudgetItemDTO>, val errors: List<String>, val totalAmount: Double
