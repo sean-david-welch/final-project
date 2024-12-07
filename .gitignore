@@ -42,3 +42,4 @@ out/
 /src/main/kotlin/com/budgetai/database/database.db-shm
 
 node_modules
+.env
