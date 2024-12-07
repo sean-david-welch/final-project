@@ -145,6 +145,9 @@ fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<Budge
                 }
             }
         }
+        div {
+            attributes["id"] = "response-message"
+        }
 
         // Budget table
         div(classes = "table-container") {
