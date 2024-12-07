@@ -16,7 +16,7 @@ fun FORM.formField(
     }
 }
 
-private fun FORM.submitButton(text: String) {
+fun FORM.submitButton(text: String) {
     button(type = ButtonType.submit, classes = "submit-button") {
         +text
     }
