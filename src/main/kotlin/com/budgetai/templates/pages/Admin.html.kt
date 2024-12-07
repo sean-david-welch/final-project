@@ -57,6 +57,13 @@ fun createUserPage(context: BaseTemplateContext, users: List<UserDTO>) = AdminTe
         // Header with total count
         div(classes = "management-header") {
             h2(classes = "management-title") { +"Users (${users.count()})" }
+            if (context.auth.isAdmin) {
+                div(classes = "admin-access-section") {
+                    a(href = "/admin", classes = "admin-link-button") {
+                        +"Admin Panel"
+                    }
+                }
+            }
         }
 
         // User table
@@ -97,6 +104,13 @@ fun createBudgetManagementPage(context: BaseTemplateContext, budgets: List<Budge
         // Header with total count and add button
         div(classes = "management-header") {
             h2(classes = "management-title") { +"Budgets (${budgets.count()})" }
+            if (context.auth.isAdmin) {
+                div(classes = "admin-access-section") {
+                    a(href = "/admin", classes = "admin-link-button") {
+                        +"Admin Panel"
+                    }
+                }
+            }
         }
 
         // Budget table
