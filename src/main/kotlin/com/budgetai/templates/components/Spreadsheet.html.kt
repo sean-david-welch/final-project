@@ -6,9 +6,11 @@ private val columns = listOf("Name", "Amount", "Category")
 
 fun FlowContent.SpreadsheetComponent() {
     script { src = "/static/scripts/spreadsheet.js"; defer = true }
-    button(classes = "spreadsheet-add-row") {
-        attributes["data-action"] = "add-row"
-        +"Add Row"
+    div(classes = "add-row") {
+        button(classes = "spreadsheet-add-row") {
+            attributes["data-action"] = "add-row"
+            +"Add Row"
+        }
     }
     div(classes = "spreadsheet-wrapper") {
         div {
