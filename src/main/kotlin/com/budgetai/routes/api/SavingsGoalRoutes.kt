@@ -123,7 +123,9 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                         }
                         else -> {
                             call.respondHtml {
-                                SavingsGoalT(goals)
+                                body {
+                                    SavingsGoalTable(goals)
+                                }
                             }
                         }
                     }
