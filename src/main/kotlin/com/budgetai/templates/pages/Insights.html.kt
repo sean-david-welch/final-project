@@ -23,27 +23,6 @@ fun AIInsightsTemplate(context: BaseTemplateContext, budgets: List<BudgetDTO>) =
 
     // Main Content
     div(classes = "content-grid") {
-        // Analysis Card
-        div(classes = "report-card") {
-            div(classes = "report-header") {
-                h3(classes = "report-title") { +"Recent Insights" }
-                div(classes = "report-actions") {
-                    button(classes = "action-button") {
-                        attributes["onclick"] = "document.getElementById('modal-dialog').showModal()"
-                        +"Consult AI Advisor"
-                    }
-                }
-            }
-            div(classes = "report-content") {
-                div(classes = "insights-list") {
-                    // Placeholder for insights list
-                    div(classes = "chart-placeholder") {
-                        +"No insights available yet. Click 'New Analysis' to get started."
-                    }
-                }
-            }
-        }
-
         // Stats Card
         div(classes = "report-card") {
             div(classes = "report-header") {
