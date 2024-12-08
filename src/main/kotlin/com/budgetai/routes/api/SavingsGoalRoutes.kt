@@ -122,6 +122,7 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                         ContentType.Application.Json -> {
                             call.respond(goals)
                         }
+
                         else -> {
                             call.respondHtml {
                                 body {
@@ -258,11 +259,10 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.OK, "Savings goal deleted successfully")
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.success("Savings goal deleted successfully"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.success("Savings goal deleted successfully"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -271,11 +271,10 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -284,11 +283,10 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.InternalServerError, "Error deleting savings goal")
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Error deleting savings goal"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error("Error deleting savings goal"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
