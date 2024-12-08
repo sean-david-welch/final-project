@@ -10,7 +10,7 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
     }
 
     form(classes = "auth-form") {
-        attributes["hx-post"] = "api/savings-goals"
+        attributes["hx-post"] = "/api/savings-goals"
         attributes["hx-target"] = "#savings-response-div"
         attributes["hx-on::after-request"] = """
            if(event.detail.successful) {
