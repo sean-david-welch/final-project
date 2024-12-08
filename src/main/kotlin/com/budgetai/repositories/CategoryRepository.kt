@@ -36,9 +36,7 @@ class CategoryRepository(private val database: Database) {
     }
 
     suspend fun findByUserId(userId: Int): List<CategoryDTO> = dbQuery {
-        Categories.selectAll()
-            .where { Categories.userId eq userId }
-            .map(::toCategory)
+        Categories.selectAll().where { Categories.userId eq userId }.map(::toCategory)
     }
 
     // Retrieves a category by its name
