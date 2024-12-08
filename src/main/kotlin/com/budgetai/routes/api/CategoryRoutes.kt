@@ -135,14 +135,11 @@ fun Route.categoryRoutes(service: CategoryService) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
-                    // Create a simple data class for type-only updates
-                    data class UpdateCategoryTypeRequest(val type: CategoryType)
-
                     val request = call.receive<UpdateCategoryTypeRequest>()
                     val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
 
                     // Copy existing category but only update the type
-                    val updatedCategory = existingCategory.copy(
+                    val updatedCategory = CategoryDTO(
                         type = request.type, name = existingCategory.name, description = existingCategory.description,
                         userId = existingCategory.userId
                     )
