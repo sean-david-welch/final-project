@@ -143,7 +143,7 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
         div(classes = "management-container") {
             // Header with total count and add button
             div(classes = "management-header") {
-                h2(classes = "management-title") { +"Categories (${savings.count()})" }
+                h2(classes = "management-title") { +"Savings Goal (${savings.count()})" }
                 if (context.auth.isAdmin) {
                     div(classes = "admin-access-section") {
                         a(href = "/admin", classes = "admin-link-button") {
@@ -167,20 +167,20 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
                         }
                     }
                     tbody {
-                        savings.forEach { category ->
+                        savings.forEach { goal ->
                             tr {
-                                attributes["id"] = "category-row-${category.id}"
-                                td(classes = "table-cell") { +category.name }
-                                td(classes = "table-cell description") { +(category.description ?: "-") }
+                                attributes["id"] = "goal-row-${goal.id}"
+                                td(classes = "table-cell") { +goal.name }
+                                td(classes = "table-cell description") { +(goal.description ?: "-") }
                                 td(classes = "table-actions") {
                                     select(classes = "role-select") {
-                                        attributes["hx-put"] = "/api/categories/${category.id}/type"
+                                        attributes["hx-put"] = "/api/savings-goal/${goal.id}/type"
                                         attributes["hx-target"] = "#response-message"
                                         attributes["hx-swap"] = "innerHTML"
                                         attributes["hx-trigger"] = "change"
                                         attributes["name"] = "type"
-                                        attributes["value"] = category.type.toString()
-                                        attributes["hx-on::after-request"] = "if(event.detail.successful) this.closest('tr').querySelector('#type-cell-${category.id}').innerHTML = this.value"
+                                        attributes["value"] = goal.type.toString()
+                                        attributes["hx-on::after-request"] = "if(event.detail.successful) this.closest('tr').querySelector('#type-cell-${goal.id}').innerHTML = this.value"
 
                                         val categoryTypes = listOf(
                                             "EXPENSE" to "Expense",
@@ -190,7 +190,7 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
                                         categoryTypes.forEach { (value, label) ->
                                             option {
                                                 attributes["value"] = value
-                                                if (value == category.type.toString()) {
+                                                if (value == goal.type.toString()) {
                                                     attributes["selected"] = "selected"
                                                 }
                                                 +label
@@ -198,11 +198,11 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
                                         }
                                     }
                                     button(classes = "delete-button") {
-                                        attributes["hx-delete"] = "/api/categories/${category.id}"
+                                        attributes["hx-delete"] = "/api/categories/${goal.id}"
                                         attributes["hx-target"] = "#response-message"
                                         attributes["hx-swap"] = "innerHTML"
-                                        attributes["hx-confirm"] = "Are you sure you want to delete this category?"
-                                        attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('category-row-${category.id}').remove()"
+                                        attributes["hx-confirm"] = "Are you sure you want to delete this goal?"
+                                        attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('goal-row-${goal.id}').remove()"
                                         +"Delete"
                                     }
                                 }
