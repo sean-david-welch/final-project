@@ -141,13 +141,13 @@
 
 /* Dialog */
 .dialog {
-    @apply max-h-[80vh] w-[75vw];
+    @apply max-h-[80vh] w-[65vw];
     @apply fixed left-1/2 top-0 z-50;
     @apply rounded-lg shadow-sm;
     @apply bg-gray-50 dark:bg-gray-800;
     @apply border border-gray-200 dark:border-gray-700;
     @apply -translate-x-1/2 -translate-y-1/2 transform;
-    @apply transition-all duration-300 ease-in-out;
+    @apply transition-all duration-700 ease-in-out;
     @apply p-6;
 }
 
