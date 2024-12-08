@@ -25,10 +25,7 @@ class BudgetFormatter {
                     logger.debug("Budget ${budget.id} has no items")
                     csvBuilder.appendLine(
                         buildBudgetRow(
-                            budget = budget,
-                            itemName = "",
-                            categoryName = "",
-                            itemAmount = 0.0
+                            budget = budget, itemName = "", categoryName = "", itemAmount = 0.0
                         )
                     )
                 } else {
@@ -37,9 +34,7 @@ class BudgetFormatter {
                     budget.items.forEach { item ->
                         csvBuilder.appendLine(
                             buildBudgetRow(
-                                budget = budget,
-                                itemName = item.name,
-                                categoryName = item.category?.name ?: "Uncategorized",
+                                budget = budget, itemName = item.name, categoryName = item.category?.name ?: "Uncategorized",
                                 itemAmount = item.amount
                             )
                         )
@@ -57,10 +52,7 @@ class BudgetFormatter {
     }
 
     private fun buildBudgetRow(
-        budget: BudgetWithItemsDTO,
-        itemName: String,
-        categoryName: String,
-        itemAmount: Double
+        budget: BudgetWithItemsDTO, itemName: String, categoryName: String, itemAmount: Double
     ): String {
         try {
             val period = if (budget.startDate != null && budget.endDate != null) {
@@ -70,13 +62,8 @@ class BudgetFormatter {
             }
 
             return listOf(
-                budget.name.escapeCsv(),
-                period.escapeCsv(),
-                budget.totalIncome.toString(),
-                budget.totalExpenses.toString(),
-                categoryName.escapeCsv(),
-                itemName.escapeCsv(),
-                itemAmount.toString()
+                budget.name.escapeCsv(), period.escapeCsv(), budget.totalIncome.toString(), budget.totalExpenses.toString(),
+                categoryName.escapeCsv(), itemName.escapeCsv(), itemAmount.toString()
             ).joinToString(",")
 
         } catch (e: Exception) {
