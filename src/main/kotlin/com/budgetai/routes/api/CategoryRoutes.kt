@@ -1,9 +1,6 @@
 package com.budgetai.routes.api
 
-import com.budgetai.models.CategoryCreationRequest
-import com.budgetai.models.CategoryType
-import com.budgetai.models.UpdateCategoryRequest
-import com.budgetai.models.UpdateCategoryTypeRequest
+import com.budgetai.models.*
 import com.budgetai.services.CategoryService
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -93,7 +90,7 @@ fun Route.categoryRoutes(service: CategoryService) {
                     val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
                     logger.info("Existing category: $existingCategory")
 
-                    val updatedCategory = existingCategory.copy(
+                    val updatedCategory = CategoryDTO(
                         name = existingCategory.name, type = request.type, description = existingCategory.description
                     )
                     logger.info("Updated category: $updatedCategory")
