@@ -36,8 +36,7 @@ fun Route.reportRoutes(
                 val budgets = budgetService.getUserBudgets(user.id)
                 val categories = categoryService.getCategories()
                 call.respondText(
-                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories),
-                    contentType = ContentType.Text.Html
+                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories), contentType = ContentType.Text.Html
                 )
             }
             get("/category-breakdown") {
@@ -154,9 +153,18 @@ fun Route.reportRoutes(
                         )
                     )
 
+                    val formattedInsight = """
+            <div class="alert alert-success mb-4" role="alert">
+                AI insight generated successfully
+            </div>
+            <div class="ai-insight-content">
+                ${insight.replace("\n", "<br>")}
+            </div>
+        """.trimIndent()
+
                     logger.info("Successfully created AI insight for budget: $budgetId")
                     call.respondText(
-                        ResponseComponents.success("AI insight generated successfully"), ContentType.Text.Html, HttpStatusCode.OK
+                        ResponseComponents.success(formattedInsight), ContentType.Text.Html, HttpStatusCode.OK
                     )
 
                 } catch (e: IllegalArgumentException) {
