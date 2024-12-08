@@ -7,7 +7,6 @@ import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
 fun AIInsightsTemplate(context: BaseTemplateContext, budgets: List<BudgetDTO>) = DashboardTemplate("AI Insights", context) {
-    // Header Section
     div(classes = "management-header") {
         div {
             h2(classes = "overview-title") { +"AI Budget Analysis" }
@@ -16,8 +15,6 @@ fun AIInsightsTemplate(context: BaseTemplateContext, budgets: List<BudgetDTO>) =
             }
         }
     }
-
-    // Main Content
     div(classes = "content-grid") {
         div {
             attributes["id"] = "response-message"
