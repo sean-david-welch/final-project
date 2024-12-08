@@ -123,6 +123,37 @@ fun Route.categoryRoutes(service: CategoryService) {
                 }
             }
 
+            // update type
+            put("/{id}/type") {
+                try {
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+
+                    // Create a simple data class for type-only updates
+                    data class UpdateCategoryTypeRequest(val type: CategoryType)
+
+                    val request = call.receive<UpdateCategoryTypeRequest>()
+                    val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
+
+                    // Copy existing category but only update the type
+                    val updatedCategory = existingCategory.copy(
+                        type = request.type,
+                        // Preserve existing values
+                        name = existingCategory.name,
+                        description = existingCategory.description,
+                        userId = existingCategory.userId
+                    )
+
+                    service.updateCategory(id, updatedCategory)
+                    call.respond(HttpStatusCode.OK, "Category type updated successfully")
+                } catch (e: IllegalArgumentException) {
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                } catch (e: Exception) {
+                    call.respond(
+                        HttpStatusCode.InternalServerError, "Error updating category type"
+                    )
+                }
+            }
+
             // Delete category
             delete("/{id}") {
                 try {
