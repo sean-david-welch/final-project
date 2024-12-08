@@ -18,27 +18,18 @@ fun main() {
 
 fun Application.module() {
     val config = HoconApplicationConfig(ConfigFactory.load())
-
     val database = DatabaseConfig.initialize()
-
-    val isDevelopment = checkDevelopmentMode(this)
-    if (isDevelopment) {
-        log.info("Running in development mode - seeding database...")
-        try {
-            runBlocking {
-                DataSeeder(database).seed()
-            }
-            log.info("Database seeding completed successfully")
-        } catch (e: Exception) {
-            log.error("Failed to seed database: ${e.message}", e)
+    try {
+        runBlocking {
+            DataSeeder(database).seed()
         }
-    } else {
-        log.info("Running in production mode - skipping database seeding")
+        log.info("Database seeding completed successfully")
+    } catch (e: Exception) {
+        log.error("Failed to seed database: ${e.message}", e)
     }
 
     // custom plugins
     install(TemplateContext)
-
     // default plugin configurations
     configureSecurity(config)
     configureHTTP()
