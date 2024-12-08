@@ -99,3 +99,62 @@
     @apply text-sm font-medium;
     @apply text-gray-700 dark:text-gray-300;
 }
+
+/* Insights */
+.insight-container {
+    @apply p-6 rounded-lg shadow-sm;
+    @apply bg-gray-50 dark:bg-gray-800;
+    @apply mb-6;
+}
+
+.insight-header {
+    @apply text-lg font-medium;
+    @apply text-gray-900 dark:text-white;
+    @apply mb-2 mt-4 first:mt-0;
+}
+
+.insight-section {
+    @apply mb-6 last:mb-0;
+    @apply border-b border-gray-200 dark:border-gray-700 last:border-0;
+    @apply pb-4 last:pb-0;
+}
+
+.insight-item {
+    @apply py-2 pl-4;
+    @apply text-sm;
+    @apply text-gray-600 dark:text-gray-400;
+}
+
+.insight-item.numbered {
+    @apply pl-0;
+    @apply font-medium;
+    @apply text-gray-700 dark:text-gray-300;
+}
+
+.insight-item.with-label {
+    @apply flex flex-col sm:flex-row sm:items-start;
+    @apply gap-1 sm:gap-2;
+}
+
+.insight-item .item-label {
+    @apply font-medium;
+    @apply text-gray-700 dark:text-gray-300;
+    @apply sm:min-w-[120px];
+}
+
+.insight-item .item-content {
+    @apply text-gray-600 dark:text-gray-400;
+}
+
+.insight-text {
+    @apply py-2;
+    @apply text-sm;
+    @apply text-gray-600 dark:text-gray-400;
+}
+
+.insight-wrapper {
+    @apply w-full;
+    @apply bg-white dark:bg-gray-900;
+    @apply rounded-lg shadow;
+    @apply p-4 sm:p-6;
+}
