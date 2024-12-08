@@ -61,47 +61,49 @@ fun createReportsPage(
     }
 }
 
-fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>) = AdminTemplate("Budget Management", context) {
-    div(classes = "management-container") {
-        // Header with total count and add button
-        div(classes = "management-header") {
-            h2(classes = "management-title") { +"Budgets (${categories.count()})" }
-            if (context.auth.isAdmin) {
-                div(classes = "admin-access-section") {
-                    a(href = "/admin", classes = "admin-link-button") {
-                        +"Admin Panel"
+fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>) =
+    AdminTemplate("Budget Management", context) {
+        div(classes = "management-container") {
+            // Header with total count and add button
+            div(classes = "management-header") {
+                h2(classes = "management-title") { +"Budgets (${categories.count()})" }
+                if (context.auth.isAdmin) {
+                    div(classes = "admin-access-section") {
+                        a(href = "/admin", classes = "admin-link-button") {
+                            +"Admin Panel"
+                        }
                     }
                 }
             }
-        }
-        div {
-            attributes["id"] = "response-message"
-        }
+            div {
+                attributes["id"] = "response-message"
+            }
 
-        // Budget table
-        div(classes = "table-container") {
-            table(classes = "data-table") {
-                thead {
-                    tr {
-                        th { +"Name" }
-                        th { +"Type" }
-                        th { +"Description" }
-                    }
-                }
-                tbody {
-                    categories.forEach { category ->
+            // Budget table
+            div(classes = "table-container") {
+                table(classes = "data-table") {
+                    thead {
                         tr {
-                            attributes["id"] = "category-row-${category.id}"
-                            td(classes = "table-cell") { +category.name }
-                            td(classes = "table-cell description") { +(category.description ?: "-") }
-                            td(classes = "table-actions") {
-                                button(classes = "delete-button") {
-                                    attributes["hx-delete"] = "/api/category/${category.id}"
-                                    attributes["hx-target"] = "#response-message"
-                                    attributes["hx-swap"] = "innerHTML"
-                                    attributes["hx-confirm"] = "Are you sure you want to delete this category?"
-                                    attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('category-row-${category.id}').remove()"
-                                    +"Delete"
+                            th { +"Name" }
+                            th { +"Type" }
+                            th { +"Description" }
+                        }
+                    }
+                    tbody {
+                        categories.forEach { category ->
+                            tr {
+                                attributes["id"] = "category-row-${category.id}"
+                                td(classes = "table-cell") { +category.name }
+                                td(classes = "table-cell description") { +(category.description ?: "-") }
+                                td(classes = "table-actions") {
+                                    button(classes = "delete-button") {
+                                        attributes["hx-delete"] = "/api/category/${category.id}"
+                                        attributes["hx-target"] = "#response-message"
+                                        attributes["hx-swap"] = "innerHTML"
+                                        attributes["hx-confirm"] = "Are you sure you want to delete this category?"
+                                        attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('category-row-${category.id}').remove()"
+                                        +"Delete"
+                                    }
                                 }
                             }
                         }
@@ -110,4 +112,3 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
             }
         }
     }
-}
