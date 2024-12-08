@@ -49,7 +49,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
-                        name = "Groceries", type = CategoryType.EXPENSE, description = "Food and household items"
+                        name = "Groceries", type = CategoryType.FIXED.toString(), description = "Food and household items"
                     )
                 )
             )
@@ -71,7 +71,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
                 setBody(
                     Json.encodeToString(
                         CategoryCreationRequest(
-                            name = "Category $index", type = CategoryType.EXPENSE, description = "Test Description"
+                            name = "Category $index", type = CategoryType.FIXED.toString(), description = "Test Description"
                         )
                     )
                 )
@@ -94,7 +94,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
-                        name = "Test Category", type = CategoryType.INCOME, description = "Test Description"
+                        name = "Test Category", type = CategoryType.FIXED.toString(), description = "Test Description"
                     )
                 )
             )
@@ -123,7 +123,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
-                        name = categoryName, type = CategoryType.EXPENSE, description = "Test Description"
+                        name = categoryName, type = CategoryType.FIXED.toString(), description = "Test Description"
                     )
                 )
             )
@@ -143,7 +143,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
-                        name = "Salary", type = CategoryType.INCOME, description = "Monthly salary"
+                        name = "Salary", type = CategoryType.FIXED.toString(), description = "Monthly salary"
                     )
                 )
             )
@@ -155,16 +155,16 @@ class CategoryRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
-                        name = "Groceries", type = CategoryType.EXPENSE, description = "Food expenses"
+                        name = "Groceries", type = CategoryType.FIXED.toString(), description = "Food expenses"
                     )
                 )
             )
         }
 
-        val response = client.get("/api/categories/type/INCOME") { withAuth() }
+        val response = client.get("/api/categories/type/_root_ide_package_.com.budgetai.models.CategoryType.FIXED.toString()") { withAuth() }
         assertEquals(HttpStatusCode.OK, response.status)
         val categories = Json.decodeFromString<List<CategoryDTO>>(response.bodyAsText())
-        assertTrue(categories.all { it.type == CategoryType.INCOME })
+        assertTrue(categories.all { it.type == CategoryType.FIXED.toString() })
     }
 
     @Test
@@ -177,7 +177,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
-                        name = "Original Name", type = CategoryType.EXPENSE, description = "Original Description"
+                        name = "Original Name", type = CategoryType.FIXED.toString(), description = "Original Description"
                     )
                 )
             )
@@ -191,7 +191,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     UpdateCategoryRequest(
-                        name = "Updated Name", type = CategoryType.INCOME, description = "Updated Description"
+                        name = "Updated Name", type = CategoryType.FIXED.toString(), description = "Updated Description"
                     )
                 )
             )
@@ -203,7 +203,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
         val getResponse = client.get("/api/categories/$categoryId") { withAuth() }
         val updatedCategory = Json.decodeFromString<CategoryDTO>(getResponse.bodyAsText())
         assertEquals("Updated Name", updatedCategory.name)
-        assertEquals(CategoryType.INCOME, updatedCategory.type)
+        assertEquals(CategoryType.FIXED.toString(), updatedCategory.type)
         assertEquals("Updated Description", updatedCategory.description)
     }
 
@@ -217,7 +217,7 @@ class CategoryRoutesTest : AuthenticatedTest() {
             setBody(
                 Json.encodeToString(
                     CategoryCreationRequest(
-                        name = "Test Category", type = CategoryType.EXPENSE, description = "Test Description"
+                        name = "Test Category", type = CategoryType.FIXED.toString(), description = "Test Description"
                     )
                 )
             )
