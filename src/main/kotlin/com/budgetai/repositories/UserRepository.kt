@@ -11,7 +11,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.Exception
 
 private val ADMIN_EMAIL = System.getenv("ADMIN_EMAIL")
-private val ADMIN_NAME = System.getenv("ADMIN_NAME")
 
 class UserRepository(private val database: Database) {
     // Initialize database schema
@@ -65,7 +64,7 @@ class UserRepository(private val database: Database) {
         // Validate role
         validateRole(user.role)
 
-        if (user.name == ADMIN_NAME && user.email == ADMIN_EMAIL) {
+        if (user.email == ADMIN_EMAIL) {
             user.role = UserRole.ADMIN.toString()
         }
 
