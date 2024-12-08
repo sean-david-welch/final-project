@@ -79,31 +79,24 @@ fun Route.categoryRoutes(service: CategoryService) {
             }
 
             // Get categories by type
-            put("/{id}") {
+            get("/type/{type}") {
                 try {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
-                    logger.info("Received request to update category with ID: $id")
+                    val typeStr = call.parameters["type"] ?: throw IllegalArgumentException("Type is required")
 
-                    val request = call.receive<UpdateCategoryTypeRequest>()
-                    logger.info("Update request payload: $request")
+                    val type = try {
+                        CategoryType.valueOf(typeStr.uppercase())
+                    } catch (e: IllegalArgumentException) {
+                        throw IllegalArgumentException("Invalid category type")
+                    }
 
-                    val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
-                    logger.info("Existing category: $existingCategory")
-
-                    val updatedCategory = CategoryDTO(
-                        name = existingCategory.name, type = request.type, description = existingCategory.description
-                    )
-                    logger.info("Updated category: $updatedCategory")
-
-                    service.updateCategory(id, updatedCategory)
-                    logger.info("Category with ID $id updated successfully")
-                    call.respond(HttpStatusCode.OK, "Category updated successfully")
+                    val categories = service.getCategoriesByType(type)
+                    call.respond(categories)
                 } catch (e: IllegalArgumentException) {
-                    logger.warn("Bad request: ${e.message}", e)
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
                 } catch (e: Exception) {
-                    logger.error("Unexpected error updating category", e)
-                    call.respond(HttpStatusCode.InternalServerError, "Error updating category")
+                    call.respond(
+                        HttpStatusCode.InternalServerError, "Error retrieving categories"
+                    )
                 }
             }
 
