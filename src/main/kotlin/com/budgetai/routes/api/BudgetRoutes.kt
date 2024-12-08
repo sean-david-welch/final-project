@@ -7,7 +7,7 @@ import com.budgetai.models.UpdateBudgetTotalsRequest
 import com.budgetai.services.BudgetItemService
 import com.budgetai.services.BudgetService
 import com.budgetai.templates.components.ResponseComponents
-import com.budgetai.utils.BudgetParser
+import com.budgetai.lib.BudgetParser
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
