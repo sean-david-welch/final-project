@@ -28,9 +28,9 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
             }
             get("/category-breakdown") {
                 val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
-                val categories = categoryService.getCategories()
+                val categories = categoryService.getCategoryByUserId(user.id)
                 call.respondText(
-                    text = createCategoryManagementPage(call.templateContext, categories), contentType = ContentType.Text.Html
+                    text = createCategoryManagementPage(call.templateContext, categories, user), contentType = ContentType.Text.Html
                 )
             }
             get("/savings-tracking") {
