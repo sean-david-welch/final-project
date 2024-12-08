@@ -3,15 +3,20 @@ branch-defaults:
     environment: budgetai-env
 global:
   application_name: budgetai
-  branch: null
-  default_ec2_keyname: null
   default_platform: Docker running on 64bit Amazon Linux 2
   default_region: eu-west-1
   include_git_submodules: true
-  instance_profile: null
-  platform_name: null
-  platform_version: null
-  profile: null
-  repository: null
-  sc: git
   workspace_type: Application
+
+option_settings:
+  aws:elasticbeanstalk:application:environment:
+    PORT: 8080
+    ENVIRONMENT: production
+    OPEN_AI: ${OPEN_AI}
+    AWS_ACCESS: ${AWS_ACCESS}
+    AWS_SECRET: ${AWS_SECRET}
+    JWT_AUDIENCE: ${JWT_AUDIENCE}
+    JWT_ISSUER: ${JWT_ISSUER}
+    JWT_REALM: ${JWT_REALM}
+    JWT_SECRET: ${JWT_SECRET}
+    ADMIN_EMAIL: ${ADMIN_EMAIL}
