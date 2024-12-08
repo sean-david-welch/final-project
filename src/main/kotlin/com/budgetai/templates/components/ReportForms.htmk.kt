@@ -73,3 +73,87 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
         }
     }
 }
+
+fun FlowContent.AIInsightForm(context: BaseTemplateContext) {
+    form(classes = "auth-form") {
+        attributes["hx-post"] = "/api/reports/ai-insight"
+        attributes["hx-target"] = "#response-message"
+        attributes["hx-on::after-request"] = """
+            if(event.detail.successful) {
+                this.reset();
+                document.getElementById('modal-dialog').close();
+                // Optional: Refresh the insights list
+                htmx.trigger('#response-message', 'refreshInsights');
+            }
+        """.trimIndent()
+
+        input(type = InputType.hidden) {
+            name = "userId"
+            value = context.auth.user?.id!!
+        }
+
+        div(classes = "spreadsheet-wrapper") {
+            div(classes = "form-group") {
+                label { +"Select Prompt" }
+                select(classes = "input-field") {
+                    name = "prompt"
+                    required = true
+
+                    option {
+                        value = ""
+                        +"Select a prompt..."
+                    }
+                    option {
+                        value = "spending_patterns"
+                        +"Analyze Spending Patterns"
+                    }
+                    option {
+                        value = "savings_opportunities"
+                        +"Identify Savings Opportunities"
+                    }
+                    option {
+                        value = "budget_optimization"
+                        +"Budget Optimization Suggestions"
+                    }
+                    option {
+                        value = "financial_goals"
+                        +"Financial Goals Analysis"
+                    }
+                }
+            }
+
+            div(classes = "form-group") {
+                label { +"Select Budget" }
+                select(classes = "input-field") {
+                    name = "budget"
+                    required = true
+
+                    option {
+                        value = ""
+                        +"Select a budget..."
+                    }
+                    option {
+                        value = "monthly"
+                        +"Monthly Budget"
+                    }
+                    option {
+                        value = "quarterly"
+                        +"Quarterly Budget"
+                    }
+                    option {
+                        value = "annual"
+                        +"Annual Budget"
+                    }
+                    option {
+                        value = "custom"
+                        +"Custom Budget"
+                    }
+                }
+            }
+        }
+
+        button(type = ButtonType.submit, classes = "submit-button") {
+            +"Generate AI Insight"
+        }
+    }
+}
