@@ -141,8 +141,9 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
                 +"Savings Goals"
             }
             div(classes = "text-base mt-4") {
-                +"Here's a list of the savings goals you've created"
+                +"Create a savings goal below"
             }
+            SavingsGoalForm(context)
         }
 
         div(classes = "management-container") {
