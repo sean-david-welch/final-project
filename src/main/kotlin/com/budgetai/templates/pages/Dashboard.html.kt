@@ -15,25 +15,17 @@ fun DashboardTemplate(title: String, context: BaseTemplateContext, contentFn: DI
 }
 
 fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashboard Overview", context) {
-    div(classes = "overview-header") {
-        h2(classes = "overview-title") { +"Your Personal Dashboard" }
-        p(classes = "overview-description") {
-            +"View usage stats and create new budgets"
-        }
-        div(classes = "admin-access-section") {
-            a(href = "/dashboard/budget-management", classes = "action-button") {
-                +"Budgets Overview"
+    div(classes = "management-header") {
+        div {
+            h2(classes = "overview-title") { +"Personal Dashboard" }
+            p(classes = "overview-description") {
+                +"Create new budgets and view historial accounts"
             }
         }
-    }
-
-    div(classes = "admin-access-section") {
-        h2(classes = "overview-title") { +"Budget Form" }
-        p(classes = "overview-description") {
-            +"Create a new Budget below"
+        a(href = "/dashboard/budget-management", classes = "action-button") {
+            +"Budgets Overview"
         }
     }
-
 
     SpreadsheetComponent(context)
 }
