@@ -2,13 +2,18 @@ function dialogComponent() {
     return {
         visible: false,
         show() {
-            this.$el.showModal();
-            this.$el.classList.add('dialog-visible');
+            console.log('Show dialog triggered'); // Debug log
+            this.visible = true;
+            this.$nextTick(() => {
+                this.$el.querySelector('dialog').showModal();
+            });
         },
         close() {
-            this.$el.close();
-            this.$el.classList.remove('dialog-visible');
-            this.$dispatch('dialog-closed');
+            console.log('Close dialog triggered'); // Debug log
+            this.visible = false;
+            this.$nextTick(() => {
+                this.$el.querySelector('dialog').close();
+            });
         }
     };
 }
