@@ -9,11 +9,9 @@ fun FlowContent.SpendingSummaryCard(context: BaseTemplateContext) {
             div(classes = "report-header") {
                 h3(classes = "report-title") { +"Spending Summary" }
                 div(classes = "report-actions") {
-                    button(classes = "action-button") {
-                        attributes["hx-get"] = "/api/reports/spending-summary"
-                        attributes["hx-trigger"] = "click"
-                        attributes["hx-swap"] = "none"
-                        attributes["download"] = ""
+                    a(classes = "action-button", href = "/api/reports/spending-summary") {
+                        attributes["download"] = "spending-summary.csv"
+                        style = "text-decoration: none; display: inline-block;"
                         +"Download CSV"
                     }
                 }
