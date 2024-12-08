@@ -27,9 +27,12 @@ class CategoryService(private val repository: CategoryRepository) {
         return repository.findAll()
     }
 
-
     suspend fun getCategory(id: Int): CategoryDTO? {
         return repository.findById(id)
+    }
+
+    suspend fun getCategoryByUserId(userId: Int): List<CategoryDTO> {
+        return repository.findByUserId(userId)
     }
 
     // Retrieves a category by its name
