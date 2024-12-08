@@ -59,7 +59,7 @@ class AiInsightRoutesTest : AuthenticatedTest() {
         Categories.insert {
             it[id] = 1
             it[name] = "Dining"
-            it[type] = CategoryType.EXPENSE
+            it[type] = CategoryType.FIXED.toString()
             it[description] = "Food and dining expenses"
         }
 
