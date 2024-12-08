@@ -45,8 +45,7 @@ class OpenAi(config: ApplicationConfig) {
                 header("Authorization", "Bearer $apiKey")
                 setBody(
                     ChatRequest(
-                        model = model,
-                        messages = listOf(ChatMessage(role = "user", content = prompt))
+                        model = model, messages = listOf(ChatMessage(role = "user", content = prompt))
                     )
                 )
             }
@@ -77,8 +76,7 @@ class OpenAi(config: ApplicationConfig) {
 
     class OpenAiException(message: String, cause: Throwable? = null) : Exception(message, cause) {
         init {
-            LoggerFactory.getLogger(OpenAiException::class.java)
-                .error("OpenAI Exception: $message", cause)
+            LoggerFactory.getLogger(OpenAiException::class.java).error("OpenAI Exception: $message", cause)
         }
     }
 }
