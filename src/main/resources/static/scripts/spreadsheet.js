@@ -36,6 +36,7 @@ class SpreadsheetTable {
     createCell(type = 'text') {
         if (type === 'category') {
             const cell = document.createElement('td');
+            cell.className = 'spreadsheet-cell'; // Add the class here
             const select = this.table.querySelector('tbody tr:first-child td:last-child select').cloneNode(true);
             cell.appendChild(select);
             return cell;
