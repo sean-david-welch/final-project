@@ -1,4 +1,4 @@
-package com.budgetai.utils
+package com.budgetai.lib
 
 import com.budgetai.models.BudgetItemDTO
 import org.slf4j.Logger
