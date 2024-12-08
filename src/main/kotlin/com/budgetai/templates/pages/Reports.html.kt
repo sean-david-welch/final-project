@@ -56,7 +56,7 @@ fun createReportsPage(
     div(classes = "reports-grid") {
         SpendingSummaryCard()
         BudgetAnalysisCard()
-        CategoryBreakdownCard()
+        CategoryBreakdownCard(context)
         SavingsTrackingCard()
     }
 }
