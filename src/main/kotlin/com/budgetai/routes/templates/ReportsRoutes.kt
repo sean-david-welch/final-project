@@ -4,6 +4,7 @@ import com.budgetai.services.BudgetItemService
 import com.budgetai.services.BudgetService
 import com.budgetai.services.CategoryService
 import com.budgetai.services.UserService
+import com.budgetai.templates.pages.createCategoryManagementPage
 import com.budgetai.templates.pages.createReportsPage
 import com.budgetai.utils.templateContext
 import io.ktor.http.*
@@ -26,13 +27,9 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
                 )
             }
             get("/category-breakdown") {
-                val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
-
-                val budgetItems = budgetItemService.getBudgetItemsForUser(user.id)
-                val budgets = budgetService.getUserBudgets(user.id)
                 val categories = categoryService.getCategories()
                 call.respondText(
-                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories), contentType = ContentType.Text.Html
+                    text = createCategoryManagementPage(call.templateContext, categories), contentType = ContentType.Text.Html
                 )
             }
             get("/savings-tracking") {
