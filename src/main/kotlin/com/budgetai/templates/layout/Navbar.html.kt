@@ -11,8 +11,9 @@ data class NavItem(val text: String, val href: String, val isActive: Boolean = f
 // default nav items for all pages
 fun getNavItems(currentPath: String): List<NavItem> {
     return listOf(
+        NavItem("AI Advisor", "/reports/insights", currentPath.contains("/insights")),
         NavItem("Dashboard", "/dashboard", currentPath.startsWith("/dashboard")),
-        NavItem("Reports", "/reports", currentPath.startsWith("/reports")),
+        NavItem("Reports", "/reports", currentPath.endsWith("/reports")),
         NavItem("Settings", "/settings", currentPath.startsWith("/settings"))
     )
 }
