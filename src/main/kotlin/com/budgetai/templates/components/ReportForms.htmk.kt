@@ -134,8 +134,8 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<Budget
 
                     budgets.forEach { budget ->
                         option {
-                            value = budget.id
-                            +"${budget.name} (${budget.period})"
+                            value = budget.id.toString()
+                            +budget.name
                         }
                     }
                 }
