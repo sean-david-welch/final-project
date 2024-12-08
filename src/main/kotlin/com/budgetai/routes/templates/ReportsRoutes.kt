@@ -2,10 +2,7 @@ package com.budgetai.routes.templates
 
 import com.budgetai.lib.BudgetFormatter
 import com.budgetai.lib.OpenAi
-import com.budgetai.models.AiInsightDTO
-import com.budgetai.models.InsightCreationRequest
-import com.budgetai.models.PromptType
-import com.budgetai.models.Sentiment
+import com.budgetai.models.*
 import com.budgetai.services.*
 import com.budgetai.templates.pages.createCategoryManagementPage
 import com.budgetai.templates.pages.createReportsPage
@@ -170,7 +167,7 @@ fun Route.reportRoutes(
                         userId = userId,
                         budgetId = budgetId,
                         prompt = prompt,
-                        type =,
+                        type = InsightType.BUDGET_ANALYSIS,
                         sentiment = Sentiment.NEUTRAL,
                         response = insight,
                     )
