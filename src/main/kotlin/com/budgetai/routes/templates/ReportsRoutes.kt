@@ -100,10 +100,9 @@ fun Route.reportRoutes(
                 logger.info("Received AI insight request")
 
                 try {
-                    val userId = call.parameters["userId"]?.toIntOrNull()
-                        ?: throw IllegalArgumentException("Invalid user ID").also {
-                            logger.error("Invalid user ID provided")
-                        }
+                    val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID").also {
+                        logger.error("Invalid user ID provided")
+                    }
 
                     val promptType = call.parameters["prompt"]?.let {
                         PromptType.entries.find { type -> type.name.lowercase() == it }
@@ -111,15 +110,13 @@ fun Route.reportRoutes(
                         logger.error("Invalid prompt type provided")
                     }
 
-                    val budgetId = call.parameters["budget"]?.toIntOrNull()
-                        ?: throw IllegalArgumentException("Invalid budget ID").also {
-                            logger.error("Invalid budget ID provided")
-                        }
+                    val budgetId = call.parameters["budget"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID").also {
+                        logger.error("Invalid budget ID provided")
+                    }
 
-                    val budget = budgetService.getBudget(budgetId)
-                        ?: throw IllegalArgumentException("Budget not found").also {
-                            logger.error("Budget not found for ID: $budgetId")
-                        }
+                    val budget = budgetService.getBudget(budgetId) ?: throw IllegalArgumentException("Budget not found").also {
+                        logger.error("Budget not found for ID: $budgetId")
+                    }
 
                     logger.debug("Fetching budget items for budget: $budgetId")
                     val budgetItems = budgetItemService.getBudgetItems(budgetId)
@@ -139,12 +136,8 @@ fun Route.reportRoutes(
                     logger.debug("Saving insight to database")
                     val savedInsight = aiInsightService.createInsight(
                         InsightCreationRequest(
-                            userId = userId,
-                            budgetId = budgetId,
-                            prompt = prompt,
-                            type = InsightType.BUDGET_ANALYSIS,
-                            sentiment = Sentiment.NEUTRAL,
-                            response = insight
+                            userId = userId, budgetId = budgetId, prompt = prompt, type = InsightType.BUDGET_ANALYSIS,
+                            sentiment = Sentiment.NEUTRAL, response = insight
                         )
                     )
 
@@ -157,9 +150,7 @@ fun Route.reportRoutes(
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.success("AI insight generated successfully"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.success("AI insight generated successfully"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -172,9 +163,7 @@ fun Route.reportRoutes(
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -187,9 +176,7 @@ fun Route.reportRoutes(
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Error generating AI insight"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error("Error generating AI insight"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
