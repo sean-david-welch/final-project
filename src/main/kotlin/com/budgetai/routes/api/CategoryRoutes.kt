@@ -81,26 +81,34 @@ fun Route.categoryRoutes(service: CategoryService) {
             }
 
             // Get categories by type
-            get("/type/{type}") {
+            put("/{id}") {
                 try {
-                    val typeStr = call.parameters["type"] ?: throw IllegalArgumentException("Type is required")
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+                    logger.info("Received request to update category with ID: $id")
 
-                    val type = try {
-                        CategoryType.valueOf(typeStr.uppercase())
-                    } catch (e: IllegalArgumentException) {
-                        throw IllegalArgumentException("Invalid category type")
-                    }
+                    val request = call.receive<UpdateCategoryRequest>()
+                    logger.info("Update request payload: $request")
 
-                    val categories = service.getCategoriesByType(type)
-                    call.respond(categories)
+                    val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
+                    logger.info("Existing category: $existingCategory")
+
+                    val updatedCategory = existingCategory.copy(
+                        name = request.name, type = request.type, description = request.description
+                    )
+                    logger.info("Updated category: $updatedCategory")
+
+                    service.updateCategory(id, updatedCategory)
+                    logger.info("Category with ID $id updated successfully")
+                    call.respond(HttpStatusCode.OK, "Category updated successfully")
                 } catch (e: IllegalArgumentException) {
+                    logger.warn("Bad request: ${e.message}", e)
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
                 } catch (e: Exception) {
-                    call.respond(
-                        HttpStatusCode.InternalServerError, "Error retrieving categories"
-                    )
+                    logger.error("Unexpected error updating category", e)
+                    call.respond(HttpStatusCode.InternalServerError, "Error updating category")
                 }
             }
+
 
             // Update category
             put("/{id}") {
