@@ -79,9 +79,10 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                 table(classes = "data-table") {
                     thead {
                         tr {
-                            th { +"Name" }
-                            th { +"Type" }
-                            th { +"Description" }
+                            th { +"NAME" }
+                            th { +"DESCRIPTION" }
+                            th { +"TYPE" }
+                            th { +"ACTIONS" }
                         }
                     }
                     tbody {
@@ -89,8 +90,8 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                             tr {
                                 attributes["id"] = "category-row-${category.id}"
                                 td(classes = "table-cell") { +category.name }
-                                td(classes = "table-cell description") { +(category.description ?: "-") }
-                                td(classes = "table-actions") {
+                                td(classes = "table-cell") { +(category.description ?: "-") }
+                                td(classes = "table-cell") {
                                     select(classes = "role-select") {
                                         attributes["hx-put"] = "/api/categories/${category.id}/type"
                                         attributes["hx-target"] = "#response-message"
@@ -113,6 +114,8 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                             }
                                         }
                                     }
+                                }
+                                td(classes = "table-actions") {
                                     button(classes = "delete-button") {
                                         attributes["hx-delete"] = "/api/categories/${category.id}"
                                         attributes["hx-target"] = "#response-message"
