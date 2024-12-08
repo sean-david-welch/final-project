@@ -15,10 +15,11 @@ data class ChatRequest(
 
 @Serializable
 data class ChatResponse(
+    val id: String? = null, @SerialName("object") val objectName: String? = null, val created: Long? = null, val model: String? = null,
     val choices: List<Choice>
 ) {
     @Serializable
     data class Choice(
-        val message: ChatMessage, @SerialName("finish_reason") val finishReason: String
+        val index: Int? = null, val message: ChatMessage, @SerialName("finish_reason") val finishReason: String? = null
     )
 }
