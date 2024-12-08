@@ -97,6 +97,7 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
                         td(classes = "spreadsheet-cell") {
                             select(classes = "role-select") {
                                 option {
+                                    value = ""
                                     +"Select category"
                                 }
                                 CategoryType.entries.forEach { category ->
@@ -104,7 +105,7 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
                                         if (category == CategoryType.FIXED) {
                                             selected = true
                                         }
-                                        text(category.toString())
+                                        value = category.name
                                         +category.name
                                     }
                                 }
