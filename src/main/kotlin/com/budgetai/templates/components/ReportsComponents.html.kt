@@ -1,7 +1,6 @@
 package com.budgetai.templates.components
 
 import com.budgetai.models.BudgetDTO
-import com.budgetai.models.UserDTO
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
@@ -25,7 +24,7 @@ fun FlowContent.SpendingSummaryCard(context: BaseTemplateContext) {
     }
 }
 
-fun FlowContent.BudgetAnalysisCard(context: BaseTemplateContext, budgets: List<BudgetDTO>, user: UserDTO) {
+fun FlowContent.BudgetAnalysisCard(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
     DialogComponent(context) {
         h2(classes = "heading-large") {
             +"Savings Goals"

@@ -13,13 +13,11 @@ import com.budgetai.utils.templateContext
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.config.*
-import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.time.LocalDateTime
 
 fun Route.reportRoutes(
     userService: UserService, budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService,
@@ -38,7 +36,7 @@ fun Route.reportRoutes(
                 val budgets = budgetService.getUserBudgets(user.id)
                 val categories = categoryService.getCategories()
                 call.respondText(
-                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories, user),
+                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories),
                     contentType = ContentType.Text.Html
                 )
             }

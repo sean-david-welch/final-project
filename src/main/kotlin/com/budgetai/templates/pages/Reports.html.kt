@@ -16,7 +16,7 @@ fun ReportsTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.
 }
 
 fun createReportsPage(
-    context: BaseTemplateContext, budgets: List<BudgetDTO>, budgetItems: List<BudgetItemDTO>, categories: List<CategoryDTO>, user: UserDTO
+    context: BaseTemplateContext, budgets: List<BudgetDTO>, budgetItems: List<BudgetItemDTO>, categories: List<CategoryDTO>
 ) = ReportsTemplate("Financial Reports & Analytics", context) {
     // Reports Overview Section
     div(classes = "reports-overview") {
@@ -50,7 +50,7 @@ fun createReportsPage(
     // Reports Grid
     div(classes = "reports-grid") {
         SpendingSummaryCard(context)
-        BudgetAnalysisCard(context, budgets, user)
+        BudgetAnalysisCard(context, budgets)
         CategoryBreakdownCard(context)
         SavingsTrackingCard(context)
     }
