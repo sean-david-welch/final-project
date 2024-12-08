@@ -14,12 +14,14 @@ fun DIV.insightContentComponent(content: String) {
                     }
                     formatInsightContent(trimmedSection.substringAfter("Summary"))
                 }
+
                 trimmedSection.contains("Total Potential Savings") -> {
                     h4(classes = "section-title") {
                         +"Total Potential Savings"
                     }
                     formatInsightContent(trimmedSection.substringAfter("Total Potential Savings"))
                 }
+
                 else -> {
                     val parts = trimmedSection.split(":", limit = 2)
                     if (parts.size == 2) {
@@ -46,12 +48,14 @@ private fun DIV.formatInsightContent(content: String) {
                         +trimmedLine.removePrefix("**Benefits:**").trim()
                     }
                 }
+
                 trimmedLine.startsWith("-") -> {
                     div(classes = "insight-item") {
                         span(classes = "bullet-icon") { +"•" }
                         span { +trimmedLine.removePrefix("-").trim() }
                     }
                 }
+
                 else -> {
                     p(classes = "insight-text") {
                         +trimmedLine
