@@ -10,7 +10,12 @@ data class ChatMessage(
 
 @Serializable
 data class ChatRequest(
-    val model: String, val messages: List<ChatMessage>
+    val model: String,
+    val messages: List<ChatMessage>,
+    @SerialName("max_tokens") val maxTokens: Int = 500,
+    val temperature: Double = 0.7,
+    @SerialName("top_p") val topP: Double = 1.0,
+    val stream: Boolean = false
 )
 
 @Serializable
