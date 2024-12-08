@@ -38,7 +38,7 @@ fun Route.reportRoutes(
                 val budgets = budgetService.getUserBudgets(user.id)
                 val categories = categoryService.getCategories()
                 call.respondText(
-                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories), contentType = ContentType.Text.Html
+                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories, user), contentType = ContentType.Text.Html
                 )
             }
             get("/category-breakdown") {
