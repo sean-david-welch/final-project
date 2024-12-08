@@ -1,6 +1,6 @@
 /* Base Message Styles */
 .response-div {
-    @apply my-;
+    @apply my-2;
 }
 
 .message-base {
