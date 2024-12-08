@@ -136,8 +136,7 @@ fun Route.categoryRoutes(service: CategoryService) {
 
                     // Log the incoming request body
                     val requestBody = try {
-                        val type = call.receiveParameters()["type"]
-                            ?: throw IllegalArgumentException("Missing type parameter")
+                        val type = call.receiveParameters()["type"] ?: throw IllegalArgumentException("Missing type parameter")
                         UpdateCategoryTypeRequest(type = type)
                     } catch (e: Exception) {
                         logger.error("Failed to parse request body", e)
