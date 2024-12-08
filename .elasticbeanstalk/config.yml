@@ -3,15 +3,27 @@ branch-defaults:
     environment: budgetai-env
   master:
     environment: null
+
 global:
   application_name: budgetai
   default_ec2_keyname: null
   default_platform: Docker running on 64bit Amazon Linux 2
   default_region: eu-west-1
   include_git_submodules: true
-  instance_profile: aws-elasticbeanstalk-ec2-role
+  instance_profile: aws-elasticbeanstalk-ec2-role  # Recommended to specify
   platform_name: null
   platform_version: null
-  profile: null
+  profile: default  # Specify your AWS CLI profile if you have multiple
   sc: git
   workspace_type: Application
+
+deploy:
+  artifact: Dockerrun.aws.json  # Specify your Docker configuration file
+
+option_settings:
+  aws:autoscaling:launchconfiguration:
+    IamInstanceProfile: aws-elasticbeanstalk-ec2-role
+  aws:elasticbeanstalk:environment:
+    ServiceRole: aws-elasticbeanstalk-service-role
+  aws:elasticbeanstalk:application:environment:
+    PORT: 8080  # Adjust based on your Ktor app's port
