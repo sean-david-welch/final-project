@@ -20,13 +20,13 @@ fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashb
         p(classes = "overview-description") {
             +"View usage stats and create new budgets"
         }
-    }
-
-    div(classes = "admin-access-section") {
-        a(href = "/dashboard/budget-management", classes = "admin-link-button-sm") {
-            +"Budgets Overview"
+        div(classes = "admin-access-section") {
+            a(href = "/dashboard/budget-management", classes = "action-button") {
+                +"Budgets Overview"
+            }
         }
     }
+
 
     SpreadsheetComponent(context)
 }
