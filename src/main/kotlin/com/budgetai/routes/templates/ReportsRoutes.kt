@@ -92,8 +92,7 @@ fun Route.reportRoutes(
 
             post("/ai-insights") {
                 // 1. Get form parameters
-                val userId = call.parameters["userId"]?.toLongOrNull()
-                    ?: throw BadRequestException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toLongOrNull() ?: throw BadRequestException("Invalid user ID")
 
                 val promptType = call.parameters["prompt"]?.let {
                     PromptType.entries.find { type ->
@@ -101,11 +100,9 @@ fun Route.reportRoutes(
                     }
                 } ?: throw BadRequestException("Invalid prompt type")
 
-                val budgetId = call.parameters["budget"]?.toLongOrNull()
-                    ?: throw BadRequestException("Invalid budget ID")
+                val budgetId = call.parameters["budget"]?.toLongOrNull() ?: throw BadRequestException("Invalid budget ID")
 
-                val budget = budgetService.getBudget(budgetId.toInt())
-                    ?: throw NotFoundException("Budget not found")
+                val budget = budgetService.getBudget(budgetId.toInt()) ?: throw NotFoundException("Budget not found")
 
                 call.respond(HttpStatusCode.Created)
             }
