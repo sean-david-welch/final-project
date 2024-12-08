@@ -2,6 +2,7 @@ package com.budgetai.routes.api
 
 import com.budgetai.models.*
 import com.budgetai.services.CategoryService
+import com.budgetai.templates.components.ResponseComponents
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -126,34 +127,24 @@ fun Route.categoryRoutes(service: CategoryService) {
             // update type
             put("/{id}/type") {
                 try {
-                    val id = call.parameters["id"]?.toIntOrNull()
-                    logger.info("Received type update request for category ID: $id")
-
-                    if (id == null) {
-                        logger.warn("Invalid category ID provided: ${call.parameters["id"]}")
-                        throw IllegalArgumentException("Invalid category ID")
-                    }
-
-                    // Log the incoming request body
-                    val requestBody = try {
-                        val type = call.receiveParameters()["type"] ?: throw IllegalArgumentException("Missing type parameter")
-                        UpdateCategoryTypeRequest(type = type)
-                    } catch (e: Exception) {
-                        logger.error("Failed to parse request body", e)
-                        throw IllegalArgumentException("Invalid request format: ${e.message}")
-                    }
+                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
 
                     // Log category lookup
-                    val existingCategory = service.getCategory(id)
-                    if (existingCategory == null) {
-                        logger.warn("Category not found with ID: $id")
-                        throw IllegalArgumentException("Category not found")
+                    val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
+
+                    // Handle both JSON and form-encoded requests
+                    val requestBody = when (call.request.contentType()) {
+                        ContentType.Application.Json -> call.receive<UpdateCategoryTypeRequest>()
+                        ContentType.Application.FormUrlEncoded -> {
+                            val parameters = call.receiveParameters()
+                            UpdateCategoryTypeRequest(
+                                type = parameters["type"] ?: throw IllegalArgumentException("Type is required")
+                            )
+                        }
+                        else -> throw IllegalArgumentException("Unsupported content type")
                     }
-                    logger.info("Found existing category: $existingCategory")
 
-                    // Log category update
-                    logger.info("Updating category $id type from '${existingCategory.type}' to '${requestBody.type}'")
-
+                    // Prepare and update category
                     val updatedCategory = existingCategory.copy(
                         id = id,
                         userId = existingCategory.userId,
@@ -162,32 +153,53 @@ fun Route.categoryRoutes(service: CategoryService) {
                         name = existingCategory.name,
                         description = existingCategory.description,
                     )
-                    logger.debug("Prepared updated category: {}", updatedCategory)
 
-                    try {
-                        service.updateCategory(id, updatedCategory)
-                        logger.info("Successfully updated category ${id} type to '${requestBody.type}'")
-                        call.respond(HttpStatusCode.OK, "Category type updated successfully")
-                    } catch (e: Exception) {
-                        logger.error("Failed to update category in database", e)
-                        throw e
+                    service.updateCategory(id, updatedCategory)
+                    logger.info("Successfully updated category ${id} type to '${requestBody.type}'")
+
+                    // Send appropriate response based on content type
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.OK, mapOf("message" to "Category type updated successfully"))
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.success("Category type updated successfully"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
                     }
-
                 } catch (e: IllegalArgumentException) {
                     logger.warn("Bad request while updating category type", e)
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Invalid request")))
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error(e.message ?: "Invalid request"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: Exception) {
                     logger.error("Unexpected error while updating category type", e)
-                    call.respond(
-                        HttpStatusCode.InternalServerError, "Error updating category type: ${
-                            if (e.message?.contains(
-                                    "sensitive"
-                                ) == false) e.message else "Internal server error"
-                        }"
-                    )
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error updating category type"))
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error("Error updating category type"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 }
             }
-
             // Delete category
             delete("/{id}") {
                 try {
