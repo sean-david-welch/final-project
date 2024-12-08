@@ -138,3 +138,46 @@
         @apply opacity-100 translate-y-0;
     }
 }
+
+/* Dialog */
+.dialog {
+    @apply max-h-[90vh] w-[80vw];
+    @apply fixed left-1/2 top-1/2 z-50;
+    @apply rounded-lg shadow-sm;
+    @apply bg-gray-50 dark:bg-gray-800;
+    @apply border border-gray-200 dark:border-gray-700;
+    @apply -translate-x-1/2 -translate-y-1/2 transform;
+    @apply transition-all duration-300 ease-in-out;
+    @apply opacity-0;
+    @apply p-6;
+}
+
+.dialog::backdrop {
+    @apply bg-gray-900/50 dark:bg-black/50;
+}
+
+.dialog-visible {
+    @apply opacity-100;
+}
+
+.dialog-btn {
+    @apply absolute right-4 top-4;
+    @apply p-2 rounded-lg;
+    @apply text-gray-500 dark:text-gray-400;
+    @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+    @apply transition-colors duration-200;
+    @apply text-xl font-medium;
+    @apply border border-transparent;
+    @apply hover:border-gray-200 dark:hover:border-gray-600;
+}
+
+.dialog-content {
+    @apply text-gray-600 dark:text-gray-400;
+    @apply mt-2;
+}
+
+/* Optional: Add these styles if you want the dialog content to scroll when it gets too long */
+.dialog-content {
+    @apply max-h-[calc(90vh-8rem)];
+    @apply overflow-y-auto;
+}
