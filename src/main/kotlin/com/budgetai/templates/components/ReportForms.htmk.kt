@@ -4,14 +4,9 @@ import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
 fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
-    div {
-        attributes["id"] = "savings-response-div"
-        attributes["class"] = "response-div"
-    }
-
     form(classes = "auth-form") {
         attributes["hx-post"] = "/api/savings-goals"
-        attributes["hx-target"] = "#savings-response-div"
+        attributes["hx-target"] = "#response-message"
         attributes["hx-on::after-request"] = """
            if(event.detail.successful) {
                this.reset();
