@@ -1,6 +1,7 @@
 package com.budgetai.templates.components
 
 import com.budgetai.models.BudgetDTO
+import com.budgetai.models.PromptType
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
@@ -105,7 +106,7 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<Budget
                         +"Select a prompt..."
                     }
 
-                    PromptType.values().forEach { promptType ->
+                    PromptType.entries.forEach { promptType ->
                         option {
                             value = promptType.name.lowercase()
                             +when (promptType) {
