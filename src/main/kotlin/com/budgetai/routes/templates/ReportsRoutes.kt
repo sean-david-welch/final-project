@@ -91,8 +91,9 @@ fun Route.reportRoutes(
             }
 
             post("/ai-insights") {
-                // 1. Get form parameters
-                val userId = call.parameters["userId"]?.toLongOrNull() ?: throw BadRequestException("Invalid user ID")
+                // 1. Extract and validate parameters
+                val userId = call.parameters["userId"]?.toLongOrNull()
+                    ?: throw BadRequestException("Invalid user ID")
 
                 val promptType = call.parameters["prompt"]?.let {
                     PromptType.entries.find { type ->
@@ -100,12 +101,79 @@ fun Route.reportRoutes(
                     }
                 } ?: throw BadRequestException("Invalid prompt type")
 
-                val budgetId = call.parameters["budget"]?.toLongOrNull() ?: throw BadRequestException("Invalid budget ID")
+                val budgetId = call.parameters["budget"]?.toLongOrNull()
+                    ?: throw BadRequestException("Invalid budget ID")
 
-                val budget = budgetService.getBudget(budgetId.toInt()) ?: throw NotFoundException("Budget not found")
+                // 2. Get budget data
+                val budget = budgetService.getBudget(budgetId.toInt())
+                    ?: throw NotFoundException("Budget not found")
                 val budgetItems = budgetItemService.getBudgetItems(budgetId.toInt())
 
-                call.respond(HttpStatusCode.Created)
+                // 3. Construct prompt based on prompt type
+                val prompt = buildString {
+                    append("Analyze the following budget data:\n")
+                    append("Budget Name: ${budget.name}\n")
+                    append("Total Budget: ${budget.total}\n")
+                    append("Budget Items:\n")
+                    budgetItems.forEach { item ->
+                        append("- ${item.name}: ${item.amount}\n")
+                    }
+                    append("\n")
+
+                    // Add specific analysis instructions based on prompt type
+                    append(when (promptType) {
+                        PromptType.COST_REDUCTION -> """
+                Please analyze this budget for cost reduction opportunities. 
+                Identify specific items where costs could be reduced and suggest practical ways to achieve these reductions.
+                Format your response in clear, actionable bullet points.
+            """.trimIndent()
+
+                        PromptType.PRICE_ALTERNATIVES -> """
+                Review the budget items and suggest alternative options or suppliers that could offer better value.
+                For each suggestion, explain the potential benefits and savings.
+            """.trimIndent()
+
+                        PromptType.SPENDING_PATTERNS -> """
+                Analyze the spending patterns in this budget.
+                Identify any notable trends, unusual spending, or areas that might need attention.
+                Provide specific insights about spending distribution and efficiency.
+            """.trimIndent()
+
+                        PromptType.CATEGORY_ANALYSIS -> """
+                Perform a detailed category analysis of this budget.
+                Group similar items, identify the highest spending categories,
+                and suggest any category-specific optimizations.
+            """.trimIndent()
+
+                        PromptType.CUSTOM_ANALYSIS -> """
+                Provide a comprehensive analysis of this budget.
+                Include insights about spending patterns, potential savings,
+                and recommendations for better budget management.
+            """.trimIndent()
+                    })
+                }
+
+                // 4. Send to OpenAI and get response
+                val openAi = OpenAi(environment.config)
+                val insight = try {
+                    openAi.sendMessage(prompt)
+                } catch (e: OpenAi.OpenAiException) {
+                    throw InternalServerException("Failed to generate insight: ${e.message}")
+                }
+
+                // 5. Save the insight
+                val savedInsight = insightRepository.save(
+                    Insight(
+                        userId = userId,
+                        budgetId = budgetId,
+                        promptType = promptType,
+                        content = insight,
+                        createdAt = LocalDateTime.now()
+                    )
+                )
+
+                // 6. Return the response
+                call.respond(HttpStatusCode.Created, savedInsight)
             }
         }
     }
