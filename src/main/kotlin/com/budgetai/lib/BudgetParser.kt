@@ -22,9 +22,9 @@ object BudgetParser {
         val tempFile = File.createTempFile("budget-$timestamp", ".csv")
 
         tempFile.bufferedWriter().use { writer ->
-            writer.appendLine("Name,Amount")
+            writer.appendLine("Name,Amount,Category")
             items.forEach { item ->
-                writer.appendLine("${item.name},${item.amount}")
+                writer.appendLine("${item.name},${item.amount},${item.categoryId}")
             }
             writer.appendLine("Total,${totalAmount}")
         }
@@ -53,6 +53,7 @@ object BudgetParser {
                 val cells = row.split(",")
                 val name = cells.getOrNull(0)?.trim() ?: ""
                 val amountStr = cells.getOrNull(1)?.trim() ?: ""
+                val categoryId = cells.getOrNull(2)?.trim()?.toIntOrNull()
                 val amount = amountStr.toDoubleOrNull()
 
                 when {
@@ -66,11 +67,19 @@ object BudgetParser {
                         errors.add("Row ${index + 1}: Invalid amount - must be a positive number")
                     }
 
+                    categoryId == null -> {
+                        logger.warn("Row ${index + 1}: Missing category")
+                        errors.add("Row ${index + 1}: Category is required")
+                    }
+
                     else -> {
-                        logger.debug("Row ${index + 1}: Adding budget item - name: $name, amount: $amount")
+                        logger.debug("Row ${index + 1}: Adding budget item - name: $name, amount: $amount, categoryId: $categoryId")
                         items.add(
                             BudgetItemDTO(
-                                budgetId = 0, name = name, amount = amount
+                                budgetId = 0,
+                                name = name,
+                                amount = amount,
+                                categoryId = categoryId
                             )
                         )
                         totalAmount += amount
@@ -92,7 +101,10 @@ object BudgetParser {
         logger.debug("Generated CSV content: {}", csvFile)
 
         return ParseResult(
-            items = items, errors = errors, totalAmount = totalAmount, csvFile = csvFile
+            items = items,
+            errors = errors,
+            totalAmount = totalAmount,
+            csvFile = csvFile
         )
     }
 }
