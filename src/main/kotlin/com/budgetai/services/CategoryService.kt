@@ -48,7 +48,7 @@ class CategoryService(private val repository: CategoryRepository) {
 
     // Retrieves categories of a specific type
     suspend fun getCategoriesByType(type: CategoryType): List<CategoryDTO> {
-        return repository.findByType(type)
+        return repository.findByType(type.toString())
     }
 
     // Write Methods
