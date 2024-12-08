@@ -28,9 +28,11 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                                 userId = params["userId"]?.toInt() ?: throw IllegalArgumentException("User ID is required"),
                                 name = params["name"] ?: throw IllegalArgumentException("Name is required"),
                                 description = params["description"],
-                                targetAmount = params["targetAmount"]?.toDoubleOrNull() ?: throw IllegalArgumentException("Target amount is required"),
-                                initialAmount = params["currentAmount"]?.toDoubleOrNull() ?: throw IllegalArgumentException("Current amount is required"),
-                                targetDate = params["targetDate"]
+                                targetAmount = params["targetAmount"]?.toDoubleOrNull() ?: throw IllegalArgumentException(
+                                    "Target amount is required"
+                                ), initialAmount = params["currentAmount"]?.toDoubleOrNull() ?: throw IllegalArgumentException(
+                                    "Current amount is required"
+                                ), targetDate = params["targetDate"]
                             )
                         }
 
@@ -46,9 +48,7 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.success("Savings goal created successfully"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.success("Savings goal created successfully"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -60,9 +60,7 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -74,9 +72,7 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
 
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Error creating savings goal"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error("Error creating savings goal"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
