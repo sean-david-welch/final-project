@@ -3,10 +3,7 @@ package com.budgetai.templates.components
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
-fun FlowContent.DialogComponent(
-    context: BaseTemplateContext,
-    content: FlowContent.() -> Unit
-) {
+fun FlowContent.DialogComponent(context: BaseTemplateContext, content: FlowContent.() -> Unit) {
     if (context.auth.isAuthenticated) {
         dialog {
             attributes["x-data"] = """
