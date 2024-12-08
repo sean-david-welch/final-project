@@ -1,17 +1,14 @@
 option_settings:
-  # Auto Scaling Group Configuration
   aws:autoscaling:asg:
     MinSize: 1
     MaxSize: 4
     Cooldown: 360
 
-  # Environment Type Configuration
   aws:elasticbeanstalk:environment:
     EnvironmentType: LoadBalanced
     LoadBalancerType: application
     ServiceRole: aws-elasticbeanstalk-service-role
 
-  # Auto Scaling Trigger Configuration
   aws:autoscaling:trigger:
     UpperThreshold: 80
     LowerThreshold: 40
@@ -20,15 +17,23 @@ option_settings:
     Period: 5
     BreachDuration: 5
 
-  # Launch Template Configuration
   aws:autoscaling:launchtemplate:
     IamInstanceProfile: aws-elasticbeanstalk-ec2-role
 
-  # CloudWatch Logs Configuration
   aws:elasticbeanstalk:cloudwatch:logs:
     StreamLogs: true
     DeleteOnTerminate: false
     RetentionInDays: 30
+
+  aws:elasticbeanstalk:healthreporting:system:
+    SystemType: enhanced
+
+  aws:elasticbeanstalk:environment:process:default:
+    HealthCheckPath: /health
+    MatcherHTTPCode: 200
+    HealthCheckTimeout: 5
+    HealthCheckInterval: 30
+
   aws:elasticbeanstalk:application:environment:
     PORT: 8080
     ENVIRONMENT: production
