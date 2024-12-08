@@ -64,7 +64,9 @@ class BudgetRoutesTest : AuthenticatedTest() {
                         name = "Test Budget",
                         description = "Test Description",
                         startDate = null,
-                        endDate = null
+                        endDate = null,
+                        totalExpenses = 1000.0,
+                        totalIncome = 2000.0
                     )
                 )
             )
@@ -90,7 +92,9 @@ class BudgetRoutesTest : AuthenticatedTest() {
                         name = "Test Budget",
                         description = "Test Description",
                         startDate = null,
-                        endDate = null
+                        endDate = null,
+                        totalExpenses = 1000.0,
+                        totalIncome = 2000.0
                     )
                 )
             )
@@ -126,7 +130,9 @@ class BudgetRoutesTest : AuthenticatedTest() {
                         name = "Test Budget",
                         description = "Test Description",
                         startDate = null,
-                        endDate = null
+                        endDate = null,
+                        totalExpenses = 1000.0,
+                        totalIncome = 2000.0
                     )
                 )
             )
@@ -164,7 +170,9 @@ class BudgetRoutesTest : AuthenticatedTest() {
                             name = "Test Budget $it",
                             description = "Test Description",
                             startDate = null,
-                            endDate = null
+                            endDate = null,
+                            totalExpenses = 1000.0,
+                            totalIncome = 2000.0
                         )
                     )
                 )
@@ -194,7 +202,9 @@ class BudgetRoutesTest : AuthenticatedTest() {
                         name = "Test Budget",
                         description = "Test Description",
                         startDate = null,
-                        endDate = null
+                        endDate = null,
+                        totalExpenses = 1000.0,
+                        totalIncome = 2000.0
                     )
                 )
             )
