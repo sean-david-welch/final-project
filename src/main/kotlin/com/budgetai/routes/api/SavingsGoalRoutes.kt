@@ -13,15 +13,68 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
         authenticate {
             route("/api/savings-goals") {
                 // Create new savings goal
+// Create new savings goal
                 post {
                     try {
-                        val request = call.receive<SavingsGoalCreationRequest>()
+                        val request = when (call.request.contentType()) {
+                            ContentType.Application.Json -> {
+                                call.receive<SavingsGoalCreationRequest>()
+                            }
+                            ContentType.Application.FormUrlEncoded -> {
+                                val params = call.receiveParameters()
+                                SavingsGoalCreationRequest(
+                                    userId = params["userId"]?.toInt() ?: throw IllegalArgumentException("User ID is required"),
+                                    name = params["name"] ?: throw IllegalArgumentException("Name is required"),
+                                    description = params["description"],
+                                    targetAmount = params["targetAmount"]?.toBigDecimalOrNull()
+                                        ?: throw IllegalArgumentException("Target amount is required"),
+                                    currentAmount = params["currentAmount"]?.toBigDecimalOrNull() ?: BigDecimal.ZERO,
+                                    targetDate = params["targetDate"]
+                                )
+                            }
+                            else -> throw IllegalArgumentException("Unsupported content type")
+                        }
+
                         val goalId = service.createSavingsGoal(request)
-                        call.respond(HttpStatusCode.Created, mapOf("id" to goalId))
+
+                        when (call.request.contentType()) {
+                            ContentType.Application.Json -> {
+                                call.respond(HttpStatusCode.Created, mapOf("id" to goalId))
+                            }
+                            else -> {
+                                call.respondText(
+                                    ResponseComponents.success("Savings goal created successfully"),
+                                    ContentType.Text.Html,
+                                    HttpStatusCode.OK
+                                )
+                            }
+                        }
                     } catch (e: IllegalArgumentException) {
-                        call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                        when (call.request.contentType()) {
+                            ContentType.Application.Json -> {
+                                call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Invalid request")))
+                            }
+                            else -> {
+                                call.respondText(
+                                    ResponseComponents.error(e.message ?: "Invalid request"),
+                                    ContentType.Text.Html,
+                                    HttpStatusCode.OK
+                                )
+                            }
+                        }
                     } catch (e: Exception) {
-                        call.respond(HttpStatusCode.InternalServerError, "Error creating savings goal")
+                        when (call.request.contentType()) {
+                            ContentType.Application.Json -> {
+                                call.respond(HttpStatusCode.InternalServerError, "Error creating savings goal")
+                            }
+                            else -> {
+                                call.respondText(
+                                    ResponseComponents.error("Error creating savings goal"),
+                                    ContentType.Text.Html,
+                                    HttpStatusCode.OK
+                                )
+                            }
+                        }
                     }
                 }
 
