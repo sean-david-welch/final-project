@@ -10,9 +10,13 @@ fun DIV.insightContentComponent(content: String) {
             when {
                 // Handle section titles/headers
                 section.contains(":**") -> {
-                    val (title, content) = section.split(":**", limit = 2)
-                    h4(classes = "insight-header") { +title.trim() }
-                    formatSectionContent(content.trim())
+                    val parts = section.split(":**", limit = 2)
+                    h4(classes = "insight-header") {
+                        +parts[0].trim()
+                    }
+                    if (parts.size > 1) {
+                        formatSectionContent(parts[1].trim())
+                    }
                 }
                 // Handle regular content
                 else -> formatSectionContent(section.trim())
@@ -34,14 +38,22 @@ private fun DIV.formatSectionContent(content: String) {
                 // Format bullet points
                 item.contains(":") -> {
                     div(classes = "insight-item with-label") {
-                        val (label, text) = item.split(":", limit = 2)
-                        span(classes = "item-label") { +label.trim() ":" }
-                        span(classes = "item-content") { +text.trim() }
+                        val parts = item.split(":", limit = 2)
+                        span(classes = "item-label") {
+                            +"${parts[0].trim()}:"
+                        }
+                        if (parts.size > 1) {
+                            span(classes = "item-content") {
+                                +parts[1].trim()
+                            }
+                        }
                     }
                 }
                 // Regular text
                 else -> {
-                    p(classes = "insight-text") { +item.trim() }
+                    p(classes = "insight-text") {
+                        +item.trim()
+                    }
                 }
             }
         }
@@ -51,10 +63,6 @@ private fun DIV.formatSectionContent(content: String) {
 object AIInsightComponents {
     fun formatInsight(content: String) = createHTML().div {
         div(classes = "insight-wrapper") {
-            attributes["x-data"] = "{show: true}"
-            attributes["x-show"] = "show"
-            attributes["x-transition.duration.300ms"] = ""
-
             insightContentComponent(content)
         }
     }
