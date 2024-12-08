@@ -35,6 +35,12 @@ class CategoryRepository(private val database: Database) {
         Categories.selectAll().where { Categories.id eq id }.map(::toCategory).singleOrNull()
     }
 
+    suspend fun findByUserId(userId: Int): List<CategoryDTO> = dbQuery {
+        Categories.selectAll()
+            .where { Categories.userId eq userId }
+            .map(::toCategory)
+    }
+
     // Retrieves a category by its name
     suspend fun findByName(name: String): CategoryDTO? = dbQuery {
         Categories.selectAll().where { Categories.name eq name }.map(::toCategory).singleOrNull()
