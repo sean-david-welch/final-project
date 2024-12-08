@@ -101,10 +101,14 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
                                     option {
                                         value = category.toString()
                                         +category.name
+                                        if (category == CategoryType.EXPENSE) {
+                                            selected = true
+                                        }
                                     }
                                 }
                             }
                         }
+
                     }
                 }
             }
