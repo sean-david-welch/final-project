@@ -9,8 +9,10 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.slf4j.LoggerFactory
 
 fun Route.categoryRoutes(service: CategoryService) {
+    val logger = LoggerFactory.getLogger("CategoryRoutes")
     authenticate {
         route("/api/categories") {
             // Create new category
