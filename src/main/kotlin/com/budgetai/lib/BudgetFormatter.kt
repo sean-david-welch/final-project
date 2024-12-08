@@ -10,6 +10,7 @@ class BudgetFormatter {
     fun formatBudgetsToCSV(budgets: List<BudgetWithItemsDTO>): String {
         logger.info("Starting CSV formatting for ${budgets.size} budgets")
         val csvBuilder = StringBuilder()
+        var totalAmount = 0.0  // Track total amount across all items
 
         try {
             // Add header row
@@ -32,6 +33,7 @@ class BudgetFormatter {
                     logger.debug("Processing ${budget.items.size} items for budget ${budget.id}")
                     // Add a row for each budget item
                     budget.items.forEach { item ->
+                        totalAmount += item.amount  // Add to running total
                         csvBuilder.appendLine(
                             buildBudgetRow(
                                 budget = budget, itemName = item.name, categoryName = item.category?.name ?: "Uncategorized",
@@ -41,6 +43,9 @@ class BudgetFormatter {
                     }
                 }
             }
+
+            // Add total row at the end
+            csvBuilder.appendLine(buildTotalRow(totalAmount))
 
             logger.info("Successfully formatted CSV data")
             return csvBuilder.toString()
@@ -70,6 +75,18 @@ class BudgetFormatter {
             logger.error("Error building budget row for budget ${budget.id}", e)
             throw e
         }
+    }
+
+    private fun buildTotalRow(totalAmount: Double): String {
+        return listOf(
+            "TOTAL".escapeCsv(),  // Budget Name
+            "",                   // Budget Period
+            "",                   // Total Income
+            "",                   // Total Expenses
+            "",                   // Category
+            "Total of all items".escapeCsv(), // Item Name
+            totalAmount.toString() // Amount
+        ).joinToString(",")
     }
 
     // Helper function to escape CSV special characters
