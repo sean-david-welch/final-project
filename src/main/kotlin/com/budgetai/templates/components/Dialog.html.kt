@@ -10,8 +10,8 @@ fun FlowContent.DialogComponent(context: BaseTemplateContext, content: FlowConte
         dialog {
             attributes["x-data"] = "dialogComponent()"
             attributes["x-show"] = "visible"
-            attributes["@show-dialog.window"] = "show()"
-            attributes["@hide-dialog.window"] = "close()"
+            attributes["x-on:show-dialog.window"] = "show()"
+            attributes["x-on:hide-dialog.window"] = "close()"
             attributes["class"] = "dialog"
 
             // Content slot
@@ -21,7 +21,7 @@ fun FlowContent.DialogComponent(context: BaseTemplateContext, content: FlowConte
 
             // Close button
             button(classes = "dialog-btn") {
-                attributes["@click"] = "close()"
+                attributes["x-on:click"] = "close()"
                 attributes["formmethod"] = "dialog"
                 +"×"
             }
