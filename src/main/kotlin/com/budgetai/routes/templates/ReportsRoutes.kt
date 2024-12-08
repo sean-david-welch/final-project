@@ -38,7 +38,8 @@ fun Route.reportRoutes(
                 val budgets = budgetService.getUserBudgets(user.id)
                 val categories = categoryService.getCategories()
                 call.respondText(
-                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories, user), contentType = ContentType.Text.Html
+                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories, user),
+                    contentType = ContentType.Text.Html
                 )
             }
             get("/category-breakdown") {
@@ -100,19 +101,17 @@ fun Route.reportRoutes(
                 logger.info("Received AI insight request")
 
                 try {
-                    val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID").also {
-                        logger.error("Invalid user ID provided")
-                    }
+                    val formParameters = call.receiveParameters()
 
-                    val promptType = call.parameters["prompt"]?.let {
-                        PromptType.entries.find { type -> type.name.lowercase() == it }
-                    } ?: throw IllegalArgumentException("Invalid prompt type").also {
-                        logger.error("Invalid prompt type provided")
-                    }
+                    val userId = formParameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
 
-                    val budgetId = call.parameters["budget"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID").also {
-                        logger.error("Invalid budget ID provided")
-                    }
+                    val promptType = formParameters["prompt"]?.let {
+                        PromptType.entries.find { type ->
+                            type.name.lowercase() == it
+                        }
+                    } ?: throw IllegalArgumentException("Invalid prompt type")
+
+                    val budgetId = formParameters["budget"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
 
                     val budget = budgetService.getBudget(budgetId) ?: throw IllegalArgumentException("Budget not found").also {
                         logger.error("Budget not found for ID: $budgetId")
@@ -142,44 +141,19 @@ fun Route.reportRoutes(
                     )
 
                     logger.info("Successfully created AI insight for budget: $budgetId")
-
-                    when (call.request.contentType()) {
-                        ContentType.Application.Json -> {
-                            call.respond(HttpStatusCode.Created, savedInsight)
-                        }
-
-                        else -> {
-                            call.respondText(
-                                ResponseComponents.success("AI insight generated successfully"), ContentType.Text.Html, HttpStatusCode.OK
-                            )
-                        }
-                    }
+                    call.respondText(
+                        ResponseComponents.success("AI insight generated successfully"), ContentType.Text.Html, HttpStatusCode.OK
+                    )
 
                 } catch (e: IllegalArgumentException) {
-                    when (call.request.contentType()) {
-                        ContentType.Application.Json -> {
-                            call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Invalid request")))
-                        }
-
-                        else -> {
-                            call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
-                            )
-                        }
-                    }
+                    call.respondText(
+                        ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
+                    )
                 } catch (e: Exception) {
                     logger.error("Error generating AI insight", e)
-                    when (call.request.contentType()) {
-                        ContentType.Application.Json -> {
-                            call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error generating AI insight"))
-                        }
-
-                        else -> {
-                            call.respondText(
-                                ResponseComponents.error("Error generating AI insight"), ContentType.Text.Html, HttpStatusCode.OK
-                            )
-                        }
-                    }
+                    call.respondText(
+                        ResponseComponents.error("Error generating AI insight"), ContentType.Text.Html, HttpStatusCode.OK
+                    )
                 }
             }
         }
