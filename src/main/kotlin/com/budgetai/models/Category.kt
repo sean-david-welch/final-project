@@ -29,7 +29,7 @@ data class UpdateCategoryRequest(
 
 @Serializable
 data class UpdateCategoryTypeRequest(
-    val type: CategoryType,
+    val type: String,
 )
 
 @Serializable
