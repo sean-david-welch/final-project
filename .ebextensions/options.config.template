@@ -8,7 +8,7 @@ option_settings:
     UpperThreshold: 80
     LowerThreshold: 40
     MeasureName: CPUUtilization
-  aws:autoscaling:launchconfiguration:
+  aws:autoscaling:launchtemplate:
     IamInstanceProfile: aws-elasticbeanstalk-ec2-role
   aws:elasticbeanstalk:cloudwatch:logs:
     StreamLogs: true
