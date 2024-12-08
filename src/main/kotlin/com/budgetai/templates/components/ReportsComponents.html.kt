@@ -33,6 +33,10 @@ fun FlowContent.BudgetAnalysisCard(context: BaseTemplateContext, budgets: List<B
             +"Here's a list of the savings goals you've created"
         }
         AIInsightForm(context, budgets)
+
+        div {
+            attributes["id"] = "response-message"
+        }
     }
     div(classes = "report-card") {
         div(classes = "report-header") {

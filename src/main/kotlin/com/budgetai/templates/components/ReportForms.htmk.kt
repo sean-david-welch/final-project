@@ -78,7 +78,7 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
 
 fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
     form(classes = "auth-form") {
-        attributes["hx-post"] = "/api/reports/ai-insight"
+        attributes["hx-post"] = "/api/reports/ai-insights"
         attributes["hx-target"] = "#response-message"
         attributes["hx-on::after-request"] = """
             if(event.detail.successful) {
