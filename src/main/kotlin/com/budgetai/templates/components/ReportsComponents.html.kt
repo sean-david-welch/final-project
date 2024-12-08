@@ -13,8 +13,7 @@ fun FlowContent.SpendingSummaryCard(context: BaseTemplateContext) {
                         attributes["hx-get"] = "/api/reports/spending-summary"
                         attributes["hx-trigger"] = "click"
                         attributes["hx-swap"] = "none"
-                        attributes["hx-headers"] = "{\"Accept\": \"text/csv\"}"
-                        attributes["download"] = "spending-summary.csv"
+                        attributes["download"] = ""
                         +"Download CSV"
                     }
                 }
