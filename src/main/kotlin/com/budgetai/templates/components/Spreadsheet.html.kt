@@ -106,7 +106,10 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
                                             selected = true
                                         }
                                         value = category.name
-                                        +category.name
+                                        +category.name.lowercase().split('_')
+                                            .joinToString(" ") { word ->
+                                                word.replaceFirstChar { it.uppercase() }
+                                            }
                                     }
                                 }
                             }
