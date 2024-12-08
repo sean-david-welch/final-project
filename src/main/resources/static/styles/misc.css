@@ -176,7 +176,6 @@
     @apply mt-2;
 }
 
-/* Optional: Add these styles if you want the dialog content to scroll when it gets too long */
 .dialog-content {
     @apply max-h-[calc(90vh-8rem)];
     @apply overflow-y-auto;
