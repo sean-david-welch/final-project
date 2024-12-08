@@ -18,7 +18,7 @@ group = "com.budgetai"
 version = "0.0.1"
 
 application {
-    mainClass.set("com.budgetai.ApplicationKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 repositories {
