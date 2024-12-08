@@ -139,11 +139,10 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
     }
 
 fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<SavingsGoalDTO>) =
-    AdminTemplate("Savings Gaol Management", context) {
+    AdminTemplate("Savings Goal Management", context) {
         div(classes = "management-container") {
-            // Header with total count and add button
             div(classes = "management-header") {
-                h2(classes = "management-title") { +"Savings Goal (${savings.count()})" }
+                h2(classes = "management-title") { +"Savings Goals (${savings.count()})" }
                 if (context.auth.isAdmin) {
                     div(classes = "admin-access-section") {
                         a(href = "/admin", classes = "admin-link-button") {
@@ -156,14 +155,16 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
                 attributes["id"] = "response-message"
             }
 
-            // Savings Gaol table
             div(classes = "table-container") {
                 table(classes = "data-table") {
                     thead {
                         tr {
                             th { +"Name" }
-                            th { +"Type" }
                             th { +"Description" }
+                            th { +"Target Amount" }
+                            th { +"Current Amount" }
+                            th { +"Target Date" }
+                            th { +"Actions" }
                         }
                     }
                     tbody {
@@ -172,33 +173,12 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
                                 attributes["id"] = "goal-row-${goal.id}"
                                 td(classes = "table-cell") { +goal.name }
                                 td(classes = "table-cell description") { +(goal.description ?: "-") }
+                                td(classes = "table-cell") { +"$${goal.targetAmount}" }
+                                td(classes = "table-cell") { +"$${goal.currentAmount}" }
+                                td(classes = "table-cell") { +(goal.targetDate ?: "-") }
                                 td(classes = "table-actions") {
-                                    select(classes = "role-select") {
-                                        attributes["hx-put"] = "/api/savings-goal/${goal.id}/type"
-                                        attributes["hx-target"] = "#response-message"
-                                        attributes["hx-swap"] = "innerHTML"
-                                        attributes["hx-trigger"] = "change"
-                                        attributes["name"] = "type"
-                                        attributes["value"] = goal.type.toString()
-                                        attributes["hx-on::after-request"] = "if(event.detail.successful) this.closest('tr').querySelector('#type-cell-${goal.id}').innerHTML = this.value"
-
-                                        val categoryTypes = listOf(
-                                            "EXPENSE" to "Expense",
-                                            "INCOME" to "Income"
-                                        )
-
-                                        categoryTypes.forEach { (value, label) ->
-                                            option {
-                                                attributes["value"] = value
-                                                if (value == goal.type.toString()) {
-                                                    attributes["selected"] = "selected"
-                                                }
-                                                +label
-                                            }
-                                        }
-                                    }
                                     button(classes = "delete-button") {
-                                        attributes["hx-delete"] = "/api/categories/${goal.id}"
+                                        attributes["hx-delete"] = "/api/savings-goals/${goal.id}"
                                         attributes["hx-target"] = "#response-message"
                                         attributes["hx-swap"] = "innerHTML"
                                         attributes["hx-confirm"] = "Are you sure you want to delete this goal?"
