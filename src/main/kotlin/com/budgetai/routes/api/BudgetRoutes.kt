@@ -76,6 +76,8 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             logger.debug("Creating ${updatedItems.size} budget items")
                             budgetItemService.createBulkBudgetItems(budgetItems = updatedItems)
                             logger.info("Successfully created budget items for budget $newBudgetId")
+
+                            categoryService.createBulkCategories(categories)
                             newBudgetId
                         }
                     }
