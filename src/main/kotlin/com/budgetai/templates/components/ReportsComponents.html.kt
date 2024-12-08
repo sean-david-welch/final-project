@@ -47,7 +47,8 @@ fun FlowContent.CategoryBreakdownCard(context: BaseTemplateContext) {
             h3(classes = "report-title") { +"Category Breakdown" }
             div(classes = "report-actions") {
                 button(classes = "action-button") {
-                    attributes["onclick"] = "window.dispatchEvent(new CustomEvent('show-dialog'))"
+                    attributes["x-data"] = "{}"
+                    attributes["x-on:click"] = "\$dispatch('show-dialog')"
                     +"View Details"
                 }
             }
