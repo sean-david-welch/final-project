@@ -42,7 +42,12 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
 
         // api routes
         route("/api/reports") {
-            get("/spending-summary") {  }
+
+            get("/spending-summary") {
+                val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
+
+            }
+
             get("/ai-insights") {  }
         }
     }
