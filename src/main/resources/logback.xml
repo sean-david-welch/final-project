@@ -20,6 +20,7 @@
     <logger name="AuthRoutes" level="DEBUG"/>
     <logger name="BudgetParser" level="DEBUG"/>
     <logger name="BudgetFormatter" level="DEBUG"/>
+    <logger name="ReportRoutes" level="DEBUG"/>
 
     <!-- Root logger -->
     <root level="INFO">
