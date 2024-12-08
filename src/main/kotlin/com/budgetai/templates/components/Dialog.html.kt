@@ -3,7 +3,10 @@ package com.budgetai.templates.components
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
-fun FlowContent.DialogComponent(context: BaseTemplateContext) {
+fun FlowContent.DialogComponent(
+    context: BaseTemplateContext,
+    content: FlowContent.() -> Unit
+) {
     dialog {
         attributes["x-data"] = """
             {
@@ -26,7 +29,7 @@ fun FlowContent.DialogComponent(context: BaseTemplateContext) {
 
         // Content slot
         div(classes = "dialog-content") {
-            attributes["id"] = "dialog-content"
+            content()
         }
 
         // Close button
