@@ -60,62 +60,33 @@ class BudgetRepository(private val database: Database) {
 
     // join query
     suspend fun findByUserIdWithDetails(userId: Int): List<BudgetWithItemsDTO> = dbQuery {
-        (Budgets
-            .leftJoin(BudgetItems)
-            .leftJoin(Categories))
-            .select(Budgets.columns + BudgetItems.columns + Categories.columns)
-            .where { Budgets.userId eq userId }
-            .orderBy(Budgets.id)
-            .groupBy(
-                Budgets.id,
-                Budgets.userId,
-                Budgets.name,
-                Budgets.description,
-                Budgets.startDate,
-                Budgets.endDate,
-                Budgets.totalIncome,
-                Budgets.totalExpenses,
-                Budgets.createdAt,
-                BudgetItems.id,
-                BudgetItems.name,
-                BudgetItems.amount,
-                Categories.id,
-                Categories.name,
-                Categories.type,
-                Categories.description
-            )
-            .fold(mutableMapOf<EntityID<Int>, BudgetWithItemsDTO>()) { acc, row ->
+        (Budgets.leftJoin(BudgetItems).leftJoin(Categories)).select(Budgets.columns + BudgetItems.columns + Categories.columns)
+            .where { Budgets.userId eq userId }.orderBy(Budgets.id).groupBy(
+                Budgets.id, Budgets.userId, Budgets.name, Budgets.description, Budgets.startDate, Budgets.endDate, Budgets.totalIncome,
+                Budgets.totalExpenses, Budgets.createdAt, BudgetItems.id, BudgetItems.name, BudgetItems.amount, Categories.id,
+                Categories.name, Categories.type, Categories.description
+            ).fold(mutableMapOf<EntityID<Int>, BudgetWithItemsDTO>()) { acc, row ->
                 val budgetId = row[Budgets.id]
 
                 val budget = acc.getOrPut(budgetId) {
                     BudgetWithItemsDTO(
-                        id = budgetId.value,
-                        userId = row[Budgets.userId].value,
-                        name = row[Budgets.name],
-                        description = row[Budgets.description],
-                        startDate = row[Budgets.startDate]?.toString(),
-                        endDate = row[Budgets.endDate]?.toString(),
-                        totalIncome = row[Budgets.totalIncome].toDouble(),
-                        totalExpenses = row[Budgets.totalExpenses].toDouble(),
-                        createdAt = row[Budgets.createdAt].toString(),
+                        id = budgetId.value, userId = row[Budgets.userId].value, name = row[Budgets.name],
+                        description = row[Budgets.description], startDate = row[Budgets.startDate]?.toString(),
+                        endDate = row[Budgets.endDate]?.toString(), totalIncome = row[Budgets.totalIncome].toDouble(),
+                        totalExpenses = row[Budgets.totalExpenses].toDouble(), createdAt = row[Budgets.createdAt].toString(),
                         items = mutableListOf()
                     )
                 }
 
                 row.getOrNull(BudgetItems.id)?.let { itemId ->
                     val budgetItem = BudgetItemWithCategoryDTO(
-                        id = itemId.value,
-                        name = row[BudgetItems.name],
-                        amount = row[BudgetItems.amount].toDouble(),
+                        id = itemId.value, name = row[BudgetItems.name], amount = row[BudgetItems.amount].toDouble(),
                         category = row.getOrNull(Categories.id)?.let { categoryId ->
                             CategoryDTO(
-                                id = categoryId.value,
-                                name = row[Categories.name],
-                                type = row[Categories.type],
+                                id = categoryId.value, name = row[Categories.name], type = row[Categories.type],
                                 description = row[Categories.description]
                             )
-                        }
-                    )
+                        })
                     if (!budget.items.contains(budgetItem)) {
                         (budget.items as MutableList).add(budgetItem)
                     }
