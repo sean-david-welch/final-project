@@ -4,10 +4,7 @@ import com.budgetai.models.BudgetDTO
 import com.budgetai.models.BudgetItemDTO
 import com.budgetai.models.CategoryDTO
 import com.budgetai.models.SavingsGoalDTO
-import com.budgetai.templates.components.BudgetAnalysisCard
-import com.budgetai.templates.components.CategoryBreakdownCard
-import com.budgetai.templates.components.SavingsTrackingCard
-import com.budgetai.templates.components.SpendingSummaryCard
+import com.budgetai.templates.components.*
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
@@ -139,15 +136,21 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
 
 fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<SavingsGoalDTO>) =
     AdminTemplate("Savings Goal Management", context) {
+        DialogComponent(context) {
+            h2(classes = "heading-large") {
+                +"Savings Goals"
+            }
+            div(classes = "text-base mt-4") {
+                +"Here's a list of the savings goals you've created"
+            }
+        }
+
         div(classes = "management-container") {
             div(classes = "management-header") {
                 h2(classes = "management-title") { +"Savings Goals (${savings.count()})" }
-                if (context.auth.isAdmin) {
-                    div(classes = "admin-access-section") {
-                        a(href = "/admin", classes = "admin-link-button") {
-                            +"Admin Panel"
-                        }
-                    }
+                button(classes = "action-button") {
+                    attributes["onclick"] = "document.getElementById('modal-dialog').showModal()"
+                    +"Set Goal"
                 }
             }
             div {
