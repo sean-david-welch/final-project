@@ -161,40 +161,49 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
             }
 
             div(classes = "table-container") {
-                table(classes = "data-table") {
-                    thead {
-                        tr {
-                            th { +"Name" }
-                            th { +"Description" }
-                            th { +"Target Amount" }
-                            th { +"Current Amount" }
-                            th { +"Target Date" }
-                            th { +"Actions" }
-                        }
-                    }
-                    tbody {
-                        savings.forEach { goal ->
-                            tr {
-                                attributes["id"] = "goal-row-${goal.id}"
-                                td(classes = "table-cell") { +goal.name }
-                                td(classes = "table-cell description") { +(goal.description ?: "-") }
-                                td(classes = "table-cell") { +"$${goal.targetAmount}" }
-                                td(classes = "table-cell") { +"$${goal.currentAmount}" }
-                                td(classes = "table-cell") { +(goal.targetDate ?: "-") }
-                                td(classes = "table-actions") {
-                                    button(classes = "delete-button") {
-                                        attributes["hx-delete"] = "/api/savings-goals/${goal.id}"
-                                        attributes["hx-target"] = "#response-message"
-                                        attributes["hx-swap"] = "innerHTML"
-                                        attributes["hx-confirm"] = "Are you sure you want to delete this goal?"
-                                        attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('goal-row-${goal.id}').remove()"
-                                        +"Delete"
-                                    }
-                                }
-                            }
+                div(attributes = mapOf(
+                    "id" to "goals-table",
+                    "hx-get" to "/api/savings-goals/list",
+                    "hx-trigger" to "refreshGoals from:body"
+                )) {
+                    SavingsGoalTable(savings)
+                }
+            }
+        }
+    }
+
+fun FlowContent.SavingsGoalTable(goals: List<SavingsGoalDTO>) {
+    table(classes = "data-table") {
+        thead {
+            tr {
+                th { +"Name" }
+                th { +"Description" }
+                th { +"Target Amount" }
+                th { +"Current Amount" }
+                th { +"Target Date" }
+                th { +"Actions" }
+            }
+        }
+        tbody {
+            goals.forEach { goal ->
+                tr {
+                    attributes["id"] = "goal-row-${goal.id}"
+                    td(classes = "table-cell") { +goal.name }
+                    td(classes = "table-cell description") { +(goal.description ?: "-") }
+                    td(classes = "table-cell") { +"$${goal.targetAmount}" }
+                    td(classes = "table-cell") { +"$${goal.currentAmount}" }
+                    td(classes = "table-cell") { +(goal.targetDate ?: "-") }
+                    td(classes = "table-actions") {
+                        button(classes = "delete-button") {
+                            attributes["hx-delete"] = "/api/savings-goals/${goal.id}"
+                            attributes["hx-target"] = "#goals-table"
+                            attributes["hx-swap"] = "innerHTML"
+                            attributes["hx-confirm"] = "Are you sure you want to delete this goal?"
+                            +"Delete"
                         }
                     }
                 }
             }
         }
     }
+}
