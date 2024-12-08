@@ -37,12 +37,3 @@ fun Application.module() {
     configureRouting(config, database)
 }
 
-private fun checkDevelopmentMode(application: Application): Boolean {
-    return try {
-        System.getProperty("io.ktor.development")?.toBoolean() ?: System.getenv("KTOR_DEVELOPMENT")?.toBoolean()
-        ?: application.environment.config.property("ktor.development").getString().toBoolean()
-    } catch (e: Exception) {
-        application.log.warn("Could not determine development mode from config, assuming false: ${e.message}")
-        false
-    }
-}
