@@ -33,15 +33,13 @@ class OpenAi(config: ApplicationConfig) {
                 header("Authorization", "Bearer $apiKey")
                 setBody(
                     ChatRequest(
-                        model = model,
-                        messages = listOf(ChatMessage(role = "user", content = prompt))
+                        model = model, messages = listOf(ChatMessage(role = "user", content = prompt))
                     )
                 )
             }
 
             val chatResponse = response.body<ChatResponse>()
-            return chatResponse.choices.firstOrNull()?.message?.content
-                ?: throw OpenAiException("No response content received")
+            return chatResponse.choices.firstOrNull()?.message?.content ?: throw OpenAiException("No response content received")
 
         } catch (e: Exception) {
             throw OpenAiException("Failed to get response from OpenAI: ${e.message}", e)
