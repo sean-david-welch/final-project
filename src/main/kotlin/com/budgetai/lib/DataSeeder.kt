@@ -89,6 +89,23 @@ class DataSeeder(database: Database) {
                 )
             ).also { userId ->
                 userRepository.updatePassword(userId, "hashed_password_$index")
+                val userCategories = mapOf(
+                    "My ${index} Salary" to CategoryType.INCOME,
+                    "My ${index} Savings" to CategoryType.INCOME,
+                    "My ${index} Rent" to CategoryType.EXPENSE,
+                    "My ${index} Food" to CategoryType.EXPENSE
+                )
+
+                userCategories.forEach { (name, type) ->
+                    categoryRepository.create(
+                        CategoryDTO(
+                            name = name,
+                            type = type,
+                            description = "Custom category for user $index",
+                            userId = userId  // Associate with specific user
+                        )
+                    )
+                }
             }
         }
 
