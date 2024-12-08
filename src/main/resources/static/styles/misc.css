@@ -1,6 +1,6 @@
 /* Base Message Styles */
 .response-div {
-    @apply my-4;
+    @apply my-;
 }
 
 .message-base {
@@ -148,6 +148,7 @@
     @apply border border-gray-200 dark:border-gray-700;
     @apply -translate-x-1/2 -translate-y-1/2 transform;
     @apply transition-all duration-300 ease-in-out;
+    @apply opacity-0;
     @apply p-6;
 }
 
@@ -157,10 +158,6 @@
 
 .dialog-visible {
     @apply opacity-100;
-}
-
-.dialog:not(.dialog-visible) {
-    @apply opacity-0;
 }
 
 .dialog-btn {
