@@ -193,9 +193,11 @@ fun FlowContent.SavingsGoalTable(goals: List<SavingsGoalDTO>) {
                     td(classes = "table-actions") {
                         button(classes = "delete-button") {
                             attributes["hx-delete"] = "/api/savings-goals/${goal.id}"
-                            attributes["hx-target"] = "#goals-table"
+                            attributes["hx-target"] = "#response-message"
                             attributes["hx-swap"] = "innerHTML"
                             attributes["hx-confirm"] = "Are you sure you want to delete this goal?"
+                            +"Delete"
+                            attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('goal-row-${goal.id}').remove()"
                             +"Delete"
                         }
                     }
