@@ -95,38 +95,58 @@ fun Route.reportRoutes(
             }
 
             post("/ai-insights") {
-                // 1. Extract and validate parameters
-                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw BadRequestException("Invalid user ID")
+                val logger = LoggerFactory.getLogger("AIInsightsRoute")
+                logger.info("Received AI insight request")
+
+                val userId = call.parameters["userId"]?.toIntOrNull()
+                    ?: throw BadRequestException("Invalid user ID").also {
+                        logger.error("Invalid user ID provided")
+                    }
 
                 val promptType = call.parameters["prompt"]?.let {
                     PromptType.entries.find { type -> type.name.lowercase() == it }
-                } ?: throw BadRequestException("Invalid prompt type")
+                } ?: throw BadRequestException("Invalid prompt type").also {
+                    logger.error("Invalid prompt type provided")
+                }
 
-                val budgetId = call.parameters["budget"]?.toIntOrNull() ?: throw BadRequestException("Invalid budget ID")
+                val budgetId = call.parameters["budget"]?.toIntOrNull()
+                    ?: throw BadRequestException("Invalid budget ID").also {
+                        logger.error("Invalid budget ID provided")
+                    }
 
-                // 2. Get budget data
-                val budget = budgetService.getBudget(budgetId) ?: throw NotFoundException("Budget not found")
+                val budget = budgetService.getBudget(budgetId)
+                    ?: throw NotFoundException("Budget not found").also {
+                        logger.error("Budget not found for ID: $budgetId")
+                    }
+
+                logger.debug("Fetching budget items for budget: $budgetId")
                 val budgetItems = budgetItemService.getBudgetItems(budgetId)
 
-                // 3. Generate prompt using template
+                logger.debug("Generating prompt for type: ${promptType.name}")
                 val prompt = AIPromptTemplates.generatePrompt(budget, budgetItems, promptType)
 
-                // 4. Get AI insight
+                logger.info("Sending request to OpenAI")
                 val openAi = OpenAi(config)
                 val insight = try {
                     openAi.sendMessage(prompt)
                 } catch (e: OpenAi.OpenAiException) {
+                    logger.error("OpenAI API error", e)
                     throw BadRequestException("Failed to generate insight: ${e.message}")
                 }
 
-                // 5. Save and return the insight
+                logger.debug("Saving insight to database")
                 val savedInsight = aiInsightService.createInsight(
                     InsightCreationRequest(
-                        userId = userId, budgetId = budgetId, prompt = prompt, type = InsightType.BUDGET_ANALYSIS,
-                        sentiment = Sentiment.NEUTRAL, response = insight
+                        userId = userId,
+                        budgetId = budgetId,
+                        prompt = prompt,
+                        type = InsightType.BUDGET_ANALYSIS,
+                        sentiment = Sentiment.NEUTRAL,
+                        response = insight
                     )
                 )
 
+                logger.info("Successfully created AI insight for budget: $budgetId")
                 call.respond(HttpStatusCode.Created, savedInsight)
             }
         }
