@@ -25,26 +25,12 @@ fun FlowContent.SpendingSummaryCard(context: BaseTemplateContext) {
 }
 
 fun FlowContent.BudgetAnalysisCard(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
-    DialogComponent(context) {
-        h2(classes = "heading-large") {
-            +"Savings Goals"
-        }
-        div(classes = "text-base mt-4") {
-            +"Here's a list of the savings goals you've created"
-        }
-        div {
-            attributes["id"] = "response-message"
-        }
-        AIInsightForm(context, budgets)
-
-    }
     div(classes = "report-card") {
         div(classes = "report-header") {
             h3(classes = "report-title") { +"AI Insights" }
             div(classes = "report-actions") {
-                button(classes = "action-button") {
-                    attributes["onclick"] = "document.getElementById('modal-dialog').showModal()"
-                    +"Consult AI advisor"
+                a(href = "/reports/insights") {
+                    button(classes = "action-button") { +"Consult AI assistant" }
                 }
             }
         }
