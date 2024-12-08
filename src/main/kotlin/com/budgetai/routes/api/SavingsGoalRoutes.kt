@@ -253,11 +253,45 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                 try {
                     val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid savings goal ID")
                     service.deleteSavingsGoal(id)
-                    call.respond(HttpStatusCode.OK, "Savings goal deleted successfully")
+
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.OK, "Savings goal deleted successfully")
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.success("Savings goal deleted successfully"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: IllegalArgumentException) {
-                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error(e.message ?: "Invalid request"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.InternalServerError, "Error deleting savings goal")
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(HttpStatusCode.InternalServerError, "Error deleting savings goal")
+                        }
+                        else -> {
+                            call.respondText(
+                                ResponseComponents.error("Error deleting savings goal"),
+                                ContentType.Text.Html,
+                                HttpStatusCode.OK
+                            )
+                        }
+                    }
                 }
             }
 
