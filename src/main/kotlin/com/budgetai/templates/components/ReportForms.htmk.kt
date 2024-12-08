@@ -75,13 +75,6 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
     }
 }
 
-package com.budgetai.templates.components
-
-import com.budgetai.utils.BaseTemplateContext
-import com.budgetai.models.PromptType
-import com.budgetai.models.BudgetDTO
-import kotlinx.html.*
-
 fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
     form(classes = "auth-form") {
         attributes["hx-post"] = "/api/reports/ai-insight"
@@ -115,7 +108,7 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<Budget
                     PromptType.values().forEach { promptType ->
                         option {
                             value = promptType.name.lowercase()
-                            +when(promptType) {
+                            +when (promptType) {
                                 PromptType.COST_REDUCTION -> "Find Cost Reduction Opportunities"
                                 PromptType.PRICE_ALTERNATIVES -> "Discover Price Alternatives"
                                 PromptType.SPENDING_PATTERNS -> "Analyze Spending Patterns"
