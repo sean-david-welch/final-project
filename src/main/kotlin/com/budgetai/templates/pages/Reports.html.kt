@@ -11,7 +11,7 @@ import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
-fun ReportsTemplate(title: String, context: BaseTemplateContext ,contentFn: DIV.() -> Unit) = BaseTemplate(context) {
+fun ReportsTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.() -> Unit) = BaseTemplate(context) {
     main(classes = "reports-layout") {
         div(classes = "reports-container") {
             h1(classes = "page-title") { +title }
@@ -21,10 +21,7 @@ fun ReportsTemplate(title: String, context: BaseTemplateContext ,contentFn: DIV.
 }
 
 fun createReportsPage(
-    context: BaseTemplateContext,
-    budgets: List<BudgetDTO>,
-    budgetItems: List<BudgetItemDTO>,
-    categories: List<CategoryDTO>
+    context: BaseTemplateContext, budgets: List<BudgetDTO>, budgetItems: List<BudgetItemDTO>, categories: List<CategoryDTO>
 ) = ReportsTemplate("Financial Reports & Analytics", context) {
     // Reports Overview Section
     div(classes = "reports-overview") {
@@ -39,8 +36,7 @@ fun createReportsPage(
     // Stats Grid
     div(classes = "stats-grid") {
         val stats = listOf(
-            Pair("Total Budget Items", budgetItems.count().toString()),
-            Pair("Total Budgets", budgets.count().toString()),
+            Pair("Total Budget Items", budgetItems.count().toString()), Pair("Total Budgets", budgets.count().toString()),
             Pair("Total Categories", categories.count().toString())
         )
 
