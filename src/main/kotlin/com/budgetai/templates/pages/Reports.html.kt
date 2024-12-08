@@ -61,7 +61,8 @@ fun createReportsPage(
     }
 }
 
-fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>) = AdminTemplate("Category Management", context) {
+fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>) =
+    AdminTemplate("Category Management", context) {
         div(classes = "management-container") {
             // Header with total count and add button
             div(classes = "management-header") {
