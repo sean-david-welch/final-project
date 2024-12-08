@@ -90,13 +90,13 @@ CREATE INDEX idx_ai_insights_date ON ai_insights (created_at);
 
 -- Insert default data
 INSERT INTO categories (name, type, description)
-VALUES ('Salary', 'INCOME', 'Regular employment income'),
-       ('Freelance', 'INCOME', 'Freelance or contract work income'),
-       ('Investment', 'INCOME', 'Investment returns and dividends'),
-       ('Housing', 'EXPENSE', 'Rent or mortgage payments'),
-       ('Utilities', 'EXPENSE', 'Electricity, water, gas, internet'),
-       ('Groceries', 'EXPENSE', 'Food and household supplies'),
-       ('Transportation', 'EXPENSE', 'Car payments, fuel, public transit'),
-       ('Healthcare', 'EXPENSE', 'Medical expenses and insurance'),
-       ('Entertainment', 'EXPENSE', 'Movies, dining out, hobbies'),
-       ('Education', 'EXPENSE', 'Courses, books, training materials');
+VALUES ('Salary', 'FIXED', 'Regular employment income'),
+       ('Freelance', 'VARIABLE', 'Freelance or contract work income'),
+       ('Investment', 'RECURRING', 'Investment returns and dividends'),
+       ('Housing', 'FIXED', 'Rent or mortgage payments'),
+       ('Utilities', 'RECURRING', 'Electricity, water, gas, internet'),
+       ('Groceries', 'NECESSARY', 'Food and household supplies'),
+       ('Transportation', 'FIXED', 'Car payments, fuel, public transit'),
+       ('Healthcare', 'NECESSARY', 'Medical expenses and insurance'),
+       ('Entertainment', 'DISCRETIONARY', 'Movies, dining out, hobbies'),
+       ('Education', 'NECESSARY', 'Courses, books, training materials');
