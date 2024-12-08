@@ -1,5 +1,6 @@
 package com.budgetai.templates.components
 
+import com.budgetai.models.BudgetDTO
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
@@ -74,7 +75,14 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
     }
 }
 
-fun FlowContent.AIInsightForm(context: BaseTemplateContext) {
+package com.budgetai.templates.components
+
+import com.budgetai.utils.BaseTemplateContext
+import com.budgetai.models.PromptType
+import com.budgetai.models.BudgetDTO
+import kotlinx.html.*
+
+fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
     form(classes = "auth-form") {
         attributes["hx-post"] = "/api/reports/ai-insight"
         attributes["hx-target"] = "#response-message"
@@ -103,21 +111,23 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext) {
                         value = ""
                         +"Select a prompt..."
                     }
-                    option {
-                        value = "spending_patterns"
-                        +"Analyze Spending Patterns"
-                    }
-                    option {
-                        value = "savings_opportunities"
-                        +"Identify Savings Opportunities"
-                    }
-                    option {
-                        value = "budget_optimization"
-                        +"Budget Optimization Suggestions"
-                    }
-                    option {
-                        value = "financial_goals"
-                        +"Financial Goals Analysis"
+
+                    PromptType.values().forEach { promptType ->
+                        option {
+                            value = promptType.name.lowercase()
+                            +when(promptType) {
+                                PromptType.COST_REDUCTION -> "Find Cost Reduction Opportunities"
+                                PromptType.PRICE_ALTERNATIVES -> "Discover Price Alternatives"
+                                PromptType.SPENDING_PATTERNS -> "Analyze Spending Patterns"
+                                PromptType.BUDGET_OPTIMIZATION -> "Optimize Budget Allocation"
+                                PromptType.SAVINGS_OPPORTUNITIES -> "Identify Savings Opportunities"
+                                PromptType.CATEGORY_ANALYSIS -> "Analyze Spending Categories"
+                                PromptType.MERCHANT_ANALYSIS -> "Review Merchant Spending"
+                                PromptType.SEASONAL_TRENDS -> "Identify Seasonal Trends"
+                                PromptType.FINANCIAL_GOALS -> "Track Financial Goals Progress"
+                                PromptType.CUSTOM_ANALYSIS -> "Custom Analysis"
+                            }
+                        }
                     }
                 }
             }
@@ -132,21 +142,12 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext) {
                         value = ""
                         +"Select a budget..."
                     }
-                    option {
-                        value = "monthly"
-                        +"Monthly Budget"
-                    }
-                    option {
-                        value = "quarterly"
-                        +"Quarterly Budget"
-                    }
-                    option {
-                        value = "annual"
-                        +"Annual Budget"
-                    }
-                    option {
-                        value = "custom"
-                        +"Custom Budget"
+
+                    budgets.forEach { budget ->
+                        option {
+                            value = budget.id
+                            +"${budget.name} (${budget.period})"
+                        }
                     }
                 }
             }
