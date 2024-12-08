@@ -56,3 +56,17 @@ data class UpdateBudgetRequest(
 data class UpdateBudgetTotalsRequest(
     val totalIncome: Double, val totalExpenses: Double
 )
+
+@Serializable
+data class BudgetWithItemsDTO(
+    val id: Int,
+    val userId: Int,
+    val name: String,
+    val description: String?,
+    val startDate: String?,
+    val endDate: String?,
+    val totalIncome: Double,
+    val totalExpenses: Double,
+    val createdAt: String,
+    val items: List<BudgetItemWithCategoryDTO>
+)
