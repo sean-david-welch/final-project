@@ -50,7 +50,7 @@ fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemServ
                             val spreadsheetData = parameters["spreadsheetData"].orEmpty()
 
                             logger.debug("Parsing spreadsheet data: ${spreadsheetData.take(100)}...")
-                            val (items, errors, totalAmount, csv) = BudgetParser.parseSpreadsheetData(spreadsheetData = spreadsheetData)
+                            val (items, categories, errors, totalAmount, csv) = BudgetParser.parseSpreadsheetData(spreadsheetData, userId)
 
                             if (errors.isNotEmpty()) {
                                 logger.warn("Budget parsing errors encountered: $errors")
