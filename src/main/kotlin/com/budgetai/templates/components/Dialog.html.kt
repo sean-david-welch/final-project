@@ -6,20 +6,19 @@ import kotlinx.html.*
 fun FlowContent.DialogComponent(context: BaseTemplateContext) {
     dialog {
         attributes["x-data"] = """
-    {
-        visible: false,
-        show() { 
-            this.\${'$'}el.showModal();
-            this.\${'$'}el.classList.add('dialog-visible');
-        },
-        close() { 
-            this.\${'$'}el.close();
-            this.\${'$'}el.classList.remove('dialog-visible');
-            this.\${'$'}dispatch('dialog-closed');
-        }
-    }
-""".trimIndent()
-
+            {
+                visible: false,
+                show() { 
+                    this.${'$'}el.showModal();
+                    this.${'$'}el.classList.add('dialog-visible');
+                },
+                close() { 
+                    this.${'$'}el.close();
+                    this.${'$'}el.classList.remove('dialog-visible');
+                    this.${'$'}dispatch('dialog-closed');
+                }
+            }
+        """.trimIndent()
         attributes["x-show"] = "visible"
         attributes["@show-dialog.window"] = "show()"
         attributes["@hide-dialog.window"] = "close()"
@@ -34,7 +33,7 @@ fun FlowContent.DialogComponent(context: BaseTemplateContext) {
         button(classes = "dialog-btn") {
             attributes["@click"] = "close()"
             attributes["formmethod"] = "dialog"
-            +"×"  // Simple X character instead of SVG
+            +"×"
         }
     }
 }
