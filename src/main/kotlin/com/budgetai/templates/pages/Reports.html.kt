@@ -117,14 +117,6 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                             }
                                         }
                                     }
-                                    button(classes = "delete-button") {
-                                        attributes["hx-delete"] = "/api/categories/${category.id}"
-                                        attributes["hx-target"] = "#response-message"
-                                        attributes["hx-swap"] = "innerHTML"
-                                        attributes["hx-confirm"] = "Are you sure you want to delete this category?"
-                                        attributes["hx-on::after-request"] = "if(event.detail.successful) document.getElementById('category-row-${category.id}').remove()"
-                                        +"Delete"
-                                    }
                                 }
                             }
                         }
