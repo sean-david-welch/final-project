@@ -103,22 +103,34 @@ fun Route.reportRoutes(
                 try {
                     val formParameters = call.receiveParameters()
 
-                    val userId = formParameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
+                    // Validate all required parameters are present first
+                    val requiredParams = listOf("userId", "prompt", "budget")
+                    val missingParams = requiredParams.filter { formParameters[it].isNullOrBlank() }
+                    if (missingParams.isNotEmpty()) {
+                        throw IllegalArgumentException("Missing required parameters: ${missingParams.joinToString()}")
+                    }
+
+                    val userId = formParameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID format")
 
                     val promptType = formParameters["prompt"]?.let {
-                        PromptType.entries.find { type ->
-                            type.name.lowercase() == it
+                        PromptType.entries.find { type -> type.name.lowercase() == it }
+                    } ?: throw IllegalArgumentException("Invalid or unsupported prompt type")
+
+                    val budgetId = formParameters["budget"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID format")
+
+                    // Fetch and validate budget existence and access
+                    val budget = budgetService.getBudget(budgetId)?.also {
+                        if (it.userId != userId) {
+                            throw IllegalArgumentException("Access denied to this budget")
                         }
-                    } ?: throw IllegalArgumentException("Invalid prompt type")
-
-                    val budgetId = formParameters["budget"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid budget ID")
-
-                    val budget = budgetService.getBudget(budgetId) ?: throw IllegalArgumentException("Budget not found").also {
-                        logger.error("Budget not found for ID: $budgetId")
-                    }
+                    } ?: throw IllegalArgumentException("Budget not found")
 
                     logger.debug("Fetching budget items for budget: $budgetId")
                     val budgetItems = budgetItemService.getBudgetItems(budgetId)
+
+                    if (budgetItems.isEmpty()) {
+                        throw IllegalArgumentException("Cannot analyze empty budget")
+                    }
 
                     logger.debug("Generating prompt for type: ${promptType.name}")
                     val prompt = AIPromptTemplates.generatePrompt(budget, budgetItems, promptType)
@@ -129,11 +141,15 @@ fun Route.reportRoutes(
                         openAi.sendMessage(prompt)
                     } catch (e: OpenAi.OpenAiException) {
                         logger.error("OpenAI API error", e)
-                        throw IllegalArgumentException("Failed to generate insight: ${e.message}")
+                        throw IllegalArgumentException("Failed to generate insight. Please try again later.")
+                    }
+
+                    if (insight.isBlank()) {
+                        throw IllegalArgumentException("Received empty insight from AI")
                     }
 
                     logger.debug("Saving insight to database")
-                    val savedInsight = aiInsightService.createInsight(
+                    aiInsightService.createInsight(
                         InsightCreationRequest(
                             userId = userId, budgetId = budgetId, prompt = prompt, type = InsightType.BUDGET_ANALYSIS,
                             sentiment = Sentiment.NEUTRAL, response = insight
@@ -146,13 +162,15 @@ fun Route.reportRoutes(
                     )
 
                 } catch (e: IllegalArgumentException) {
+                    logger.warn("Validation error: ${e.message}")
                     call.respondText(
                         ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
                     )
                 } catch (e: Exception) {
                     logger.error("Error generating AI insight", e)
                     call.respondText(
-                        ResponseComponents.error("Error generating AI insight"), ContentType.Text.Html, HttpStatusCode.OK
+                        ResponseComponents.error("Error generating AI insight. Please try again later."), ContentType.Text.Html,
+                        HttpStatusCode.OK
                     )
                 }
             }
