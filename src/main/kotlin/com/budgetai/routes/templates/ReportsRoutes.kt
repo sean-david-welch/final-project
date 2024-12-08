@@ -45,7 +45,7 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
 
             get("/spending-summary") {
                 val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
-
+                budgetService.getUserBudgetsWithItems(user.id)
             }
 
             get("/ai-insights") {  }
