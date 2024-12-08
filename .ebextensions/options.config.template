@@ -1,39 +1,4 @@
 option_settings:
-  aws:autoscaling:asg:
-    MinSize: 1
-    MaxSize: 4
-    Cooldown: 360
-
-  aws:elasticbeanstalk:environment:
-    EnvironmentType: LoadBalanced
-    LoadBalancerType: application
-    ServiceRole: aws-elasticbeanstalk-service-role
-
-  aws:autoscaling:trigger:
-    UpperThreshold: 80
-    LowerThreshold: 40
-    MeasureName: CPUUtilization
-    Unit: Percent
-    Period: 5
-    BreachDuration: 5
-
-  aws:autoscaling:launchtemplate:
-    IamInstanceProfile: aws-elasticbeanstalk-ec2-role
-
-  aws:elasticbeanstalk:cloudwatch:logs:
-    StreamLogs: true
-    DeleteOnTerminate: false
-    RetentionInDays: 30
-
-  aws:elasticbeanstalk:healthreporting:system:
-    SystemType: enhanced
-
-  aws:elasticbeanstalk:environment:process:default:
-    HealthCheckPath: /health
-    MatcherHTTPCode: 200
-    HealthCheckTimeout: 5
-    HealthCheckInterval: 30
-
   aws:elasticbeanstalk:application:environment:
     PORT: 8080
     ENVIRONMENT: production
