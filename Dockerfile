@@ -7,8 +7,8 @@ WORKDIR /build
 # Copy Gradle files instead of Maven
 COPY gradlew .
 COPY gradle gradle
-COPY build.gradle.kts .  # or build.gradle if you use Groovy DSL
-COPY settings.gradle.kts .  # or settings.gradle if you use Groovy DSL
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
 
 # Make gradlew executable
 RUN chmod +x gradlew
