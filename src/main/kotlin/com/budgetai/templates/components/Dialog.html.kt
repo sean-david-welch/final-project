@@ -5,14 +5,9 @@ import kotlinx.html.*
 
 fun FlowContent.DialogComponent(context: BaseTemplateContext, content: FlowContent.() -> Unit) {
     if (context.auth.isAuthenticated) {
-        script(src = "/static/scripts/dialog.js") {}
-
         dialog {
-            attributes["x-data"] = "dialogComponent()"
-            attributes["x-show"] = "visible"
-            attributes["x-on:show-dialog.window"] = "show()"
-            attributes["x-on:hide-dialog.window"] = "close()"
             attributes["class"] = "dialog"
+            attributes["id"] = "modal-dialog"
 
             // Content slot
             div(classes = "dialog-content") {
@@ -21,7 +16,7 @@ fun FlowContent.DialogComponent(context: BaseTemplateContext, content: FlowConte
 
             // Close button
             button(classes = "dialog-btn") {
-                attributes["x-on:click"] = "close()"
+                attributes["onclick"] = "this.closest('dialog').close()"
                 attributes["formmethod"] = "dialog"
                 +"×"
             }
