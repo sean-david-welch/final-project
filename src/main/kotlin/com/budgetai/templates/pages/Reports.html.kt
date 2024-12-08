@@ -156,8 +156,6 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
             }
             div {
                 attributes["id"] = "response-message"
-                attributes["hx-get"] = "/api/savings-goals/list"
-                attributes["hx-trigger"] = "refreshGoals from:body"
             }
 
             div(classes = "table-container") {
