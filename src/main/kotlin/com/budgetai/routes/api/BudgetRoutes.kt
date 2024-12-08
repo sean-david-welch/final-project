@@ -8,6 +8,7 @@ import com.budgetai.services.BudgetItemService
 import com.budgetai.services.BudgetService
 import com.budgetai.templates.components.ResponseComponents
 import com.budgetai.lib.BudgetParser
+import com.budgetai.services.CategoryService
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -17,7 +18,7 @@ import kotlinx.datetime.LocalDate
 import org.slf4j.LoggerFactory
 import java.math.BigDecimal
 
-fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemService, s3Handler: S3Handler) {
+fun Route.budgetRoutes(service: BudgetService, budgetItemService: BudgetItemService, categoryService: CategoryService, s3Handler: S3Handler) {
     val logger = LoggerFactory.getLogger("BudgetRoutes")
 
     authenticate {
