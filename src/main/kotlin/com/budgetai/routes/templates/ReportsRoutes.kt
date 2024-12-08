@@ -1,18 +1,16 @@
 package com.budgetai.routes.templates
 
-import com.budgetai.services.BudgetItemService
-import com.budgetai.services.BudgetService
-import com.budgetai.services.CategoryService
-import com.budgetai.services.UserService
+import com.budgetai.services.*
 import com.budgetai.templates.pages.createCategoryManagementPage
 import com.budgetai.templates.pages.createReportsPage
+import com.budgetai.templates.pages.createSavingsManagementPage
 import com.budgetai.utils.templateContext
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService) {
+fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService, savingsService: SavingsGoalService) {
     authenticate {
         // template routes
         route("/reports") {
@@ -35,12 +33,9 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
             }
             get("/savings-tracking") {
                 val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
-
-                val budgetItems = budgetItemService.getBudgetItemsForUser(user.id)
-                val budgets = budgetService.getUserBudgets(user.id)
-                val categories = categoryService.getCategories()
+                val savings = savingsService.getUserSavingsGoals(user.id)
                 call.respondText(
-                    text = createReportsPage(call.templateContext, budgets, budgetItems, categories), contentType = ContentType.Text.Html
+                    text = createSavingsManagementPage(call.templateContext, savings), contentType = ContentType.Text.Html
                 )
             }
         }
