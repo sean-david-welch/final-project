@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: null
+    environment: budgetai-env
 global:
   application_name: budgetai
   branch: null
