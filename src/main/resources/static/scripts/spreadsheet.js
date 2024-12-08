@@ -100,9 +100,7 @@ class SpreadsheetTable {
                 const name = row.cells[0].textContent.trim();
                 const amount = row.cells[1].textContent.trim();
                 const categorySelect = row.cells[2].querySelector('select');
-                const selectedOption = categorySelect.options[categorySelect.selectedIndex];
-                // Get the data-type attribute from the option, or use the text content
-                const categoryType = selectedOption.getAttribute('data-type') || selectedOption.textContent;
+                const categoryType = categorySelect.value; // This will directly give us EXPENSE or INCOME
                 return `${name},${amount},${categoryType}`;
             })
             .filter(row => {
