@@ -92,6 +92,10 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                 td(classes = "table-cell") { +category.name }
                                 td(classes = "table-cell") { +(category.description ?: "-") }
                                 td(classes = "table-cell") {
+                                    attributes["id"] = "type-cell-${category.id}"
+                                    +category.type.toString()
+                                }
+                                td(classes = "table-actions") {
                                     select(classes = "role-select") {
                                         attributes["hx-put"] = "/api/categories/${category.id}/type"
                                         attributes["hx-target"] = "#response-message"
@@ -114,8 +118,6 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                             }
                                         }
                                     }
-                                }
-                                td(classes = "table-actions") {
                                     button(classes = "delete-button") {
                                         attributes["hx-delete"] = "/api/categories/${category.id}"
                                         attributes["hx-target"] = "#response-message"
