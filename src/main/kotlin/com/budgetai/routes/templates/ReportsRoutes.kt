@@ -70,8 +70,7 @@ fun Route.reportRoutes(
                 }
 
                 call.respondText(
-                    text = csvContent,
-                    contentType = ContentType.Text.CSV
+                    text = csvContent, contentType = ContentType.Text.CSV
                 )
             }
 
