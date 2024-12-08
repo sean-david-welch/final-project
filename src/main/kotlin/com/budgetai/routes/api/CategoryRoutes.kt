@@ -132,8 +132,6 @@ fun Route.categoryRoutes(service: CategoryService) {
 
             // update type
             put("/{id}/type") {
-                val logger = LoggerFactory.getLogger("CategoryTypeUpdate")
-
                 try {
                     val id = call.parameters["id"]?.toIntOrNull()
                     logger.info("Received type update request for category ID: $id")
