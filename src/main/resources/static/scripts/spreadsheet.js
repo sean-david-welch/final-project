@@ -100,7 +100,7 @@ class SpreadsheetTable {
                 const name = row.cells[0].textContent.trim();
                 const amount = row.cells[1].textContent.trim();
                 const categorySelect = row.cells[2].querySelector('select');
-                const categoryType = categorySelect.value; // This will directly give us EXPENSE or INCOME
+                const categoryType = categorySelect.value;
                 return `${name},${amount},${categoryType}`;
             })
             .filter(row => {
