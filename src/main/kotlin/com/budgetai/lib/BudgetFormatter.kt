@@ -5,7 +5,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class BudgetFormatter {
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val logger: Logger = LoggerFactory.getLogger("BudgetFormatter")
 
     fun formatBudgetsToCSV(budgets: List<BudgetWithItemsDTO>): String {
         logger.info("Starting CSV formatting for ${budgets.size} budgets")
