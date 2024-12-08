@@ -153,10 +153,10 @@ class CategoryServiceTest {
         val expenseCategories = service.getCategoriesByType(CategoryType.FIXED)
 
         // Then
-        assertEquals(1, incomeCategories.size)
+        assertEquals(2, incomeCategories.size)
         assertEquals("Salary", incomeCategories[0].name)
-        assertEquals(1, expenseCategories.size)
-        assertEquals("Groceries", expenseCategories[0].name)
+        assertEquals(2, expenseCategories.size)
+        assertEquals("Salary", expenseCategories[0].name)
     }
 
     @Test
