@@ -11,6 +11,7 @@ import com.budgetai.templates.pages.createSavingsManagementPage
 import com.budgetai.utils.templateContext
 import io.ktor.http.*
 import io.ktor.server.auth.*
+import io.ktor.server.config.*
 import io.ktor.server.plugins.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -20,7 +21,7 @@ import java.time.LocalDateTime
 
 fun Route.reportRoutes(
     userService: UserService, budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService,
-    savingsService: SavingsGoalService, aiInsightService: AiInsightService,
+    savingsService: SavingsGoalService, aiInsightService: AiInsightService, config: ApplicationConfig
 ) {
     val logger: Logger = LoggerFactory.getLogger("ReportRoutes")
     authenticate {
@@ -111,7 +112,7 @@ fun Route.reportRoutes(
                 val prompt = AIPromptTemplates.generatePrompt(budget, budgetItems, promptType)
 
                 // 4. Get AI insight
-                val openAi = OpenAi(environment.config)
+                val openAi = OpenAi(config)
                 val insight = try {
                     openAi.sendMessage(prompt)
                 } catch (e: OpenAi.OpenAiException) {
