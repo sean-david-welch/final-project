@@ -22,7 +22,7 @@ class CategoryRepository(private val database: Database) {
     private fun toCategory(row: ResultRow) = CategoryDTO(
         id = row[Categories.id].value,
         name = row[Categories.name],
-        type = row[Categories.type],
+        type = row[Categories.type].toString(),
         description = row[Categories.description],
     )
 
