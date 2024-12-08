@@ -93,7 +93,7 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                 td(classes = "table-cell") { +(category.description ?: "-") }
                                 td(classes = "table-cell") {
                                     attributes["id"] = "type-cell-${category.id}"
-                                    +category.type.toString()
+                                    +category.type
                                 }
                                 td(classes = "table-actions") {
                                     select(classes = "role-select") {
@@ -102,13 +102,13 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                         attributes["hx-swap"] = "innerHTML"
                                         attributes["hx-trigger"] = "change"
                                         attributes["name"] = "type"
-                                        attributes["value"] = category.type.toString()
+                                        attributes["value"] = category.type
                                         attributes["hx-on::after-request"] = "if(event.detail.successful) this.closest('tr').querySelector('#type-cell-${category.id}').innerHTML = this.value"
 
                                         CategoryType.entries.forEach { categoryType ->
                                             option {
                                                 value = categoryType.name
-                                                if (categoryType.name == category.type.toString()) {
+                                                if (categoryType.name == category.type) {
                                                     selected = true
                                                 }
                                                 +categoryType.name.lowercase().split('_').joinToString(" ") { word ->
