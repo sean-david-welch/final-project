@@ -23,28 +23,6 @@ fun AIInsightsTemplate(context: BaseTemplateContext, budgets: List<BudgetDTO>) =
 
     // Main Content
     div(classes = "content-grid") {
-        // Stats Card
-        div(classes = "report-card") {
-            div(classes = "report-header") {
-                h3(classes = "report-title") { +"Analysis Statistics" }
-            }
-            div(classes = "report-content") {
-                div(classes = "stats-grid") {
-                    div(classes = "stat-item") {
-                        span(classes = "stat-label") { +"Total Analyses" }
-                        span(classes = "stat-value") { +"0" }
-                    }
-                    div(classes = "stat-item") {
-                        span(classes = "stat-label") { +"Budgets Analyzed" }
-                        span(classes = "stat-value") { +"0" }
-                    }
-                }
-            }
-        }
-    }
-
-    // Analysis Dialog
-    DialogComponent(context) {
         h2(classes = "heading-large") {
             +"Generate New Analysis"
         }
@@ -56,4 +34,5 @@ fun AIInsightsTemplate(context: BaseTemplateContext, budgets: List<BudgetDTO>) =
         }
         AIInsightForm(context, budgets)
     }
+
 }
