@@ -16,7 +16,7 @@ fun ReportsTemplate(title: String, context: BaseTemplateContext, contentFn: DIV.
 }
 
 fun createReportsPage(
-    context: BaseTemplateContext, budgets: List<BudgetDTO>, budgetItems: List<BudgetItemDTO>, categories: List<CategoryDTO>
+    context: BaseTemplateContext, budgets: List<BudgetDTO>, budgetItems: List<BudgetItemDTO>, categories: List<CategoryDTO>, user: UserDTO
 ) = ReportsTemplate("Financial Reports & Analytics", context) {
     // Reports Overview Section
     div(classes = "reports-overview") {
@@ -50,7 +50,7 @@ fun createReportsPage(
     // Reports Grid
     div(classes = "reports-grid") {
         SpendingSummaryCard(context)
-        BudgetAnalysisCard(context, budgets)
+        BudgetAnalysisCard(context, budgets, user)
         CategoryBreakdownCard(context)
         SavingsTrackingCard(context)
     }
@@ -112,8 +112,8 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                                     selected = true
                                                 }
                                                 +categoryType.name.lowercase().split('_').joinToString(" ") { word ->
-                                                        word.replaceFirstChar { it.uppercase() }
-                                                    }
+                                                    word.replaceFirstChar { it.uppercase() }
+                                                }
                                             }
                                         }
                                     }
