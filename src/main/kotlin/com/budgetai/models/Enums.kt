@@ -12,6 +12,15 @@ enum class Sentiment {
 }
 
 @Serializable
+enum class PromptType {
+    @SerialName("COST_REDUCTION") COST_REDUCTION,
+    @SerialName("PRICE_ALTERNATIVES") PRICE_ALTERNATIVES,
+    @SerialName("SPENDING_PATTERNS") SPENDING_PATTERNS,
+    @SerialName("CATEGORY_ANALYSIS") CATEGORY_ANALYSIS,
+    @SerialName("CUSTOM_ANALYSIS") CUSTOM_ANALYSIS
+}
+
+@Serializable
 enum class CategoryType {
     @SerialName("FIXED") FIXED,
     @SerialName("VARIABLE") VARIABLE,
