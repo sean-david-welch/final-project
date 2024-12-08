@@ -7,6 +7,7 @@ import com.budgetai.models.*
 import com.budgetai.services.*
 import com.budgetai.templates.components.AIInsightComponents
 import com.budgetai.templates.components.ResponseComponents
+import com.budgetai.templates.pages.AIInsightsTemplate
 import com.budgetai.templates.pages.createCategoryManagementPage
 import com.budgetai.templates.pages.createReportsPage
 import com.budgetai.templates.pages.createSavingsManagementPage
@@ -56,6 +57,15 @@ fun Route.reportRoutes(
                 val savings = savingsService.getUserSavingsGoals(user.id)
                 call.respondText(
                     text = createSavingsManagementPage(call.templateContext, savings), contentType = ContentType.Text.Html
+                )
+            }
+            get("/insights") {
+                val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException(
+                    "User not found"
+                )
+                val budgets = budgetService.getUserBudgets(user.id)
+                call.respondText(
+                    text = AIInsightsTemplate(call.templateContext, budgets), contentType = ContentType.Text.Html
                 )
             }
         }
