@@ -48,9 +48,8 @@ fun FlowContent.CategoryBreakdownCard(context: BaseTemplateContext) {
             div(classes = "report-header") {
                 h3(classes = "report-title") { +"Category Breakdown" }
                 div(classes = "report-actions") {
-                    button(classes = "action-button") {
-                        attributes["onclick"] = "document.getElementById('modal-dialog').showModal()"
-                        +"View Details"
+                    div(classes = "report-actions") {
+                        button(classes = "action-button") { +"View Details" }
                     }
                 }
             }
