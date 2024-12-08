@@ -1,8 +1,6 @@
 package com.budgetai.lib
 
-import com.budgetai.models.ChatMessage
-import com.budgetai.models.ChatRequest
-import com.budgetai.models.ChatResponse
+import com.budgetai.models.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -11,17 +9,23 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.config.*
+import kotlinx.serialization.json.Json
 
 class OpenAi(config: ApplicationConfig) {
     private val apiKey: String = config.property("api-keys.openai").getString()
-    private val defaultModel = "gpt-4o-mini"
+    private val defaultModel = "gpt-4-mini"
+
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json()
+            json(Json {
+                prettyPrint = true
+                isLenient = true
+                ignoreUnknownKeys = true
+                encodeDefaults = true
+            })
         }
     }
 
-    // Send a single message and get response
     suspend fun sendMessage(prompt: String, model: String = defaultModel): String {
         try {
             val response = client.post("https://api.openai.com/v1/chat/completions") {
@@ -29,13 +33,16 @@ class OpenAi(config: ApplicationConfig) {
                 header("Authorization", "Bearer $apiKey")
                 setBody(
                     ChatRequest(
-                        model = model, messages = listOf(ChatMessage(role = "user", content = prompt))
+                        model = model,
+                        messages = listOf(ChatMessage(role = "user", content = prompt))
                     )
                 )
             }
 
             val chatResponse = response.body<ChatResponse>()
-            return chatResponse.choices.firstOrNull()?.message?.content ?: "No response received"
+            return chatResponse.choices.firstOrNull()?.message?.content
+                ?: throw OpenAiException("No response content received")
+
         } catch (e: Exception) {
             throw OpenAiException("Failed to get response from OpenAI: ${e.message}", e)
         }
