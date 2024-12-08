@@ -27,6 +27,13 @@ fun createDashboardPage(context: BaseTemplateContext) = DashboardTemplate("Dashb
         }
     }
 
+    div(classes = "admin-access-section") {
+        h2(classes = "overview-title") { +"Budget Form" }
+        p(classes = "overview-description") {
+            +"Create a new Budget below"
+        }
+    }
+
 
     SpreadsheetComponent(context)
 }
