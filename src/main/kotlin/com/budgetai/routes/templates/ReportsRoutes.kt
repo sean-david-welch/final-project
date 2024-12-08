@@ -1,6 +1,7 @@
 package com.budgetai.routes.templates
 
 import com.budgetai.lib.BudgetFormatter
+import com.budgetai.models.PromptType
 import com.budgetai.services.*
 import com.budgetai.templates.pages.createCategoryManagementPage
 import com.budgetai.templates.pages.createReportsPage
@@ -8,6 +9,7 @@ import com.budgetai.templates.pages.createSavingsManagementPage
 import com.budgetai.utils.templateContext
 import io.ktor.http.*
 import io.ktor.server.auth.*
+import io.ktor.server.plugins.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.slf4j.Logger
@@ -88,8 +90,24 @@ fun Route.reportRoutes(
                 }
             }
 
-            post ("/ai-insights") {
+            post("/ai-insights") {
+                // 1. Get form parameters
+                val userId = call.parameters["userId"]?.toLongOrNull()
+                    ?: throw BadRequestException("Invalid user ID")
 
+                val promptType = call.parameters["prompt"]?.let {
+                    PromptType.entries.find { type ->
+                        type.name.lowercase() == it
+                    }
+                } ?: throw BadRequestException("Invalid prompt type")
+
+                val budgetId = call.parameters["budget"]?.toLongOrNull()
+                    ?: throw BadRequestException("Invalid budget ID")
+
+                val budget = budgetService.getBudget(budgetId.toInt())
+                    ?: throw NotFoundException("Budget not found")
+
+                call.respond(HttpStatusCode.Created)
             }
         }
     }
