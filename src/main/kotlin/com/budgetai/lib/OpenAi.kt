@@ -41,31 +41,5 @@ class OpenAi(config: ApplicationConfig) {
         }
     }
 
-    // Send conversation history and get response
-    suspend fun sendConversation(messages: List<Pair<String, Boolean>>, model: String = defaultModel): String {
-        try {
-            val chatMessages = messages.map { (content, isUser) ->
-                ChatMessage(
-                    role = if (isUser) "user" else "assistant", content = content
-                )
-            }
-
-            val response = client.post("https://api.openai.com/v1/chat/completions") {
-                contentType(ContentType.Application.Json)
-                header("Authorization", "Bearer $apiKey")
-                setBody(
-                    ChatRequest(
-                        model = model, messages = chatMessages
-                    )
-                )
-            }
-
-            val chatResponse = response.body<ChatResponse>()
-            return chatResponse.choices.firstOrNull()?.message?.content ?: "No response received"
-        } catch (e: Exception) {
-            throw OpenAiException("Failed to get response from OpenAI: ${e.message}", e)
-        }
-    }
-
     class OpenAiException(message: String, cause: Throwable? = null) : Exception(message, cause)
 }
