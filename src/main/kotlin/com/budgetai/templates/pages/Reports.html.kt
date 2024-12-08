@@ -107,8 +107,7 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                         attributes["hx-on::after-request"] = "if(event.detail.successful) this.closest('tr').querySelector('#type-cell-${category.id}').innerHTML = this.value"
 
                                         val categoryTypes = listOf(
-                                            "EXPENSE" to "Expense",
-                                            "INCOME" to "Income"
+                                            "EXPENSE" to "Expense", "INCOME" to "Income"
                                         )
 
                                         categoryTypes.forEach { (value, label) ->
