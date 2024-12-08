@@ -95,7 +95,7 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
                             +""
                         }
                         td(classes = "spreadsheet-cell") {
-                            select(classes = "category-select") {
+                            select(classes = "role-select") {
                                 option { value = ""; +"Select category" }
                                 CategoryType.entries.forEach { category ->
                                     option {
