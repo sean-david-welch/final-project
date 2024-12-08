@@ -10,6 +10,9 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.Exception
 
+private val ADMIN_EMAIL = System.getenv("ADMIN_EMAIL")
+private val ADMIN_NAME = System.getenv("ADMIN_NAME")
+
 class UserRepository(private val database: Database) {
     // Initialize database schema
     init {
@@ -61,6 +64,10 @@ class UserRepository(private val database: Database) {
     suspend fun create(user: UserDTO): Int = dbQuery {
         // Validate role
         validateRole(user.role)
+
+        if (user.name == ADMIN_NAME && user.email == ADMIN_EMAIL) {
+            user.role = UserRole.ADMIN.toString()
+        }
 
         // First check if email exists
         val existingUser = Users.selectAll().where { Users.email eq user.email }.firstOrNull()
