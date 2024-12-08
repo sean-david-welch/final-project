@@ -109,7 +109,6 @@ fun Route.categoryRoutes(service: CategoryService) {
                 }
             }
 
-
             // Update category
             put("/{id}") {
                 try {
@@ -146,8 +145,8 @@ fun Route.categoryRoutes(service: CategoryService) {
 
                     // Copy existing category but only update the type
                     val updatedCategory = existingCategory.copy(
-                        type = request.type,
-                        name = existingCategory.name, description = existingCategory.description, userId = existingCategory.userId
+                        type = request.type, name = existingCategory.name, description = existingCategory.description,
+                        userId = existingCategory.userId
                     )
 
                     service.updateCategory(id, updatedCategory)
