@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
 // models
 object Categories : IntIdTable("categories") {
     val name = varchar("name", 50).uniqueIndex()
+    val userId = reference("user_id", Users).nullable()
     val type = enumerationByName("type", 20, CategoryType::class)
     val description = text("description").nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
@@ -17,6 +18,7 @@ object Categories : IntIdTable("categories") {
 @Serializable
 data class CategoryDTO(
     val id: Int = 0,
+    val userId: Int? = null,
     val name: String,
     val type: CategoryType,
     val description: String? = null,
@@ -31,5 +33,5 @@ data class UpdateCategoryRequest(
 
 @Serializable
 data class CategoryCreationRequest(
-    val name: String, val type: CategoryType, val description: String? = null
+    val userId: Int? = null, val name: String, val type: CategoryType, val description: String? = null
 )
