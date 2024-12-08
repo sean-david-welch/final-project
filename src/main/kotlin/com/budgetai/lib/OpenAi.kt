@@ -24,22 +24,29 @@ class OpenAi(config: ApplicationConfig) {
                 encodeDefaults = true
             })
         }
+        expectSuccess = true  // This will throw on non-2xx responses
     }
 
     suspend fun sendMessage(prompt: String, model: String = defaultModel): String {
+        if (prompt.isBlank()) {
+            throw OpenAiException("Prompt cannot be empty")
+        }
+
         try {
             val response = client.post("https://api.openai.com/v1/chat/completions") {
                 contentType(ContentType.Application.Json)
                 header("Authorization", "Bearer $apiKey")
                 setBody(
                     ChatRequest(
-                        model = model, messages = listOf(ChatMessage(role = "user", content = prompt))
+                        model = model,
+                        messages = listOf(ChatMessage(role = "user", content = prompt))
                     )
                 )
             }
 
             val chatResponse = response.body<ChatResponse>()
-            return chatResponse.choices.firstOrNull()?.message?.content ?: throw OpenAiException("No response content received")
+            return chatResponse.choices.firstOrNull()?.message?.content
+                ?: throw OpenAiException("No response content received")
 
         } catch (e: Exception) {
             throw OpenAiException("Failed to get response from OpenAI: ${e.message}", e)
