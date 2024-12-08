@@ -9,4 +9,4 @@ set +a
 mkdir -p .ebextensions
 
 # Use envsubst to replace variables
-envsubst < .ebextensions/options.config > .ebextensions/env.config
+envsubst < .ebextensions/options.config.template > .ebextensions/options.config
