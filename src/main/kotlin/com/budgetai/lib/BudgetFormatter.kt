@@ -16,35 +16,43 @@ class BudgetFormatter {
             csvBuilder.appendLine("Budget Name,Budget Period,Total Income,Total Expenses,Category,Item Name,Amount")
             logger.debug("Added CSV headers")
 
-            // Add data rows
+            // Process each budget
             budgets.forEach { budget ->
                 logger.debug("Processing budget: ${budget.id} - ${budget.name}")
 
-                // If budget has no items, still show the budget summary
+                // Group items by category
+                val itemsByCategory = budget.items.groupBy { it.category?.name ?: "Uncategorized" }
+
                 if (budget.items.isEmpty()) {
+                    // If budget has no items, show only the budget summary with total expenses
                     logger.debug("Budget ${budget.id} has no items")
                     csvBuilder.appendLine(
                         buildBudgetRow(
-                            budget = budget, itemName = "", categoryName = "", itemAmount = 0.0
+                            budget = budget,
+                            itemName = "",
+                            categoryName = "",
+                            itemAmount = budget.totalExpenses
                         )
                     )
                 } else {
-                    logger.debug("Processing ${budget.items.size} items for budget ${budget.id}")
-                    // Add a row for each budget item
-                    budget.items.forEach { item ->
-                        csvBuilder.appendLine(
-                            buildBudgetRow(
-                                budget = budget, itemName = item.name, categoryName = item.category?.name ?: "Uncategorized",
-                                itemAmount = item.amount
+                    // Process items by category
+                    itemsByCategory.forEach { (categoryName, items) ->
+                        items.forEach { item ->
+                            csvBuilder.appendLine(
+                                buildBudgetRow(
+                                    budget = budget,
+                                    itemName = item.name,
+                                    categoryName = categoryName,
+                                    itemAmount = item.amount
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
 
             logger.info("Successfully formatted CSV data")
             return csvBuilder.toString()
-
         } catch (e: Exception) {
             logger.error("Error formatting budgets to CSV", e)
             throw e
@@ -52,27 +60,33 @@ class BudgetFormatter {
     }
 
     private fun buildBudgetRow(
-        budget: BudgetWithItemsDTO, itemName: String, categoryName: String, itemAmount: Double
+        budget: BudgetWithItemsDTO,
+        itemName: String,
+        categoryName: String,
+        itemAmount: Double
     ): String {
         try {
-            val period = if (budget.startDate != null && budget.endDate != null) {
-                "${budget.startDate} to ${budget.endDate}"
-            } else {
-                "No period set"
+            val period = when {
+                budget.startDate != null && budget.endDate != null ->
+                    "${budget.startDate} to ${budget.endDate}"
+                else -> "No period set"
             }
 
             return listOf(
-                budget.name.escapeCsv(), period.escapeCsv(), budget.totalIncome.toString(), budget.totalExpenses.toString(),
-                categoryName.escapeCsv(), itemName.escapeCsv(), itemAmount.toString()
+                budget.name.escapeCsv(),
+                period.escapeCsv(),
+                budget.totalIncome.toString(),
+                budget.totalExpenses.toString(), // This is the total expenses for the entire budget
+                categoryName.escapeCsv(),
+                itemName.escapeCsv(),
+                itemAmount.toString()  // This is the individual item amount
             ).joinToString(",")
-
         } catch (e: Exception) {
             logger.error("Error building budget row for budget ${budget.id}", e)
             throw e
         }
     }
 
-    // Helper function to escape CSV special characters
     private fun String.escapeCsv(): String {
         return try {
             if (this.contains(",") || this.contains("\"") || this.contains("\n")) {
