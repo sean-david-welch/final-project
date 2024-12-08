@@ -2,7 +2,7 @@ package com.budgetai.templates.components
 
 import kotlinx.html.*
 
-private fun FlowContent.SpendingSummaryCard() {
+fun FlowContent.SpendingSummaryCard() {
     div(classes = "report-card") {
         div(classes = "report-header") {
             h3(classes = "report-title") { +"Spending Summary" }
@@ -16,7 +16,7 @@ private fun FlowContent.SpendingSummaryCard() {
     }
 }
 
-private fun FlowContent.BudgetAnalysisCard() {
+fun FlowContent.BudgetAnalysisCard() {
     div(classes = "report-card") {
         div(classes = "report-header") {
             h3(classes = "report-title") { +"AI Insights" }
@@ -30,7 +30,7 @@ private fun FlowContent.BudgetAnalysisCard() {
     }
 }
 
-private fun FlowContent.CategoryBreakdownCard() {
+fun FlowContent.CategoryBreakdownCard() {
     div(classes = "report-card") {
         div(classes = "report-header") {
             h3(classes = "report-title") { +"Category Breakdown" }
@@ -44,7 +44,7 @@ private fun FlowContent.CategoryBreakdownCard() {
     }
 }
 
-private fun FlowContent.SavingsTrackingCard() {
+fun FlowContent.SavingsTrackingCard() {
     div(classes = "report-card") {
         div(classes = "report-header") {
             h3(classes = "report-title") { +"Savings Tracking" }
