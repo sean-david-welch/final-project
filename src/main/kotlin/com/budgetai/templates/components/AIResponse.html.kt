@@ -5,6 +5,13 @@ import kotlinx.html.stream.createHTML
 
 fun DIV.insightContentComponent(content: String) {
     div(classes = "insight-container") {
+        // Close button
+        button(classes = "close-button") {
+            attributes["onclick"] = "this.parentElement.remove()"
+            +"×"
+        }
+
+        // Content sections
         content.split("###").filter { it.isNotBlank() }.forEach { section ->
             val lines = section.trim().split("\n").filter { it.isNotBlank() }
             lines.forEachIndexed { index, line ->
