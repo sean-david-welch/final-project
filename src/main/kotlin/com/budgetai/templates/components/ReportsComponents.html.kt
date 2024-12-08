@@ -51,7 +51,7 @@ fun FlowContent.CategoryBreakdownCard(context: BaseTemplateContext) {
                 h3(classes = "report-title") { +"Category Breakdown" }
                 div(classes = "report-actions") {
                     div(classes = "report-actions") {
-                        a(href = "#") {
+                        a(href = "/reports/category-breakdown") {
                             button(classes = "action-button") { +"View Details" }
                         }
                     }
@@ -70,7 +70,7 @@ fun FlowContent.SavingsTrackingCard(context: BaseTemplateContext) {
             div(classes = "report-header") {
                 h3(classes = "report-title") { +"Savings Tracking" }
                 div(classes = "report-actions") {
-                    a(href = "#") {
+                    a(href = "/reports/savings-tracking") {
                         button(classes = "action-button") { +"Set Goals" }
                     }
                 }
