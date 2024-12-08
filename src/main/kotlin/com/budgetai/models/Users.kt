@@ -17,7 +17,7 @@ object Users : IntIdTable("users") {
 // DTO
 @Serializable
 data class UserDTO(
-    val id: Int = 0, val name: String, val role: String = UserRole.USER.toString(), val email: String, val createdAt: String? = null
+    val id: Int = 0, val name: String, var role: String = UserRole.USER.toString(), val email: String, val createdAt: String? = null
 )
 
 @Serializable
