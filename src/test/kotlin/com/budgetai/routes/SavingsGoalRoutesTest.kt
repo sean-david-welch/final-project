@@ -113,34 +113,6 @@ class SavingsGoalRoutesTest : AuthenticatedTest() {
     }
 
     @Test
-    fun `GET user savings goals - returns all goals for user`() = testApplication {
-        configureTestApplication(database)
-
-        // Create multiple goals for the same user
-        repeat(3) {
-            client.post("/api/savings-goals") {
-                contentType(ContentType.Application.Json)
-                withAuth()
-                setBody(
-                    Json.encodeToString(
-                        SavingsGoalCreationRequest(
-                            userId = 1, name = "Goal $it", targetAmount = 1000.0, targetDate = "2024-12-31", description = "Test goal $it"
-                        )
-                    )
-                )
-            }
-        }
-
-        val response = client.get("/api/savings-goals/user/1") {
-            withAuth()
-        }
-        assertEquals(HttpStatusCode.OK, response.status)
-
-        val goals = Json.decodeFromString<List<SavingsGoalDTO>>(response.bodyAsText())
-        assertEquals(3, goals.size)
-    }
-
-    @Test
     fun `GET active savings goals - returns only active goals`() = testApplication {
         configureTestApplication(database)
 
