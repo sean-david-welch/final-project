@@ -10,6 +10,9 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
         attributes["hx-on::after-request"] = """
            if(event.detail.successful) {
                this.reset();
+               document.getElementById('modal-dialog').close();
+               // Optional: Refresh the goals list
+               htmx.trigger('#response-message', 'refreshGoals');
            }
        """.trimIndent()
 
