@@ -1,5 +1,6 @@
 package com.budgetai.templates.components
 
+import com.budgetai.models.CategoryType
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
@@ -85,10 +86,23 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
                 }
                 tbody {
                     tr {
-                        columns.forEach { _ ->
-                            td(classes = "spreadsheet-cell") {
-                                contentEditable = true
-                                +""
+                        td(classes = "spreadsheet-cell") {
+                            contentEditable = true
+                            +""
+                        }
+                        td(classes = "spreadsheet-cell") {
+                            contentEditable = true
+                            +""
+                        }
+                        td(classes = "spreadsheet-cell") {
+                            select(classes = "category-select") {
+                                option { value = ""; +"Select category" }
+                                CategoryType.entries.forEach { category ->
+                                    option {
+                                        value = category.toString()
+                                        +category.name
+                                    }
+                                }
                             }
                         }
                     }
