@@ -62,9 +62,16 @@ fun Route.reportRoutes(
                 val csvFormatter = BudgetFormatter()
                 val csvContent = csvFormatter.formatBudgetsToCSV(budgets)
 
-                call.response.headers.append("Content-Disposition", "attachment; filename=spending-summary.csv")
+                call.response.headers.apply {
+                    append(HttpHeaders.ContentType, ContentType.Text.CSV.toString())
+                    append(HttpHeaders.ContentDisposition, "attachment; filename=spending-summary.csv")
+                    // Add this to prevent caching
+                    append(HttpHeaders.CacheControl, "no-cache, no-store, must-revalidate")
+                }
+
                 call.respondText(
-                    text = csvContent, contentType = ContentType.Text.CSV
+                    text = csvContent,
+                    contentType = ContentType.Text.CSV
                 )
             }
 
