@@ -9,7 +9,7 @@ fun FlowContent.SpendingSummaryCard(context: BaseTemplateContext) {
             div(classes = "report-header") {
                 h3(classes = "report-title") { +"Spending Summary" }
                 div(classes = "report-actions") {
-                    button(classes = "action-button") { +"Download PDF" }
+                    button(classes = "action-button") { +"Download Report" }
                 }
             }
             div(classes = "report-content") {
