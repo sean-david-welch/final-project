@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 
 class OpenAi(config: ApplicationConfig) {
     private val apiKey: String = config.property("api-keys.openai").getString()
-    private val defaultModel = "gpt-4-mini"
+    private val defaultModel = "gpt-4o-mini"
 
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
