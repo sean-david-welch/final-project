@@ -70,24 +70,17 @@ fun FlowContent.CategoryBreakdownCard(context: BaseTemplateContext) {
 }
 
 fun FlowContent.SavingsTrackingCard(context: BaseTemplateContext) {
-    DialogComponent(context) {
-        h2(classes = "heading-large") {
-            +"Savings Goals"
-        }
-        div(classes = "text-base mt-4") {
-            +"Here's a list of the savings goals you've created"
-        }
-    }
-
-    div(classes = "report-card") {
-        div(classes = "report-header") {
-            h3(classes = "report-title") { +"Savings Tracking" }
-            div(classes = "report-actions") {
-                button(classes = "action-button") { +"Set Goals" }
+    if (context.auth.isAuthenticated) {
+        div(classes = "report-card") {
+            div(classes = "report-header") {
+                h3(classes = "report-title") { +"Savings Tracking" }
+                div(classes = "report-actions") {
+                    button(classes = "action-button") { +"Set Goals" }
+                }
             }
-        }
-        div(classes = "report-content") {
-            div(classes = "chart-placeholder")
+            div(classes = "report-content") {
+                div(classes = "chart-placeholder")
+            }
         }
     }
 }
