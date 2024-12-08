@@ -2,6 +2,7 @@ package com.budgetai.templates.components
 
 import com.budgetai.models.BudgetDTO
 import com.budgetai.models.PromptType
+import com.budgetai.models.UserDTO
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
@@ -76,7 +77,7 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
     }
 }
 
-fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
+fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<BudgetDTO>, userDTO: UserDTO) {
     form(classes = "auth-form") {
         attributes["hx-post"] = "/api/reports/ai-insights"
         attributes["hx-target"] = "#response-message"
@@ -91,7 +92,7 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<Budget
 
         input(type = InputType.hidden) {
             name = "userId"
-            value = context.auth.user?.id!!
+            value = userDTO.id.toString()
         }
 
         div(classes = "spreadsheet-wrapper") {
