@@ -95,7 +95,6 @@ fun Route.reportRoutes(
             }
 
             post("/ai-insights") {
-                val logger = LoggerFactory.getLogger("AIInsightsRoute")
                 logger.info("Received AI insight request")
 
                 val userId = call.parameters["userId"]?.toIntOrNull() ?: throw BadRequestException("Invalid user ID").also {
