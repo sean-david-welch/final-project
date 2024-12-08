@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.categoryRoutes(service: CategoryService) {
-    authenticate{
+    authenticate {
         route("/api/categories") {
             // Create new category
             post {
@@ -137,10 +137,7 @@ fun Route.categoryRoutes(service: CategoryService) {
                     // Copy existing category but only update the type
                     val updatedCategory = existingCategory.copy(
                         type = request.type,
-                        // Preserve existing values
-                        name = existingCategory.name,
-                        description = existingCategory.description,
-                        userId = existingCategory.userId
+                        name = existingCategory.name, description = existingCategory.description, userId = existingCategory.userId
                     )
 
                     service.updateCategory(id, updatedCategory)
