@@ -1,7 +1,11 @@
 package com.budgetai.routes.templates
 
 import com.budgetai.lib.BudgetFormatter
+import com.budgetai.lib.OpenAi
+import com.budgetai.models.AiInsightDTO
+import com.budgetai.models.InsightCreationRequest
 import com.budgetai.models.PromptType
+import com.budgetai.models.Sentiment
 import com.budgetai.services.*
 import com.budgetai.templates.pages.createCategoryManagementPage
 import com.budgetai.templates.pages.createReportsPage
@@ -14,10 +18,11 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
 
 fun Route.reportRoutes(
     userService: UserService, budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService,
-    savingsService: SavingsGoalService
+    savingsService: SavingsGoalService, aiInsightService: AiInsightService,
 ) {
     val logger: Logger = LoggerFactory.getLogger("ReportRoutes")
     authenticate {
@@ -92,8 +97,7 @@ fun Route.reportRoutes(
 
             post("/ai-insights") {
                 // 1. Extract and validate parameters
-                val userId = call.parameters["userId"]?.toLongOrNull()
-                    ?: throw BadRequestException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw BadRequestException("Invalid user ID")
 
                 val promptType = call.parameters["prompt"]?.let {
                     PromptType.entries.find { type ->
@@ -101,56 +105,55 @@ fun Route.reportRoutes(
                     }
                 } ?: throw BadRequestException("Invalid prompt type")
 
-                val budgetId = call.parameters["budget"]?.toLongOrNull()
-                    ?: throw BadRequestException("Invalid budget ID")
+                val budgetId = call.parameters["budget"]?.toIntOrNull() ?: throw BadRequestException("Invalid budget ID")
 
                 // 2. Get budget data
-                val budget = budgetService.getBudget(budgetId.toInt())
-                    ?: throw NotFoundException("Budget not found")
-                val budgetItems = budgetItemService.getBudgetItems(budgetId.toInt())
+                val budget = budgetService.getBudget(budgetId) ?: throw NotFoundException("Budget not found")
+                val budgetItems = budgetItemService.getBudgetItems(budgetId)
 
                 // 3. Construct prompt based on prompt type
                 val prompt = buildString {
                     append("Analyze the following budget data:\n")
                     append("Budget Name: ${budget.name}\n")
-                    append("Total Budget: ${budget.total}\n")
+                    append("Total Budget: ${budget.totalExpenses}\n")
                     append("Budget Items:\n")
                     budgetItems.forEach { item ->
                         append("- ${item.name}: ${item.amount}\n")
                     }
                     append("\n")
 
-                    // Add specific analysis instructions based on prompt type
-                    append(when (promptType) {
-                        PromptType.COST_REDUCTION -> """
+                    append(
+                        when (promptType) {
+                            PromptType.COST_REDUCTION -> """
                 Please analyze this budget for cost reduction opportunities. 
                 Identify specific items where costs could be reduced and suggest practical ways to achieve these reductions.
                 Format your response in clear, actionable bullet points.
             """.trimIndent()
 
-                        PromptType.PRICE_ALTERNATIVES -> """
+                            PromptType.PRICE_ALTERNATIVES -> """
                 Review the budget items and suggest alternative options or suppliers that could offer better value.
                 For each suggestion, explain the potential benefits and savings.
             """.trimIndent()
 
-                        PromptType.SPENDING_PATTERNS -> """
+                            PromptType.SPENDING_PATTERNS -> """
                 Analyze the spending patterns in this budget.
                 Identify any notable trends, unusual spending, or areas that might need attention.
                 Provide specific insights about spending distribution and efficiency.
             """.trimIndent()
 
-                        PromptType.CATEGORY_ANALYSIS -> """
+                            PromptType.CATEGORY_ANALYSIS -> """
                 Perform a detailed category analysis of this budget.
                 Group similar items, identify the highest spending categories,
                 and suggest any category-specific optimizations.
             """.trimIndent()
 
-                        PromptType.CUSTOM_ANALYSIS -> """
+                            PromptType.CUSTOM_ANALYSIS -> """
                 Provide a comprehensive analysis of this budget.
                 Include insights about spending patterns, potential savings,
                 and recommendations for better budget management.
             """.trimIndent()
-                    })
+                        }
+                    )
                 }
 
                 // 4. Send to OpenAI and get response
@@ -158,17 +161,18 @@ fun Route.reportRoutes(
                 val insight = try {
                     openAi.sendMessage(prompt)
                 } catch (e: OpenAi.OpenAiException) {
-                    throw InternalServerException("Failed to generate insight: ${e.message}")
+                    throw BadRequestException("Failed to generate insight: ${e.message}")
                 }
 
                 // 5. Save the insight
-                val savedInsight = insightRepository.save(
-                    Insight(
+                val savedInsight = aiInsightService.createInsight(
+                    InsightCreationRequest(
                         userId = userId,
                         budgetId = budgetId,
-                        promptType = promptType,
-                        content = insight,
-                        createdAt = LocalDateTime.now()
+                        prompt = prompt,
+                        type =,
+                        sentiment = Sentiment.NEUTRAL,
+                        response = insight,
                     )
                 )
 
