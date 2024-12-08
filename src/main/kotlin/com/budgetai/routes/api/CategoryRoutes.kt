@@ -132,25 +132,68 @@ fun Route.categoryRoutes(service: CategoryService) {
 
             // update type
             put("/{id}/type") {
+                val logger = LoggerFactory.getLogger("CategoryTypeUpdate")
+
                 try {
-                    val id = call.parameters["id"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid category ID")
+                    val id = call.parameters["id"]?.toIntOrNull()
+                    logger.info("Received type update request for category ID: $id")
 
-                    val request = call.receive<UpdateCategoryTypeRequest>()
-                    val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
+                    if (id == null) {
+                        logger.warn("Invalid category ID provided: ${call.parameters["id"]}")
+                        throw IllegalArgumentException("Invalid category ID")
+                    }
 
-                    // Copy existing category but only update the type
+                    // Log the incoming request body
+                    val requestBody = try {
+                        val request = call.receive<UpdateCategoryTypeRequest>()
+                        logger.info("Received type update request body: $request")
+                        request
+                    } catch (e: Exception) {
+                        logger.error("Failed to parse request body", e)
+                        throw IllegalArgumentException("Invalid request format: ${e.message}")
+                    }
+
+                    // Log category lookup
+                    val existingCategory = service.getCategory(id)
+                    if (existingCategory == null) {
+                        logger.warn("Category not found with ID: $id")
+                        throw IllegalArgumentException("Category not found")
+                    }
+                    logger.info("Found existing category: $existingCategory")
+
+                    // Log category update
+                    logger.info("Updating category ${id} type from '${existingCategory.type}' to '${requestBody.type}'")
+
                     val updatedCategory = existingCategory.copy(
-                        id = id, userId = existingCategory.userId, createdAt = existingCategory.createdAt,
-                        type = request.type, name = existingCategory.name, description = existingCategory.description,
+                        id = id,
+                        userId = existingCategory.userId,
+                        createdAt = existingCategory.createdAt,
+                        type = requestBody.type,
+                        name = existingCategory.name,
+                        description = existingCategory.description,
                     )
+                    logger.debug("Prepared updated category: $updatedCategory")
 
-                    service.updateCategory(id, updatedCategory)
-                    call.respond(HttpStatusCode.OK, "Category type updated successfully")
+                    try {
+                        service.updateCategory(id, updatedCategory)
+                        logger.info("Successfully updated category ${id} type to '${requestBody.type}'")
+                        call.respond(HttpStatusCode.OK, "Category type updated successfully")
+                    } catch (e: Exception) {
+                        logger.error("Failed to update category in database", e)
+                        throw e
+                    }
+
                 } catch (e: IllegalArgumentException) {
+                    logger.warn("Bad request while updating category type", e)
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
                 } catch (e: Exception) {
+                    logger.error("Unexpected error while updating category type", e)
                     call.respond(
-                        HttpStatusCode.InternalServerError, "Error updating category type"
+                        HttpStatusCode.InternalServerError, "Error updating category type: ${
+                            if (e.message?.contains(
+                                    "sensitive"
+                                ) == false) e.message else "Internal server error"
+                        }"
                     )
                 }
             }
