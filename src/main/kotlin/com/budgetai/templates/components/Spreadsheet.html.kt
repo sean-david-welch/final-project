@@ -3,7 +3,7 @@ package com.budgetai.templates.components
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
-private val columns = listOf("Name", "Amount")
+private val columns = listOf("Name", "Amount", "Category")
 
 fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
     script { src = "/static/scripts/spreadsheet.js"; defer = true }
