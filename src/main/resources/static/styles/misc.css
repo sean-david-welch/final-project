@@ -142,7 +142,7 @@
 /* Dialog */
 .dialog {
     @apply max-h-[80vh] w-[65vw];
-    @apply fixed left-1/2 top-0 z-50;
+    @apply fixed left-1/2 top-1/2 z-50;
     @apply rounded-lg shadow-sm;
     @apply bg-gray-50 dark:bg-gray-800;
     @apply border border-gray-200 dark:border-gray-700;
