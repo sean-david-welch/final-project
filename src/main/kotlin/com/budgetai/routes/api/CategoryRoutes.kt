@@ -141,6 +141,7 @@ fun Route.categoryRoutes(service: CategoryService) {
                                 type = parameters["type"] ?: throw IllegalArgumentException("Type is required")
                             )
                         }
+
                         else -> throw IllegalArgumentException("Unsupported content type")
                     }
 
@@ -162,11 +163,10 @@ fun Route.categoryRoutes(service: CategoryService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.OK, mapOf("message" to "Category type updated successfully"))
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.success("Category type updated successfully"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.success("Category type updated successfully"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -176,11 +176,10 @@ fun Route.categoryRoutes(service: CategoryService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Invalid request")))
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error(e.message ?: "Invalid request"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error(e.message ?: "Invalid request"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
@@ -190,11 +189,10 @@ fun Route.categoryRoutes(service: CategoryService) {
                         ContentType.Application.Json -> {
                             call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error updating category type"))
                         }
+
                         else -> {
                             call.respondText(
-                                ResponseComponents.error("Error updating category type"),
-                                ContentType.Text.Html,
-                                HttpStatusCode.OK
+                                ResponseComponents.error("Error updating category type"), ContentType.Text.Html, HttpStatusCode.OK
                             )
                         }
                     }
