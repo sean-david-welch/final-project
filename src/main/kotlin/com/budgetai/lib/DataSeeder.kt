@@ -68,14 +68,14 @@ class DataSeeder(database: Database) {
         // Create or get categories
         val categoryMap = mapOf(
             "Salary" to CategoryType.FIXED,
-            "Freelance" to CategoryType.FIXED,
-            "Investment" to CategoryType.FIXED,
+            "Freelance" to CategoryType.VARIABLE,
+            "Investment" to CategoryType.RECURRING,
             "Housing" to CategoryType.FIXED,
-            "Utilities" to CategoryType.FIXED,
-            "Groceries" to CategoryType.FIXED,
+            "Utilities" to CategoryType.RECURRING,
+            "Groceries" to CategoryType.NECESSARY,
             "Transportation" to CategoryType.FIXED,
-            "Healthcare" to CategoryType.FIXED,
-            "Entertainment" to CategoryType.FIXED,
+            "Healthcare" to CategoryType.NECESSARY,
+            "Entertainment" to CategoryType.DISCRETIONARY,
             "Education" to CategoryType.FIXED
         )
 
