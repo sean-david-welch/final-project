@@ -88,7 +88,9 @@ fun Route.reportRoutes(
                 }
             }
 
-            get("/ai-insights") { }
+            post ("/ai-insights") {
+
+            }
         }
     }
 }
