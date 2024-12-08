@@ -3,7 +3,6 @@ package com.budgetai.templates.pages
 import com.budgetai.models.BudgetDTO
 import com.budgetai.models.BudgetItemDTO
 import com.budgetai.models.CategoryDTO
-import com.budgetai.models.UserDTO
 import com.budgetai.templates.components.BudgetAnalysisCard
 import com.budgetai.templates.components.CategoryBreakdownCard
 import com.budgetai.templates.components.SavingsTrackingCard
@@ -62,7 +61,7 @@ fun createReportsPage(
     }
 }
 
-fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>, user: UserDTO) =
+fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>) =
     AdminTemplate("Category Management", context) {
         div(classes = "management-container") {
             // Header with total count and add button
@@ -98,7 +97,7 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                 td(classes = "table-cell description") { +(category.description ?: "-") }
                                 td(classes = "table-actions") {
                                     select(classes = "role-select") {
-                                        attributes["hx-put"] = "/api/categories/${user.id}/type"
+                                        attributes["hx-put"] = "/api/categories/${category.id}/type"
                                         attributes["hx-target"] = "#response-message"
                                         attributes["hx-swap"] = "innerHTML"
                                         attributes["hx-trigger"] = "change"
