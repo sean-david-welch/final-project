@@ -163,7 +163,7 @@ fun createSavingsManagementPage(context: BaseTemplateContext, savings: List<Savi
             div(classes = "table-container") {
                 div(attributes = mapOf(
                     "id" to "goals-table",
-                    "hx-get" to "/api/savings-goals/list",
+                    "hx-get" to "/api/savings-goals/user/${context.auth.user?.id}",
                     "hx-trigger" to "refreshGoals from:body"
                 )) {
                     SavingsGoalTable(savings)
