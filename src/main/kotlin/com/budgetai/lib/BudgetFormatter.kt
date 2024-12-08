@@ -13,21 +13,20 @@ class BudgetFormatter {
         budgets.forEach { budget ->
             // If budget has no items, still show the budget summary
             if (budget.items.isEmpty()) {
-                csvBuilder.appendLine(buildBudgetRow(
-                    budget = budget,
-                    itemName = "",
-                    categoryName = "",
-                    itemAmount = 0.0
-                ))
+                csvBuilder.appendLine(
+                    buildBudgetRow(
+                        budget = budget, itemName = "", categoryName = "", itemAmount = 0.0
+                    )
+                )
             } else {
                 // Add a row for each budget item
                 budget.items.forEach { item ->
-                    csvBuilder.appendLine(buildBudgetRow(
-                        budget = budget,
-                        itemName = item.name,
-                        categoryName = item.category?.name ?: "Uncategorized",
-                        itemAmount = item.amount
-                    ))
+                    csvBuilder.appendLine(
+                        buildBudgetRow(
+                            budget = budget, itemName = item.name, categoryName = item.category?.name ?: "Uncategorized",
+                            itemAmount = item.amount
+                        )
+                    )
                 }
             }
         }
@@ -36,10 +35,7 @@ class BudgetFormatter {
     }
 
     private fun buildBudgetRow(
-        budget: BudgetWithItemsDTO,
-        itemName: String,
-        categoryName: String,
-        itemAmount: Double
+        budget: BudgetWithItemsDTO, itemName: String, categoryName: String, itemAmount: Double
     ): String {
         val period = if (budget.startDate != null && budget.endDate != null) {
             "${budget.startDate} to ${budget.endDate}"
@@ -48,13 +44,8 @@ class BudgetFormatter {
         }
 
         return listOf(
-            budget.name.escapeCsv(),
-            period.escapeCsv(),
-            budget.totalIncome.toString(),
-            budget.totalExpenses.toString(),
-            categoryName.escapeCsv(),
-            itemName.escapeCsv(),
-            itemAmount.toString()
+            budget.name.escapeCsv(), period.escapeCsv(), budget.totalIncome.toString(), budget.totalExpenses.toString(),
+            categoryName.escapeCsv(), itemName.escapeCsv(), itemAmount.toString()
         ).joinToString(",")
     }
 
