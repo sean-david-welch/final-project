@@ -67,11 +67,18 @@ class DataSeeder(database: Database) {
 
         // Create or get categories
         val categoryMap = mapOf(
-            "Salary" to CategoryType.FIXED, "Freelance" to CategoryType.FIXED, "Investment" to CategoryType.FIXED,
-            "Housing" to CategoryType.FIXED, "Utilities" to CategoryType.FIXED, "Groceries" to CategoryType.FIXED,
-            "Transportation" to CategoryType.FIXED, "Healthcare" to CategoryType.FIXED, "Entertainment" to CategoryType.FIXED,
+            "Salary" to CategoryType.FIXED,
+            "Freelance" to CategoryType.FIXED,
+            "Investment" to CategoryType.FIXED,
+            "Housing" to CategoryType.FIXED,
+            "Utilities" to CategoryType.FIXED,
+            "Groceries" to CategoryType.FIXED,
+            "Transportation" to CategoryType.FIXED,
+            "Healthcare" to CategoryType.FIXED,
+            "Entertainment" to CategoryType.FIXED,
             "Education" to CategoryType.FIXED
         )
+
 
         val categoryIds = categoryMap.map { (name, type) ->
             name to (categoryRepository.findByName(name)?.id ?: categoryRepository.create(
