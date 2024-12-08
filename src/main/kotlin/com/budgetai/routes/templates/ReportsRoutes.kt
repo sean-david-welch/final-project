@@ -10,11 +10,14 @@ import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 fun Route.reportRoutes(
     userService: UserService, budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService,
     savingsService: SavingsGoalService
 ) {
+    val logger: Logger = LoggerFactory.getLogger("ReportRoutes")
     authenticate {
         // template routes
         route("/reports") {
@@ -54,24 +57,35 @@ fun Route.reportRoutes(
         route("/api/reports") {
 
             get("/spending-summary") {
-                val user = call.templateContext.auth.user?.id?.let {
-                    userService.getUser(it.toInt())
-                } ?: throw IllegalArgumentException("User not found")
+                logger.info("Received spending summary request")
+                try {
+                    val user = call.templateContext.auth.user?.id?.let {
+                        userService.getUser(it.toInt())
+                    } ?: throw IllegalArgumentException("User not found")
+                    logger.debug("Found user: ${user.id}")
 
-                val budgets = budgetService.getUserBudgetsWithItems(user.id)
-                val csvFormatter = BudgetFormatter()
-                val csvContent = csvFormatter.formatBudgetsToCSV(budgets)
+                    val budgets = budgetService.getUserBudgetsWithItems(user.id)
+                    logger.debug("Retrieved ${budgets.size} budgets")
 
-                call.response.headers.apply {
-                    append(HttpHeaders.ContentType, ContentType.Text.CSV.toString())
-                    append(HttpHeaders.ContentDisposition, "attachment; filename=spending-summary.csv")
-                    // Add this to prevent caching
-                    append(HttpHeaders.CacheControl, "no-cache, no-store, must-revalidate")
+                    val csvFormatter = BudgetFormatter()
+                    val csvContent = csvFormatter.formatBudgetsToCSV(budgets)
+                    logger.debug("CSV content length: ${csvContent.length}")
+
+                    call.response.headers.apply {
+                        append(HttpHeaders.ContentType, ContentType.Text.CSV.toString())
+                        append(HttpHeaders.ContentDisposition, "attachment; filename=spending-summary.csv")
+                        append(HttpHeaders.CacheControl, "no-cache, no-store, must-revalidate")
+                    }
+                    logger.debug("Set response headers")
+
+                    call.respondText(
+                        text = csvContent, contentType = ContentType.Text.CSV
+                    )
+                    logger.info("Successfully sent CSV response")
+                } catch (e: Exception) {
+                    logger.error("Error generating spending summary", e)
+                    throw e
                 }
-
-                call.respondText(
-                    text = csvContent, contentType = ContentType.Text.CSV
-                )
             }
 
             get("/ai-insights") { }
