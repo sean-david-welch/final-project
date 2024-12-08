@@ -13,6 +13,7 @@ import io.ktor.server.routing.*
 
 fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemService, budgetService: BudgetService, categoryService: CategoryService) {
     authenticate {
+        // template routes
         route("/reports") {
             get("") {
                 val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
@@ -25,6 +26,8 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
                 )
             }
         }
+
+        // api routes
         route("/api/reports") {
             get("/spending-summary") {  }
             get("/ai-insights") {  }
