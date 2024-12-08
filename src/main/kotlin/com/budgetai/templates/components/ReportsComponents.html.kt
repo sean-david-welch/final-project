@@ -37,7 +37,6 @@ fun FlowContent.CategoryBreakdownCard(context: BaseTemplateContext) {
         h2(classes = "heading-large") {
             +"Category Details"
         }
-        // Add more details content here as needed
         div(classes = "text-base mt-4") {
             +"Detailed breakdown of your spending categories..."
         }
