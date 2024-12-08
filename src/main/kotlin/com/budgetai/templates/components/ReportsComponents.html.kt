@@ -3,16 +3,18 @@ package com.budgetai.templates.components
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
-fun FlowContent.SpendingSummaryCard() {
-    div(classes = "report-card") {
-        div(classes = "report-header") {
-            h3(classes = "report-title") { +"Spending Summary" }
-            div(classes = "report-actions") {
-                button(classes = "action-button") { +"Download PDF" }
+fun FlowContent.SpendingSummaryCard(context: BaseTemplateContext) {
+    if (context.auth.isAuthenticated) {
+        div(classes = "report-card") {
+            div(classes = "report-header") {
+                h3(classes = "report-title") { +"Spending Summary" }
+                div(classes = "report-actions") {
+                    button(classes = "action-button") { +"Download PDF" }
+                }
             }
-        }
-        div(classes = "report-content") {
-            div(classes = "chart-placeholder")
+            div(classes = "report-content") {
+                div(classes = "chart-placeholder")
+            }
         }
     }
 }
@@ -49,7 +51,9 @@ fun FlowContent.CategoryBreakdownCard(context: BaseTemplateContext) {
                 h3(classes = "report-title") { +"Category Breakdown" }
                 div(classes = "report-actions") {
                     div(classes = "report-actions") {
-                        button(classes = "action-button") { +"View Details" }
+                        a(href = "#") {
+                            button(classes = "action-button") { +"View Details" }
+                        }
                     }
                 }
             }
@@ -66,7 +70,9 @@ fun FlowContent.SavingsTrackingCard(context: BaseTemplateContext) {
             div(classes = "report-header") {
                 h3(classes = "report-title") { +"Savings Tracking" }
                 div(classes = "report-actions") {
-                    button(classes = "action-button") { +"Set Goals" }
+                    a(href = "#") {
+                        button(classes = "action-button") { +"Set Goals" }
+                    }
                 }
             }
             div(classes = "report-content") {
