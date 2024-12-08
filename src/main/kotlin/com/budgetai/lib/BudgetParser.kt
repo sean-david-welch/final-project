@@ -87,7 +87,7 @@ object BudgetParser {
                         categories.add(
                             CategoryDTO(
                                 name = name,
-                                type = CategoryType.valueOf(categoryType),
+                                type = CategoryType.valueOf(categoryType).toString(),
                                 description = "Generated from budget spreadsheet",
                                 userId = userId
                             )
