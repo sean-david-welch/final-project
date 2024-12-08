@@ -5,6 +5,7 @@ import com.budgetai.services.SavingsGoalService
 import com.budgetai.templates.components.ResponseComponents
 import io.ktor.http.*
 import io.ktor.server.auth.*
+import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -111,13 +112,21 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                 }
             }
 
-            // Get all user's savings goals
             get("/user/{userId}") {
                 try {
                     val userId = call.parameters["userId"]?.toIntOrNull() ?: throw IllegalArgumentException("Invalid user ID")
-
                     val goals = service.getUserSavingsGoals(userId)
-                    call.respond(goals)
+
+                    when (call.request.contentType()) {
+                        ContentType.Application.Json -> {
+                            call.respond(goals)
+                        }
+                        else -> {
+                            call.respondHtml {
+                                SavingsGoalT(goals)
+                            }
+                        }
+                    }
                 } catch (e: IllegalArgumentException) {
                     call.respond(HttpStatusCode.BadRequest, e.message ?: "Invalid request")
                 } catch (e: Exception) {
