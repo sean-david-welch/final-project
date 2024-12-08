@@ -1,9 +1,6 @@
 package com.budgetai.templates.pages
 
-import com.budgetai.models.BudgetDTO
-import com.budgetai.models.BudgetItemDTO
-import com.budgetai.models.CategoryDTO
-import com.budgetai.models.SavingsGoalDTO
+import com.budgetai.models.*
 import com.budgetai.templates.components.*
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
@@ -103,17 +100,16 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                         attributes["value"] = category.type.toString()
                                         attributes["hx-on::after-request"] = "if(event.detail.successful) this.closest('tr').querySelector('#type-cell-${category.id}').innerHTML = this.value"
 
-                                        val categoryTypes = listOf(
-                                            "EXPENSE" to "Expense", "INCOME" to "Income"
-                                        )
-
-                                        categoryTypes.forEach { (value, label) ->
+                                        CategoryType.entries.forEach { categoryType ->
                                             option {
-                                                attributes["value"] = value
-                                                if (value == category.type.toString()) {
-                                                    attributes["selected"] = "selected"
+                                                value = categoryType.name
+                                                if (categoryType.name == category.type.toString()) {
+                                                    selected = true
                                                 }
-                                                +label
+                                                +categoryType.name.lowercase().split('_')
+                                                    .joinToString(" ") { word ->
+                                                        word.replaceFirstChar { it.uppercase() }
+                                                    }
                                             }
                                         }
                                     }
