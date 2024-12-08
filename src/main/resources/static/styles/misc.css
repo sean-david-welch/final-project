@@ -148,16 +148,11 @@
     @apply border border-gray-200 dark:border-gray-700;
     @apply -translate-x-1/2 -translate-y-1/2 transform;
     @apply transition-all duration-300 ease-in-out;
-    @apply opacity-0;
     @apply p-6;
 }
 
 .dialog::backdrop {
     @apply bg-gray-900/50 dark:bg-black/50;
-}
-
-.dialog-visible {
-    @apply opacity-100;
 }
 
 .dialog-btn {
@@ -174,9 +169,6 @@
 .dialog-content {
     @apply text-gray-600 dark:text-gray-400;
     @apply mt-2;
-}
-
-.dialog-content {
     @apply max-h-[calc(90vh-8rem)];
     @apply overflow-y-auto;
 }
