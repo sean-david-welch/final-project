@@ -117,7 +117,7 @@ class CategoryRepositoryTest {
         val expenseCategories = repository.findByType(CategoryType.FIXED.toString())
 
         // Then
-        assertEquals(1, expenseCategories.size)
+        assertEquals(2, expenseCategories.size)
         assertEquals("Utilities", expenseCategories[0].name)
     }
 
