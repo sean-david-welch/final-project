@@ -2,7 +2,6 @@ package com.budgetai.repositories
 
 import com.budgetai.models.Categories
 import com.budgetai.models.CategoryDTO
-import com.budgetai.models.CategoryType
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

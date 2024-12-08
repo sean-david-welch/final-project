@@ -3,7 +3,6 @@ package com.budgetai.lib
 import com.budgetai.models.BudgetItemDTO
 import com.budgetai.models.CategoryDTO
 import com.budgetai.models.CategoryType
-import com.budgetai.models.UserDTO
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
