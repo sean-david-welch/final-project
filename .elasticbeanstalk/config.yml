@@ -2,14 +2,14 @@ branch-defaults:
   main:
     environment: budgetai-env
   master:
-    environment: budgetai-env
+    environment: null
 global:
   application_name: budgetai
   default_ec2_keyname: null
   default_platform: Docker running on 64bit Amazon Linux 2
   default_region: eu-west-1
   include_git_submodules: true
-  instance_profile: null
+  instance_profile: aws-elasticbeanstalk-ec2-role
   platform_name: null
   platform_version: null
   profile: null
