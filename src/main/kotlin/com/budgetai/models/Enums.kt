@@ -13,10 +13,14 @@ enum class Sentiment {
 
 @Serializable
 enum class CategoryType {
-    @SerialName("EXPENSE") EXPENSE,
-    @SerialName("INCOME") INCOME
+    @SerialName("FIXED") FIXED,
+    @SerialName("VARIABLE") VARIABLE,
+    @SerialName("ONE_TIME") ONE_TIME,
+    @SerialName("RECURRING") RECURRING,
+    @SerialName("EMERGENCY") EMERGENCY,
+    @SerialName("DISCRETIONARY") DISCRETIONARY,
+    @SerialName("NECESSARY") NECESSARY
 }
-
 
 @Serializable
 enum class UserRole {
