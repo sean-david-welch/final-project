@@ -98,7 +98,7 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                 td(classes = "table-cell description") { +(category.description ?: "-") }
                                 td(classes = "table-actions") {
                                     select(classes = "role-select") {
-                                        attributes["hx-put"] = "/api/categories/${category.id}/type"
+                                        attributes["hx-put"] = "/api/categories/${user.id}/type"
                                         attributes["hx-target"] = "#response-message"
                                         attributes["hx-swap"] = "innerHTML"
                                         attributes["hx-trigger"] = "change"
