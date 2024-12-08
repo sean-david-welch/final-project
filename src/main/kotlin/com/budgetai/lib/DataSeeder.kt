@@ -67,10 +67,10 @@ class DataSeeder(database: Database) {
 
         // Create or get categories
         val categoryMap = mapOf(
-            "Salary" to CategoryType.INCOME, "Freelance" to CategoryType.INCOME, "Investment" to CategoryType.INCOME,
-            "Housing" to CategoryType.EXPENSE, "Utilities" to CategoryType.EXPENSE, "Groceries" to CategoryType.EXPENSE,
-            "Transportation" to CategoryType.EXPENSE, "Healthcare" to CategoryType.EXPENSE, "Entertainment" to CategoryType.EXPENSE,
-            "Education" to CategoryType.EXPENSE
+            "Salary" to CategoryType.FIXED, "Freelance" to CategoryType.FIXED, "Investment" to CategoryType.FIXED,
+            "Housing" to CategoryType.FIXED, "Utilities" to CategoryType.FIXED, "Groceries" to CategoryType.FIXED,
+            "Transportation" to CategoryType.FIXED, "Healthcare" to CategoryType.FIXED, "Entertainment" to CategoryType.FIXED,
+            "Education" to CategoryType.FIXED
         )
 
         val categoryIds = categoryMap.map { (name, type) ->
@@ -90,10 +90,10 @@ class DataSeeder(database: Database) {
             ).also { userId ->
                 userRepository.updatePassword(userId, "hashed_password_$index")
                 val userCategories = mapOf(
-                    "My ${index} Salary" to CategoryType.INCOME,
-                    "My ${index} Savings" to CategoryType.INCOME,
-                    "My ${index} Rent" to CategoryType.EXPENSE,
-                    "My ${index} Food" to CategoryType.EXPENSE
+                    "My ${index} Salary" to CategoryType.FIXED,
+                    "My ${index} Savings" to CategoryType.FIXED,
+                    "My ${index} Rent" to CategoryType.FIXED,
+                    "My ${index} Food" to CategoryType.FIXED
                 )
 
                 userCategories.forEach { (name, type) ->
@@ -131,7 +131,7 @@ class DataSeeder(database: Database) {
                     val amount = random.nextDouble(
                         itemTemplate.amountRange.start, itemTemplate.amountRange.endInclusive
                     )
-                    if (categoryMap[itemTemplate.categoryName] == CategoryType.INCOME) {
+                    if (categoryMap[itemTemplate.categoryName] == CategoryType.FIXED) {
                         totalIncome += amount
                     } else {
                         totalExpenses += amount
