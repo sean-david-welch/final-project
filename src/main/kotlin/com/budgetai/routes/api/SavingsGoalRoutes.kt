@@ -120,7 +120,7 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
 
                     when (call.request.contentType()) {
                         ContentType.Application.Json -> {
-                            call.respond(goals)
+                            call.respond(HttpStatusCode.OK, goals)
                         }
 
                         else -> {
