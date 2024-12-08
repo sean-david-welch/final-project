@@ -71,7 +71,7 @@ fun FlowContent.SavingsTrackingCard(context: BaseTemplateContext) {
                 h3(classes = "report-title") { +"Savings Tracking" }
                 div(classes = "report-actions") {
                     a(href = "/reports/savings-tracking") {
-                        button(classes = "action-button") { +"Set Goals" }
+                        button(classes = "action-button") { +"View Goals" }
                     }
                 }
             }
