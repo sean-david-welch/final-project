@@ -50,7 +50,7 @@ class CategoryRepository(private val database: Database) {
     }
 
     // Retrieves all categories of a specific type
-    suspend fun findByType(type: CategoryType): List<CategoryDTO> = dbQuery {
+    suspend fun findByType(type: String): List<CategoryDTO> = dbQuery {
         Categories.selectAll().where { Categories.type eq type }.map(::toCategory)
     }
 
