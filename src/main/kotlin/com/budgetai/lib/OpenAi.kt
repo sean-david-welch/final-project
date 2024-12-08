@@ -29,9 +29,14 @@ class OpenAi(config: ApplicationConfig) {
         expectSuccess = true
     }
 
-    suspend fun sendMessage(prompt: String, model: String = defaultModel): String {
+    suspend fun sendMessage(
+        prompt: String,
+        model: String = defaultModel,
+        maxTokens: Int = 500,
+        temperature: Double = 0.7,
+    ): String {
         logger.info("Preparing to send message to OpenAI API")
-        logger.debug("Using model: $model")
+        logger.debug("Using model: $model, maxTokens: $maxTokens, temperature: $temperature")
 
         if (prompt.isBlank()) {
             logger.error("Empty prompt provided")
@@ -45,7 +50,8 @@ class OpenAi(config: ApplicationConfig) {
                 header("Authorization", "Bearer $apiKey")
                 setBody(
                     ChatRequest(
-                        model = model, messages = listOf(ChatMessage(role = "user", content = prompt))
+                        model = model, messages = listOf(ChatMessage(role = "user", content = prompt)), maxTokens = maxTokens,
+                        temperature = temperature, topP = 1.0, stream = false
                     )
                 )
             }
