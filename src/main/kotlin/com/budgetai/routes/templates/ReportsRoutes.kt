@@ -1,5 +1,6 @@
 package com.budgetai.routes.templates
 
+import com.budgetai.lib.BudgetFormatter
 import com.budgetai.services.*
 import com.budgetai.templates.pages.createCategoryManagementPage
 import com.budgetai.templates.pages.createReportsPage
@@ -49,7 +50,7 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
                 } ?: throw IllegalArgumentException("User not found")
 
                 val budgets = budgetService.getUserBudgetsWithItems(user.id)
-                val csvFormatter = BudgetCsvFormatter()
+                val csvFormatter = BudgetFormatter()
                 val csvContent = csvFormatter.formatBudgetsToCSV(budgets)
 
                 call.response.headers.append("Content-Disposition", "attachment; filename=spending-summary.csv")
