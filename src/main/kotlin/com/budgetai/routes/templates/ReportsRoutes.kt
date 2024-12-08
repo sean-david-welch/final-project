@@ -103,6 +103,7 @@ fun Route.reportRoutes(
                 val budgetId = call.parameters["budget"]?.toLongOrNull() ?: throw BadRequestException("Invalid budget ID")
 
                 val budget = budgetService.getBudget(budgetId.toInt()) ?: throw NotFoundException("Budget not found")
+                val budgetItems = budgetItemService.getBudgetItems(budgetId.toInt())
 
                 call.respond(HttpStatusCode.Created)
             }
