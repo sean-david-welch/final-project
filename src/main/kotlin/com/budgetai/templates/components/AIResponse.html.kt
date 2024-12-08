@@ -4,62 +4,44 @@ import kotlinx.html.*
 import kotlinx.html.stream.createHTML
 
 fun DIV.insightContentComponent(content: String) {
-    div(classes = "spreadsheet-wrapper") {
-        content.split("###").filter { it.isNotBlank() }.forEach { section ->
-            val trimmedSection = section.trim()
+    div(classes = "insight-container") {
+        // Split content by double asterisks to separate sections
+        content.split("**").filter { it.isNotBlank() }.forEach { section ->
             when {
-                trimmedSection.startsWith("Summary") -> {
-                    h4(classes = "section-title") {
-                        +"Summary of Potential Savings"
-                    }
-                    formatInsightContent(trimmedSection.substringAfter("Summary"))
+                // Handle section titles/headers
+                section.contains(":**") -> {
+                    val (title, content) = section.split(":**", limit = 2)
+                    h4(classes = "insight-header") { +title.trim() }
+                    formatSectionContent(content.trim())
                 }
-
-                trimmedSection.contains("Total Potential Savings") -> {
-                    h4(classes = "section-title") {
-                        +"Total Potential Savings"
-                    }
-                    formatInsightContent(trimmedSection.substringAfter("Total Potential Savings"))
-                }
-
-                else -> {
-                    val parts = trimmedSection.split(":", limit = 2)
-                    if (parts.size == 2) {
-                        h4(classes = "section-title") {
-                            +parts[0].trim()
-                        }
-                        formatInsightContent(parts[1])
-                    } else {
-                        formatInsightContent(trimmedSection)
-                    }
-                }
+                // Handle regular content
+                else -> formatSectionContent(section.trim())
             }
         }
     }
 }
 
-private fun DIV.formatInsightContent(content: String) {
-    div(classes = "spreadsheet-section") {
-        content.split("<br>").filter { it.isNotBlank() }.forEach { line ->
-            val trimmedLine = line.trim()
+private fun DIV.formatSectionContent(content: String) {
+    div(classes = "insight-section") {
+        content.split("- ").filter { it.isNotBlank() }.forEach { item ->
             when {
-                trimmedLine.startsWith("**Benefits") -> {
-                    div(classes = "insight-benefits") {
-                        +trimmedLine.removePrefix("**Benefits:**").trim()
+                // Format numbered items (e.g., "1. Action:")
+                item.matches(Regex("\\d+\\..*")) -> {
+                    div(classes = "insight-item numbered") {
+                        +item.trim()
                     }
                 }
-
-                trimmedLine.startsWith("-") -> {
-                    div(classes = "insight-item") {
-                        span(classes = "bullet-icon") { +"•" }
-                        span { +trimmedLine.removePrefix("-").trim() }
+                // Format bullet points
+                item.contains(":") -> {
+                    div(classes = "insight-item with-label") {
+                        val (label, text) = item.split(":", limit = 2)
+                        span(classes = "item-label") { +label.trim() + ":" }
+                        span(classes = "item-content") { +text.trim() }
                     }
                 }
-
+                // Regular text
                 else -> {
-                    p(classes = "insight-text") {
-                        +trimmedLine
-                    }
+                    p(classes = "insight-text") { +item.trim() }
                 }
             }
         }
@@ -68,15 +50,10 @@ private fun DIV.formatInsightContent(content: String) {
 
 object AIInsightComponents {
     fun formatInsight(content: String) = createHTML().div {
-        // Success message using existing component
-        messageComponent("AI insight generated successfully", "success")
-
-        // Insight content
-        div {
+        div(classes = "insight-wrapper") {
             attributes["x-data"] = "{show: true}"
             attributes["x-show"] = "show"
-            attributes["x-transition.opacity.duration.500ms"] = ""
-            attributes["class"] = "form-container mt-4"
+            attributes["x-transition.duration.300ms"] = ""
 
             insightContentComponent(content)
         }
