@@ -35,7 +35,7 @@ private fun DIV.formatSectionContent(content: String) {
                 item.contains(":") -> {
                     div(classes = "insight-item with-label") {
                         val (label, text) = item.split(":", limit = 2)
-                        span(classes = "item-label") { +label.trim() + ":" }
+                        span(classes = "item-label") { +label.trim() ":" }
                         span(classes = "item-content") { +text.trim() }
                     }
                 }
