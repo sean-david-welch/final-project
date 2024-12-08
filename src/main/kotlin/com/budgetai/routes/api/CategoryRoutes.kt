@@ -162,7 +162,7 @@ fun Route.categoryRoutes(service: CategoryService) {
                     logger.info("Found existing category: $existingCategory")
 
                     // Log category update
-                    logger.info("Updating category ${id} type from '${existingCategory.type}' to '${requestBody.type}'")
+                    logger.info("Updating category $id type from '${existingCategory.type}' to '${requestBody.type}'")
 
                     val updatedCategory = existingCategory.copy(
                         id = id,
@@ -172,7 +172,7 @@ fun Route.categoryRoutes(service: CategoryService) {
                         name = existingCategory.name,
                         description = existingCategory.description,
                     )
-                    logger.debug("Prepared updated category: $updatedCategory")
+                    logger.debug("Prepared updated category: {}", updatedCategory)
 
                     try {
                         service.updateCategory(id, updatedCategory)
