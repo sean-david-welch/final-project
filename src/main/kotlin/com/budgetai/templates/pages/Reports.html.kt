@@ -61,12 +61,11 @@ fun createReportsPage(
     }
 }
 
-fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>) =
-    AdminTemplate("Budget Management", context) {
+fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>) = AdminTemplate("Category Management", context) {
         div(classes = "management-container") {
             // Header with total count and add button
             div(classes = "management-header") {
-                h2(classes = "management-title") { +"Budgets (${categories.count()})" }
+                h2(classes = "management-title") { +"Categories (${categories.count()})" }
                 if (context.auth.isAdmin) {
                     div(classes = "admin-access-section") {
                         a(href = "/admin", classes = "admin-link-button") {
@@ -79,7 +78,7 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                 attributes["id"] = "response-message"
             }
 
-            // Budget table
+            // Category table
             div(classes = "table-container") {
                 table(classes = "data-table") {
                     thead {
