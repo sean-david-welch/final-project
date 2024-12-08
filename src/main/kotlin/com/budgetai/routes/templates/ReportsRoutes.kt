@@ -5,6 +5,7 @@ import com.budgetai.lib.BudgetFormatter
 import com.budgetai.lib.OpenAi
 import com.budgetai.models.*
 import com.budgetai.services.*
+import com.budgetai.templates.components.AIInsightComponents
 import com.budgetai.templates.components.ResponseComponents
 import com.budgetai.templates.pages.createCategoryManagementPage
 import com.budgetai.templates.pages.createReportsPage
@@ -153,18 +154,9 @@ fun Route.reportRoutes(
                         )
                     )
 
-                    val formattedInsight = """
-            <div class="alert alert-success mb-4" role="alert">
-                AI insight generated successfully
-            </div>
-            <div class="ai-insight-content">
-                ${insight.replace("\n", "<br>")}
-            </div>
-        """.trimIndent()
-
                     logger.info("Successfully created AI insight for budget: $budgetId")
                     call.respondText(
-                        ResponseComponents.success(formattedInsight), ContentType.Text.Html, HttpStatusCode.OK
+                        AIInsightComponents.formatInsight(insight), ContentType.Text.Html, HttpStatusCode.OK
                     )
 
                 } catch (e: IllegalArgumentException) {
