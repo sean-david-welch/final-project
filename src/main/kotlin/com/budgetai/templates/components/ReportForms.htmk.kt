@@ -119,12 +119,7 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<Budget
                                 PromptType.COST_REDUCTION -> "Find Cost Reduction Opportunities"
                                 PromptType.PRICE_ALTERNATIVES -> "Discover Price Alternatives"
                                 PromptType.SPENDING_PATTERNS -> "Analyze Spending Patterns"
-                                PromptType.BUDGET_OPTIMIZATION -> "Optimize Budget Allocation"
-                                PromptType.SAVINGS_OPPORTUNITIES -> "Identify Savings Opportunities"
                                 PromptType.CATEGORY_ANALYSIS -> "Analyze Spending Categories"
-                                PromptType.MERCHANT_ANALYSIS -> "Review Merchant Spending"
-                                PromptType.SEASONAL_TRENDS -> "Identify Seasonal Trends"
-                                PromptType.FINANCIAL_GOALS -> "Track Financial Goals Progress"
                                 PromptType.CUSTOM_ANALYSIS -> "Custom Analysis"
                             }
                         }
