@@ -4,6 +4,7 @@ import com.budgetai.models.CategoryCreationRequest
 import com.budgetai.models.CategoryDTO
 import com.budgetai.models.CategoryType
 import com.budgetai.repositories.CategoryRepository
+import org.jetbrains.exposed.sql.ResultRow
 
 class CategoryService(private val repository: CategoryRepository) {
     // Helper Methods
@@ -60,6 +61,10 @@ class CategoryService(private val repository: CategoryRepository) {
         )
 
         return repository.create(categoryDTO)
+    }
+
+    suspend fun createBulkCategories(categories: List<CategoryDTO>): List<ResultRow> {
+        return repository.bulkCreate(categories)
     }
 
     // Updates an existing category's details
