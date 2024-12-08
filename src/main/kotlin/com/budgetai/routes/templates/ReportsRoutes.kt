@@ -95,19 +95,16 @@ fun Route.reportRoutes(
 
             post("/ai-insights") {
                 // 1. Extract and validate parameters
-                val userId = call.parameters["userId"]?.toIntOrNull()
-                    ?: throw BadRequestException("Invalid user ID")
+                val userId = call.parameters["userId"]?.toIntOrNull() ?: throw BadRequestException("Invalid user ID")
 
                 val promptType = call.parameters["prompt"]?.let {
                     PromptType.entries.find { type -> type.name.lowercase() == it }
                 } ?: throw BadRequestException("Invalid prompt type")
 
-                val budgetId = call.parameters["budget"]?.toIntOrNull()
-                    ?: throw BadRequestException("Invalid budget ID")
+                val budgetId = call.parameters["budget"]?.toIntOrNull() ?: throw BadRequestException("Invalid budget ID")
 
                 // 2. Get budget data
-                val budget = budgetService.getBudget(budgetId)
-                    ?: throw NotFoundException("Budget not found")
+                val budget = budgetService.getBudget(budgetId) ?: throw NotFoundException("Budget not found")
                 val budgetItems = budgetItemService.getBudgetItems(budgetId)
 
                 // 3. Generate prompt using template
@@ -124,12 +121,8 @@ fun Route.reportRoutes(
                 // 5. Save and return the insight
                 val savedInsight = aiInsightService.createInsight(
                     InsightCreationRequest(
-                        userId = userId,
-                        budgetId = budgetId,
-                        prompt = prompt,
-                        type = InsightType.BUDGET_ANALYSIS,
-                        sentiment = Sentiment.NEUTRAL,
-                        response = insight
+                        userId = userId, budgetId = budgetId, prompt = prompt, type = InsightType.BUDGET_ANALYSIS,
+                        sentiment = Sentiment.NEUTRAL, response = insight
                     )
                 )
 
