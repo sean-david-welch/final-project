@@ -3,6 +3,7 @@ package com.budgetai.templates.pages
 import com.budgetai.models.BudgetDTO
 import com.budgetai.models.BudgetItemDTO
 import com.budgetai.models.CategoryDTO
+import com.budgetai.models.UserDTO
 import com.budgetai.templates.components.BudgetAnalysisCard
 import com.budgetai.templates.components.CategoryBreakdownCard
 import com.budgetai.templates.components.SavingsTrackingCard
@@ -61,7 +62,7 @@ fun createReportsPage(
     }
 }
 
-fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>) =
+fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<CategoryDTO>, user: UserDTO) =
     AdminTemplate("Category Management", context) {
         div(classes = "management-container") {
             // Header with total count and add button
@@ -96,6 +97,30 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                 td(classes = "table-cell") { +category.name }
                                 td(classes = "table-cell description") { +(category.description ?: "-") }
                                 td(classes = "table-actions") {
+                                    select(classes = "role-select") {
+                                        attributes["hx-put"] = "/api/categories/${category.id}/type"
+                                        attributes["hx-target"] = "#response-message"
+                                        attributes["hx-swap"] = "innerHTML"
+                                        attributes["hx-trigger"] = "change"
+                                        attributes["name"] = "type"
+                                        attributes["value"] = category.type.toString()
+                                        attributes["hx-on::after-request"] = "if(event.detail.successful) this.closest('tr').querySelector('#type-cell-${category.id}').innerHTML = this.value"
+
+                                        val categoryTypes = listOf(
+                                            "EXPENSE" to "Expense",
+                                            "INCOME" to "Income"
+                                        )
+
+                                        categoryTypes.forEach { (value, label) ->
+                                            option {
+                                                attributes["value"] = value
+                                                if (value == category.type.toString()) {
+                                                    attributes["selected"] = "selected"
+                                                }
+                                                +label
+                                            }
+                                        }
+                                    }
                                     button(classes = "delete-button") {
                                         attributes["hx-delete"] = "/api/category/${category.id}"
                                         attributes["hx-target"] = "#response-message"
