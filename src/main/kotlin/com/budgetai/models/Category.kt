@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.timestamp
 object Categories : IntIdTable("categories") {
     val name = varchar("name", 50).uniqueIndex()
     val userId = reference("user_id", Users).nullable()
-    val type = enumerationByName("type", 20, CategoryType::class)
+    val type = varchar("type", 50)
     val description = text("description").nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
 }
