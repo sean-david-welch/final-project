@@ -15,7 +15,6 @@ enum class Sentiment {
 enum class CategoryType {
     @SerialName("FIXED") FIXED,
     @SerialName("VARIABLE") VARIABLE,
-    @SerialName("ONE_TIME") ONE_TIME,
     @SerialName("RECURRING") RECURRING,
     @SerialName("EMERGENCY") EMERGENCY,
     @SerialName("DISCRETIONARY") DISCRETIONARY,
