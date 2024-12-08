@@ -111,8 +111,7 @@ fun createCategoryManagementPage(context: BaseTemplateContext, categories: List<
                                                 if (categoryType.name == category.type.toString()) {
                                                     selected = true
                                                 }
-                                                +categoryType.name.lowercase().split('_')
-                                                    .joinToString(" ") { word ->
+                                                +categoryType.name.lowercase().split('_').joinToString(" ") { word ->
                                                         word.replaceFirstChar { it.uppercase() }
                                                     }
                                             }
