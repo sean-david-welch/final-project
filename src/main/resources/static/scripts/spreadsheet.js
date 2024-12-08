@@ -99,12 +99,15 @@ class SpreadsheetTable {
             .map(row => {
                 const name = row.cells[0].textContent.trim();
                 const amount = row.cells[1].textContent.trim();
-                const categoryId = row.cells[2].querySelector('select').value;
-                return `${name},${amount},${categoryId}`;
+                const categorySelect = row.cells[2].querySelector('select');
+                const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+                // Get the data-type attribute from the option, or use the text content
+                const categoryType = selectedOption.getAttribute('data-type') || selectedOption.textContent;
+                return `${name},${amount},${categoryType}`;
             })
             .filter(row => {
-                const [name, amount, categoryId] = row.split(',');
-                return name || (amount && !isNaN(amount) && categoryId);
+                const [name, amount, categoryType] = row.split(',');
+                return name || (amount && !isNaN(amount) && categoryType);
             });
     }
 
