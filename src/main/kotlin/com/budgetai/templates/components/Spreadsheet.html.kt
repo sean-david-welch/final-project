@@ -23,8 +23,6 @@ fun FlowContent.SpreadsheetComponent(context: BaseTemplateContext) {
             }
         """.trimIndent()
 
-
-
         input(type = InputType.hidden) {
             name = "userId"
             value = context.auth.user?.id!!
