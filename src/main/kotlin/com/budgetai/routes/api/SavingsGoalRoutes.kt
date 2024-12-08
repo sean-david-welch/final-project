@@ -2,11 +2,13 @@ package com.budgetai.routes.api
 
 import com.budgetai.models.*
 import com.budgetai.services.SavingsGoalService
+import com.budgetai.templates.components.ResponseComponents
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import java.math.BigDecimal
 
 fun Route.savingsGoalRoutes(service: SavingsGoalService) {
     // protected routes
@@ -26,9 +28,8 @@ fun Route.savingsGoalRoutes(service: SavingsGoalService) {
                                 userId = params["userId"]?.toInt() ?: throw IllegalArgumentException("User ID is required"),
                                 name = params["name"] ?: throw IllegalArgumentException("Name is required"),
                                 description = params["description"],
-                                targetAmount = params["targetAmount"]?.toBigDecimalOrNull()
-                                    ?: throw IllegalArgumentException("Target amount is required"),
-                                currentAmount = params["currentAmount"]?.toBigDecimalOrNull() ?: BigDecimal.ZERO,
+                                targetAmount = params["targetAmount"]?.toDoubleOrNull() ?: throw IllegalArgumentException("Target amount is required"),
+                                initialAmount = params["currentAmount"]?.toDoubleOrNull() ?: throw IllegalArgumentException("Current amount is required"),
                                 targetDate = params["targetDate"]
                             )
                         }
