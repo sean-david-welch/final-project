@@ -139,9 +139,9 @@ fun Route.categoryRoutes(service: CategoryService) {
                     val existingCategory = service.getCategory(id) ?: throw IllegalArgumentException("Category not found")
 
                     // Copy existing category but only update the type
-                    val updatedCategory = CategoryDTO(
+                    val updatedCategory = existingCategory.copy(
+                        id = id, userId = existingCategory.userId, createdAt = existingCategory.createdAt,
                         type = request.type, name = existingCategory.name, description = existingCategory.description,
-                        userId = existingCategory.userId
                     )
 
                     service.updateCategory(id, updatedCategory)
