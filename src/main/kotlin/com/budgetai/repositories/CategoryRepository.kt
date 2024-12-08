@@ -64,6 +64,16 @@ class CategoryRepository(private val database: Database) {
         }[Categories.id].value
     }
 
+    // bulk
+    suspend fun bulkCreate(categories: List<CategoryDTO>) = dbQuery {
+        Categories.batchInsert(categories) {
+            this[Categories.name] = it.name
+            this[Categories.type] = it.type
+            this[Categories.description] = it.description
+            this[Categories.userId] = it.userId
+        }
+    }
+
     // Updates an existing category
     suspend fun update(id: Int, category: CategoryDTO) = dbQuery {
         Categories.update({ Categories.id eq id }) { stmt ->
