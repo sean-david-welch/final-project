@@ -1,6 +1,5 @@
 package com.budgetai.templates.components
 
-import com.budgetai.models.BudgetDTO
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
 
@@ -24,18 +23,20 @@ fun FlowContent.SpendingSummaryCard(context: BaseTemplateContext) {
     }
 }
 
-fun FlowContent.BudgetAnalysisCard(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
-    div(classes = "report-card") {
-        div(classes = "report-header") {
-            h3(classes = "report-title") { +"AI Insights" }
-            div(classes = "report-actions") {
-                a(href = "/reports/insights") {
-                    button(classes = "action-button") { +"Consult AI assistant" }
+fun FlowContent.BudgetAnalysisCard(context: BaseTemplateContext) {
+    if (context.auth.isAuthenticated) {
+        div(classes = "report-card") {
+            div(classes = "report-header") {
+                h3(classes = "report-title") { +"AI Insights" }
+                div(classes = "report-actions") {
+                    a(href = "/reports/insights") {
+                        button(classes = "action-button") { +"Consult AI assistant" }
+                    }
                 }
             }
-        }
-        div(classes = "report-content") {
-            div(classes = "chart-placeholder")
+            div(classes = "report-content") {
+                div(classes = "chart-placeholder")
+            }
         }
     }
 }
