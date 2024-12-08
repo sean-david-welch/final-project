@@ -13,6 +13,7 @@ fun FlowContent.SpendingSummaryCard(context: BaseTemplateContext) {
                 }
             }
             div(classes = "report-content") {
+                div(classes = "chart-placeholder")
             }
         }
     }
@@ -57,6 +58,7 @@ fun FlowContent.CategoryBreakdownCard(context: BaseTemplateContext) {
                 }
             }
             div(classes = "report-content") {
+                div(classes = "chart-placeholder")
             }
         }
     }
@@ -74,6 +76,7 @@ fun FlowContent.SavingsTrackingCard(context: BaseTemplateContext) {
                 }
             }
             div(classes = "report-content") {
+                div(classes = "chart-placeholder")
             }
         }
     }
