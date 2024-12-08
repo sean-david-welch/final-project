@@ -69,12 +69,6 @@ class CategoryService(private val repository: CategoryRepository) {
 
     // Updates an existing category's details
     suspend fun updateCategory(id: Int, category: CategoryDTO) {
-        val existingCategory = validateCategoryExists(id)
-
-        if (category.name != existingCategory.name) {
-            validateNameUnique(category.name, id)
-        }
-
         repository.update(id, category)
     }
 
