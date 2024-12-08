@@ -28,10 +28,7 @@ class BudgetFormatter {
                     logger.debug("Budget ${budget.id} has no items")
                     csvBuilder.appendLine(
                         buildBudgetRow(
-                            budget = budget,
-                            itemName = "",
-                            categoryName = "",
-                            itemAmount = budget.totalExpenses
+                            budget = budget, itemName = "", categoryName = "", itemAmount = budget.totalExpenses
                         )
                     )
                 } else {
@@ -40,10 +37,7 @@ class BudgetFormatter {
                         items.forEach { item ->
                             csvBuilder.appendLine(
                                 buildBudgetRow(
-                                    budget = budget,
-                                    itemName = item.name,
-                                    categoryName = categoryName,
-                                    itemAmount = item.amount
+                                    budget = budget, itemName = item.name, categoryName = categoryName, itemAmount = item.amount
                                 )
                             )
                         }
@@ -60,26 +54,19 @@ class BudgetFormatter {
     }
 
     private fun buildBudgetRow(
-        budget: BudgetWithItemsDTO,
-        itemName: String,
-        categoryName: String,
-        itemAmount: Double
+        budget: BudgetWithItemsDTO, itemName: String, categoryName: String, itemAmount: Double
     ): String {
         try {
             val period = when {
-                budget.startDate != null && budget.endDate != null ->
-                    "${budget.startDate} to ${budget.endDate}"
+                budget.startDate != null && budget.endDate != null -> "${budget.startDate} to ${budget.endDate}"
+
                 else -> "No period set"
             }
 
             return listOf(
-                budget.name.escapeCsv(),
-                period.escapeCsv(),
-                budget.totalIncome.toString(),
+                budget.name.escapeCsv(), period.escapeCsv(), budget.totalIncome.toString(),
                 budget.totalExpenses.toString(), // This is the total expenses for the entire budget
-                categoryName.escapeCsv(),
-                itemName.escapeCsv(),
-                itemAmount.toString()  // This is the individual item amount
+                categoryName.escapeCsv(), itemName.escapeCsv(), itemAmount.toString()  // This is the individual item amount
             ).joinToString(",")
         } catch (e: Exception) {
             logger.error("Error building budget row for budget ${budget.id}", e)
