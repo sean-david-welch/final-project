@@ -3,6 +3,10 @@ package com.budgetai.templates.pages
 import com.budgetai.models.BudgetDTO
 import com.budgetai.models.BudgetItemDTO
 import com.budgetai.models.CategoryDTO
+import com.budgetai.templates.components.BudgetAnalysisCard
+import com.budgetai.templates.components.CategoryBreakdownCard
+import com.budgetai.templates.components.SavingsTrackingCard
+import com.budgetai.templates.components.SpendingSummaryCard
 import com.budgetai.templates.layout.BaseTemplate
 import com.budgetai.utils.BaseTemplateContext
 import kotlinx.html.*
