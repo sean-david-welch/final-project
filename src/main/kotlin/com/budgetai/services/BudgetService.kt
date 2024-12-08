@@ -2,6 +2,7 @@ package com.budgetai.services
 
 import com.budgetai.models.BudgetCreationRequest
 import com.budgetai.models.BudgetDTO
+import com.budgetai.models.BudgetWithItemsDTO
 import com.budgetai.repositories.BudgetRepository
 import kotlinx.datetime.LocalDate
 import java.math.BigDecimal
@@ -34,6 +35,10 @@ class BudgetService(private val repository: BudgetRepository) {
     // Retrieves all budgets for a user
     suspend fun getUserBudgets(userId: Int): List<BudgetDTO> {
         return repository.findByUserId(userId)
+    }
+
+    suspend fun getUserBudgetsWithItems(userId: Int): List<BudgetWithItemsDTO> {
+        return repository.findByUserIdWithDetails(userId)
     }
 
     // Retrieves budgets for a user within a date range
