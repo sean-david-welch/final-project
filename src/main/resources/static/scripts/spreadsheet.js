@@ -33,17 +33,25 @@ class SpreadsheetTable {
         }
     }
 
-    createCell(isAmount = false) {
+    createCell(type = 'text') {
+        if (type === 'category') {
+            const cell = document.createElement('td');
+            const select = this.table.querySelector('tbody tr:first-child td:last-child select').cloneNode(true);
+            cell.appendChild(select);
+            return cell;
+        }
+
         const cell = document.createElement('td');
         cell.contentEditable = "true";
-        cell.className = `spreadsheet-cell${isAmount ? ' amount-cell' : ''}`;
+        cell.className = `spreadsheet-cell${type === 'amount' ? ' amount-cell' : ''}`;
         return cell;
     }
 
     createRow() {
         const row = document.createElement('tr');
-        row.appendChild(this.createCell()); // name cell
-        row.appendChild(this.createCell(true)); // amount cell
+        row.appendChild(this.createCell('text')); // name cell
+        row.appendChild(this.createCell('amount')); // amount cell
+        row.appendChild(this.createCell('category')); // category cell
         return row;
     }
 
@@ -91,11 +99,12 @@ class SpreadsheetTable {
             .map(row => {
                 const name = row.cells[0].textContent.trim();
                 const amount = row.cells[1].textContent.trim();
-                return `${name},${amount}`;
+                const categoryId = row.cells[2].querySelector('select').value;
+                return `${name},${amount},${categoryId}`;
             })
             .filter(row => {
-                const [name, amount] = row.split(',');
-                return name || (amount && !isNaN(amount));
+                const [name, amount, categoryId] = row.split(',');
+                return name || (amount && !isNaN(amount) && categoryId);
             });
     }
 
