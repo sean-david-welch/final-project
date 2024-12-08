@@ -83,7 +83,7 @@ class DataSeeder(database: Database) {
         val categoryIds = categoryMap.map { (name, type) ->
             name to (categoryRepository.findByName(name)?.id ?: categoryRepository.create(
                 CategoryDTO(
-                    name = name, type = type, description = "Description for $name category"
+                    name = name, type = type.toString(), description = "Description for $name category"
                 )
             ))
         }.toMap()
@@ -107,7 +107,7 @@ class DataSeeder(database: Database) {
                     categoryRepository.create(
                         CategoryDTO(
                             name = name,
-                            type = type,
+                            type = type.toString(),
                             description = "Custom category for user $index",
                             userId = userId  // Associate with specific user
                         )
