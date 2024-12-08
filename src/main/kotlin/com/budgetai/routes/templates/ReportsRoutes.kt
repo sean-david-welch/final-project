@@ -44,8 +44,19 @@ fun Route.reportRoutes(userService: UserService, budgetItemService: BudgetItemSe
         route("/api/reports") {
 
             get("/spending-summary") {
-                val user = call.templateContext.auth.user?.id?.let { userService.getUser(it.toInt()) } ?: throw IllegalArgumentException("User not found")
-                budgetService.getUserBudgetsWithItems(user.id)
+                val user = call.templateContext.auth.user?.id?.let {
+                    userService.getUser(it.toInt())
+                } ?: throw IllegalArgumentException("User not found")
+
+                val budgets = budgetService.getUserBudgetsWithItems(user.id)
+                val csvFormatter = BudgetCsvFormatter()
+                val csvContent = csvFormatter.formatBudgetsToCSV(budgets)
+
+                call.response.headers.append("Content-Disposition", "attachment; filename=spending-summary.csv")
+                call.respondText(
+                    text = csvContent,
+                    contentType = ContentType.Text.CSV
+                )
             }
 
             get("/ai-insights") {  }
