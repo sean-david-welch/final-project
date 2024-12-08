@@ -17,11 +17,7 @@ object Categories : IntIdTable("categories") {
 // DTO
 @Serializable
 data class CategoryDTO(
-    val id: Int = 0,
-    val userId: Int? = null,
-    val name: String,
-    val type: CategoryType,
-    val description: String? = null,
+    val id: Int = 0, val userId: Int? = null, val name: String, val type: CategoryType, val description: String? = null,
     val createdAt: String? = null
 )
 
@@ -29,6 +25,11 @@ data class CategoryDTO(
 @Serializable
 data class UpdateCategoryRequest(
     val name: String, val type: CategoryType, val description: String?
+)
+
+@Serializable
+data class UpdateCategoryTypeRequest(
+    val type: String,
 )
 
 @Serializable
