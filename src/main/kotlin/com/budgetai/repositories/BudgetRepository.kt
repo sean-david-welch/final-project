@@ -83,7 +83,7 @@ class BudgetRepository(private val database: Database) {
                         id = itemId.value, name = row[BudgetItems.name], amount = row[BudgetItems.amount].toDouble(),
                         category = row.getOrNull(Categories.id)?.let { categoryId ->
                             CategoryDTO(
-                                id = categoryId.value, name = row[Categories.name], type = row[Categories.type],
+                                id = categoryId.value, name = row[Categories.name], type = row[Categories.type].toString(),
                                 description = row[Categories.description]
                             )
                         })
