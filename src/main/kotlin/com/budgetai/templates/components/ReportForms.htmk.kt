@@ -84,9 +84,6 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<Budget
         attributes["hx-on::after-request"] = """
             if(event.detail.successful) {
                 this.reset();
-                document.getElementById('modal-dialog').close();
-                // Optional: Refresh the insights list
-                htmx.trigger('#response-message', 'refreshInsights');
             }
         """.trimIndent()
 
