@@ -43,12 +43,14 @@ object AIInsightComponents {
                                 }
                                 formatSection(trimmedSection.substringAfter("Summary"))
                             }
+
                             trimmedSection.contains("Total Potential Savings") -> {
                                 h4(classes = "text-lg font-semibold text-primary-300 mt-6 mb-3") {
                                     +"Total Potential Savings"
                                 }
                                 formatSection(trimmedSection.substringAfter("Total Potential Savings"))
                             }
+
                             else -> {
                                 val parts = trimmedSection.split(":", limit = 2)
                                 if (parts.size == 2) {
@@ -77,12 +79,14 @@ object AIInsightComponents {
                             +trimmedLine.removePrefix("**Benefits:**").trim()
                         }
                     }
+
                     trimmedLine.startsWith("-") -> {
                         div(classes = "pl-4 flex items-start gap-2") {
                             i(classes = "ri-arrow-right-line mt-1 text-primary-300")
                             span { +trimmedLine.removePrefix("-").trim() }
                         }
                     }
+
                     else -> {
                         p(classes = "text-gray-200") {
                             +trimmedLine
