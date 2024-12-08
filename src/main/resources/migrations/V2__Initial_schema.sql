@@ -12,10 +12,12 @@ CREATE TABLE users
 CREATE TABLE categories
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id     INTEGER,
     name        VARCHAR(50) NOT NULL UNIQUE,
     type        VARCHAR(20) NOT NULL CHECK (type IN ('EXPENSE', 'INCOME')),
     description TEXT,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE budgets
