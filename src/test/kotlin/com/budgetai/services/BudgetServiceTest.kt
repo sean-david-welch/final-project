@@ -51,11 +51,9 @@ class BudgetServiceTest {
     fun `createBudget should create budget with valid request`() = runBlocking {
         // Given
         val request = BudgetCreationRequest(
-            userId = 1,
-            name = "Test Budget",
-            description = "Test Description",
-            startDate = LocalDate.parse("2024-01-01"),
-            endDate = LocalDate.parse("2024-12-31")
+            userId = 1, name = "Test Budget", description = "Test Description", startDate = LocalDate.parse("2024-01-01"),
+            endDate = LocalDate.parse("2024-12-31"),
+            totalExpenses = 100.0, totalIncome = 1000.0
         )
 
         // When
@@ -73,7 +71,8 @@ class BudgetServiceTest {
     fun `createBudget should throw exception when end date is before start date`(): Unit = runBlocking {
         // Given
         val request = BudgetCreationRequest(
-            userId = 1, name = "Test Budget", startDate = LocalDate.parse("2024-12-31"), endDate = LocalDate.parse("2024-01-01")
+            userId = 1, name = "Test Budget", startDate = LocalDate.parse("2024-12-31"), endDate = LocalDate.parse("2024-01-01"),
+            totalExpenses = 100.0, totalIncome = 1000.0
         )
 
         // When/Then
@@ -86,7 +85,7 @@ class BudgetServiceTest {
     fun `updateBudgetTotals should update when values are valid`() = runBlocking {
         // Given
         val request = BudgetCreationRequest(
-            userId = 1, name = "Test Budget"
+            userId = 1, name = "Test Budget", totalExpenses = 100.0, totalIncome = 1000.0
         )
         val budgetId = service.createBudget(request)
         val totalIncome = BigDecimal("1000.00")
@@ -105,7 +104,7 @@ class BudgetServiceTest {
     fun `updateBudgetTotals should throw exception for negative income`(): Unit = runBlocking {
         // Given
         val request = BudgetCreationRequest(
-            userId = 1, name = "Test Budget"
+            userId = 1, name = "Test Budget", totalExpenses = 100.0, totalIncome = 1000.0
         )
         val budgetId = service.createBudget(request)
         val totalIncome = BigDecimal("-1000.00")
@@ -127,12 +126,12 @@ class BudgetServiceTest {
         // Create two budgets, one in range and one out of range
         service.createBudget(
             BudgetCreationRequest(
-                userId = userId, name = "In Range", startDate = startDate, endDate = endDate
+                userId = userId, name = "In Range", startDate = startDate, endDate = endDate, totalExpenses = 100.0, totalIncome = 1000.0
             )
         )
         service.createBudget(
             BudgetCreationRequest(
-                userId = userId, name = "Out of Range", startDate = LocalDate.parse("2025-01-01"), endDate = LocalDate.parse("2025-12-31")
+                userId = userId, name = "Out of Range", startDate = LocalDate.parse("2025-01-01"), endDate = LocalDate.parse("2025-12-31"), totalExpenses = 100.0, totalIncome = 1000.0
             )
         )
 
