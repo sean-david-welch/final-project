@@ -38,7 +38,6 @@ fun Application.configureRoutes(config: ApplicationConfig, database: Database? =
 
     // other clients
     val s3Handler = S3Handler(config)
-    val openAi = OpenAi(config)
 
     routing {
         staticResources("/static", "static")
