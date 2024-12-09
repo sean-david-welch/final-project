@@ -1,7 +1,9 @@
 FROM gradle:7.6.1-jdk17 AS build
 WORKDIR /app
-COPY . .
-RUN gradle shadowJar --no-daemon
+COPY build.gradle.kts settings.gradle.kts ./
+COPY gradle gradle
+COPY src src
+RUN gradle buildFatJar --no-daemon
 
 FROM amazoncorretto:17
 WORKDIR /app
