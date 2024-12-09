@@ -26,6 +26,25 @@ repositories {
     maven { url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers") }
 }
 
+ktor {
+    fatJar {
+        archiveFileName.set("budget-ai.jar")
+    }
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+            mapOf(
+                "Main-Class" to application.mainClass.get()
+            )
+        )
+    }
+    from("src/main/resources") {
+        include("**/*")
+    }
+}
+
 dependencies {
     // Ktor Server Core Dependencies
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
