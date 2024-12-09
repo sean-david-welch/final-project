@@ -28,7 +28,7 @@ repositories {
 
 ktor {
     fatJar {
-        archiveFileName.set("app.jar")
+        archiveFileName.set("app-all.jar")
     }
 }
 
