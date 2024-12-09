@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: budgetai-env
+    environment: null
 global:
   application_name: budgetai
   default_platform: Docker
