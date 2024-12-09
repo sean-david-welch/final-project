@@ -11,9 +11,7 @@ object DatabaseConfig {
     private val logger = LoggerFactory.getLogger("Database")
 
     data class DatabaseSettings(
-        val journalMode: String = "WAL",
-        val foreignKeys: Boolean = true,
-        val migrationLocation: String = MIGRATIONS_LOCATION
+        val journalMode: String = "WAL", val foreignKeys: Boolean = true, val migrationLocation: String = MIGRATIONS_LOCATION
     )
 
     fun initialize(settings: DatabaseSettings = DatabaseSettings()): Database {
@@ -78,11 +76,7 @@ object DatabaseConfig {
     private fun migrateDatabase(jdbcUrl: String, migrationLocation: String) {
         try {
             logger.info("Configuring Flyway with migration location: $migrationLocation")
-            val flyway = Flyway.configure()
-                .dataSource(jdbcUrl, "", "")
-                .locations(migrationLocation)
-                .mixed(true)
-                .baselineOnMigrate(true)
+            val flyway = Flyway.configure().dataSource(jdbcUrl, "", "").locations(migrationLocation).mixed(true).baselineOnMigrate(true)
                 .load()
 
             val migrationResult = flyway.migrate()
@@ -104,8 +98,7 @@ object DatabaseConfig {
 
         return try {
             Database.connect(
-                url = jdbcUrl,
-                driver = "org.sqlite.JDBC"
+                url = jdbcUrl, driver = "org.sqlite.JDBC"
             ).also {
                 logger.info("Database connection established successfully")
             }
