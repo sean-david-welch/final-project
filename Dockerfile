@@ -5,9 +5,9 @@ COPY gradle gradle
 COPY src src
 RUN gradle buildFatJar --no-daemon
 
-FROM amazoncorretto:17
+FROM amazoncorretto:17-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*-all.jar app.jar
-EXPOSE 8080
-ENV JAVA_OPTS="-Xmx512m"
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+EXPOSE $PORT
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
+CMD ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
