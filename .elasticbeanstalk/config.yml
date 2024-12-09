@@ -18,8 +18,16 @@ global:
   sc: git
   workspace_type: Application
 option_settings:
-  aws:autoscaling:launchconfiguration:
-    InstanceType: t2.micro
+  aws:ec2:instances:
+    InstanceTypes: t3.micro
+  aws:autoscaling:asg:
+    MinSize: 1
+    MaxSize: 2
+  aws:elasticbeanstalk:cloudwatch:logs:
+    StreamLogs: true
+    DeleteOnTerminate: false
+  aws:autoscaling:launchtemplate:
+    DisableIMDSv1: true
   aws:elasticbeanstalk:container:docker:
     PORT: 8080
   aws:elasticbeanstalk:application:environment:
