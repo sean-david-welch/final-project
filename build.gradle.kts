@@ -28,7 +28,7 @@ repositories {
 
 ktor {
     fatJar {
-        archiveFileName.set("budget-ai.jar")
+        archiveFileName.set("app.jar")
     }
 }
 
