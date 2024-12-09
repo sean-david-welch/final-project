@@ -4,6 +4,7 @@ import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.io.IOException
 
 object DatabaseConfig {
     private var database: Database? = null
@@ -59,18 +60,19 @@ object DatabaseConfig {
     private fun resolveDbFile(): File {
         val dbDirectory = File("/data")
         if (!dbDirectory.exists()) {
-            logger.info("Creating database directory at: ${dbDirectory.absolutePath}")
-            dbDirectory.mkdirs()
-        }
-
-        return dbDirectory.resolve("database.db").also {
-            logger.info("Database file path resolved to: ${it.absolutePath}")
-            if (it.exists()) {
-                logger.info("Existing database file found - Size: ${it.length()} bytes")
-            } else {
-                logger.info("No existing database file found, will be created during initialization")
+            try {
+                dbDirectory.mkdirs()
+                // Verify write permissions explicitly
+                if (!dbDirectory.canWrite()) {
+                    logger.error("No write permissions for database directory: ${dbDirectory.absolutePath}")
+                    throw IOException("Cannot write to database directory")
+                }
+            } catch (e: SecurityException) {
+                logger.error("Failed to create database directory due to permissions", e)
+                throw e
             }
         }
+        return dbDirectory.resolve("database.db")
     }
 
     private fun migrateDatabase(jdbcUrl: String, migrationLocation: String) {
