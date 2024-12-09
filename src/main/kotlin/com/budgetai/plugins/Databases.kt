@@ -9,7 +9,9 @@ object DatabaseConfig {
     private const val MIGRATIONS_LOCATION = "classpath:migrations"
 
     data class DatabaseSettings(
-        val journalMode: String = "WAL", val foreignKeys: Boolean = true, val migrationLocation: String = MIGRATIONS_LOCATION
+        val journalMode: String = "WAL",
+        val foreignKeys: Boolean = true,
+        val migrationLocation: String = MIGRATIONS_LOCATION
     )
 
     fun initialize(settings: DatabaseSettings = DatabaseSettings()): Database {
@@ -26,14 +28,21 @@ object DatabaseConfig {
     fun getDatabase(): Database = database ?: throw IllegalStateException("Database has not been initialized")
 
     private fun resolveDbFile(): File {
-        val projectDir = File("src/main/kotlin/com/budgetai/database")
-        return projectDir.resolve("database.db").also {
+        // Use Railway's persistent storage directory
+        val dbDirectory = File("/data")
+        return dbDirectory.resolve("database.db").also {
             it.parentFile.mkdirs()
         }
     }
 
     private fun migrateDatabase(jdbcUrl: String, migrationLocation: String) {
-        Flyway.configure().dataSource(jdbcUrl, "", "").locations(migrationLocation).mixed(true).baselineOnMigrate(true).load().migrate()
+        Flyway.configure()
+            .dataSource(jdbcUrl, "", "")
+            .locations(migrationLocation)
+            .mixed(true)
+            .baselineOnMigrate(true)
+            .load()
+            .migrate()
     }
 
     private fun connectToDatabase(dbFile: File, settings: DatabaseSettings): Database {
@@ -45,7 +54,8 @@ object DatabaseConfig {
         val jdbcUrl = "jdbc:sqlite:${dbFile.absolutePath}?$params"
 
         return Database.connect(
-            url = jdbcUrl, driver = "org.sqlite.JDBC"
+            url = jdbcUrl,
+            driver = "org.sqlite.JDBC"
         )
     }
 }
