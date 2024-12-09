@@ -23,6 +23,13 @@ RUN ls -la /app/build/libs/
 # Final stage
 FROM amazoncorretto:17
 WORKDIR /app
+
+# Install SQLite
+RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*
+
+# Create data directory for SQLite database
+RUN mkdir -p /data && chmod 777 /data
+
 COPY --from=build /app/build/libs/*-all.jar app.jar
 RUN ls -la /app/app.jar && chmod +x /app/app.jar
 EXPOSE 8080
