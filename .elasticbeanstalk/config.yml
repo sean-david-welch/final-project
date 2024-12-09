@@ -18,18 +18,13 @@ global:
   sc: git
   workspace_type: Application
 option_settings:
-  aws:ec2:instances:
-    InstanceTypes: t3.micro
   aws:autoscaling:asg:
-    MinSize: 1
     MaxSize: 2
-  aws:elasticbeanstalk:cloudwatch:logs:
-    StreamLogs: true
-    DeleteOnTerminate: false
+    MinSize: 1
   aws:autoscaling:launchtemplate:
     DisableIMDSv1: true
-  aws:elasticbeanstalk:container:docker:
-    PORT: 8080
+  aws:ec2:instances:
+    InstanceTypes: t3.micro
   aws:elasticbeanstalk:application:environment:
     ADMIN_EMAIL: ${ADMIN_EMAIL}
     AWS_ACCESS: ${AWS_ACCESS}
@@ -40,4 +35,9 @@ option_settings:
     JWT_REALM: ${JWT_REALM}
     JWT_SECRET: ${JWT_SECRET}
     OPEN_AI: ${OPEN_AI}
+    PORT: 8080
+  aws:elasticbeanstalk:cloudwatch:logs:
+    DeleteOnTerminate: false
+    StreamLogs: true
+  aws:elasticbeanstalk:container:docker:
     PORT: 8080
