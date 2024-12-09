@@ -1,6 +1,5 @@
 package com.budgetai.routes
 
-import com.budgetai.lib.OpenAi
 import com.budgetai.lib.S3Handler
 import com.budgetai.plugins.DatabaseConfig
 import com.budgetai.repositories.*
