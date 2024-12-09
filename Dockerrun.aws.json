@@ -5,5 +5,13 @@
       "ContainerPort": "8080",
       "HostPort": "80"
     }
-  ]
+  ],
+  "Volumes": [
+    {
+      "HostDirectory": "/var/app/logs",
+      "ContainerDirectory": "/app/logs"
+    }
+  ],
+  "Logging": "/var/app/logs",
+  "Memory": 512
 }
