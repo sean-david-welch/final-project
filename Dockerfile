@@ -4,10 +4,11 @@ COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle gradle
 COPY src src
 RUN gradle buildFatJar --no-daemon
+RUN ls -la /app/build/libs/
 
 FROM amazoncorretto:17
 WORKDIR /app
-COPY --from=build /app/build/libs/budget-ai.jar app.jar
+COPY --from=build /app/build/libs/*-all.jar app.jar
 EXPOSE 8080
 ENV JAVA_OPTS="-Xmx512m"
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
