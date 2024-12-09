@@ -23,6 +23,7 @@
     <logger name="ReportRoutes" level="DEBUG"/>
     <logger name="CategoryRoutes" level="DEBUG"/>
     <logger name="OpenAI" level="DEBUG"/>
+    <logger name="Database" level="DEBUG"/>
 
     <!-- Root logger -->
     <root level="INFO">
