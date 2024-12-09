@@ -21,11 +21,13 @@ RUN gradle buildFatJar --no-daemon
 RUN ls -la /app/build/libs/
 
 # Final stage
-FROM amazoncorretto:17
+FROM ubuntu:22.04
 WORKDIR /app
 
-# Install SQLite using Alpine's package manager
-RUN apk add --no-cache sqlite
+# Install Java and SQLite
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jre-headless sqlite3 && \
+    rm -rf /var/lib/apt/lists/*
 
 # Create data directory for SQLite database
 RUN mkdir -p /data && chmod 777 /data
