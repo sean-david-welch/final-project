@@ -24,8 +24,8 @@ RUN ls -la /app/build/libs/
 FROM amazoncorretto:17
 WORKDIR /app
 
-# Install SQLite
-RUN apt-get update && apt-get install -y sqlite3 && rm -rf /var/lib/apt/lists/*
+# Install SQLite using Alpine's package manager
+RUN apk add --no-cache sqlite
 
 # Create data directory for SQLite database
 RUN mkdir -p /data && chmod 777 /data
