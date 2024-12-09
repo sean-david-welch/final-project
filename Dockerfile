@@ -1,13 +1,13 @@
-FROM gradle:7.6.1-jdk17 AS build
+FROM gradle:8.5-jdk17 AS build
 WORKDIR /app
 COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle gradle
 COPY src src
 RUN gradle buildFatJar --no-daemon
 
-FROM amazoncorretto:17-alpine
+FROM amazoncorretto:17
 WORKDIR /app
 COPY --from=build /app/build/libs/*-all.jar app.jar
-EXPOSE $PORT
-ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
-CMD ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
+EXPOSE 8080
+ENV JAVA_OPTS="-Xmx512m"
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
