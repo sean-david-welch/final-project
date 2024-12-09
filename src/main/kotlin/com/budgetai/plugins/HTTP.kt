@@ -10,8 +10,25 @@ fun Application.configureHTTP() {
         allowMethod(HttpMethod.Put)
         allowMethod(HttpMethod.Delete)
         allowMethod(HttpMethod.Patch)
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Get)
         allowHeader(HttpHeaders.Authorization)
         allowHeader(HttpHeaders.ContentType)
-        allowHost("127.0.0.1:8080")
+
+        allowHost(
+            host = "127.0.0.1:8080",
+            schemes = listOf("http", "https")
+        )
+        allowHost(
+            host = "localhost:8080",
+            schemes = listOf("http", "https")
+        )
+        allowHost(
+            host = "final-project-production-4c3e.up.railway.app",
+            schemes = listOf("http", "https")
+        )
+
+        allowCredentials = true
+        allowHeaders { true }
     }
 }
