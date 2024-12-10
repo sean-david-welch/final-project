@@ -8,10 +8,17 @@ on:
     branches:
       - master
 
+env:
+  KTOR_ENV: test
+  PORT: 8080
+
 jobs:
   test:
     name: Run Gradle Tests
     runs-on: ubuntu-latest
+
+    env:
+      JDBC_DATABASE_URL: jdbc:sqlite:file:test?mode=memory&cache=shared
 
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +36,16 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run tests
+        env:
+          OPEN_AI: ${{ secrets.OPEN_AI }}
+          AWS_ACCESS: ${{ secrets.AWS_ACCESS }}
+          AWS_SECRET: ${{ secrets.AWS_SECRET }}
+          JWT_AUDIENCE: ${{ secrets.JWT_AUDIENCE }}
+          JWT_ISSUER: ${{ secrets.JWT_ISSUER }}
+          JWT_REALM: ${{ secrets.JWT_REALM }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+
         run: ./gradlew test
 
       - name: Publish Test Report
