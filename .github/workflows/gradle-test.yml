@@ -9,7 +9,7 @@ on:
       - master
 
 env:
-  KTOR_ENV: test
+  KTOR_ENV: development
   PORT: 8080
 
 jobs:
