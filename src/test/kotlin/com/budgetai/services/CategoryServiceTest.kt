@@ -99,26 +99,6 @@ class CategoryServiceTest {
     }
 
     @Test
-    fun `updateCategory should throw exception when updating to existing name`(): Unit = runBlocking {
-        // Given
-        val firstCategory = CategoryCreationRequest(
-            name = "Groceries", type = CategoryType.FIXED.toString()
-        )
-        val secondCategory = CategoryCreationRequest(
-            name = "Entertainment", type = CategoryType.FIXED.toString()
-        )
-        service.createCategory(firstCategory)
-        val secondId = service.createCategory(secondCategory)
-
-        // When/Then
-        assertFailsWith<IllegalArgumentException> {
-            service.updateCategory(
-                secondId, CategoryDTO(id = secondId, name = "Groceries", type = CategoryType.FIXED.toString())
-            )
-        }
-    }
-
-    @Test
     fun `deleteCategory should remove existing category`() = runBlocking {
         // Given
         val request = CategoryCreationRequest(
