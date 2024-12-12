@@ -77,25 +77,33 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
 }
 
 fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
-    div(classes = "loading-indicator") {
-        id = "loading-indicator"
-        style = "display: none"
-        +"Generating AI Insight..."
+    div(classes = "relative w-full") {
+        div(classes = "loading-indicator fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50") {
+            id = "loading-indicator"
+            style = "display: none"
+            div(classes = "bg-white p-4 rounded-lg shadow-lg flex items-center space-x-2") {
+                div(classes = "animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900") {}
+                span { +"Generating AI Insight..." }
+            }
+        }
     }
 
     form(classes = "auth-form") {
         attributes["hx-post"] = "/api/reports/ai-insights"
         attributes["hx-target"] = "#response-message"
-        // Add loading class during request
         attributes["hx-indicator"] = "#loading-indicator"
+        // Add loading state class
+        attributes["hx-request"] = "class toggle:loading"
         attributes["hx-on::before-request"] = """
-            document.querySelector('button[type="submit"]').disabled = true;
+        const submitBtn = document.querySelector('button[type="submit"]');
+        if(submitBtn) submitBtn.disabled = true;
         """
         attributes["hx-on::after-request"] = """
-            if(event.detail.successful) {
-                this.reset();
-            }
-            document.querySelector('button[type="submit"]').disabled = false;
+        const submitBtn = document.querySelector('button[type="submit"]');
+        if(submitBtn) submitBtn.disabled = false;
+        if(event.detail.successful) {
+            this.reset();
+        }
         """
 
         input(type = InputType.hidden) {
