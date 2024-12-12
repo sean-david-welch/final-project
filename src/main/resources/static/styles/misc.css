@@ -172,3 +172,7 @@
     @apply max-h-[calc(90vh-8rem)];
     @apply overflow-y-auto;
 }
+
+.loading-indicator {
+    @apply my-5 px-2.5 bg-gray-100 rounded text-center;
+}

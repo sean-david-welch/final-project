@@ -77,14 +77,26 @@ fun FlowContent.SavingsGoalForm(context: BaseTemplateContext) {
 }
 
 fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<BudgetDTO>) {
+    div(classes = "loading-indicator") {
+        id = "loading-indicator"
+        style = "display: none"
+        +"Generating AI Insight..."
+    }
+
     form(classes = "auth-form") {
         attributes["hx-post"] = "/api/reports/ai-insights"
         attributes["hx-target"] = "#response-message"
+        // Add loading class during request
+        attributes["hx-indicator"] = "#loading-indicator"
+        attributes["hx-on::before-request"] = """
+            document.querySelector('button[type="submit"]').disabled = true;
+        """
         attributes["hx-on::after-request"] = """
             if(event.detail.successful) {
                 this.reset();
             }
-        """.trimIndent()
+            document.querySelector('button[type="submit"]').disabled = false;
+        """
 
         input(type = InputType.hidden) {
             name = "userId"
