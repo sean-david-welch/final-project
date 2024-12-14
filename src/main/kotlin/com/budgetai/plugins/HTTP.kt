@@ -24,6 +24,10 @@ fun Application.configureHTTP() {
             schemes = listOf("http", "https")
         )
         allowHost(
+            host = "0.0.0.0:8080",
+            schemes = listOf("http", "https")
+        )
+        allowHost(
             host = "final-project-production-4c3e.up.railway.app",
             schemes = listOf("http", "https")
         )
