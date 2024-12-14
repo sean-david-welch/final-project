@@ -58,7 +58,7 @@ object DatabaseConfig {
     }
 
     private fun resolveDbFile(): File {
-        return if (System.getenv("ENV") == "development") {
+        return if (System.getenv("KTOR_DEVELOPMENT") == "true") {
             val projectDir = File("src/main/kotlin/com/budgetai/database")
             projectDir.resolve("database.db").also {
                 it.parentFile.mkdirs()
