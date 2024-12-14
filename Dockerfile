@@ -37,7 +37,4 @@ RUN ls -la /app/app.jar && chmod +x /app/app.jar
 EXPOSE 8080
 ENV JAVA_OPTS="-Xmx512m"
 
-# Declare the volume explicitly
-VOLUME ["/data"]
-
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
