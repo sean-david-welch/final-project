@@ -1,8 +1,5 @@
-PRAGMA foreign_keys=off;
+PRAGMA foreign_keys = OFF;
 
-BEGIN TRANSACTION;
-
--- Create new table without the unique constraint
 CREATE TABLE categories_new
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,17 +11,12 @@ CREATE TABLE categories_new
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
--- Copy existing data
 INSERT INTO categories_new
 SELECT id, user_id, name, type, description, created_at
 FROM categories;
 
--- Drop old table
 DROP TABLE categories;
 
--- Rename new table to original name
 ALTER TABLE categories_new RENAME TO categories;
 
-COMMIT;
-
-PRAGMA foreign_keys=on;
+PRAGMA foreign_keys = ON;
