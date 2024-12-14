@@ -16,7 +16,7 @@ fun main() {
 
 fun Application.module() {
     val config = HoconApplicationConfig(ConfigFactory.load())
-    val database = DatabaseConfig.initialize(config)
+    val database = DatabaseConfig.initialize()
     try {
         runBlocking {
             DataSeeder(database).seed()

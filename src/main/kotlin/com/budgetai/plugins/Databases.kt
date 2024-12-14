@@ -1,6 +1,5 @@
 package com.budgetai.plugins
 
-import io.ktor.server.config.*
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.slf4j.LoggerFactory
@@ -16,11 +15,11 @@ object DatabaseConfig {
         val journalMode: String = "WAL", val foreignKeys: Boolean = true, val migrationLocation: String = MIGRATIONS_LOCATION
     )
 
-    fun initialize(config: ApplicationConfig, settings: DatabaseSettings = DatabaseSettings()): Database {
+    fun initialize(settings: DatabaseSettings = DatabaseSettings()): Database {
         if (database == null) {
             logger.info("Starting database initialization...")
 
-            val dbFile = resolveDbFile(config)
+            val dbFile = resolveDbFile()
             logger.info("Database file resolved to: ${dbFile.absolutePath}")
 
             val baseJdbcUrl = "jdbc:sqlite:${dbFile.absolutePath}"
@@ -58,8 +57,8 @@ object DatabaseConfig {
         }
     }
 
-    private fun resolveDbFile(config: ApplicationConfig): File {
-        return if (config.property("ktor.environment").getString() == "development") {
+    private fun resolveDbFile(): File {
+        return if (System.getenv("ENV") == "development") {
             val projectDir = File("src/main/kotlin/com/budgetai/database")
             projectDir.resolve("database.db").also {
                 it.parentFile.mkdirs()
