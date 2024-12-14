@@ -1,5 +1,6 @@
 package com.budgetai.plugins
 
+import io.ktor.server.config.*
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.slf4j.LoggerFactory
@@ -15,11 +16,11 @@ object DatabaseConfig {
         val journalMode: String = "WAL", val foreignKeys: Boolean = true, val migrationLocation: String = MIGRATIONS_LOCATION
     )
 
-    fun initialize(settings: DatabaseSettings = DatabaseSettings()): Database {
+    fun initialize(config: ApplicationConfig, settings: DatabaseSettings = DatabaseSettings()): Database {
         if (database == null) {
             logger.info("Starting database initialization...")
 
-            val dbFile = resolveDbFile()
+            val dbFile = resolveDbFile(config)
             logger.info("Database file resolved to: ${dbFile.absolutePath}")
 
             val baseJdbcUrl = "jdbc:sqlite:${dbFile.absolutePath}"
@@ -57,22 +58,28 @@ object DatabaseConfig {
         }
     }
 
-    private fun resolveDbFile(): File {
-        val dbDirectory = File("/data")
-        if (!dbDirectory.exists()) {
-            try {
-                dbDirectory.mkdirs()
-                // Verify write permissions explicitly
-                if (!dbDirectory.canWrite()) {
-                    logger.error("No write permissions for database directory: ${dbDirectory.absolutePath}")
-                    throw IOException("Cannot write to database directory")
-                }
-            } catch (e: SecurityException) {
-                logger.error("Failed to create database directory due to permissions", e)
-                throw e
+    private fun resolveDbFile(config: ApplicationConfig): File {
+        return if (config.property("ktor.environment").getString() == "development") {
+            val projectDir = File("src/main/kotlin/com/budgetai/database")
+            projectDir.resolve("database.db").also {
+                it.parentFile.mkdirs()
             }
+        } else {
+            val dbDirectory = File("/data")
+            if (!dbDirectory.exists()) {
+                try {
+                    dbDirectory.mkdirs()
+                    if (!dbDirectory.canWrite()) {
+                        logger.error("No write permissions for database directory: ${dbDirectory.absolutePath}")
+                        throw IOException("Cannot write to database directory")
+                    }
+                } catch (e: SecurityException) {
+                    logger.error("Failed to create database directory due to permissions", e)
+                    throw e
+                }
+            }
+            dbDirectory.resolve("database.db")
         }
-        return dbDirectory.resolve("database.db")
     }
 
     private fun migrateDatabase(jdbcUrl: String, migrationLocation: String) {
