@@ -81,14 +81,14 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<Budget
         attributes["hx-post"] = "/api/reports/ai-insights"
         attributes["hx-target"] = "#response-message"
         attributes["hx-on::before-request"] = """
-        const submitBtn = document.querySelector('button[type="submit"]');
+        const submitBtn = document.querySelector('#generate-insight-btn');
         if(submitBtn) {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Loading AI Insight...';
         }
         """
         attributes["hx-on::after-request"] = """
-        const submitBtn = document.querySelector('button[type="submit"]');
+        const submitBtn = document.querySelector('#generate-insight-btn');
         if(submitBtn) {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Generate AI Insight';
@@ -152,6 +152,7 @@ fun FlowContent.AIInsightForm(context: BaseTemplateContext, budgets: List<Budget
         }
 
         button(type = ButtonType.submit, classes = "submit-button") {
+            id = "generate-insight-btn"
             +"Generate AI Insight"
         }
     }
